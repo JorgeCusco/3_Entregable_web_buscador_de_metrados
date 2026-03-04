@@ -1,12 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import { Metrado } from '../types';
 import { mockPartidas } from '../data/mockDB';
-import { ChevronDown, ChevronUp, Hammer, Truck, Box, Download, CloudUpload } from 'lucide-react';
+import { ChevronDown, ChevronUp, Hammer, Truck, Box, Download, CloudUpload, Trash2 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
 interface MetradosTableProps {
     metrados: Metrado[];
     onUpdate?: (id: string, field: keyof Metrado, value: any) => void;
+    onDelete?: (id: string) => void;
 }
 
 const getRecursoIcon = (tipo: string) => {
@@ -19,7 +20,7 @@ const getRecursoIcon = (tipo: string) => {
 }
 
 // Sub-componente para el Grupo de Partida (Header + Hijos + APU)
-const PartidaGroup: React.FC<{ codigo: string, items: Metrado[], onUpdate?: (id: string, field: keyof Metrado, value: any) => void }> = ({ codigo, items, onUpdate }) => {
+const PartidaGroup: React.FC<{ codigo: string, items: Metrado[], onUpdate?: (id: string, field: keyof Metrado, value: any) => void, onDelete?: (id: string) => void }> = ({ codigo, items, onUpdate, onDelete }) => {
     const [isApuOpen, setIsApuOpen] = useState(false);
 
     // Referencia base
@@ -175,14 +176,25 @@ const PartidaGroup: React.FC<{ codigo: string, items: Metrado[], onUpdate?: (id:
                             value={m.nro_veces} onChange={(e) => onUpdate && onUpdate(m.id, 'nro_veces', e.target.value)} placeholder="1" />
                     </td>
 
-                    <td className="px-4 py-1.5 text-right font-black text-slate-800 bg-slate-50 select-none">{m.total.toFixed(2)}</td>
+                    <td className="px-4 py-1.5 text-right font-black text-slate-800 bg-slate-50 select-none pb-0">
+                        <div className="flex items-center justify-end gap-2">
+                            <span>{m.total.toFixed(2)}</span>
+                            <button
+                                onClick={() => onDelete && onDelete(m.id)}
+                                className="text-slate-300 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50"
+                                title="Eliminar este metrado"
+                            >
+                                <Trash2 size={14} />
+                            </button>
+                        </div>
+                    </td>
                 </tr>
             ))}
         </React.Fragment>
     );
 };
 
-export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate }) => {
+export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onDelete }) => {
 
     // Lógica de agrupación anidada por WBS y luego por Partida
     const gruposWBS = useMemo(() => {
@@ -324,7 +336,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                         </tr>
                                     )}
                                     {Object.entries(grupo.partidas).map(([codigo, items]) => (
-                                        <PartidaGroup key={`${jerarquiaStr}-${codigo}`} codigo={codigo} items={items} onUpdate={onUpdate} />
+                                        <PartidaGroup key={`${jerarquiaStr}-${codigo}`} codigo={codigo} items={items} onUpdate={onUpdate} onDelete={onDelete} />
                                     ))}
                                 </React.Fragment>
                             ))

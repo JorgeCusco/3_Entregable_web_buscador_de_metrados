@@ -146,6 +146,12 @@ function App() {
     }
   };
 
+  const handleDeleteMetrado = (id: string) => {
+    setMetrados(prev => prev.filter(m => m.id !== id));
+    setToast('Registro eliminado exitosamente');
+    setTimeout(() => setToast(null), 3000);
+  };
+
   const handleUpdateMetrado = (id: string, field: keyof Metrado, value: any) => {
     setMetrados(prev => prev.map(m => {
       if (m.id !== id) return m;
@@ -229,6 +235,7 @@ function App() {
           <MetradosTable
             metrados={metrados}
             onUpdate={handleUpdateMetrado}
+            onDelete={handleDeleteMetrado}
           />
         </div>
 
