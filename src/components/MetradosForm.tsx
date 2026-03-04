@@ -1,5 +1,6 @@
 import React from 'react';
 import { SearchCombobox } from './ui/SearchCombobox';
+import { Select } from './ui/Select';
 import { Partida } from '../types';
 import { mockPartidas } from '../data/mockDB';
 import { Save } from 'lucide-react';
@@ -62,48 +63,27 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                             className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
                         />
                     </div>
-                    <div className="space-y-1">
-                        <label className="text-xs font-semibold text-gray-600 block">Frente</label>
-                        <select
-                            value={state.frente}
-                            onChange={e => actions.setFrente(e.target.value)}
-                            className="w-full px-3 py-2 border border-blue-100 bg-blue-50/30 rounded-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors cursor-pointer"
-                        >
-                            <option value="" disabled>Seleccionar...</option>
-                            <option value="F1">F1</option>
-                            <option value="F2">F2</option>
-                            <option value="F3">F3</option>
-                            <option value="F4">F4</option>
-                            <option value="Azotea">Azotea</option>
-                        </select>
-                    </div>
-                    <div className="space-y-1">
-                        <label className="text-xs font-semibold text-gray-600 block">Bloque</label>
-                        <select
-                            value={state.bloque}
-                            onChange={e => actions.setBloque(e.target.value)}
-                            className="w-full px-3 py-2 border border-blue-100 bg-blue-50/30 rounded-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors cursor-pointer"
-                        >
-                            <option value="" disabled>Seleccionar...</option>
-                            {['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI'].map(b => (
-                                <option key={b} value={b}>{b}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="space-y-1">
-                        <label className="text-xs font-semibold text-gray-600 block">Nivel</label>
-                        <select
-                            value={state.nivel}
-                            onChange={e => actions.setNivel(e.target.value)}
-                            className="w-full px-3 py-2 border border-blue-100 bg-blue-50/30 rounded-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors cursor-pointer"
-                        >
-                            <option value="" disabled>Seleccionar...</option>
-                            <option value="ZZ">ZZ</option>
-                            <option value="N1">N1</option>
-                            <option value="N2">N2</option>
-                            <option value="N3">N3</option>
-                        </select>
-                    </div>
+
+                    <Select
+                        label="Frente"
+                        value={state.frente}
+                        options={['F1', 'F2', 'F3', 'F4', 'Azotea']}
+                        onSelect={(val) => actions.setFrente(val)}
+                    />
+
+                    <Select
+                        label="Bloque"
+                        value={state.bloque}
+                        options={['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI']}
+                        onSelect={(val) => actions.setBloque(val)}
+                    />
+
+                    <Select
+                        label="Nivel"
+                        value={state.nivel}
+                        options={['ZZ', 'N1', 'N2', 'N3']}
+                        onSelect={(val) => actions.setNivel(val)}
+                    />
                 </div>
 
                 <div className="space-y-1">
