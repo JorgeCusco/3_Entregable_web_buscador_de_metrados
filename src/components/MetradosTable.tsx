@@ -6,6 +6,7 @@ import * as XLSX from 'xlsx';
 
 interface MetradosTableProps {
     metrados: Metrado[];
+    onUpdate?: (id: string, field: keyof Metrado, value: any) => void;
 }
 
 const getRecursoIcon = (tipo: string) => {
@@ -18,7 +19,7 @@ const getRecursoIcon = (tipo: string) => {
 }
 
 // Sub-componente para el Grupo de Partida (Header + Hijos + APU)
-const PartidaGroup: React.FC<{ codigo: string, items: Metrado[] }> = ({ codigo, items }) => {
+const PartidaGroup: React.FC<{ codigo: string, items: Metrado[], onUpdate?: (id: string, field: keyof Metrado, value: any) => void }> = ({ codigo, items, onUpdate }) => {
     const [isApuOpen, setIsApuOpen] = useState(false);
 
     // Referencia base
@@ -106,34 +107,82 @@ const PartidaGroup: React.FC<{ codigo: string, items: Metrado[] }> = ({ codigo, 
                     <td className="px-4 py-1.5 text-slate-400 font-mono text-[10px]">
                         {new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </td>
-                    <td className="px-4 py-1.5 text-slate-500">
-                        {m.frente || m.bloque || m.nivel ?
-                            [m.frente, m.bloque, m.nivel].filter(Boolean).join(' - ')
-                            : '-'}
+                    <td className="px-2 py-1 text-slate-500">
+                        {/* Ubicación editable */}
+                        <div className="flex items-center gap-1 group/input">
+                            <input
+                                type="text"
+                                className="w-16 bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none"
+                                value={m.frente}
+                                placeholder="Frente..."
+                                onChange={(e) => onUpdate && onUpdate(m.id, 'frente', e.target.value)}
+                            />
+                            <span className="text-slate-300">-</span>
+                            <input
+                                type="text"
+                                className="w-16 bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none"
+                                value={m.bloque}
+                                placeholder="Bloque..."
+                                onChange={(e) => onUpdate && onUpdate(m.id, 'bloque', e.target.value)}
+                            />
+                            <span className="text-slate-300">-</span>
+                            <input
+                                type="text"
+                                className="w-16 bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none"
+                                value={m.nivel}
+                                placeholder="Nivel..."
+                                onChange={(e) => onUpdate && onUpdate(m.id, 'nivel', e.target.value)}
+                            />
+                        </div>
                     </td>
-                    <td className="px-4 py-1.5">
-                        <div className="flex items-center text-slate-700 ml-6">
-                            <span className="text-slate-300 mr-2">♦</span>
-                            <span className="truncate max-w-[250px]" title={m.descripcion_especifica}>
-                                {m.descripcion_especifica || <i className="text-slate-400">(Sin descripción específica)</i>}
-                            </span>
+                    <td className="px-2 py-1">
+                        <div className="flex items-center text-slate-700 ml-6 relative">
+                            <span className="text-slate-300 mr-2 absolute -left-4">♦</span>
+                            <input
+                                type="text"
+                                className="w-full min-w-[200px] bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none"
+                                value={m.descripcion_especifica}
+                                placeholder="Descripción Específica..."
+                                onChange={(e) => onUpdate && onUpdate(m.id, 'descripcion_especifica', e.target.value)}
+                            />
                         </div>
                     </td>
                     <td className="px-4 py-1.5 text-center text-transparent">-</td>
-                    <td className="px-4 py-1.5 text-right text-slate-600">{m.cantidad !== "" ? m.cantidad : '-'}</td>
-                    <td className="px-4 py-1.5 text-right text-slate-600">{m.longitud_area !== "" ? m.longitud_area : '-'}</td>
-                    <td className="px-4 py-1.5 text-right text-slate-600">{m.ancho_empalme !== "" ? m.ancho_empalme : '-'}</td>
-                    <td className="px-4 py-1.5 text-right text-slate-600">{m.altura_gancho !== "" ? m.altura_gancho : '-'}</td>
-                    <td className="px-4 py-1.5 text-right font-medium text-slate-700 bg-slate-50/50">{m.parcial.toFixed(2)}</td>
-                    <td className="px-4 py-1.5 text-center text-slate-500">{m.nro_veces !== "" ? m.nro_veces : '1'}</td>
-                    <td className="px-4 py-1.5 text-right font-semibold text-slate-800">{m.total.toFixed(2)}</td>
+
+                    {/* Dimensiones y Cantidades Editables */}
+                    <td className="px-1 py-1 text-right">
+                        <input type="text" className="w-12 text-right bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none text-slate-600 font-medium"
+                            value={m.cantidad} onChange={(e) => onUpdate && onUpdate(m.id, 'cantidad', e.target.value)} placeholder="-" />
+                    </td>
+                    <td className="px-1 py-1 text-right">
+                        <input type="text" className="w-12 text-right bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none text-slate-600 font-medium"
+                            value={m.longitud_area} onChange={(e) => onUpdate && onUpdate(m.id, 'longitud_area', e.target.value)} placeholder="-" />
+                    </td>
+                    <td className="px-1 py-1 text-right">
+                        <input type="text" className="w-12 text-right bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none text-slate-600 font-medium"
+                            value={m.ancho_empalme} onChange={(e) => onUpdate && onUpdate(m.id, 'ancho_empalme', e.target.value)} placeholder="-" />
+                    </td>
+                    <td className="px-1 py-1 text-right">
+                        <input type="text" className="w-12 text-right bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none text-slate-600 font-medium"
+                            value={m.altura_gancho} onChange={(e) => onUpdate && onUpdate(m.id, 'altura_gancho', e.target.value)} placeholder="-" />
+                    </td>
+
+                    {/* Campos Fijos/Calculados */}
+                    <td className="px-4 py-1.5 text-right font-bold text-blue-700 bg-blue-50/40 select-none">{m.parcial.toFixed(2)}</td>
+
+                    <td className="px-1 py-1 text-center">
+                        <input type="text" className="w-10 text-center bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none text-slate-500"
+                            value={m.nro_veces} onChange={(e) => onUpdate && onUpdate(m.id, 'nro_veces', e.target.value)} placeholder="1" />
+                    </td>
+
+                    <td className="px-4 py-1.5 text-right font-black text-slate-800 bg-slate-50 select-none">{m.total.toFixed(2)}</td>
                 </tr>
             ))}
         </React.Fragment>
     );
 };
 
-export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados }) => {
+export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate }) => {
 
     // Lógica de agrupación anidada por WBS y luego por Partida
     const gruposWBS = useMemo(() => {
@@ -275,7 +324,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados }) => {
                                         </tr>
                                     )}
                                     {Object.entries(grupo.partidas).map(([codigo, items]) => (
-                                        <PartidaGroup key={`${jerarquiaStr}-${codigo}`} codigo={codigo} items={items} />
+                                        <PartidaGroup key={`${jerarquiaStr}-${codigo}`} codigo={codigo} items={items} onUpdate={onUpdate} />
                                     ))}
                                 </React.Fragment>
                             ))

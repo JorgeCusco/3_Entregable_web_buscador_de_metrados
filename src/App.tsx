@@ -140,13 +140,53 @@ function App() {
   const handleGuardar = () => {
     const nuevo = actions.procesarRegistro();
     if (nuevo) {
-      // Put at the beginning to see recently added first
       setMetrados(prev => [nuevo, ...prev]);
-
-      // Show simple toast
       setToast(`Metrado guardado: ${nuevo.codigo_partida}`);
       setTimeout(() => setToast(null), 3000);
     }
+  };
+
+  const handleUpdateMetrado = (id: string, field: keyof Metrado, value: any) => {
+    setMetrados(prev => prev.map(m => {
+      if (m.id !== id) return m;
+
+      const updated = { ...m, [field]: value };
+
+      // Si modificó dimensiones o cantidad, recalcular parcial y total
+      if (['cantidad', 'longitud_area', 'ancho_empalme', 'altura_gancho', 'nro_veces'].includes(field as string)) {
+
+        const parseVal = (v: any) => {
+          if (v === "" || v === undefined || v === null) return null;
+          const num = parseFloat(String(v));
+          return isNaN(num) ? null : num;
+        };
+
+        const cant = parseVal(updated.cantidad);
+        const l = parseVal(updated.longitud_area);
+        const a = parseVal(updated.ancho_empalme);
+        const h = parseVal(updated.altura_gancho);
+
+        // Multiplicar todo lo que no sea null
+        let product = 1;
+        let hasFactors = false;
+
+        [cant, l, a, h].forEach(val => {
+          if (val !== null) {
+            product *= val;
+            hasFactors = true;
+          }
+        });
+
+        // Si todos están vacíos (cosa rara pero posible), el parcial es 0
+        updated.parcial = hasFactors ? product : 0;
+
+        // Recalcular Total (Parcial * Nro de Veces)
+        const veces = parseVal(updated.nro_veces);
+        updated.total = updated.parcial * (veces !== null ? veces : 1);
+      }
+
+      return updated;
+    }));
   };
 
   return (
@@ -186,7 +226,10 @@ function App() {
 
         {/* Right Column: Table History */}
         <div className="lg:col-span-8 xl:col-span-9 flex flex-col">
-          <MetradosTable metrados={metrados} />
+          <MetradosTable
+            metrados={metrados}
+            onUpdate={handleUpdateMetrado}
+          />
         </div>
 
       </main>
