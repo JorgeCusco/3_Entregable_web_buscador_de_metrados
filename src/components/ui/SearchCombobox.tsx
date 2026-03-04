@@ -68,20 +68,20 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
                             {filteredPartidas.map((partida) => (
                                 <li
                                     key={partida.id}
-                                    className="px-4 py-2.5 text-sm hover:bg-blue-50 cursor-pointer flex justify-between items-center transition-colors group"
+                                    className="px-4 py-3 hover:bg-blue-50/50 cursor-pointer flex gap-3 items-start border-b border-gray-50 last:border-0 transition-colors group"
                                     onClick={() => {
                                         onSelect(partida);
                                         setQuery(partida.descripcion);
                                         setIsOpen(false);
                                     }}
                                 >
-                                    <div className="flex flex-col overflow-hidden pr-2">
-                                        <span className="font-medium text-gray-700 group-hover:text-primary transition-colors truncate">
+                                    <div className="flex-1 min-w-0">
+                                        <span className="text-sm font-medium text-gray-700 group-hover:text-primary transition-colors block leading-tight">
                                             {partida.descripcion}
                                         </span>
                                     </div>
-                                    <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded ml-2 flex-shrink-0">
-                                        {partida.codigo} ({partida.unidad})
+                                    <span className="text-[10px] font-mono text-gray-400 bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded flex-shrink-0 mt-0.5">
+                                        {partida.codigo}
                                     </span>
                                 </li>
                             ))}
