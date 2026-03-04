@@ -60,7 +60,7 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
             </div>
 
             {isOpen && (
-                <div className="absolute z-50 w-full mt-1 bg-white border border-gray-100 rounded-lg shadow-xl max-h-60 overflow-auto glass-panel">
+                <div className="absolute z-50 w-full mt-1 bg-white border border-gray-100 rounded-lg shadow-xl max-h-60 overflow-auto">
                     {filteredPartidas.length === 0 ? (
                         <div className="p-3 text-sm text-gray-500 text-center">Niguna partida encontrada.</div>
                     ) : (
