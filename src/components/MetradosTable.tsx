@@ -161,39 +161,53 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados }) => {
         rows.push(["PLANILLA DE METRADOS"]);
         rows.push([]);
 
-        const headers = ["Jerarquía WBS", "Código Partida", "Descripción de Partida", "Unidad", "Ubicación / Frente", "Descripción Específica", "Cant.", "Largo", "Ancho", "Alto", "Parcial", "Veces", "Total"];
+        // Mismas cabeceras de la imagen
+        const headers = ["FRENTE", "BLOQUE", "NIVEL", "PARTIDA", "DESCRIPCION", "CANTIDAD", "LONGITUD", "ANCHO / EMPALME", "ALTURA / GANCHO", "AREA", "N° VECES", "PESO", "SUB-TOTAL", "TOTAL", "UND"];
         rows.push(headers);
 
         Object.entries(gruposWBS).forEach(([jerarquiaStr, grupo]) => {
+            // Fila de Jerarquía
+            if (grupo.jerarquia && grupo.jerarquia.length > 0) {
+                rows.push([
+                    "", "", "",
+                    "", // PARTIDA
+                    jerarquiaStr.toUpperCase(), // DESCRIPCION
+                    "", "", "", "", "", "", "", "", "", ""
+                ]);
+            }
+
             Object.entries(grupo.partidas).forEach(([codigo, items]) => {
                 const baseItem = items[0];
                 const totalGrupo = items.reduce((sum, item) => sum + item.total, 0);
 
+                // Fila de Partida Resumen
                 rows.push([
-                    jerarquiaStr,
-                    codigo,
-                    baseItem.descripcion_partida,
-                    baseItem.unidad,
+                    "", "", "",
+                    codigo, // PARTIDA
+                    baseItem.descripcion_partida, // DESCRIPCION
                     "", "", "", "", "", "", "", "",
-                    totalGrupo
+                    totalGrupo.toFixed(2), // TOTAL
+                    baseItem.unidad // UND
                 ]);
 
+                // Filas de Detalles de Medición
                 items.forEach((m) => {
-                    const ubicacion = [m.frente, m.bloque, m.nivel].filter(Boolean).join(' - ');
                     rows.push([
-                        "",
-                        "",
-                        "",
-                        "",
-                        ubicacion,
-                        m.descripcion_especifica,
-                        m.cantidad,
-                        m.longitud_area,
-                        m.ancho_empalme,
-                        m.altura_gancho,
-                        m.parcial,
-                        m.nro_veces,
-                        m.total
+                        m.frente,
+                        m.bloque,
+                        m.nivel,
+                        "", // PARTIDA
+                        m.descripcion_especifica, // DESCRIPCION
+                        m.cantidad, // CANTIDAD
+                        m.longitud_area, // LONGITUD
+                        m.ancho_empalme, // ANCHO / EMPALME
+                        m.altura_gancho, // ALTURA / GANCHO
+                        "", // AREA (si hubiera un campo lo pondríamos aquí, por ahora lo dejamos)
+                        m.nro_veces, // N° VECES
+                        "", // PESO (no hay en el modelo actual)
+                        m.parcial.toFixed(2), // SUB-TOTAL
+                        "", // TOTAL
+                        ""  // UND
                     ]);
                 });
             });
@@ -201,8 +215,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados }) => {
 
         const ws = XLSX.utils.aoa_to_sheet(rows);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Metrados");
-        XLSX.writeFile(wb, "Planilla_Metrados.xlsx");
+        XLSX.utils.book_append_sheet(wb, ws, "Planilla_Metrados");
+        XLSX.writeFile(wb, "Planilla_Metrados_Belempampa.xlsx");
     };
 
     return (
