@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { Metrado } from '../types';
 import { mockPartidas } from '../data/mockDB';
-import { ChevronDown, ChevronUp, Hammer, Truck, Box } from 'lucide-react';
+import { ChevronDown, ChevronUp, Hammer, Truck, Box, Download, CloudUpload } from 'lucide-react';
+import * as XLSX from 'xlsx';
 
 interface MetradosTableProps {
     metrados: Metrado[];
@@ -155,11 +156,67 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados }) => {
 
     const cantPartidas = new Set(metrados.map(m => m.codigo_partida)).size;
 
+    const exportToExcel = () => {
+        const rows: any[] = [];
+        rows.push(["PLANILLA DE METRADOS"]);
+        rows.push([]);
+
+        const headers = ["Jerarquía WBS", "Código Partida", "Descripción de Partida", "Unidad", "Ubicación / Frente", "Descripción Específica", "Cant.", "Largo", "Ancho", "Alto", "Parcial", "Veces", "Total"];
+        rows.push(headers);
+
+        Object.entries(gruposWBS).forEach(([jerarquiaStr, grupo]) => {
+            Object.entries(grupo.partidas).forEach(([codigo, items]) => {
+                const baseItem = items[0];
+                const totalGrupo = items.reduce((sum, item) => sum + item.total, 0);
+
+                rows.push([
+                    jerarquiaStr,
+                    codigo,
+                    baseItem.descripcion_partida,
+                    baseItem.unidad,
+                    "", "", "", "", "", "", "", "",
+                    totalGrupo
+                ]);
+
+                items.forEach((m) => {
+                    const ubicacion = [m.frente, m.bloque, m.nivel].filter(Boolean).join(' - ');
+                    rows.push([
+                        "",
+                        "",
+                        "",
+                        "",
+                        ubicacion,
+                        m.descripcion_especifica,
+                        m.cantidad,
+                        m.longitud_area,
+                        m.ancho_empalme,
+                        m.altura_gancho,
+                        m.parcial,
+                        m.nro_veces,
+                        m.total
+                    ]);
+                });
+            });
+        });
+
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Metrados");
+        XLSX.writeFile(wb, "Planilla_Metrados.xlsx");
+    };
+
     return (
         <div className="glass-panel overflow-hidden rounded-2xl flex flex-col h-full border border-slate-200 shadow-sm">
             <div className="p-4 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center">
                 <h3 className="font-bold text-slate-800 text-lg tracking-tight">Planilla de Metrados Dinámica</h3>
                 <div className="flex items-center gap-3">
+                    <button onClick={exportToExcel} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow-sm">
+                        <Download size={14} /> Exportar Excel
+                    </button>
+                    <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow-sm">
+                        <CloudUpload size={14} /> Enviar a BD
+                    </button>
+                    <div className="h-6 w-px bg-slate-300 mx-2"></div>
                     <span className="text-xs font-semibold bg-blue-100 text-blue-700 px-2.5 py-1 rounded-full">{cantPartidas} Partidas</span>
                     <span className="text-xs font-semibold bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full">{metrados.length} Registros Totales</span>
                 </div>

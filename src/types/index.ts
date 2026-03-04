@@ -4,7 +4,7 @@ export interface RecursoAPU {
     tipo: TipoRecurso;
     descripcion: string;
     unidad: string;
-    cuadrilla?: number | string;
+    cuadrilla?: number | string | null;
     cantidad: number;
     precio_unitario: number;
     parcial: number;
