@@ -64,33 +64,45 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     </div>
                     <div className="space-y-1">
                         <label className="text-xs font-semibold text-gray-600 block">Frente</label>
-                        <input
-                            type="text"
+                        <select
                             value={state.frente}
                             onChange={e => actions.setFrente(e.target.value)}
-                            className="w-full px-3 py-2 border border-blue-100 bg-blue-50/30 rounded-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                            placeholder="Ej: Frente 1"
-                        />
+                            className="w-full px-3 py-2 border border-blue-100 bg-blue-50/30 rounded-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors cursor-pointer"
+                        >
+                            <option value="" disabled>Seleccionar...</option>
+                            <option value="F1">F1</option>
+                            <option value="F2">F2</option>
+                            <option value="F3">F3</option>
+                            <option value="F4">F4</option>
+                            <option value="Azotea">Azotea</option>
+                        </select>
                     </div>
                     <div className="space-y-1">
                         <label className="text-xs font-semibold text-gray-600 block">Bloque</label>
-                        <input
-                            type="text"
+                        <select
                             value={state.bloque}
                             onChange={e => actions.setBloque(e.target.value)}
-                            className="w-full px-3 py-2 border border-blue-100 bg-blue-50/30 rounded-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                            placeholder="Ej: Pabellón A"
-                        />
+                            className="w-full px-3 py-2 border border-blue-100 bg-blue-50/30 rounded-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors cursor-pointer"
+                        >
+                            <option value="" disabled>Seleccionar...</option>
+                            {['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI'].map(b => (
+                                <option key={b} value={b}>{b}</option>
+                            ))}
+                        </select>
                     </div>
                     <div className="space-y-1">
                         <label className="text-xs font-semibold text-gray-600 block">Nivel</label>
-                        <input
-                            type="text"
+                        <select
                             value={state.nivel}
                             onChange={e => actions.setNivel(e.target.value)}
-                            className="w-full px-3 py-2 border border-blue-100 bg-blue-50/30 rounded-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                            placeholder="Ej: Piso 2"
-                        />
+                            className="w-full px-3 py-2 border border-blue-100 bg-blue-50/30 rounded-md text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors cursor-pointer"
+                        >
+                            <option value="" disabled>Seleccionar...</option>
+                            <option value="ZZ">ZZ</option>
+                            <option value="N1">N1</option>
+                            <option value="N2">N2</option>
+                            <option value="N3">N3</option>
+                        </select>
                     </div>
                 </div>
 
