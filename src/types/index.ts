@@ -25,7 +25,7 @@ export interface Partida {
     jerarquia?: string[];
     es_titulo?: boolean;
     parent_id?: string;
-    apu?: APU;
+    apu?: APU | null;
 }
 
 export interface Metrado {
