@@ -144,8 +144,8 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
             <button
                 onClick={onGuardar}
-                disabled={!state.partidaSeleccionada}
-                className={`mt-6 w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${!state.partidaSeleccionada
+                disabled={!state.partidaSeleccionada || state.total === 0}
+                className={`mt-6 w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${(!state.partidaSeleccionada || state.total === 0)
                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-none'
                     : 'bg-primary hover:bg-primary-hover text-white hover:shadow-primary/30'
                     }`}
