@@ -11,7 +11,16 @@ interface MetradosTableProps {
 }
 
 /**
- * Función que genera el array secuencial para el Data Grid.
+ * Detecta el nivel de jerarquía basado en el código (ej. OE.1.1 = Nivel 2)
+ */
+const getIndentLevel = (codigo: string): number => {
+    if (!codigo) return 0;
+    const parts = codigo.split('.');
+    return Math.max(0, parts.length - 1);
+};
+
+/**
+ * Función que genera el array secuencial para el Data Grid con "Tree Pruning".
  */
 const getHierarchicalRows = (activeMetrados: Metrado[]): any[] => {
     // 1. Identificar Partidas Hoja activas
@@ -155,7 +164,10 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             if (r.is_template && r.es_titulo) {
                                 return (
                                     <tr key={`title-${r.codigo}-${idx}`} className="bg-slate-800 text-white font-bold border-b border-slate-700">
-                                        <td className="px-3 py-1 font-mono text-[10px] tracking-wider">{r.codigo}</td>
+                                        <td className="px-3 py-1 font-mono text-[10px] tracking-wider"
+                                            style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
+                                            {r.codigo}
+                                        </td>
                                         <td colSpan={9} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50">
                                             {r.descripcion}
                                         </td>
@@ -169,7 +181,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 const hasMetrados = total > 0;
                                 return (
                                     <tr key={`header-${r.codigo}-${idx}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors`}>
-                                        <td className="px-3 py-1">
+                                        <td className="px-3 py-1" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
                                             <span className="font-mono text-[10px] text-blue-600 bg-blue-100/50 px-1 py-0.5 rounded">
                                                 {r.codigo}
                                             </span>
@@ -201,7 +213,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
                             return (
                                 <tr key={`rec-${r.id}-${idx}`} className="hover:bg-blue-50/30 border-b border-slate-100 group transition-all duration-200">
-                                    <td className="px-3 py-0.5 text-[9px] text-slate-400 font-mono italic flex items-center gap-2">
+                                    <td className="px-3 py-0.5 text-[9px] text-slate-400 font-mono italic flex items-center gap-2"
+                                        style={{ paddingLeft: `${(getIndentLevel(r.codigo_partida) + 1) * 1 + 0.75}rem` }}>
                                         <div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
                                         Registro
                                     </td>
