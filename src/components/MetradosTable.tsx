@@ -239,15 +239,15 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     <td className="w-[90px] min-w-[90px] px-1 py-0.5">
                                         <div className="flex items-center gap-0.5" style={{ marginLeft: '27px' }}>
                                             <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
-                                            <input type="text" className="metrado-input text-[8px] text-slate-400 font-semibold uppercase bg-slate-100 px-0.5 py-0 rounded shrink-0 border-none focus:ring-0 w-[30px] text-center"
+                                            <input type="text" className="metrado-input text-[8px] text-blue-700 font-semibold uppercase bg-blue-100 px-0.5 py-0 rounded shrink-0 border-none focus:ring-0 w-[30px] text-center"
                                                 value={r.frente} onChange={(e) => onUpdate?.(r.id, 'frente', e.target.value)}
                                                 onFocus={(e) => e.target.select()} />
                                             <span className="text-slate-300 text-[7px]">•</span>
-                                            <input type="text" className="metrado-input text-[8px] text-slate-400 font-semibold uppercase bg-slate-100 px-0.5 py-0 rounded shrink-0 border-none focus:ring-0 w-[30px] text-center"
+                                            <input type="text" className="metrado-input text-[8px] text-amber-700 font-semibold uppercase bg-amber-100 px-0.5 py-0 rounded shrink-0 border-none focus:ring-0 w-[30px] text-center"
                                                 value={r.bloque} onChange={(e) => onUpdate?.(r.id, 'bloque', e.target.value)}
                                                 onFocus={(e) => e.target.select()} />
                                             <span className="text-slate-300 text-[7px]">•</span>
-                                            <input type="text" className="metrado-input text-[8px] text-slate-400 font-semibold uppercase bg-slate-100 px-0.5 py-0 rounded shrink-0 border-none focus:ring-0 w-[30px] text-center"
+                                            <input type="text" className="metrado-input text-[8px] text-emerald-700 font-semibold uppercase bg-emerald-100 px-0.5 py-0 rounded shrink-0 border-none focus:ring-0 w-[30px] text-center"
                                                 value={r.nivel} onChange={(e) => onUpdate?.(r.id, 'nivel', e.target.value)}
                                                 onFocus={(e) => e.target.select()} />
                                         </div>
