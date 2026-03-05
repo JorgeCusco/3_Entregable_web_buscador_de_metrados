@@ -78,6 +78,32 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         return totals;
     }, [metrados]);
 
+    // Calcular totales de títulos (Roll-up recursivo)
+    const titleTotals = useMemo(() => {
+        const totals: Record<string, number> = {};
+
+        // Solo iteramos por los títulos rescatados en las filas actuales
+        rows.filter(r => r.is_template && r.es_titulo).forEach(title => {
+            let sum = 0;
+            // Sumar todas las partidas que cuelgan de este código (prefijo)
+            Object.keys(partidaTotals).forEach(pCode => {
+                if (pCode.startsWith(title.codigo + ".")) {
+                    sum += partidaTotals[pCode];
+                }
+            });
+            totals[title.codigo] = sum;
+        });
+
+        return totals;
+    }, [rows, partidaTotals]);
+
+    const formatNumber = (num: number) => {
+        return new Intl.NumberFormat('es-PE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(num);
+    };
+
     const cantPartidasRegistradas = new Set(metrados.map(m => m.codigo_partida)).size;
 
     const exportToExcel = () => {
@@ -90,8 +116,9 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         rows.forEach(r => {
             if (r.is_template) {
                 if (r.es_titulo) {
-                    // Jerarquía WBS
-                    excelRows.push([r.codigo, r.descripcion, "", "", "", "", "", "", "", "", "", "", ""]);
+                    // Jerarquía WBS - Roll-up
+                    const totalRama = titleTotals[r.codigo] || 0;
+                    excelRows.push([r.codigo, r.descripcion, "", "", "", "", "", "", "", "", totalRama.toFixed(2), "", ""]);
                 } else {
                     // Cabecera de Partida
                     const total = partidaTotals[r.codigo] || 0;
@@ -162,15 +189,20 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         {rows.map((r: any, idx: number) => {
                             // CASO 1: Es un Título WBS (Nodo Padre)
                             if (r.is_template && r.es_titulo) {
+                                const totalRama = titleTotals[r.codigo] || 0;
                                 return (
                                     <tr key={`title-${r.codigo}-${idx}`} className="bg-slate-800 text-white font-bold border-b border-slate-700">
                                         <td className="px-3 py-1 font-mono text-[10px] tracking-wider"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
                                             {r.codigo}
                                         </td>
-                                        <td colSpan={9} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50">
+                                        <td colSpan={6} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50">
                                             {r.descripcion}
                                         </td>
+                                        <td className="px-3 py-1 text-right text-blue-300 font-bold text-[12px]">
+                                            {totalRama > 0 ? formatNumber(totalRama) : '-'}
+                                        </td>
+                                        <td colSpan={2} className="px-3 py-1"></td>
                                     </tr>
                                 );
                             }
@@ -192,7 +224,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             Total Acumulado
                                         </td>
                                         <td className="px-3 py-1 text-right text-blue-700 font-black text-[13px]">
-                                            {hasMetrados ? total.toFixed(2) : '-'}
+                                            {hasMetrados ? formatNumber(total) : '-'}
                                         </td>
                                     </tr>
                                 );
@@ -255,7 +287,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             onKeyDown={(e) => handleKeyDown(e)} />
                                     </td>
 
-                                    <td className="px-3 py-0.5 text-right font-semibold text-slate-500 text-[12px]">{r.parcial.toFixed(2)}</td>
+                                    <td className="px-3 py-0.5 text-right font-semibold text-slate-500 text-[12px]">{formatNumber(r.parcial)}</td>
 
                                     <td className="px-1 py-0.5 text-center">
                                         <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[12px]"
