@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
-import { Metrado } from '../types';
-import { mockPartidas } from '../data/mockDB';
-import { ChevronDown, ChevronUp, Hammer, Truck, Box, Download, CloudUpload, Trash2 } from 'lucide-react';
+import React, { useMemo } from 'react';
+import { Metrado, Partida } from '../types';
+import { Download, Trash2 } from 'lucide-react';
 import * as XLSX from 'xlsx';
+import { mockPartidas } from '../data/mockDB';
 
 interface MetradosTableProps {
     metrados: Metrado[];
@@ -10,339 +10,275 @@ interface MetradosTableProps {
     onDelete?: (id: string) => void;
 }
 
-const getRecursoIcon = (tipo: string) => {
-    switch (tipo) {
-        case 'Mano de Obra': return <Hammer className="w-3 h-3 text-amber-500" />;
-        case 'Materiales': return <Box className="w-3 h-3 text-blue-500" />;
-        case 'Equipos': return <Truck className="w-3 h-3 text-green-500" />;
-        default: return <Box className="w-3 h-3 text-gray-500" />;
-    }
-}
+/**
+ * Función que genera el array secuencial para el Data Grid.
+ */
+const getHierarchicalRows = (activeMetrados: Metrado[]): any[] => {
+    // 1. Identificar Partidas Hoja activas
+    const activePartidaCodes = new Set(activeMetrados.map(m => m.codigo_partida));
+    const activeIds = new Set<string>();
 
-// Sub-componente para el Grupo de Partida (Header + Hijos + APU)
-const PartidaGroup: React.FC<{ codigo: string, items: Metrado[], onUpdate?: (id: string, field: keyof Metrado, value: any) => void, onDelete?: (id: string) => void }> = ({ codigo, items, onUpdate, onDelete }) => {
-    const [isApuOpen, setIsApuOpen] = useState(false);
+    // 2. Algoritmo de Rescate de Rama (Bottom-Up)
+    mockPartidas.forEach((node: Partida) => {
+        if (!node.es_titulo && activePartidaCodes.has(node.codigo)) {
+            activeIds.add(node.codigo);
 
-    // Referencia base
-    const baseItem = items[0];
-    const partidaBase = mockPartidas.find((p: any) => p.codigo === codigo);
-    const apu = partidaBase?.apu;
+            // Escalar recursivamente hacia arriba
+            let parentId = node.parent_id;
+            while (parentId) {
+                if (activeIds.has(parentId)) break; // Ya rescatado
+                activeIds.add(parentId);
+                const parent = mockPartidas.find(p => p.codigo === parentId);
+                parentId = parent?.parent_id;
+            }
+        }
+    });
 
-    // Calcular total acumulado de este grupo
-    const totalGrupo = items.reduce((sum, item) => sum + item.total, 0);
+    const finalRows: any[] = [];
 
-    return (
-        <React.Fragment>
-            {/* ROW 2: Header de la Partida */}
-            <tr
-                className={`group transition-colors border-b ${isApuOpen ? 'bg-blue-50/60' : 'bg-white hover:bg-slate-50'}`}
-            >
-                {/* Columnas combinadas para el Título */}
-                <td colSpan={3} className="px-4 py-2.5 cursor-pointer" onClick={() => apu && setIsApuOpen(!isApuOpen)}>
-                    <div className="flex items-center gap-2">
-                        {apu && (
-                            <button className="text-gray-400 hover:text-blue-600 transition-colors p-1 rounded-md hover:bg-blue-100/50">
-                                {isApuOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                            </button>
-                        )}
-                        <div>
-                            <span className="font-mono text-xs text-blue-600 font-semibold mr-2">{codigo}</span>
-                            <span className="font-bold text-slate-800 tracking-tight text-sm">
-                                {baseItem.descripcion_partida}
-                            </span>
-                            {apu && <span className="text-xs text-slate-400 ml-2 font-medium">S/ {apu.costo_directo_unitario.toFixed(2)}</span>}
-                        </div>
-                    </div>
-                </td>
-                {/* Unidad y Total Acumulado */}
-                <td className="px-4 py-2.5 text-center text-slate-600 font-bold text-xs">{baseItem.unidad}</td>
-                <td colSpan={6} className="px-4 py-2.5 text-right text-xs text-slate-400">Total Acumulado:</td>
-                <td className="px-4 py-2.5 text-right font-black text-blue-700 bg-blue-50/30 text-sm">
-                    {totalGrupo.toFixed(2)}
-                </td>
-            </tr>
+    // 3. Generar filas solo para los nodos rescatados
+    mockPartidas.forEach((node: Partida) => {
+        if (!activeIds.has(node.codigo)) return;
 
-            {/* APU Accordion (si está abierto) */}
-            {isApuOpen && apu && (
-                <tr>
-                    <td colSpan={11} className="p-0 border-b-0">
-                        <div className="bg-slate-50 px-8 py-4 border-l-4 border-l-blue-500 shadow-inner animate-in slide-in-from-top-2">
-                            <div className="flex items-center justify-between mb-3">
-                                <h4 className="text-sm font-bold text-slate-700">Análisis de Precios Unitarios (APU)</h4>
-                                <div className="text-xs text-slate-500 bg-white px-2 py-1 rounded border">Rendimiento: {apu.rendimiento_diario || '-'} {baseItem.unidad}/día</div>
-                            </div>
-                            <table className="w-full text-xs text-left bg-white rounded-lg overflow-hidden border">
-                                <thead className="bg-slate-100 text-slate-600">
-                                    <tr>
-                                        <th className="px-3 py-2">Tipo</th>
-                                        <th className="px-3 py-2 w-1/3">Descripción del Recurso</th>
-                                        <th className="px-3 py-2 text-center">Und</th>
-                                        <th className="px-3 py-2 text-right">Cant. Unitaria</th>
-                                        <th className="px-3 py-2 text-right">Precio S/</th>
-                                        <th className="px-3 py-2 text-right font-semibold">Parcial S/</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-50">
-                                    {apu.recursos.map((r: any, idx: number) => (
-                                        <tr key={idx} className="hover:bg-slate-50">
-                                            <td className="px-3 py-1.5 flex items-center gap-1.5 text-slate-500">
-                                                {getRecursoIcon(r.tipo)} <span className="text-[10px] uppercase font-medium">{r.tipo}</span>
-                                            </td>
-                                            <td className="px-3 py-1.5 font-medium text-slate-700">{r.descripcion}</td>
-                                            <td className="px-3 py-1.5 text-center text-slate-500">{r.unidad}</td>
-                                            <td className="px-3 py-1.5 text-right font-mono text-slate-600">{Number(r.cantidad).toFixed(4)}</td>
-                                            <td className="px-3 py-1.5 text-right font-mono text-slate-600">{Number(r.precio_unitario).toFixed(2)}</td>
-                                            <td className="px-3 py-1.5 text-right font-mono font-semibold text-slate-800">{Number(r.parcial).toFixed(2)}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-            )}
+        // Agregar el nodo (Título o Partida Base)
+        finalRows.push({ ...node, is_template: true });
 
-            {/* ROWS 3+: Medidas de este Grupo */}
-            {items.map((m) => (
-                <tr key={m.id} className="bg-white hover:bg-slate-50/80 transition-colors whitespace-nowrap text-xs">
-                    <td className="px-4 py-1.5 text-slate-400 font-mono text-[10px]">
-                        {new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </td>
-                    <td className="px-2 py-1 text-slate-500">
-                        {/* Ubicación editable */}
-                        <div className="flex items-center gap-1 group/input">
-                            <input
-                                type="text"
-                                className="w-16 bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none"
-                                value={m.frente}
-                                placeholder="Frente..."
-                                onChange={(e) => onUpdate && onUpdate(m.id, 'frente', e.target.value)}
-                            />
-                            <span className="text-slate-300">-</span>
-                            <input
-                                type="text"
-                                className="w-16 bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none"
-                                value={m.bloque}
-                                placeholder="Bloque..."
-                                onChange={(e) => onUpdate && onUpdate(m.id, 'bloque', e.target.value)}
-                            />
-                            <span className="text-slate-300">-</span>
-                            <input
-                                type="text"
-                                className="w-16 bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none"
-                                value={m.nivel}
-                                placeholder="Nivel..."
-                                onChange={(e) => onUpdate && onUpdate(m.id, 'nivel', e.target.value)}
-                            />
-                        </div>
-                    </td>
-                    <td className="px-2 py-1">
-                        <div className="flex items-center text-slate-700 ml-6 relative">
-                            <span className="text-slate-300 mr-2 absolute -left-4">♦</span>
-                            <input
-                                type="text"
-                                className="w-full min-w-[200px] bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none"
-                                value={m.descripcion_especifica}
-                                placeholder="Descripción Específica..."
-                                onChange={(e) => onUpdate && onUpdate(m.id, 'descripcion_especifica', e.target.value)}
-                            />
-                        </div>
-                    </td>
-                    <td className="px-4 py-1.5 text-center text-transparent">-</td>
+        // Si es partida, inyectar sus metrados
+        if (!node.es_titulo) {
+            const relatedMetrados = activeMetrados.filter(m => m.codigo_partida === node.codigo);
+            relatedMetrados.sort((a, b) => a.created_at - b.created_at);
 
-                    {/* Dimensiones y Cantidades Editables */}
-                    <td className="px-1 py-1 text-right">
-                        <input type="text" className="w-12 text-right bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none text-slate-600 font-medium"
-                            value={m.cantidad} onChange={(e) => onUpdate && onUpdate(m.id, 'cantidad', e.target.value)} placeholder="-" />
-                    </td>
-                    <td className="px-1 py-1 text-right">
-                        <input type="text" className="w-12 text-right bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none text-slate-600 font-medium"
-                            value={m.longitud_area} onChange={(e) => onUpdate && onUpdate(m.id, 'longitud_area', e.target.value)} placeholder="-" />
-                    </td>
-                    <td className="px-1 py-1 text-right">
-                        <input type="text" className="w-12 text-right bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none text-slate-600 font-medium"
-                            value={m.ancho_empalme} onChange={(e) => onUpdate && onUpdate(m.id, 'ancho_empalme', e.target.value)} placeholder="-" />
-                    </td>
-                    <td className="px-1 py-1 text-right">
-                        <input type="text" className="w-12 text-right bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none text-slate-600 font-medium"
-                            value={m.altura_gancho} onChange={(e) => onUpdate && onUpdate(m.id, 'altura_gancho', e.target.value)} placeholder="-" />
-                    </td>
+            relatedMetrados.forEach(m => {
+                finalRows.push({ ...m, is_template: false });
+            });
+        }
+    });
 
-                    {/* Campos Fijos/Calculados */}
-                    <td className="px-4 py-1.5 text-right font-bold text-blue-700 bg-blue-50/40 select-none">{m.parcial.toFixed(2)}</td>
-
-                    <td className="px-1 py-1 text-center">
-                        <input type="text" className="w-10 text-center bg-transparent border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-200 rounded px-1 py-0.5 text-xs transition-all outline-none text-slate-500"
-                            value={m.nro_veces} onChange={(e) => onUpdate && onUpdate(m.id, 'nro_veces', e.target.value)} placeholder="1" />
-                    </td>
-
-                    <td className="px-4 py-1.5 text-right font-black text-slate-800 bg-slate-50 select-none pb-0">
-                        <div className="flex items-center justify-end gap-2">
-                            <span>{m.total.toFixed(2)}</span>
-                            <button
-                                onClick={() => onDelete && onDelete(m.id)}
-                                className="text-slate-300 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50"
-                                title="Eliminar este metrado"
-                            >
-                                <Trash2 size={14} />
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            ))}
-        </React.Fragment>
-    );
+    return finalRows;
 };
 
 export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onDelete }) => {
+    const rows = useMemo(() => getHierarchicalRows(metrados), [metrados]);
 
-    // Lógica de agrupación anidada por WBS y luego por Partida
-    const gruposWBS = useMemo(() => {
-        const grupos: Record<string, { jerarquia: string[], partidas: Record<string, Metrado[]> }> = {};
+    // Calcular totales por partida para las filas de cabecera
+    const partidaTotals = useMemo(() => {
+        const totals: Record<string, number> = {};
         metrados.forEach(m => {
-            const jerarquiaStr = m.jerarquia && m.jerarquia.length > 0 ? m.jerarquia.join(' > ') : 'SIN JERARQUÍA';
-            if (!grupos[jerarquiaStr]) {
-                grupos[jerarquiaStr] = {
-                    jerarquia: m.jerarquia || [],
-                    partidas: {}
-                };
-            }
-            if (!grupos[jerarquiaStr].partidas[m.codigo_partida]) {
-                grupos[jerarquiaStr].partidas[m.codigo_partida] = [];
-            }
-            grupos[jerarquiaStr].partidas[m.codigo_partida].push(m);
+            totals[m.codigo_partida] = (totals[m.codigo_partida] || 0) + m.total;
         });
-        return grupos;
+        return totals;
     }, [metrados]);
 
-    const cantPartidas = new Set(metrados.map(m => m.codigo_partida)).size;
+    const cantPartidasRegistradas = new Set(metrados.map(m => m.codigo_partida)).size;
 
     const exportToExcel = () => {
-        const rows: any[] = [];
-        rows.push(["PLANILLA DE METRADOS"]);
-        rows.push([]);
+        const excelRows: any[] = [
+            ["PLANILLA DE METRADOS - BELEMPAMPA"],
+            [],
+            ["ITEM", "DESCRIPCIÓN", "UND", "FRENTE", "BLOQUE", "NIVEL", "CANT", "LARGO", "ANCHO", "ALTO", "PARCIAL", "VECES", "TOTAL"]
+        ];
 
-        // Mismas cabeceras de la imagen
-        const headers = ["FRENTE", "BLOQUE", "NIVEL", "PARTIDA", "DESCRIPCION", "CANTIDAD", "LONGITUD", "ANCHO / EMPALME", "ALTURA / GANCHO", "AREA", "N° VECES", "PESO", "SUB-TOTAL", "TOTAL", "UND"];
-        rows.push(headers);
-
-        Object.entries(gruposWBS).forEach(([jerarquiaStr, grupo]) => {
-            // Fila de Jerarquía
-            if (grupo.jerarquia && grupo.jerarquia.length > 0) {
-                rows.push([
-                    "", "", "",
-                    "", // PARTIDA
-                    jerarquiaStr.toUpperCase(), // DESCRIPCION
-                    "", "", "", "", "", "", "", "", "", ""
+        rows.forEach(r => {
+            if (r.is_template) {
+                if (r.es_titulo) {
+                    // Jerarquía WBS
+                    excelRows.push([r.codigo, r.descripcion, "", "", "", "", "", "", "", "", "", "", ""]);
+                } else {
+                    // Cabecera de Partida
+                    const total = partidaTotals[r.codigo] || 0;
+                    excelRows.push([r.codigo, r.descripcion, r.unidad, "", "", "", "", "", "", "", "", "", total.toFixed(2)]);
+                }
+            } else {
+                // Registro de metrado individual
+                excelRows.push([
+                    "",
+                    r.descripcion_especifica,
+                    "",
+                    r.frente,
+                    r.bloque,
+                    r.nivel,
+                    r.cantidad,
+                    r.longitud_area,
+                    r.ancho_empalme,
+                    r.altura_gancho,
+                    r.parcial.toFixed(2),
+                    r.nro_veces,
+                    r.total.toFixed(2)
                 ]);
             }
-
-            Object.entries(grupo.partidas).forEach(([codigo, items]) => {
-                const baseItem = items[0];
-                const totalGrupo = items.reduce((sum, item) => sum + item.total, 0);
-
-                // Fila de Partida Resumen
-                rows.push([
-                    "", "", "",
-                    codigo, // PARTIDA
-                    baseItem.descripcion_partida, // DESCRIPCION
-                    "", "", "", "", "", "", "", "",
-                    totalGrupo.toFixed(2), // TOTAL
-                    baseItem.unidad // UND
-                ]);
-
-                // Filas de Detalles de Medición
-                items.forEach((m) => {
-                    rows.push([
-                        m.frente,
-                        m.bloque,
-                        m.nivel,
-                        "", // PARTIDA
-                        m.descripcion_especifica, // DESCRIPCION
-                        m.cantidad, // CANTIDAD
-                        m.longitud_area, // LONGITUD
-                        m.ancho_empalme, // ANCHO / EMPALME
-                        m.altura_gancho, // ALTURA / GANCHO
-                        "", // AREA (si hubiera un campo lo pondríamos aquí, por ahora lo dejamos)
-                        m.nro_veces, // N° VECES
-                        "", // PESO (no hay en el modelo actual)
-                        m.parcial.toFixed(2), // SUB-TOTAL
-                        "", // TOTAL
-                        ""  // UND
-                    ]);
-                });
-            });
         });
 
-        const ws = XLSX.utils.aoa_to_sheet(rows);
+        const ws = XLSX.utils.aoa_to_sheet(excelRows);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Planilla_Metrados");
-        XLSX.writeFile(wb, "Planilla_Metrados_Belempampa.xlsx");
+        XLSX.utils.book_append_sheet(wb, ws, "Planilla");
+        XLSX.writeFile(wb, `Planilla_Metrados_${new Date().toISOString().split('T')[0]}.xlsx`);
     };
 
     return (
-        <div className="glass-panel overflow-hidden rounded-2xl flex flex-col h-full border border-slate-200 shadow-sm">
-            <div className="p-4 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center">
-                <h3 className="font-bold text-slate-800 text-lg tracking-tight">Planilla de Metrados Dinámica</h3>
+        <div className="glass-panel overflow-hidden rounded-2xl flex flex-col h-full border border-slate-200 shadow-sm bg-white">
+            {/* Header de la Tabla */}
+            <div className="p-4 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
+                <div className="flex flex-col">
+                    <h3 className="font-bold text-slate-800 text-lg tracking-tight">Planilla de Metrados Dinámica</h3>
+                    <p className="text-[10px] text-slate-500 font-medium uppercase tracking-widest mt-0.5">Vista Jerárquica Secuencial</p>
+                </div>
                 <div className="flex items-center gap-3">
-                    <button onClick={exportToExcel} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow-sm">
+                    <button onClick={exportToExcel} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow-sm cursor-pointer">
                         <Download size={14} /> Exportar Excel
                     </button>
-                    <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow-sm">
-                        <CloudUpload size={14} /> Enviar a BD
-                    </button>
-                    <div className="h-6 w-px bg-slate-300 mx-2"></div>
-                    <span className="text-xs font-semibold bg-blue-100 text-blue-700 px-2.5 py-1 rounded-full">{cantPartidas} Partidas</span>
-                    <span className="text-xs font-semibold bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full">{metrados.length} Registros Totales</span>
+                    <div className="h-6 w-px bg-slate-300 mx-1"></div>
+                    <span className="text-[11px] font-bold bg-blue-100 text-blue-700 px-3 py-1 rounded-full">{cantPartidasRegistradas} Partidas</span>
+                    <span className="text-[11px] font-bold bg-slate-200 text-slate-700 px-3 py-1 rounded-full">{metrados.length} Registros</span>
                 </div>
             </div>
 
-            <div className="overflow-x-auto flex-grow">
-                <table className="w-full text-sm text-left align-middle border-collapse">
-                    <thead className="text-xs text-slate-500 bg-white uppercase whitespace-nowrap sticky top-0 shadow-sm z-10">
-                        <tr>
-                            <th className="px-4 py-3 font-bold border-b-2 border-slate-200">Hora</th>
-                            <th className="px-4 py-3 font-bold border-b-2 border-slate-200">Ubicación</th>
-                            <th className="px-4 py-3 font-bold border-b-2 border-slate-200 min-w-[250px]">Partida / Descripción Específica</th>
-                            <th className="px-4 py-3 font-bold border-b-2 border-slate-200 text-center">Und</th>
-                            <th className="px-4 py-3 font-bold border-b-2 border-slate-200 text-right">Cant</th>
-                            <th className="px-4 py-3 font-bold border-b-2 border-slate-200 text-right">Largo</th>
-                            <th className="px-4 py-3 font-bold border-b-2 border-slate-200 text-right">Ancho</th>
-                            <th className="px-4 py-3 font-bold border-b-2 border-slate-200 text-right">Alto</th>
-                            <th className="px-4 py-3 font-bold border-b-2 border-slate-200 text-right text-slate-700 bg-slate-50/50">Parcial</th>
-                            <th className="px-4 py-3 font-bold border-b-2 border-slate-200 text-center">Veces</th>
-                            <th className="px-4 py-3 font-bold border-b-2 border-slate-200 text-right text-slate-800">Total</th>
+            {/* Contenedor con Scroll */}
+            <div className="overflow-auto flex-grow max-h-[calc(100vh-250px)] scrollbar-thin scrollbar-thumb-slate-200">
+                <table className="w-full text-[13px] text-left align-middle border-collapse table-fixed">
+                    <thead className="text-[11px] text-slate-400 bg-white uppercase whitespace-nowrap sticky top-0 shadow-[0_1px_0_0_rgba(0,0,0,0.05)] z-10 font-bold">
+                        <tr className="border-b border-slate-100">
+                            <th className="w-[120px] px-4 py-3">Item / Código</th>
+                            <th className="w-[350px] px-4 py-3">Descripción / Partida / Metrado</th>
+                            <th className="w-[60px] px-4 py-3 text-center">Und</th>
+                            <th className="w-[80px] px-4 py-3 text-right">Cant</th>
+                            <th className="w-[80px] px-4 py-3 text-right">Largo</th>
+                            <th className="w-[80px] px-4 py-3 text-right">Ancho</th>
+                            <th className="w-[80px] px-4 py-3 text-right">Alto</th>
+                            <th className="w-[100px] px-4 py-3 text-right">Parcial</th>
+                            <th className="w-[70px] px-4 py-3 text-center">Veces</th>
+                            <th className="w-[110px] px-4 py-3 text-right">Total</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 bg-white">
-                        {metrados.length === 0 ? (
-                            <tr>
-                                <td colSpan={11} className="px-4 py-16 text-center text-slate-400">
-                                    <div className="flex flex-col items-center justify-center space-y-3">
-                                        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-3xl mb-2">📊</div>
-                                        <span className="text-lg font-medium text-slate-600 tracking-tight">Planilla vacía</span>
-                                        <span className="text-sm">Agrega metrados desde el panel izquierdo para comenzar a generar estructuras.</span>
-                                    </div>
-                                </td>
-                            </tr>
-                        ) : (
-                            Object.entries(gruposWBS).map(([jerarquiaStr, grupo]) => (
-                                <React.Fragment key={jerarquiaStr}>
-                                    {grupo.jerarquia.length > 0 && (
-                                        <tr className="bg-slate-50 border-b border-t border-slate-200">
-                                            <td colSpan={11} className="px-4 py-2 text-[10px] uppercase font-bold text-slate-500 tracking-wider">
-                                                {jerarquiaStr}
-                                            </td>
-                                        </tr>
-                                    )}
-                                    {Object.entries(grupo.partidas).map(([codigo, items]) => (
-                                        <PartidaGroup key={`${jerarquiaStr}-${codigo}`} codigo={codigo} items={items} onUpdate={onUpdate} onDelete={onDelete} />
-                                    ))}
-                                </React.Fragment>
-                            ))
-                        )}
+                    <tbody className="bg-white">
+                        {rows.map((r: any, idx: number) => {
+                            // CASO 1: Es un Título WBS (Nodo Padre)
+                            if (r.is_template && r.es_titulo) {
+                                return (
+                                    <tr key={`title-${r.codigo}-${idx}`} className="bg-slate-800 text-white font-bold border-b border-slate-700">
+                                        <td className="px-3 py-1 font-mono text-[10px] tracking-wider">{r.codigo}</td>
+                                        <td colSpan={9} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50">
+                                            {r.descripcion}
+                                        </td>
+                                    </tr>
+                                );
+                            }
+
+                            // CASO 2: Es una Cabecera de Partida (Nodo Hoja del Presupuesto)
+                            if (r.is_template && !r.es_titulo) {
+                                const total = partidaTotals[r.codigo] || 0;
+                                const hasMetrados = total > 0;
+                                return (
+                                    <tr key={`header-${r.codigo}-${idx}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors`}>
+                                        <td className="px-3 py-1">
+                                            <span className="font-mono text-[10px] text-blue-600 bg-blue-100/50 px-1 py-0.5 rounded">
+                                                {r.codigo}
+                                            </span>
+                                        </td>
+                                        <td className="px-3 py-1 text-slate-800 text-[12px]">{r.descripcion}</td>
+                                        <td className="px-3 py-1 text-center text-slate-500 font-bold text-[11px]">{r.unidad}</td>
+                                        <td colSpan={6} className="px-3 py-1 text-right text-[9px] text-slate-400 uppercase font-bold tracking-tighter">
+                                            Total Acumulado
+                                        </td>
+                                        <td className="px-3 py-1 text-right text-blue-700 font-black text-[13px]">
+                                            {hasMetrados ? total.toFixed(2) : '-'}
+                                        </td>
+                                    </tr>
+                                );
+                            }
+
+                            // CASO 3: Es un Registro de Metrado (Ingresado por el usuario)
+                            const handleKeyDown = (e: React.KeyboardEvent) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    const inputs = Array.from(document.querySelectorAll('.metrado-input')) as HTMLInputElement[];
+                                    const currentIndex = inputs.indexOf(e.target as HTMLInputElement);
+                                    if (currentIndex > -1 && currentIndex < inputs.length - 1) {
+                                        inputs[currentIndex + 1].focus();
+                                        inputs[currentIndex + 1].select();
+                                    }
+                                }
+                            };
+
+                            return (
+                                <tr key={`rec-${r.id}-${idx}`} className="hover:bg-blue-50/30 border-b border-slate-100 group transition-all duration-200">
+                                    <td className="px-3 py-0.5 text-[9px] text-slate-400 font-mono italic flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
+                                        Registro
+                                    </td>
+                                    <td className="px-3 py-0.5">
+                                        <div className="flex flex-col">
+                                            <input
+                                                type="text"
+                                                className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[12px] font-medium placeholder:text-slate-300 italic"
+                                                value={r.descripcion_especifica}
+                                                placeholder="Ej. Eje A-B..."
+                                                onChange={(e) => onUpdate?.(r.id, 'descripcion_especifica', e.target.value)}
+                                                onKeyDown={(e) => handleKeyDown(e)}
+                                            />
+                                            <span className="text-[9px] text-slate-400 font-semibold uppercase">{r.frente} • {r.bloque} • {r.nivel}</span>
+                                        </div>
+                                    </td>
+                                    <td className="px-3 py-0.5 text-center text-slate-300">-</td>
+
+                                    {/* Dimensiones Editables */}
+                                    <td className="px-1 py-0.5 text-right">
+                                        <input type="text" className="metrado-input w-full text-right bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
+                                            value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)}
+                                            onKeyDown={(e) => handleKeyDown(e)} />
+                                    </td>
+                                    <td className="px-1 py-0.5 text-right">
+                                        <input type="text" className="metrado-input w-full text-right bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
+                                            value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)}
+                                            onKeyDown={(e) => handleKeyDown(e)} />
+                                    </td>
+                                    <td className="px-1 py-0.5 text-right">
+                                        <input type="text" className="metrado-input w-full text-right bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
+                                            value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)}
+                                            onKeyDown={(e) => handleKeyDown(e)} />
+                                    </td>
+                                    <td className="px-1 py-0.5 text-right">
+                                        <input type="text" className="metrado-input w-full text-right bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
+                                            value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)}
+                                            onKeyDown={(e) => handleKeyDown(e)} />
+                                    </td>
+
+                                    <td className="px-3 py-0.5 text-right font-semibold text-slate-500 text-[12px]">{r.parcial.toFixed(2)}</td>
+
+                                    <td className="px-1 py-0.5 text-center">
+                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[12px]"
+                                            value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
+                                            onKeyDown={(e) => handleKeyDown(e)} />
+                                    </td>
+
+                                    {/* Total + Acciones */}
+                                    <td className="px-3 py-0.5 text-right font-bold text-slate-800 relative text-[13px]">
+                                        <div className="flex items-center justify-end gap-3">
+                                            <span>{r.total.toFixed(2)}</span>
+                                            <button
+                                                onClick={() => onDelete?.(r.id)}
+                                                className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all p-0.5 hover:bg-red-50 rounded-md"
+                                                title="Eliminar Registro"
+                                            >
+                                                <Trash2 size={12} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
+            </div>
+
+            {/* Footer de Resumen */}
+            <div className="p-3 border-t border-slate-200 bg-white flex justify-between items-center text-[11px] font-bold text-slate-500 uppercase tracking-tighter">
+                <div className="flex gap-4">
+                    <span>Partidas con metrado: {cantPartidasRegistradas}</span>
+                    <span>Total de líneas de registro: {metrados.length}</span>
+                </div>
+                <div className="bg-slate-800 text-white px-3 py-1 rounded-md">
+                    Control de Planilla Web v3.0
+                </div>
             </div>
         </div>
     );

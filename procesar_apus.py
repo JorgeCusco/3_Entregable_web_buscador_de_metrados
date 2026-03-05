@@ -38,32 +38,50 @@ def procesar_excel(file_path):
     print(f"Fase 1: Escaneando hoja '{hoja_presup}' para armar el árbol WBS...")
     
     df_presupuesto = pd.read_excel(file_path, sheet_name=hoja_presup, header=None)
-    
     current_hierarchy = {} # Key: nivel (int), Value: descripcion (str)
+    titulos_dict = {} # Key: codigo, Value: {id, codigo, descripcion, es_titulo, parent_id}
     
     for index, row in df_presupuesto.iterrows():
         codigo = clean_val(row.iloc[0])
         descripcion = clean_val(row.iloc[1])
         unidad = clean_val(row.iloc[2]) if len(row) > 2 else ""
-        precio = clean_val(row.iloc[4]) if len(row) > 4 else ""
         
         if not descripcion or str(descripcion).lower() == "nan":
             continue
             
         if isinstance(codigo, str) and (codigo.startswith("OE.") or codigo.startswith("0") or codigo.startswith("1")):
-            # Es un agrupador si no tiene unidad y no tiene precio válido > 0
+            # Es un agrupador si no tiene unidad
             is_title = False
             if unidad == "" or str(unidad).lower() == "nan":
                 is_title = True
                 
             if is_title:
+                parent_id = ""
+                if "." in codigo:
+                    parent_id = ".".join(codigo.split(".")[:-1])
+                
+                titulos_dict[codigo] = {
+                    "id": "",
+                    "codigo": codigo,
+                    "descripcion": descripcion,
+                    "unidad": "",
+                    "es_titulo": True,
+                    "parent_id": parent_id,
+                    "apu": None
+                }
+                
+                # Guardar en jerarquía para las partidas hijas
                 nivel = str(codigo).count('.')
-                current_hierarchy[nivel] = descripcion
+                current_hierarchy[nivel] = f"{codigo} {descripcion}"
                 keys_to_delete = [k for k in current_hierarchy.keys() if k > nivel]
                 for k in keys_to_delete:
                     del current_hierarchy[k]
             else:
                 # Es partida base
+                parent_id = ""
+                if "." in codigo:
+                    parent_id = ".".join(codigo.split(".")[:-1])
+                
                 arr_jerarquia = [current_hierarchy[k] for k in sorted(current_hierarchy.keys())]
                 partidas_dict[codigo] = {
                     "id": "", 
@@ -71,10 +89,12 @@ def procesar_excel(file_path):
                     "descripcion": descripcion,
                     "unidad": unidad,
                     "jerarquia": arr_jerarquia,
+                    "es_titulo": False,
+                    "parent_id": parent_id,
                     "apu": None
                 }
                 
-    print(f" -> Presupuesto base mapeado: {len(partidas_dict)} partidas ejecutables encontradas.")
+    print(f" -> Presupuesto base mapeado: {len(partidas_dict)} partidas y {len(titulos_dict)} títulos encontrados.")
 
     # ---------------------------------------------------------
     # FASE 2: Extraer Detalle de APUS (Hoja 'APUS')
@@ -116,6 +136,8 @@ def procesar_excel(file_path):
                         "descripcion": "Extraido desde APU (Falta en Presupuesto)",
                         "unidad": "",
                         "jerarquia": [],
+                        "es_titulo": False,
+                        "parent_id": "",
                         "apu": current_apu
                     }
                 partidas_apus_count += 1
@@ -177,6 +199,8 @@ def procesar_excel(file_path):
                         "descripcion": str(desc_val),
                         "unidad": unid_deduc, 
                         "jerarquia": [],
+                        "es_titulo": False,
+                        "parent_id": "",
                         "apu": None
                     }
                     
@@ -251,11 +275,14 @@ def procesar_excel(file_path):
     lista_final = []
     pid = 1
     
-    claves_ordenadas = sorted(list(partidas_dict.keys()), key=lambda x: str(x))
+    # Combinar diccionarios
+    full_dict = {**titulos_dict, **partidas_dict}
+    claves_ordenadas = sorted(list(full_dict.keys()), key=lambda x: str(x))
     
     for cod in claves_ordenadas:
-        p = partidas_dict[cod]
-        if p["descripcion"] and str(p["descripcion"]).lower() != "nan" and len(p["descripcion"]) > 2:
+        p = full_dict[cod]
+        # Para títulos, no necesitamos tanta limpieza de descripción
+        if p.get("es_titulo", False) or (p["descripcion"] and str(p["descripcion"]).lower() != "nan" and len(p["descripcion"]) > 2):
             p["id"] = str(pid)
             lista_final.append(p)
             pid += 1

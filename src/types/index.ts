@@ -23,6 +23,8 @@ export interface Partida {
     descripcion: string;
     unidad: string;
     jerarquia?: string[];
+    es_titulo?: boolean;
+    parent_id?: string;
     apu?: APU;
 }
 
@@ -46,4 +48,6 @@ export interface Metrado {
     jerarquia?: string[];
     autor_usuario: string;
     created_at: number;
+    es_titulo?: boolean;
+    parent_id?: string;
 }
