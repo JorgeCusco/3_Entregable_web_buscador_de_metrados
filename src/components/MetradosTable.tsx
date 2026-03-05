@@ -158,9 +158,6 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     <button onClick={exportToExcel} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow-sm cursor-pointer">
                         <Download size={14} /> Exportar Excel
                     </button>
-                    <div className="h-6 w-px bg-slate-300 mx-1"></div>
-                    <span className="text-[11px] font-bold bg-blue-100 text-blue-700 px-3 py-1 rounded-full">{cantPartidasRegistradas} Partidas</span>
-                    <span className="text-[11px] font-bold bg-slate-200 text-slate-700 px-3 py-1 rounded-full">{metrados.length} Registros</span>
                 </div>
             </div>
 
@@ -190,14 +187,10 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                         <td className="w-[90px] min-w-[90px] px-3 py-1 font-mono text-[10px] tracking-wider text-left">
                                             {r.codigo}
                                         </td>
-                                        <td colSpan={6} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50"
+                                        <td colSpan={9} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
                                             {r.descripcion}
                                         </td>
-                                        <td className="w-[100px] min-w-[100px] px-3 py-1 text-right text-blue-300 font-bold text-[12px]">
-                                            {(titleTotals[r.codigo] || 0) > 0 ? formatNumber(titleTotals[r.codigo]) : '-'}
-                                        </td>
-                                        <td colSpan={2} className="px-3 py-1"></td>
                                     </tr>
                                 );
                             }
@@ -207,7 +200,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 const total = partidaTotals[r.codigo] || 0;
                                 const hasMetrados = total > 0;
                                 return (
-                                    <tr key={`header-${r.codigo}-${idx}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors`}>
+                                    <tr key={`header-${r.codigo}-${idx}`} className="bg-slate-50/50 border-b border-slate-200 font-semibold group transition-colors">
                                         <td className="w-[90px] min-w-[90px] px-3 py-1 text-left">
                                             <span className="font-mono text-[10px] text-blue-600 bg-blue-100/50 px-1 py-0.5 rounded">
                                                 {r.codigo}
@@ -243,45 +236,57 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
                             return (
                                 <tr key={`rec-${r.id}-${idx}`} className="hover:bg-blue-50/30 border-b border-slate-100 group transition-all duration-200">
-                                    <td className="w-[90px] min-w-[90px] px-3 py-0.5 text-center text-slate-300">
-                                        -
-                                    </td>
-                                    <td className="px-3 py-0.5">
-                                        <div className="flex items-center gap-2"
-                                            style={{ paddingLeft: `${(getIndentLevel(r.codigo_partida) + 1) * 1 + 0.75}rem`, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            <div className="w-1.5 min-w-[6px] h-1.5 rounded-full bg-slate-300 shrink-0"></div>
-                                            <span className="text-[9px] text-slate-400 font-semibold uppercase bg-slate-100 px-1.5 py-0.5 rounded shrink-0 tracking-wide">{r.frente} • {r.bloque} • {r.nivel}</span>
-                                            <input
-                                                type="text"
-                                                className="metrado-input flex-grow bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[12px] font-medium placeholder:text-slate-300 italic min-w-0"
-                                                value={r.descripcion_especifica}
-                                                placeholder="Ej. Eje A-B..."
-                                                onChange={(e) => onUpdate?.(r.id, 'descripcion_especifica', e.target.value)}
-                                                onKeyDown={(e) => handleKeyDown(e)}
-                                            />
+                                    <td className="w-[90px] min-w-[90px] px-1 py-0.5">
+                                        <div className="flex items-center gap-0.5" style={{ marginLeft: '27px' }}>
+                                            <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
+                                            <input type="text" className="metrado-input text-[8px] text-slate-400 font-semibold uppercase bg-slate-100 px-0.5 py-0 rounded shrink-0 border-none focus:ring-0 w-[30px] text-center"
+                                                value={r.frente} onChange={(e) => onUpdate?.(r.id, 'frente', e.target.value)}
+                                                onFocus={(e) => e.target.select()} />
+                                            <span className="text-slate-300 text-[7px]">•</span>
+                                            <input type="text" className="metrado-input text-[8px] text-slate-400 font-semibold uppercase bg-slate-100 px-0.5 py-0 rounded shrink-0 border-none focus:ring-0 w-[30px] text-center"
+                                                value={r.bloque} onChange={(e) => onUpdate?.(r.id, 'bloque', e.target.value)}
+                                                onFocus={(e) => e.target.select()} />
+                                            <span className="text-slate-300 text-[7px]">•</span>
+                                            <input type="text" className="metrado-input text-[8px] text-slate-400 font-semibold uppercase bg-slate-100 px-0.5 py-0 rounded shrink-0 border-none focus:ring-0 w-[30px] text-center"
+                                                value={r.nivel} onChange={(e) => onUpdate?.(r.id, 'nivel', e.target.value)}
+                                                onFocus={(e) => e.target.select()} />
                                         </div>
+                                    </td>
+                                    <td className="px-3 py-0.5" style={{ paddingLeft: '55px' }}>
+                                        <input
+                                            type="text"
+                                            className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[12px] font-medium placeholder:text-slate-300 italic"
+                                            value={r.descripcion_especifica}
+                                            placeholder="Ej. Eje A-B..."
+                                            onChange={(e) => onUpdate?.(r.id, 'descripcion_especifica', e.target.value)}
+                                            onKeyDown={(e) => handleKeyDown(e)}
+                                        />
                                     </td>
                                     <td className="px-3 py-0.5 text-center text-slate-300">-</td>
 
                                     {/* Dimensiones Editables */}
-                                    <td className="px-1 py-0.5 text-right">
-                                        <input type="text" className="metrado-input w-full text-right bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
+                                    <td className="px-1 py-0.5 text-center">
+                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
                                             value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)}
+                                            onFocus={(e) => e.target.select()}
                                             onKeyDown={(e) => handleKeyDown(e)} />
                                     </td>
-                                    <td className="px-1 py-0.5 text-right">
-                                        <input type="text" className="metrado-input w-full text-right bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
+                                    <td className="px-1 py-0.5 text-center">
+                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
                                             value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)}
+                                            onFocus={(e) => e.target.select()}
                                             onKeyDown={(e) => handleKeyDown(e)} />
                                     </td>
-                                    <td className="px-1 py-0.5 text-right">
-                                        <input type="text" className="metrado-input w-full text-right bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
+                                    <td className="px-1 py-0.5 text-center">
+                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
                                             value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)}
+                                            onFocus={(e) => e.target.select()}
                                             onKeyDown={(e) => handleKeyDown(e)} />
                                     </td>
-                                    <td className="px-1 py-0.5 text-right">
-                                        <input type="text" className="metrado-input w-full text-right bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
+                                    <td className="px-1 py-0.5 text-center">
+                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[12px]"
                                             value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)}
+                                            onFocus={(e) => e.target.select()}
                                             onKeyDown={(e) => handleKeyDown(e)} />
                                     </td>
 
@@ -290,6 +295,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     <td className="px-1 py-0.5 text-center">
                                         <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[12px]"
                                             value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
+                                            onFocus={(e) => e.target.select()}
                                             onKeyDown={(e) => handleKeyDown(e)} />
                                     </td>
 
