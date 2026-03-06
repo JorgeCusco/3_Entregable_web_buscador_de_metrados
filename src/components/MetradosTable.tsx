@@ -141,9 +141,10 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 }
             } else {
                 // Registro de metrado individual
+                const prefix = r.diametro ? `[Φ ${r.diametro}] ` : "";
                 excelRows.push([
                     "",
-                    r.elemento ? "  " + r.detalle : r.detalle,
+                    r.elemento ? "  " + prefix + r.detalle : prefix + r.detalle,
                     "",
                     r.frente,
                     r.bloque,
@@ -286,6 +287,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     <td className="px-3 py-0.5" style={{ paddingLeft: '55px' }}>
                                         <div className="flex items-center gap-1 w-full">
                                             {r.elemento && <span className="text-blue-400 font-black text-[10px]">↳</span>}
+                                            {r.diametro && <span className="text-orange-600 font-bold tracking-wider text-[9px] bg-orange-100/80 px-1.5 py-0.5 rounded shadow-sm border border-orange-200 shrink-0">Φ {r.diametro}</span>}
                                             <input
                                                 type="text"
                                                 className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[12px] font-medium placeholder:text-slate-300 italic"

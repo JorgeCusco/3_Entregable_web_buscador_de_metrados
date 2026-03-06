@@ -38,6 +38,7 @@ export interface Metrado {
     descripcion_partida: string;
     elemento?: string | null;
     detalle: string;
+    diametro?: string;
     cantidad: number | "";
     longitud_area: number | "";
     ancho_empalme: number | "";

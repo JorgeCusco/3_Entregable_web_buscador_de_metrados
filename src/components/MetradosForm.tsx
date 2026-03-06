@@ -111,25 +111,48 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     </div>
                 </div>
 
+                {state.partidaSeleccionada?.unidad === 'kg' && (
+                    <div className="pt-2">
+                        <Select
+                            label="Diámetro (Φ)"
+                            value={state.diametro}
+                            options={['1/4"', '3/8"', '1/2"', '5/8"', '3/4"', '1"']}
+                            onSelect={(val) => actions.setDiametro(val)}
+                        />
+                    </div>
+                )}
+
                 {/* Dimensiones Matematicas */}
                 <div className="grid grid-cols-4 gap-2 pt-2">
-                    {['Cantidad', 'Largo/Área', 'Ancho', 'Alto'].map((label, idx) => {
-                        const keys = ['cantidad', 'longitud', 'ancho', 'altura'];
-                        const key = keys[idx] as any;
-                        return (
-                            <div key={label} className="space-y-1">
-                                <label className="text-xs font-semibold text-gray-600 truncate block items-center flex justify-center">{label}</label>
-                                <input
-                                    type="number"
-                                    step="any"
-                                    value={state[key]}
-                                    onChange={e => actions[`set${key.charAt(0).toUpperCase() + key.slice(1)}`](e.target.value === "" ? "" : Number(e.target.value))}
-                                    className="w-full px-2 py-2 border border-gray-300 rounded-md text-sm text-center focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors shadow-inner"
-                                    placeholder="-"
-                                />
-                            </div>
-                        )
-                    })}
+                    {(() => {
+                        const esAcero = state.partidaSeleccionada?.unidad === 'kg';
+                        const config = [
+                            { key: 'cantidad', label: esAcero ? 'CANT. (N° Elem.)' : 'Cantidad' },
+                            { key: 'longitud', label: esAcero ? 'LONG. (Recta)' : 'Largo/Área' },
+                            { key: 'ancho', label: esAcero ? 'ANCHO' : 'Ancho', disabled: esAcero },
+                            { key: 'altura', label: esAcero ? 'ALTO (Gancho)' : 'Alto' },
+                        ];
+
+                        return config.map(({ key, label, disabled }) => {
+                            const valKey = key as 'cantidad' | 'longitud' | 'ancho' | 'altura';
+                            return (
+                                <div key={key} className="space-y-1">
+                                    <label className={`text-[10px] font-bold ${esAcero ? 'text-blue-600 uppercase' : 'text-gray-600'} truncate block items-center flex justify-center text-center leading-tight h-8`}>
+                                        {label}
+                                    </label>
+                                    <input
+                                        type="number"
+                                        step="any"
+                                        disabled={disabled}
+                                        value={state[valKey]}
+                                        onChange={e => actions[`set${key.charAt(0).toUpperCase() + key.slice(1)}`](e.target.value === "" ? "" : Number(e.target.value))}
+                                        className={`w-full px-2 py-2 border rounded-md text-sm text-center outline-none transition-colors shadow-inner ${disabled ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed' : 'bg-white border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary'}`}
+                                        placeholder="-"
+                                    />
+                                </div>
+                            );
+                        });
+                    })()}
                 </div>
 
                 {/* Resultados */}
