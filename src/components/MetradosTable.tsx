@@ -48,7 +48,24 @@ const getHierarchicalRows = (activeMetrados: Metrado[]): any[] => {
             const relatedMetrados = activeMetrados.filter(m => m.codigo_partida === node.codigo);
             relatedMetrados.sort((a, b) => a.created_at - b.created_at);
 
+            let lastElemento: string | null | undefined = null;
+
             relatedMetrados.forEach(m => {
+                if (m.elemento && m.elemento !== lastElemento) {
+                    finalRows.push({
+                        is_template: true,
+                        es_titulo: false,
+                        is_elemento_virtual: true,
+                        codigo: '',
+                        descripcion: m.elemento,
+                        id: `virtual-${m.id}`,
+                        parcial: 0,
+                        total: 0
+                    });
+                    lastElemento = m.elemento;
+                } else if (!m.elemento && lastElemento !== null) {
+                    lastElemento = null;
+                }
                 finalRows.push({ ...m, is_template: false });
             });
         }
@@ -115,6 +132,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     // Jerarquía WBS - Roll-up
                     const totalRama = titleTotals[r.codigo] || 0;
                     excelRows.push([r.codigo, r.descripcion, "", "", "", "", "", "", "", "", totalRama.toFixed(2), "", ""]);
+                } else if (r.is_elemento_virtual) {
+                    excelRows.push(["", r.descripcion, "", "", "", "", "", "", "", "", "", "", ""]);
                 } else {
                     // Cabecera de Partida
                     const total = partidaTotals[r.codigo] || 0;
@@ -124,7 +143,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 // Registro de metrado individual
                 excelRows.push([
                     "",
-                    r.descripcion_especifica,
+                    r.elemento ? "  " + r.detalle : r.detalle,
                     "",
                     r.frente,
                     r.bloque,
@@ -195,6 +214,18 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 );
                             }
 
+                            // CASO 2.5: Fila Virtual de Elemento
+                            if (r.is_template && r.is_elemento_virtual) {
+                                return (
+                                    <tr key={r.id} className="bg-white border-b border-slate-100 font-bold group">
+                                        <td className="w-[90px] min-w-[90px] px-3 py-1 text-left"></td>
+                                        <td className="px-3 py-1 text-slate-800 text-[11px] uppercase tracking-wide" colSpan={9} style={{ paddingLeft: '55px' }}>
+                                            {r.descripcion}
+                                        </td>
+                                    </tr>
+                                );
+                            }
+
                             // CASO 2: Es una Cabecera de Partida (Nodo Hoja del Presupuesto)
                             if (r.is_template && !r.es_titulo) {
                                 const total = partidaTotals[r.codigo] || 0;
@@ -253,14 +284,17 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                         </div>
                                     </td>
                                     <td className="px-3 py-0.5" style={{ paddingLeft: '55px' }}>
-                                        <input
-                                            type="text"
-                                            className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[12px] font-medium placeholder:text-slate-300 italic"
-                                            value={r.descripcion_especifica}
-                                            placeholder="Ej. Eje A-B..."
-                                            onChange={(e) => onUpdate?.(r.id, 'descripcion_especifica', e.target.value)}
-                                            onKeyDown={(e) => handleKeyDown(e)}
-                                        />
+                                        <div className="flex items-center gap-1 w-full">
+                                            {r.elemento && <span className="text-blue-400 font-black text-[10px]">↳</span>}
+                                            <input
+                                                type="text"
+                                                className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[12px] font-medium placeholder:text-slate-300 italic"
+                                                value={r.detalle || ''}
+                                                placeholder="Ej. Acero longitudinal 3/4''..."
+                                                onChange={(e) => onUpdate?.(r.id, 'detalle', e.target.value)}
+                                                onKeyDown={(e) => handleKeyDown(e)}
+                                            />
+                                        </div>
                                     </td>
                                     <td className="px-3 py-0.5 text-center text-slate-300">-</td>
 

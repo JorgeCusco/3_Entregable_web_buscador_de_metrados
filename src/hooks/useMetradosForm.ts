@@ -8,7 +8,8 @@ export const useMetradosForm = () => {
     const [nivel, setNivel] = useState<string>('');
 
     const [partidaSeleccionada, setPartidaSeleccionada] = useState<Partida | null>(null);
-    const [descripcionEspecifica, setDescripcionEspecifica] = useState<string>('');
+    const [elemento, setElemento] = useState<string>('');
+    const [detalle, setDetalle] = useState<string>('');
 
     const [cantidad, setCantidad] = useState<number | "">("");
     const [longitud, setLongitud] = useState<number | "">("");
@@ -35,7 +36,8 @@ export const useMetradosForm = () => {
 
     const limpiarCampos = () => {
         setPartidaSeleccionada(null);
-        setDescripcionEspecifica('');
+        // NO BORRAMOS EL ELEMENTO (para que persista y acelere el ingreso de datos)
+        setDetalle('');
         setCantidad('');
         setLongitud('');
         setAncho('');
@@ -51,7 +53,8 @@ export const useMetradosForm = () => {
             fecha, frente, bloque, nivel,
             codigo_partida: partidaSeleccionada.codigo,
             descripcion_partida: partidaSeleccionada.descripcion,
-            descripcion_especifica: descripcionEspecifica,
+            elemento,
+            detalle,
             cantidad,
             longitud_area: longitud,
             ancho_empalme: ancho,
@@ -72,13 +75,13 @@ export const useMetradosForm = () => {
     return {
         state: {
             fecha, frente, bloque, nivel,
-            partidaSeleccionada, descripcionEspecifica,
+            partidaSeleccionada, elemento, detalle,
             cantidad, longitud, ancho, altura, nroVeces,
             parcial, total
         },
         actions: {
             setFecha, setFrente, setBloque, setNivel,
-            setPartidaSeleccionada, setDescripcionEspecifica,
+            setPartidaSeleccionada, setElemento, setDetalle,
             setCantidad, setLongitud, setAncho, setAltura, setNroVeces,
             limpiarCampos, procesarRegistro
         }

@@ -36,7 +36,8 @@ export interface Metrado {
     nivel: string;
     codigo_partida: string;
     descripcion_partida: string;
-    descripcion_especifica: string;
+    elemento?: string | null;
+    detalle: string;
     cantidad: number | "";
     longitud_area: number | "";
     ancho_empalme: number | "";
