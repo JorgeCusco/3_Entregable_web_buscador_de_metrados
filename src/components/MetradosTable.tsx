@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Metrado, Partida } from '../types';
-import { Download, Trash2 } from 'lucide-react';
-import * as XLSX from 'xlsx';
+import { Download, Trash2, Loader2 } from 'lucide-react';
 import { mockPartidas } from '../data/mockDB';
 import { RenderModificacionBadge } from './MetradosForm';
 
@@ -82,6 +81,7 @@ const getIndentLevel = (codigo: string): number => {
 
 export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onDelete }) => {
     const rows = useMemo(() => getHierarchicalRows(metrados), [metrados]);
+    const [isExporting, setIsExporting] = React.useState(false);
 
     // Calcular totales por partida para las filas de cabecera
     const partidaTotals = useMemo(() => {
@@ -104,63 +104,41 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
     const cantPartidasRegistradas = new Set(metrados.map(m => m.codigo_partida)).size;
 
-    const exportToExcel = () => {
-        // Cabeceras exactas solicitadas por el usuario (16 columnas)
-        const excelRows: any[] = [
-            ["PLANILLA DE METRADOS - BELEMPAMPA (BASE DE DATOS V2)"],
-            [],
-            [
-                "Nivel Indicador", "Fecha", "Frente", "Bloque", "Nivel",
-                "Código", "Partida", "Descripción_", "Cantidad",
-                "Longitud/Área", "Ancho/Empalme", "Altura/Gancho",
-                "Parcial", "Acero", "Nro de Veces", "Total", "Modificaciones"
-            ]
-        ];
+    const exportToExcel = async () => {
+        setIsExporting(true);
+        try {
+            // El backend se encargará de cruzar la data cruda con la maestría de la DB, 
+            // ordenar WBS y escupir la plantilla binaria.
+            const response = await fetch('http://localhost:3001/api/export/metrados', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(metrados)
+            });
 
-        // Mapeo rápido de código WBS a sus propiedades maestras para O(1)
-        const masterDict = mockPartidas.reduce((acc, p) => {
-            acc[p.codigo] = p;
-            return acc;
-        }, {} as Record<string, Partida>);
+            if (!response.ok) {
+                const errJson = await response.json().catch(() => ({}));
+                throw new Error(errJson.error || 'Error en Exportación a Nube (INKAIA Workflow)');
+            }
 
-        // Iteración PLANA (Flat Database) sobre los metrados ingresados
-        metrados.forEach(m => {
-            const partidaMaster = masterDict[m.codigo_partida];
-            const nivelJerarquia = partidaMaster?.nivel_jerarquia || "";
-            const modificacion = partidaMaster?.modificacion || "";
-
-            // Omitimos filas vacías (failsafe visual)
-            if (m.parcial === 0) return;
-
-            // Lógica de concatenación: Descripción_ = Elemento / Detalle
-            const separador = m.elemento ? `${m.elemento.trim()} / ` : " - / ";
-            const descripcionConcatenada = separador + (m.detalle || "").trim();
-
-            excelRows.push([
-                nivelJerarquia,
-                m.fecha,
-                m.frente,
-                m.bloque,
-                m.nivel,
-                m.codigo_partida,
-                m.descripcion_partida,
-                descripcionConcatenada,
-                m.cantidad,
-                m.longitud_area,
-                m.ancho_empalme,
-                m.altura_gancho,
-                formatNumber(m.parcial),
-                m.diametro || "",
-                m.nro_veces,
-                formatNumber(m.total),
-                modificacion
-            ]);
-        });
-
-        const ws = XLSX.utils.aoa_to_sheet(excelRows);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Base de Datos");
-        XLSX.writeFile(wb, `Planilla_Metrados_BD_${new Date().toISOString().split('T')[0]}.xlsx`);
+            // Descender como Blob e incitar auto-descarga Browser-side
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const ds = new Date().toISOString().split('T')[0];
+            a.download = `Metrados_V5_NUBE_${ds}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error(error);
+            alert("Falló la exportación en nube: " + (error as Error).message);
+        } finally {
+            setIsExporting(false);
+        }
     };
 
     return (
@@ -172,8 +150,16 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     <p className="text-[10px] text-slate-500 font-medium uppercase tracking-widest mt-0.5">Vista Jerárquica Secuencial</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button onClick={exportToExcel} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow-sm cursor-pointer">
-                        <Download size={14} /> Exportar Excel
+                    <button
+                        onClick={exportToExcel}
+                        disabled={isExporting}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-sm cursor-pointer ${isExporting
+                                ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                                : 'bg-green-600 hover:bg-green-700 text-white'
+                            }`}
+                    >
+                        {isExporting ? <Loader2 className="animate-spin" size={14} /> : <Download size={14} />}
+                        {isExporting ? 'Exportando Nube...' : 'Exportar Oficial'}
                     </button>
                 </div>
             </div>
