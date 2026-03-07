@@ -25,6 +25,7 @@ export interface Partida {
     jerarquia?: string[];
     es_titulo?: boolean;
     parent_id?: string;
+    nivel_jerarquia?: number;
     apu?: APU | null;
 }
 

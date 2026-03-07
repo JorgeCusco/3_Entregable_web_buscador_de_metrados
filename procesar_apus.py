@@ -67,6 +67,7 @@ def procesar_excel(file_path):
                     "unidad": "",
                     "es_titulo": True,
                     "parent_id": parent_id,
+                    "nivel_jerarquia": str(codigo).count('.'),
                     "apu": None
                 }
                 
@@ -91,6 +92,7 @@ def procesar_excel(file_path):
                     "jerarquia": arr_jerarquia,
                     "es_titulo": False,
                     "parent_id": parent_id,
+                    "nivel_jerarquia": str(codigo).count('.'),
                     "apu": None
                 }
                 
@@ -138,6 +140,7 @@ def procesar_excel(file_path):
                         "jerarquia": [],
                         "es_titulo": False,
                         "parent_id": "",
+                        "nivel_jerarquia": str(current_codigo).count('.'),
                         "apu": current_apu
                     }
                 partidas_apus_count += 1
@@ -201,6 +204,7 @@ def procesar_excel(file_path):
                         "jerarquia": [],
                         "es_titulo": False,
                         "parent_id": "",
+                        "nivel_jerarquia": str(current_codigo).count('.'),
                         "apu": None
                     }
                     

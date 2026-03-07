@@ -10,6 +10,16 @@ const PESOS_ACERO: Record<string, number> = {
     "1": 3.970
 };
 
+export const isAcero = (partida: Partida | null): boolean => {
+    if (!partida) return false;
+    const isKg = partida.unidad === 'kg';
+    const descNormalizada = partida.descripcion
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    return isKg && descNormalizada.includes('acero');
+};
+
 export const useMetradosForm = () => {
     const [fecha, setFecha] = useState<string>(new Date().toISOString().split('T')[0]);
     const [frente, setFrente] = useState<string>('');
@@ -28,9 +38,9 @@ export const useMetradosForm = () => {
     const [nroVeces, setNroVeces] = useState<number | "">("");
 
     const parcial = useMemo(() => {
-        const esAcero = partidaSeleccionada?.unidad === 'kg';
+        const flagAcero = isAcero(partidaSeleccionada);
 
-        if (esAcero) {
+        if (flagAcero) {
             // RUTA 1: ACERO (Suma de longitudes * multiplicadores * factor)
             const c = typeof cantidad === 'number' ? cantidad : 0;
             const longitudRecta = typeof longitud === 'number' ? longitud : 0;
@@ -81,7 +91,7 @@ export const useMetradosForm = () => {
             descripcion_partida: partidaSeleccionada.descripcion,
             elemento,
             detalle,
-            diametro: partidaSeleccionada.unidad === 'kg' ? diametro : undefined,
+            diametro: isAcero(partidaSeleccionada) ? diametro : undefined,
             cantidad,
             longitud_area: longitud,
             ancho_empalme: ancho,

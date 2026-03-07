@@ -2,6 +2,7 @@ import React from 'react';
 import { SearchCombobox } from './ui/SearchCombobox';
 import { Select } from './ui/Select';
 import { Partida } from '../types';
+import { isAcero } from '../hooks/useMetradosForm';
 import { mockPartidas } from '../data/mockDB';
 import { Save } from 'lucide-react';
 
@@ -115,18 +116,18 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 {/* Flujo Matemático Integrado */}
                 <div className="grid grid-cols-5 gap-2 pt-2">
                     {(() => {
-                        const esAcero = state.partidaSeleccionada?.unidad === 'kg';
+                        const flagAcero = isAcero(state.partidaSeleccionada);
 
                         let config = [
-                            { key: 'cantidad', label: esAcero ? 'CANT. (N°)' : 'CANTIDAD', nextId: 'input-longitud' },
-                            { key: 'longitud', label: esAcero ? 'LONG(R)' : 'LARGO', nextId: esAcero ? 'input-altura' : 'input-ancho' },
+                            { key: 'cantidad', label: flagAcero ? 'CANT. (N°)' : 'CANTIDAD', nextId: 'input-longitud' },
+                            { key: 'longitud', label: flagAcero ? 'LONG(R)' : 'LARGO', nextId: flagAcero ? 'input-altura' : 'input-ancho' },
                         ];
 
-                        if (!esAcero) {
+                        if (!flagAcero) {
                             config.push({ key: 'ancho', label: 'ANCHO', nextId: 'input-altura' });
                         }
 
-                        config.push({ key: 'altura', label: esAcero ? 'ALTO(G)' : 'ALTO', nextId: 'input-veces' });
+                        config.push({ key: 'altura', label: flagAcero ? 'ALTO(G)' : 'ALTO', nextId: 'input-veces' });
 
                         const fields = config.map(({ key, label, nextId }) => {
                             const valKey = key as 'cantidad' | 'longitud' | 'ancho' | 'altura';
@@ -166,7 +167,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                             </div>
                         );
 
-                        if (esAcero) {
+                        if (flagAcero) {
                             const diametroField = (
                                 <div key="diametro" className="space-y-1">
                                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block flex justify-center text-center h-4">
