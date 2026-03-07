@@ -110,7 +110,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             ["PLANILLA DE METRADOS - BELEMPAMPA (BASE DE DATOS V2)"],
             [],
             [
-                "Nivel Indicador", "Frente", "Bloque", "Nivel",
+                "Nivel Indicador", "Fecha", "Frente", "Bloque", "Nivel",
                 "Código", "Partida", "Descripción_", "Cantidad",
                 "Longitud/Área", "Ancho/Empalme", "Altura/Gancho",
                 "Parcial", "Acero", "Nro de Veces", "Total", "Modificaciones"
@@ -138,6 +138,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
             excelRows.push([
                 nivelJerarquia,
+                m.fecha,
                 m.frente,
                 m.bloque,
                 m.nivel,
