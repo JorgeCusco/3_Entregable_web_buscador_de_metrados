@@ -26,6 +26,7 @@ export interface Partida {
     es_titulo?: boolean;
     parent_id?: string;
     nivel_jerarquia?: number;
+    modificacion?: string;
     apu?: APU | null;
 }
 

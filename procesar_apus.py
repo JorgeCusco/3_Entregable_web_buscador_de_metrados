@@ -21,7 +21,23 @@ def clean_num(val):
     except ValueError:
         return 0.0
 
-def procesar_excel(file_path):
+def extraer_modificaciones(mod_file_path):
+    print(f"Fase 0: Extrayendo modificaciones desde {mod_file_path}...")
+    mod_dict = {}
+    try:
+        df_mod = pd.read_excel(mod_file_path, engine='openpyxl', header=None)
+        # La columna 0 es el WBS, la columna 3 es el modificador PN/MM/DD
+        for index, row in df_mod.iterrows():
+            codigo = clean_val(row.iloc[0])
+            modificacion = clean_val(row.iloc[3]) if len(row) > 3 else ""
+            if codigo and modificacion:
+                mod_dict[codigo] = modificacion
+        print(f" -> Se extrajeron {len(mod_dict)} reglas de modificación.")
+    except Exception as e:
+        print(f"Aviso: No se pudo leer el archivo de modificaciones ({e}). El proceso continuará sin insignias.")
+    return mod_dict
+
+def procesar_excel(file_path, mod_file_path="Base_datos_Modificaciones.xlsm"):
     print(f"Iniciando procesamiento profundo de {file_path}...")
     try:
         xl = pd.ExcelFile(file_path)
@@ -29,6 +45,7 @@ def procesar_excel(file_path):
         print(f"Error al abrir el archivo Excel: {e}")
         return
 
+    modificaciones_dict = extraer_modificaciones(mod_file_path)
     partidas_dict = {} 
     
     # ---------------------------------------------------------
@@ -288,6 +305,8 @@ def procesar_excel(file_path):
         # Para títulos, no necesitamos tanta limpieza de descripción
         if p.get("es_titulo", False) or (p["descripcion"] and str(p["descripcion"]).lower() != "nan" and len(p["descripcion"]) > 2):
             p["id"] = str(pid)
+            if cod in modificaciones_dict:
+                p["modificacion"] = modificaciones_dict[cod]
             lista_final.append(p)
             pid += 1
 

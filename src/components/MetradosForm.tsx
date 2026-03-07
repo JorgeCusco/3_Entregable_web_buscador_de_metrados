@@ -12,6 +12,31 @@ interface MetradosFormProps {
     onGuardar: () => void;
 }
 
+export const RenderModificacionBadge = (modificacionStr?: string) => {
+    if (!modificacionStr) {
+        return (
+            <div className="w-[10px] h-[10px] rounded-full bg-sky-200 shadow-sm border border-sky-300 shrink-0" title="Sin Modificación" />
+        );
+    }
+
+    const tags = modificacionStr.split('-');
+
+    return (
+        <div className="flex items-center gap-1 shrink-0">
+            {tags.map((tag, i) => {
+                let colorClass = "bg-slate-200 border-slate-300";
+                if (tag.startsWith('DD')) colorClass = "bg-blue-500 border-blue-600";
+                if (tag.startsWith('PN')) colorClass = "bg-green-500 border-green-600";
+                if (tag.startsWith('MM')) colorClass = "bg-red-500 border-red-600";
+
+                return (
+                    <div key={i} className={`w-[10px] h-[10px] rounded-full border shadow-sm ${colorClass}`} title={tag} />
+                );
+            })}
+        </div>
+    );
+};
+
 export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar }) => {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>, nextId: string) => {
         if (e.key === 'Enter') {
@@ -53,10 +78,11 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         onSelect={(p: Partida) => actions.setPartidaSeleccionada(p)}
                     />
                     {state.partidaSeleccionada && (
-                        <div className="px-1 pt-1.5 pb-0.5">
+                        <div className="px-1 pt-1.5 pb-0.5 flex items-center justify-between">
                             <span className="text-[10px] text-slate-500 font-mono tracking-wider">
                                 CÓDIGO: <strong className="text-slate-700">{state.partidaSeleccionada.codigo}</strong> <span className="mx-2 text-slate-300">|</span> UNIDAD: <strong className="text-slate-700">{state.partidaSeleccionada.unidad}</strong>
                             </span>
+                            {RenderModificacionBadge(state.partidaSeleccionada.modificacion)}
                         </div>
                     )}
                 </div>

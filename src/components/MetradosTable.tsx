@@ -3,6 +3,7 @@ import { Metrado, Partida } from '../types';
 import { Download, Trash2 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { mockPartidas } from '../data/mockDB';
+import { RenderModificacionBadge } from './MetradosForm';
 
 interface MetradosTableProps {
     metrados: Metrado[];
@@ -91,24 +92,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         return totals;
     }, [metrados]);
 
-    // Calcular totales de títulos (Roll-up recursivo)
-    const titleTotals = useMemo(() => {
-        const totals: Record<string, number> = {};
-
-        // Solo iteramos por los títulos rescatados en las filas actuales
-        rows.filter(r => r.is_template && r.es_titulo).forEach(title => {
-            let sum = 0;
-            // Sumar todas las partidas que cuelgan de este código (prefijo)
-            Object.keys(partidaTotals).forEach(pCode => {
-                if (pCode.startsWith(title.codigo + ".")) {
-                    sum += partidaTotals[pCode];
-                }
-            });
-            totals[title.codigo] = sum;
-        });
-
-        return totals;
-    }, [rows, partidaTotals]);
+    // NOTA: titleTotals se eliminó porque el exportador Flat V2 (Base de Datos)
+    // ya no requiere calcular roll-ups para las cabeceras en el Excel.
 
     const formatNumber = (num: number) => {
         return new Intl.NumberFormat('es-PE', {
@@ -120,50 +105,61 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     const cantPartidasRegistradas = new Set(metrados.map(m => m.codigo_partida)).size;
 
     const exportToExcel = () => {
+        // Cabeceras exactas solicitadas por el usuario (16 columnas)
         const excelRows: any[] = [
-            ["PLANILLA DE METRADOS - BELEMPAMPA"],
+            ["PLANILLA DE METRADOS - BELEMPAMPA (BASE DE DATOS V2)"],
             [],
-            ["ITEM", "DESCRIPCIÓN", "UND", "FRENTE", "BLOQUE", "NIVEL", "CANT", "LARGO", "ANCHO", "ALTO", "PARCIAL", "VECES", "TOTAL"]
+            [
+                "Nivel Indicador", "Frente", "Bloque", "Nivel",
+                "Código", "Partida", "Descripción_", "Cantidad",
+                "Longitud/Área", "Ancho/Empalme", "Altura/Gancho",
+                "Parcial", "Acero", "Nro de Veces", "Total", "Modificaciones"
+            ]
         ];
 
-        rows.forEach(r => {
-            if (r.is_template) {
-                if (r.es_titulo) {
-                    // Jerarquía WBS - Roll-up
-                    const totalRama = titleTotals[r.codigo] || 0;
-                    excelRows.push([r.codigo, r.descripcion, "", "", "", "", "", "", "", "", totalRama.toFixed(2), "", ""]);
-                } else if (r.is_elemento_virtual) {
-                    excelRows.push(["", r.descripcion, "", "", "", "", "", "", "", "", "", "", ""]);
-                } else {
-                    // Cabecera de Partida
-                    const total = partidaTotals[r.codigo] || 0;
-                    excelRows.push([r.codigo, r.descripcion, r.unidad, "", "", "", "", "", "", "", "", "", total.toFixed(2)]);
-                }
-            } else {
-                // Registro de metrado individual
-                const prefix = r.diametro ? `[Φ ${r.diametro}] ` : "";
-                excelRows.push([
-                    "",
-                    r.elemento ? "  " + prefix + r.detalle : prefix + r.detalle,
-                    "",
-                    r.frente,
-                    r.bloque,
-                    r.nivel,
-                    r.cantidad,
-                    r.longitud_area,
-                    r.ancho_empalme,
-                    r.altura_gancho,
-                    formatNumber(r.parcial),
-                    r.nro_veces,
-                    formatNumber(r.total)
-                ]);
-            }
+        // Mapeo rápido de código WBS a sus propiedades maestras para O(1)
+        const masterDict = mockPartidas.reduce((acc, p) => {
+            acc[p.codigo] = p;
+            return acc;
+        }, {} as Record<string, Partida>);
+
+        // Iteración PLANA (Flat Database) sobre los metrados ingresados
+        metrados.forEach(m => {
+            const partidaMaster = masterDict[m.codigo_partida];
+            const nivelJerarquia = partidaMaster?.nivel_jerarquia || "";
+            const modificacion = partidaMaster?.modificacion || "";
+
+            // Omitimos filas vacías (failsafe visual)
+            if (m.parcial === 0) return;
+
+            // Lógica de concatenación: Descripción_ = Elemento / Detalle
+            const separador = m.elemento ? `${m.elemento.trim()} / ` : " - / ";
+            const descripcionConcatenada = separador + (m.detalle || "").trim();
+
+            excelRows.push([
+                nivelJerarquia,
+                m.frente,
+                m.bloque,
+                m.nivel,
+                m.codigo_partida,
+                m.descripcion_partida,
+                descripcionConcatenada,
+                m.cantidad,
+                m.longitud_area,
+                m.ancho_empalme,
+                m.altura_gancho,
+                formatNumber(m.parcial),
+                m.diametro || "",
+                m.nro_veces,
+                formatNumber(m.total),
+                modificacion
+            ]);
         });
 
         const ws = XLSX.utils.aoa_to_sheet(excelRows);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Planilla");
-        XLSX.writeFile(wb, `Planilla_Metrados_${new Date().toISOString().split('T')[0]}.xlsx`);
+        XLSX.utils.book_append_sheet(wb, ws, "Base de Datos");
+        XLSX.writeFile(wb, `Planilla_Metrados_BD_${new Date().toISOString().split('T')[0]}.xlsx`);
     };
 
     return (
@@ -238,9 +234,10 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                                 {r.codigo}
                                             </span>
                                         </td>
-                                        <td className="px-3 py-1 text-slate-800 text-[12px]"
+                                        <td className="px-3 py-1 flex items-center gap-2"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
-                                            {r.descripcion}
+                                            {RenderModificacionBadge(r.modificacion)}
+                                            <span className="text-slate-800 text-[12px]">{r.descripcion}</span>
                                         </td>
                                         <td className="w-[60px] min-w-[60px] px-3 py-1 text-center text-slate-500 font-bold text-[11px]">{r.unidad}</td>
                                         <td colSpan={6} className="px-3 py-1"></td>
