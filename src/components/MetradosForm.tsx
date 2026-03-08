@@ -75,7 +75,19 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     <SearchCombobox
                         partidas={mockPartidas}
                         value={state.partidaSeleccionada ? state.partidaSeleccionada.descripcion : ''}
-                        onSelect={(p: Partida) => actions.setPartidaSeleccionada(p)}
+                        onSelect={(p: Partida) => {
+                            actions.setPartidaSeleccionada(p);
+                            actions.setCantidad(1);
+                            if (isAcero(p)) {
+                                actions.setLongitud(1);
+                                actions.setAncho('');
+                                actions.setAltura('');
+                            } else {
+                                actions.setLongitud('');
+                                actions.setAncho('');
+                                actions.setAltura('');
+                            }
+                        }}
                     />
                     {state.partidaSeleccionada && (
                         <div className="px-1 pt-1.5 pb-0.5 flex items-center justify-between">
@@ -169,6 +181,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                         value={state[valKey]}
                                         onChange={e => actions[`set${key.charAt(0).toUpperCase() + key.slice(1)}`](e.target.value === "" ? "" : Number(e.target.value))}
                                         onKeyDown={e => handleKeyDown(e, nextId)}
+                                        onFocus={e => e.target.select()}
                                         className="w-full px-1 py-1.5 border rounded-md text-sm text-right font-mono outline-none transition-colors shadow-inner bg-white border-slate-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                                         placeholder="-"
                                     />
@@ -187,6 +200,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                     value={state.nroVeces}
                                     onChange={e => actions.setNroVeces(e.target.value === "" ? "" : Number(e.target.value))}
                                     onKeyDown={e => handleKeyDown(e, 'submit')}
+                                    onFocus={e => e.target.select()}
                                     className="w-full px-1 py-1.5 border border-slate-300 rounded-md text-sm text-right font-mono bg-white shadow-inner focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
                                     placeholder="1"
                                 />
