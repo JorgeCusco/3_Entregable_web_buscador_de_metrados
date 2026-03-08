@@ -101,6 +101,8 @@ export const useMetradosForm = () => {
             total,
             unidad: partidaSeleccionada.unidad,
             jerarquia: partidaSeleccionada.jerarquia,
+            nivelJerarquia: partidaSeleccionada.nivel_jerarquia,
+            modificacion: partidaSeleccionada.modificacion,
             autor_usuario: "UserWeb",
             created_at: Date.now(),
         };

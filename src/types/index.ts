@@ -54,4 +54,6 @@ export interface Metrado {
     created_at: number;
     es_titulo?: boolean;
     parent_id?: string;
+    nivelJerarquia?: number;
+    modificacion?: string;
 }
