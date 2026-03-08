@@ -42,7 +42,10 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
         if (e.key === 'Enter') {
             e.preventDefault();
             if (nextId === 'submit') {
-                if (state.partidaSeleccionada && state.total > 0) onGuardar();
+                const isAceroFlag = isAcero(state.partidaSeleccionada);
+                const isAceroValido = isAceroFlag && state.cantidad !== "" && state.cantidad > 0;
+                const isGuardable = state.partidaSeleccionada && (state.total > 0 || isAceroValido);
+                if (isGuardable) onGuardar();
             } else {
                 const nextEl = document.getElementById(nextId) as HTMLInputElement;
                 if (nextEl) {
@@ -78,15 +81,10 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         onSelect={(p: Partida) => {
                             actions.setPartidaSeleccionada(p);
                             actions.setCantidad(1);
-                            if (isAcero(p)) {
-                                actions.setLongitud(1);
-                                actions.setAncho('');
-                                actions.setAltura('');
-                            } else {
-                                actions.setLongitud('');
-                                actions.setAncho('');
-                                actions.setAltura('');
-                            }
+                            // En aceros no se asume largo.
+                            actions.setLongitud('');
+                            actions.setAncho('');
+                            actions.setAltura('');
                         }}
                     />
                     {state.partidaSeleccionada && (
@@ -250,8 +248,8 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
             <button
                 id="submit"
                 onClick={onGuardar}
-                disabled={!state.partidaSeleccionada || state.total === 0}
-                className={`mt-4 w-full py-3.5 rounded-lg font-bold text-[13px] tracking-widest uppercase flex items-center justify-center gap-2 transition-all shadow-md ${(!state.partidaSeleccionada || state.total === 0)
+                disabled={!state.partidaSeleccionada || (state.total === 0 && !(isAcero(state.partidaSeleccionada) && state.cantidad !== "" && state.cantidad > 0))}
+                className={`mt-4 w-full py-3.5 rounded-lg font-bold text-[13px] tracking-widest uppercase flex items-center justify-center gap-2 transition-all shadow-md ${(!state.partidaSeleccionada || (state.total === 0 && !(isAcero(state.partidaSeleccionada) && state.cantidad !== "" && state.cantidad > 0)))
                     ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
                     : 'bg-slate-900 hover:bg-slate-800 text-white hover:shadow-lg'
                     }`}
