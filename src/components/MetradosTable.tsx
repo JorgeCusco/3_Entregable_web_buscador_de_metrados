@@ -97,24 +97,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         return totals;
     }, [metrados]);
 
-    // Calcular totales de títulos (Roll-up recursivo)
-    const titleTotals = useMemo(() => {
-        const totals: Record<string, number> = {};
 
-        // Solo iteramos por los títulos rescatados en las filas actuales
-        rows.filter(r => r.is_template && r.es_titulo).forEach(title => {
-            let sum = 0;
-            // Sumar todas las partidas que cuelgan de este código (prefijo)
-            Object.keys(partidaTotals).forEach(pCode => {
-                if (pCode.startsWith(title.codigo + ".")) {
-                    sum += partidaTotals[pCode];
-                }
-            });
-            totals[title.codigo] = sum;
-        });
-
-        return totals;
-    }, [rows, partidaTotals]);
     const formatNumber = (num: number) => {
         return new Intl.NumberFormat('es-PE', {
             minimumFractionDigits: 2,
@@ -206,18 +189,14 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         {rows.map((r: any) => {
                             // CASO 1: Es un Título WBS (Nodo Padre)
                             if (r.is_template && r.es_titulo) {
-                                const totalRama = titleTotals[r.codigo] || 0;
                                 return (
                                     <tr key={`title-${r.codigo}`} className="bg-slate-800 text-white font-bold border-b border-slate-700">
                                         <td className="w-[90px] min-w-[90px] px-3 py-1 font-mono text-[10px] tracking-wider text-left">
                                             {r.codigo}
                                         </td>
-                                        <td colSpan={8} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50"
+                                        <td colSpan={9} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
                                             {r.descripcion}
-                                        </td>
-                                        <td className="px-3 py-1 text-right text-blue-300 font-bold text-[12px]">
-                                            {totalRama > 0 ? formatNumber(totalRama) : '-'}
                                         </td>
                                     </tr >
                                 );
