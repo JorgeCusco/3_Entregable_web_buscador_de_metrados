@@ -22,3 +22,23 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Security and local config
+.env
+.env.local
+.env.*.local
+APIS/
+*.json
+!package.json
+!package-lock.json
+!tsconfig*.json
+!eslint*.json
+
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Build
+dist/
+build/

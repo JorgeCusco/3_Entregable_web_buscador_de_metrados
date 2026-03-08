@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
-import { Partida } from '../../types';
+import type { Partida } from '../../types';
 
 interface SearchComboboxProps {
     partidas: Partida[];

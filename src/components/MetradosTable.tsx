@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Metrado, Partida } from '../types';
+import type { Metrado, Partida } from '../types';
 import { Download, Trash2, Loader2 } from 'lucide-react';
 import { mockPartidas } from '../data/mockDB';
 import { RenderModificacionBadge } from './MetradosForm';
@@ -109,7 +109,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         try {
             // El backend se encargará de cruzar la data cruda con la maestría de la DB, 
             // ordenar WBS y escupir la plantilla binaria.
-            const response = await fetch('http://localhost:3001/api/export/metrados', {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const response = await fetch(`${apiUrl}/api/export/metrados`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -154,8 +155,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         onClick={exportToExcel}
                         disabled={isExporting}
                         className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-sm cursor-pointer ${isExporting
-                                ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
-                                : 'bg-green-600 hover:bg-green-700 text-white'
+                            ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                            : 'bg-green-600 hover:bg-green-700 text-white'
                             }`}
                     >
                         {isExporting ? <Loader2 className="animate-spin" size={14} /> : <Download size={14} />}

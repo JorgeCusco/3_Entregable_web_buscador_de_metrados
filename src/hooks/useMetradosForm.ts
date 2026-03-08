@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Partida, Metrado } from '../types';
+import type { Partida, Metrado } from '../types';
 
 const PESOS_ACERO: Record<string, number> = {
     "1/4": 0.254,

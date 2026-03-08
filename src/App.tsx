@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MetradosForm } from './components/MetradosForm';
 import { MetradosTable } from './components/MetradosTable';
 import { useMetradosForm } from './hooks/useMetradosForm';
-import { Metrado } from './types';
+import type { Metrado } from './types';
 import { Building2 } from 'lucide-react';
 
 function App() {

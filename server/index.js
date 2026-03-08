@@ -9,14 +9,33 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
+app.get('/', (req, res) => {
+    res.send('✅ Servidor Proxy INKAIA Online. El endpoint de exportación es un POST a /api/export/metrados.');
+});
+
 // Inicializar Google Auth (Service Account)
-const auth = new google.auth.GoogleAuth({
-    keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+// Inicializar Google Auth
+let authOptions = {
     scopes: [
         'https://www.googleapis.com/auth/drive',
         'https://www.googleapis.com/auth/spreadsheets'
     ],
-});
+};
+
+if (process.env.GOOGLE_CREDENTIALS_JSON) {
+    try {
+        const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
+        authOptions.credentials = credentials;
+        console.log("[INKAIA] Usando credenciales desde variable de entorno.");
+    } catch (e) {
+        console.error("[INKAIA] Error parseando GOOGLE_CREDENTIALS_JSON:", e.message);
+    }
+} else {
+    authOptions.keyFile = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+    console.log("[INKAIA] Usando credenciales desde archivo físico:", authOptions.keyFile);
+}
+
+const auth = new google.auth.GoogleAuth(authOptions);
 
 const drive = google.drive({ version: 'v3', auth });
 const sheets = google.sheets({ version: 'v4', auth });
@@ -41,109 +60,120 @@ const validacionesPesoAcero = {
 app.post('/api/export/metrados', async (req, res) => {
     try {
         const metrados = req.body;
-        if (!Array.isArray(metrados) || metrados.length === 0) {
-            return res.status(400).json({ error: 'Payload vacío o inválido.' });
-        }
+        if (!Array.isArray(metrados) || metrados.length === 0) return res.status(400).json({ error: 'Payload vacío.' });
+        console.log(`[INKAIA] Iniciando Pipeline de Tab-Clone Interno: ${metrados.length} registros`);
 
-        console.log(`[INKAIA] Iniciando Pipeline de Exportación: ${metrados.length} registros`);
+        // 1. Obtener ID original de la hoja a copiar
+        const documentMeta = await sheets.spreadsheets.get({ spreadsheetId: TEMPLATE_ID });
+        const targetSheet = documentMeta.data.sheets.find(s => s.properties.title === TARGET_SHEET);
+        if (!targetSheet) throw new Error("No se encontró la pestaña maestra " + TARGET_SHEET);
+        const sourceSheetId = targetSheet.properties.sheetId;
 
-        // 1. Clonación
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        const fileName = `Export_${timestamp}`;
-        console.log(`[INKAIA] Clonando Template ${TEMPLATE_ID}...`);
-        const copyResponse = await drive.files.copy({
-            fileId: TEMPLATE_ID,
-            requestBody: { name: fileName }
+        // 2. Clonar Tab Interno EN EL MISMO SPREADSHEET (No rompe la Cuota de Creación de Archivos)
+        console.log(`[INKAIA] Clonando Pestaña internamente (GID: ${sourceSheetId})...`);
+        const copyRes = await sheets.spreadsheets.sheets.copyTo({
+            spreadsheetId: TEMPLATE_ID,
+            sheetId: sourceSheetId,
+            requestBody: { destinationSpreadsheetId: TEMPLATE_ID } // Clona hacia el mismo libro
         });
+        const tempSheetId = copyRes.data.sheetId;
+        const tempSheetTitle = copyRes.data.title;
+        console.log(`[INKAIA] Pestaña Temp Creada: ${tempSheetTitle} (ID: ${tempSheetId})`);
 
-        const cloneId = copyResponse.data.id;
-        console.log(`[INKAIA] Clon exitoso: ID ${cloneId}`);
-
-        // Mutador de Datos (INKAIA Polimórfico)
+        // Mutador Polimórfico INKAIA (Formato Extendido V2 - 18 Columnas)
         const values2D = metrados.map(m => {
-            // Base: ["Nivel Indicador", "Frente", "Bloque", "Nivel", "Código", "Partida", "Descripción_", "Cantidad", "Longitud/Área", "Ancho/Empalme", "Altura/Gancho", "Parcial", "Acero", "Nro de Veces", "Total", "Unidades", "Modificaciones"]
-            // Pero el usuario pidió: [Item, Descripción, Unidad, Cantidad, Largo, Ancho, Alto, Parcial, Veces, Total] hacia el Sheets.
-
-            const item = m.codigo_partida;
+            // Concatenación para Descripción_
             const separador = m.elemento ? `${m.elemento.trim()} / ` : " - / ";
             const concatDesc = separador + (m.detalle || "").trim();
 
-            // RUTA B (Acero - kg)
+            // RUTA DE MUTACIÓN
             let largo = m.longitud_area;
             let ancho = m.ancho_empalme;
             let alto = m.altura_gancho;
             let parcial = m.parcial;
 
             if (m.unidad && m.unidad.toLowerCase() === 'kg' && m.descripcion_partida && m.descripcion_partida.toLowerCase().includes('acero')) {
-                // Sobrecarga Semántica Inkaia
-                largo = m.longitud_area; // LONG(R)
-                alto = m.altura_gancho; // ALTO(G)
-                ancho = ""; // Forzado nulo según requerimiento
-
-                // Validación de Parcial (Cantidad * Veces * (Largo + Alto) * Peso_Diametro)
+                largo = m.longitud_area; alto = m.altura_gancho; ancho = "";
                 const peso_diametro = validacionesPesoAcero[m.diametro] || 0;
                 const q = parseFloat(m.cantidad) || 0;
                 const v = parseFloat(m.nro_veces) || 0;
                 const l = parseFloat(largo) || 0;
                 const a = parseFloat(alto) || 0;
-
-                if (peso_diametro > 0) {
-                    parcial = q * v * (l + a) * peso_diametro;
-                }
+                if (peso_diametro > 0) parcial = q * v * (l + a) * peso_diametro;
             }
 
-            // El formato de columnas destino [Item, Descripción, Und, Cant, Largo, Ancho, Alto, Parcial, Veces, Total]
+            // IMPORTANTE: Este es el orden dictado por el cliente ["B", "C", "D"..."S"]
+            // 1: Nivel Indicador (Asume Backend lo inyecta como "", o frontend manda "nivelJerarquia")
+            // 2: Fecha
+            // 3: Frente, 4: Bloque, 5: Nivel
+            // 6: Código, 7: Partida
+            // 8: Descripción_ (Concatenado)
+            // 9: Cantidad, 10: Longitud, 11: Ancho, 12: Altura
+            // 13: Acero (Diámetro)
+            // 14: Parcial
+            // 15: Nro de Veces, 16: Total
+            // 17: Unidades, 18: Modificaciones
+
             return [
-                item,
+                m.nivelJerarquia || "", // Desde Frontend (o base si no existe)
+                m.fecha || "",
+                m.frente || "",
+                m.bloque || "",
+                m.nivel || "",
+                m.codigo_partida || "",
+                m.descripcion_partida || "",
                 concatDesc,
-                m.unidad,
                 m.cantidad || "",
                 largo || "",
                 ancho || "",
                 alto || "",
+                m.diametro || "",
                 parcial || 0,
                 m.nro_veces || "",
-                m.total || 0
+                m.total || 0,
+                m.unidad || "",
+                m.modificacion || ""
             ];
         });
 
-        // 2. Inyección Masiva
-        const range = `${TARGET_SHEET}!${STARTING_CELL}`;
-        console.log(`[INKAIA] Inyectando ${values2D.length} filas en el rango ${range}...`);
-
+        // 3. Inyección Masiva en la hoja clonada dentro del archivo viejo (Evitando tocar la pestaña maestra original)
+        const range = `'${tempSheetTitle}'!${STARTING_CELL}`;
+        console.log(`[INKAIA] Inyectando datos en ${tempSheetTitle}...`);
         await sheets.spreadsheets.values.batchUpdate({
-            spreadsheetId: cloneId,
+            spreadsheetId: TEMPLATE_ID,
+            requestBody: { valueInputOption: 'RAW', data: [{ range: range, values: values2D }] }
+        });
+
+        // 4. Descarga Binaria usando GET nativo de Fetch pasando un Access Token y GID=tempSheetId
+        console.log(`[INKAIA] Descargando buffer intermedio de Pestaña Clona vía Fetch Auth...`);
+        const token = await auth.getAccessToken();
+        const exportUrl = `https://docs.google.com/spreadsheets/d/${TEMPLATE_ID}/export?format=xlsx&gid=${tempSheetId}`;
+
+        const exportReq = await fetch(exportUrl, {
+            headers: { Authorization: `Bearer ${token.token}` } // Use token.token for the actual access token string
+        });
+        if (!exportReq.ok) throw new Error("Google rechazó la extracción binaria fetch export.");
+        const fileBuffer = await exportReq.arrayBuffer();
+
+        // 5. Purga (Limpia la pestaña creada en el libro original)
+        console.log(`[INKAIA] Ocultando Rastro: Borrando Pestaña temp ${tempSheetId}...`);
+        await sheets.spreadsheets.batchUpdate({
+            spreadsheetId: TEMPLATE_ID,
             requestBody: {
-                valueInputOption: 'RAW',
-                data: [{
-                    range: range,
-                    values: values2D
-                }]
+                requests: [{ deleteSheet: { sheetId: tempSheetId } }]
             }
         });
 
-        // 3. Exportación Binaria
-        console.log(`[INKAIA] Exportando documento como XLSX binario...`);
-        const exportResponse = await drive.files.export({
-            fileId: cloneId,
-            mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        }, { responseType: 'arraybuffer' });
-
-        const fileBuffer = Buffer.from(exportResponse.data);
-
-        // 4. Auto-Purga
-        console.log(`[INKAIA] Purgando clon temporal ${cloneId}...`);
-        await drive.files.delete({ fileId: cloneId });
-
-        // 5. Entregar al Frontend
-        console.log(`[INKAIA] Ciclo exitoso. Entregando ${fileBuffer.length} bytes.`);
+        // Enviar Response al cliente final
+        const filename = `Export_Inkaia_${new Date().toISOString().replace(/[:.]/g, '-')}.xlsx`;
+        console.log(`[INKAIA] Ciclo exitoso. Lanzando ${filename} (${fileBuffer.byteLength} bytes) al Frontend.`);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', `attachment; filename="${fileName}.xlsx"`);
-        res.send(fileBuffer);
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.send(Buffer.from(fileBuffer));
 
     } catch (err) {
         console.error(`[INKAIA] ERROR CRÍTICO:`, err);
-        res.status(500).json({ error: 'Error procesando la solicitud de exportación', detail: err.message || err });
+        res.status(500).json({ error: 'Error procesando exportación', detail: err.message || err });
     }
 });
 

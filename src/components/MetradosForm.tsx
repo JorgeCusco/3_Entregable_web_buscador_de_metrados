@@ -1,7 +1,7 @@
 import React from 'react';
 import { SearchCombobox } from './ui/SearchCombobox';
 import { Select } from './ui/Select';
-import { Partida } from '../types';
+import type { Partida } from '../types';
 import { isAcero } from '../hooks/useMetradosForm';
 import { mockPartidas } from '../data/mockDB';
 import { Save } from 'lucide-react';
