@@ -11,7 +11,16 @@ interface MetradosTableProps {
 }
 
 /**
- * Función que genera el array secuencial para el Data Grid.
+ * Detecta el nivel de jerarquía basado en el código (ej. OE.1.1 = Nivel 2)
+ */
+const getIndentLevel = (codigo: string): number => {
+    if (!codigo) return 0;
+    const parts = codigo.split('.');
+    return Math.max(0, parts.length - 1);
+};
+
+/**
+ * Función que genera el array secuencial para el Data Grid con "Tree Pruning".
  */
 const getHierarchicalRows = (activeMetrados: Metrado[]): any[] => {
     // 1. Identificar Partidas Hoja activas
@@ -74,10 +83,6 @@ const getHierarchicalRows = (activeMetrados: Metrado[]): any[] => {
     return finalRows;
 };
 
-const getIndentLevel = (codigo: string): number => {
-    if (!codigo) return 0;
-    return codigo.split('.').length - 1;
-};
 
 export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onDelete }) => {
     const rows = useMemo(() => getHierarchicalRows(metrados), [metrados]);
@@ -92,9 +97,24 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         return totals;
     }, [metrados]);
 
-    // NOTA: titleTotals se eliminó porque el exportador Flat V2 (Base de Datos)
-    // ya no requiere calcular roll-ups para las cabeceras en el Excel.
+    // Calcular totales de títulos (Roll-up recursivo)
+    const titleTotals = useMemo(() => {
+        const totals: Record<string, number> = {};
 
+        // Solo iteramos por los títulos rescatados en las filas actuales
+        rows.filter(r => r.is_template && r.es_titulo).forEach(title => {
+            let sum = 0;
+            // Sumar todas las partidas que cuelgan de este código (prefijo)
+            Object.keys(partidaTotals).forEach(pCode => {
+                if (pCode.startsWith(title.codigo + ".")) {
+                    sum += partidaTotals[pCode];
+                }
+            });
+            totals[title.codigo] = sum;
+        });
+
+        return totals;
+    }, [rows, partidaTotals]);
     const formatNumber = (num: number) => {
         return new Intl.NumberFormat('es-PE', {
             minimumFractionDigits: 2,
@@ -186,16 +206,20 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         {rows.map((r: any, idx: number) => {
                             // CASO 1: Es un Título WBS (Nodo Padre)
                             if (r.is_template && r.es_titulo) {
+                                const totalRama = titleTotals[r.codigo] || 0;
                                 return (
                                     <tr key={`title-${r.codigo}-${idx}`} className="bg-slate-800 text-white font-bold border-b border-slate-700">
                                         <td className="w-[90px] min-w-[90px] px-3 py-1 font-mono text-[10px] tracking-wider text-left">
                                             {r.codigo}
                                         </td>
-                                        <td colSpan={9} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50"
+                                        <td colSpan={8} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
                                             {r.descripcion}
                                         </td>
-                                    </tr>
+                                        <td className="px-3 py-1 text-right text-blue-300 font-bold text-[12px]">
+                                            {totalRama > 0 ? formatNumber(totalRama) : '-'}
+                                        </td>
+                                    </tr >
                                 );
                             }
 
@@ -216,8 +240,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 const total = partidaTotals[r.codigo] || 0;
                                 const hasMetrados = total > 0;
                                 return (
-                                    <tr key={`header-${r.codigo}-${idx}`} className="bg-slate-50/50 border-b border-slate-200 font-semibold group transition-colors">
-                                        <td className="w-[90px] min-w-[90px] px-3 py-1 text-left">
+                                    <tr key={`header-${r.codigo}-${idx}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors`}>
+                                        <td className="w-[90px] min-w-[90px] px-3 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
                                             <span className="font-mono text-[10px] text-blue-600 bg-blue-100/50 px-1 py-0.5 rounded">
                                                 {r.codigo}
                                             </span>
@@ -336,12 +360,12 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 </tr>
                             );
                         })}
-                    </tbody>
-                </table>
-            </div>
+                    </tbody >
+                </table >
+            </div >
 
             {/* Footer de Resumen */}
-            <div className="p-3 border-t border-slate-200 bg-white flex justify-between items-center text-[11px] font-bold text-slate-500 uppercase tracking-tighter">
+            < div className="p-3 border-t border-slate-200 bg-white flex justify-between items-center text-[11px] font-bold text-slate-500 uppercase tracking-tighter" >
                 <div className="flex gap-4">
                     <span>Partidas con metrado: {cantPartidasRegistradas}</span>
                     <span>Total de líneas de registro: {metrados.length}</span>
@@ -349,7 +373,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 <div className="bg-slate-800 text-white px-3 py-1 rounded-md">
                     Control de Planilla Web v3.0
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
