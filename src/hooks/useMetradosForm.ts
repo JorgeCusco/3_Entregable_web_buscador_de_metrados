@@ -21,7 +21,15 @@ export const isAcero = (partida: Partida | null): boolean => {
 };
 
 export const useMetradosForm = () => {
-    const [fecha, setFecha] = useState<string>(new Date().toISOString().split('T')[0]);
+    const getLocalDateString = () => {
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const [fecha, setFecha] = useState<string>(getLocalDateString());
     const [frente, setFrente] = useState<string>('');
     const [bloque, setBloque] = useState<string>('');
     const [nivel, setNivel] = useState<string>('');
