@@ -203,12 +203,12 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         </tr>
                     </thead>
                     <tbody className="bg-white">
-                        {rows.map((r: any, idx: number) => {
+                        {rows.map((r: any) => {
                             // CASO 1: Es un Título WBS (Nodo Padre)
                             if (r.is_template && r.es_titulo) {
                                 const totalRama = titleTotals[r.codigo] || 0;
                                 return (
-                                    <tr key={`title-${r.codigo}-${idx}`} className="bg-slate-800 text-white font-bold border-b border-slate-700">
+                                    <tr key={`title-${r.codigo}`} className="bg-slate-800 text-white font-bold border-b border-slate-700">
                                         <td className="w-[90px] min-w-[90px] px-3 py-1 font-mono text-[10px] tracking-wider text-left">
                                             {r.codigo}
                                         </td>
@@ -240,7 +240,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 const total = partidaTotals[r.codigo] || 0;
                                 const hasMetrados = total > 0;
                                 return (
-                                    <tr key={`header-${r.codigo}-${idx}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors`}>
+                                    <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors`}>
                                         <td className="w-[90px] min-w-[90px] px-3 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
                                             <span className="font-mono text-[10px] text-blue-600 bg-blue-100/50 px-1 py-0.5 rounded">
                                                 {r.codigo}
@@ -261,8 +261,6 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             }
 
                             // CASO 3: Es un Registro de Metrado (Ingresado por el usuario)
-                            // Failsafe: no renderizar registros con parcial = 0
-                            if (!r.is_template && r.parcial === 0) return null;
                             const handleKeyDown = (e: React.KeyboardEvent) => {
                                 if (e.key === 'Enter') {
                                     e.preventDefault();
@@ -276,7 +274,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             };
 
                             return (
-                                <tr key={`rec-${r.id}-${idx}`} className="hover:bg-blue-50/30 border-b border-slate-100 group transition-all duration-200">
+                                <tr key={`rec-${r.id}`} className="hover:bg-blue-50/30 border-b border-slate-100 group transition-all duration-200">
                                     <td className="w-[90px] min-w-[90px] px-1 py-0.5">
                                         <div className="flex items-center gap-0.5" style={{ marginLeft: '27px' }}>
                                             <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
