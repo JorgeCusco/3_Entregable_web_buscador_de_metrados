@@ -116,15 +116,18 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             // Limpiar barra diagonal final si existe
             if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1);
 
-            const response = await fetch(`${apiUrl}/api/export/metrados`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(metrados)
-            }).catch(err => {
+            let response: Response;
+            try {
+                response = await fetch(`${apiUrl}/api/export/metrados`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(metrados)
+                });
+            } catch (error) {
                 throw new Error(`Error de conexión: No se pudo contactar con el servidor en ${apiUrl}. Verifique que el servicio en Render esté Activo.`);
-            });
+            }
 
             if (!response.ok) {
                 const errJson = await response.json().catch(() => ({}));
