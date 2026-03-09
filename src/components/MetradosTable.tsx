@@ -112,18 +112,24 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         try {
             // El backend se encargará de cruzar la data cruda con la maestría de la DB, 
             // ordenar WBS y escupir la plantilla binaria.
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            let apiUrl = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3001`;
+            // Limpiar barra diagonal final si existe
+            if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1);
+
             const response = await fetch(`${apiUrl}/api/export/metrados`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(metrados)
+            }).catch(err => {
+                throw new Error(`Error de conexión: No se pudo contactar con el servidor en ${apiUrl}. Verifique que el servicio en Render esté Activo.`);
             });
 
             if (!response.ok) {
                 const errJson = await response.json().catch(() => ({}));
-                throw new Error(errJson.error || 'Error en Exportación a Nube (INKAIA Workflow)');
+                const detail = errJson.error || errJson.detail || response.statusText;
+                throw new Error(`Error del Servidor: ${detail} (Status: ${response.status})`);
             }
 
             // Descender como Blob e incitar auto-descarga Browser-side
