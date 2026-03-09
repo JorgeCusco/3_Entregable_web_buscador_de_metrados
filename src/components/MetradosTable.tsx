@@ -123,7 +123,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(metrados)
+                    body: JSON.stringify(rows)
                 });
             } catch (error) {
                 throw new Error(`Error de conexión: No se pudo contactar con el servidor en ${apiUrl}. Verifique que el servicio en Render esté Activo.`);

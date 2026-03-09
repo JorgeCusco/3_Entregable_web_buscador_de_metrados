@@ -91,11 +91,25 @@ app.post('/api/export/metrados', async (req, res) => {
 
         // Mutador Polimórfico INKAIA (Formato Extendido V2 - 18 Columnas)
         const values2D = metrados.map(m => {
-            // Concatenación para Descripción_
+            // Caso A: Fila es un Título o Cabecera del Presupuesto
+            if (m.is_template) {
+                return [
+                    m.codigo || "", // B: Código WBS
+                    "", // C: Fecha
+                    "", // D: Frente
+                    "", // E: Bloque
+                    "", // F: Nivel
+                    "", // G: Código Partida (en títulos no aplica)
+                    "", // H: Partida (Nombre corto)
+                    m.descripcion || "", // I: Descripción / Título (OE.1 ...)
+                    "", "", "", "", "", "", "", "", "", "" // J -> S vacíos
+                ];
+            }
+
+            // Caso B: Fila es un Registro de Metrado Real
             const separador = m.elemento ? `${m.elemento.trim()} / ` : " - / ";
             const concatDesc = separador + (m.detalle || "").trim();
 
-            // RUTA DE MUTACIÓN
             let largo = m.longitud_area;
             let ancho = m.ancho_empalme;
             let alto = m.altura_gancho;
@@ -111,37 +125,25 @@ app.post('/api/export/metrados', async (req, res) => {
                 if (peso_diametro > 0) parcial = q * v * (l + a) * peso_diametro;
             }
 
-            // IMPORTANTE: Este es el orden dictado por el cliente ["B", "C", "D"..."S"]
-            // 1: Nivel Indicador (Asume Backend lo inyecta como "", o frontend manda "nivelJerarquia")
-            // 2: Fecha
-            // 3: Frente, 4: Bloque, 5: Nivel
-            // 6: Código, 7: Partida
-            // 8: Descripción_ (Concatenado)
-            // 9: Cantidad, 10: Longitud, 11: Ancho, 12: Altura
-            // 13: Acero (Diámetro)
-            // 14: Parcial
-            // 15: Nro de Veces, 16: Total
-            // 17: Unidades, 18: Modificaciones
-
             return [
-                m.nivelJerarquia || "", // Desde Frontend (o base si no existe)
-                m.fecha || "",
-                m.frente || "",
-                m.bloque || "",
-                m.nivel || "",
-                m.codigo_partida || "",
-                m.descripcion_partida || "",
-                concatDesc,
-                m.cantidad || "",
-                largo || "",
-                ancho || "",
-                alto || "",
-                m.diametro || "",
-                parcial || 0,
-                m.nro_veces || "",
-                m.total || 0,
-                m.unidad || "",
-                m.modificacion || ""
+                m.nivelJerarquia || "", // B: WBS
+                m.fecha || "",          // C
+                m.frente || "",         // D
+                m.bloque || "",         // E
+                m.nivel || "",          // F
+                m.codigo_partida || "", // G
+                m.descripcion_partida || "", // H
+                concatDesc,            // I
+                m.cantidad || "",      // J
+                largo || "",           // K
+                ancho || "",           // L
+                alto || "",            // M
+                m.diametro || "",       // N
+                parcial || 0,          // O
+                m.nro_veces || "",     // P
+                m.total || 0,          // Q
+                m.unidad || "",        // R
+                m.modificacion || ""   // S
             ];
         });
 
