@@ -94,8 +94,8 @@ function App() {
           <button
             onClick={() => { setEspecialidad('hospital'); actions.setPartidaSeleccionada(null); }}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${especialidad === 'hospital'
-                ? 'bg-white text-blue-700 shadow-md border border-blue-100'
-                : 'text-slate-500 hover:text-slate-700'
+              ? 'bg-white text-blue-700 shadow-md border border-blue-100'
+              : 'text-slate-500 hover:text-slate-700'
               }`}
           >
             <Stethoscope className="w-4 h-4" />
@@ -104,13 +104,12 @@ function App() {
           <button
             onClick={() => { setEspecialidad('contingencia'); actions.setPartidaSeleccionada(null); }}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${especialidad === 'contingencia'
-                ? 'bg-white text-amber-600 shadow-md border border-amber-100'
-                : 'text-slate-500 hover:text-slate-700'
+              ? 'bg-white text-amber-600 shadow-md border border-amber-100'
+              : 'text-slate-500 hover:text-slate-700'
               }`}
           >
             <AlertTriangle className="w-4 h-4" />
             Contingencia
-            <span className="text-[10px] bg-amber-100 text-amber-600 px-1.5 py-0.5 rounded-full font-bold">Próx.</span>
           </button>
         </div>
       </header>
@@ -122,15 +121,6 @@ function App() {
         </div>
       )}
 
-      {/* Aviso Contingencia (placeholder) */}
-      {especialidad === 'contingencia' && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 flex items-center gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
-          <p className="text-sm text-amber-800 font-medium">
-            La base de datos de <strong>Contingencia</strong> está en preparación. Cuando el responsable entregue los datos, se integrará automáticamente aquí.
-          </p>
-        </div>
-      )}
 
       {/* Main Layout Grid */}
       <main className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[70vh]">
