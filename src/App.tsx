@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { MetradosForm } from './components/MetradosForm';
 import { MetradosTable } from './components/MetradosTable';
 import { DatabaseViewer } from './components/DatabaseViewer';
-import { UserSelectionModal } from './components/UserSelectionModal';
+import { LoginForm } from './components/LoginForm';
 import { useMetradosForm } from './hooks/useMetradosForm';
 import type { Metrado } from './types';
 import { Building2, LayoutGrid, Database, LogOut } from 'lucide-react';
@@ -13,7 +13,16 @@ function App() {
   const [view, setView] = useState<'hierarchical' | 'database'>('hierarchical');
   const [toast, setToast] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState<string | null>(localStorage.getItem('inkaia_user'));
+  const [currentUser, setCurrentUser] = useState<any | null>(null);
+  const [token, setToken] = useState<string | null>(localStorage.getItem('inkaia_token'));
+
+  // Cargar usuario desde el token guardado al iniciar
+  useEffect(() => {
+    const savedUser = localStorage.getItem('inkaia_user_data');
+    if (savedUser) {
+      setCurrentUser(JSON.parse(savedUser));
+    }
+  }, []);
 
   // URL del Backend (Render)
   const API_URL = (import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3001`).replace(/\/$/, "");
@@ -33,23 +42,26 @@ function App() {
       }
     };
     fetchMetrados();
-  }, []);
+  }, [token, API_URL]); // Dependencia en token y API_URL
 
   const handleGuardar = async () => {
     const nuevo = actions.procesarRegistro();
     if (nuevo) {
-      // Inyectar el autor real antes de enviar
-      const dataConAutor = { ...nuevo, autor_usuario: currentUser || 'Anonimo' };
+      // Inyectar el autor real (username) antes de enviar
+      const dataConAutor = { ...nuevo, autor_usuario: currentUser?.username || 'Anonimo' };
 
       try {
         const res = await fetch(`${API_URL}/api/metrados`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify(dataConAutor)
         });
         const guardado = await res.json();
         setMetrados(prev => [guardado, ...prev]);
-        setToast(`Guardado por ${currentUser}: ${guardado.codigo_partida}`);
+        setToast(`Guardado por ${currentUser?.nombreFull}: ${guardado.codigo_partida}`);
       } catch (err) {
         setToast("Error al guardar en la nube");
       }
@@ -57,20 +69,29 @@ function App() {
     }
   };
 
-  const handleUserSelect = (name: string) => {
-    setCurrentUser(name);
-    localStorage.setItem('inkaia_user', name);
+  const handleLogin = (newToken: string, userData: any) => {
+    setToken(newToken);
+    setCurrentUser(userData);
+    localStorage.setItem('inkaia_token', newToken);
+    localStorage.setItem('inkaia_user_data', JSON.stringify(userData));
   };
 
   const handleLogout = () => {
+    setToken(null);
     setCurrentUser(null);
-    localStorage.removeItem('inkaia_user');
+    localStorage.removeItem('inkaia_token');
+    localStorage.removeItem('inkaia_user_data');
   };
 
   const handleDeleteMetrado = async (id: string) => {
     try {
       // Intentar borrar de la nube si es un ID de MongoDB (24 chars aprox) o el ID local
-      await fetch(`${API_URL}/api/metrados/${id}`, { method: 'DELETE' });
+      await fetch(`${API_URL}/api/metrados/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       setMetrados(prev => prev.filter(m => m.id !== id && (m as any)._id !== id));
       setToast('Registro eliminado de la nube');
     } catch (err) {
@@ -139,8 +160,10 @@ function App() {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
             <div className="flex flex-col items-end">
-              <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Técnico Activo</span>
-              <span className="text-sm font-bold text-slate-700">{currentUser}</span>
+              <div className="flex flex-col items-end">
+                <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Técnico Activo</span>
+                <span className="text-sm font-bold text-slate-700">{currentUser?.nombreFull}</span>
+              </div>
             </div>
             <button
               onClick={handleLogout}
@@ -225,7 +248,7 @@ function App() {
 
   return (
     <>
-      {!currentUser && <UserSelectionModal onSelect={handleUserSelect} />}
+      {!token && <LoginForm onLogin={handleLogin} />}
       {MainContent}
     </>
   );

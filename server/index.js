@@ -4,6 +4,8 @@ const cors = require('cors');
 const { google } = require('googleapis');
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const mongoose = require('mongoose');
 
@@ -11,6 +13,8 @@ const app = express();
 
 // Conexión a MongoDB Atlas
 const MONGODB_URI = process.env.MONGODB_URI;
+let usersMemory = []; // Contingencia local
+
 if (MONGODB_URI) {
     mongoose.connect(MONGODB_URI)
         .then(() => console.log("[INKAIA] Conectado a MongoDB Atlas"))
@@ -44,6 +48,19 @@ const metradoSchema = new mongoose.Schema({
 });
 
 const Metrado = mongoose.model('Metrado', metradoSchema);
+
+// Esquema de Usuario para Autenticación
+const userSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    nombreFull: String,
+    rol: { type: String, enum: ['admin', 'metrador'], default: 'metrador' },
+    created_at: { type: Date, default: Date.now }
+});
+
+const User = mongoose.model('User', userSchema);
+
+const JWT_SECRET = process.env.JWT_SECRET || 'inkaia_secret_key_2024';
 
 const corsOptions = {
     origin: [
@@ -123,6 +140,95 @@ app.delete('/api/metrados/:id', async (req, res) => {
         res.json({ message: 'Registro eliminado de la nube' });
     } catch (err) {
         res.status(500).json({ error: 'Error al eliminar el registro' });
+    }
+});
+
+// --- ENDPOINTS DE AUTENTICACIÓN ---
+
+// Registro de Usuario (Solo para setup inicial o Admin)
+app.post('/api/auth/register', async (req, res) => {
+    try {
+        const { username, password, nombreFull, rol } = req.body;
+        // Verificar si existe (Con bypass de timeout)
+        let existing = null;
+        if (MONGODB_URI && mongoose.connection.readyState === 1) {
+            try {
+                existing = await User.findOne({ username }).maxTimeMS(2000);
+            } catch (e) {
+                console.warn("[INKAIA] MongoDB no responde a findOne, usando memoria.");
+                existing = usersMemory.find(u => u.username === username);
+            }
+        } else {
+            existing = usersMemory.find(u => u.username === username);
+        }
+
+        if (existing) return res.status(400).json({ error: 'El usuario ya existe' });
+
+        // Encriptar password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = new User({
+            username,
+            password: hashedPassword,
+            nombreFull,
+            rol
+        });
+
+        // Guardado con contingencia
+        if (MONGODB_URI && mongoose.connection.readyState === 1) {
+            await newUser.save();
+        } else {
+            console.log("[INKAIA] DB Desconectada. Guardando usuario en memoria local.");
+            usersMemory.push({
+                _id: Date.now().toString(),
+                username,
+                password: hashedPassword,
+                nombreFull,
+                rol
+            });
+        }
+        res.status(201).json({ message: 'Usuario creado exitosamente (Modo Contingencia)' });
+    } catch (err) {
+        console.error("[INKAIA] Error detallado al registrar usuario:", err);
+        res.status(500).json({ error: 'Error al registrar usuario', detail: err.message });
+    }
+});
+
+// Login de Usuario
+app.post('/api/auth/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        let user;
+        if (MONGODB_URI && mongoose.connection.readyState === 1) {
+            user = await User.findOne({ username });
+        } else {
+            user = usersMemory.find(u => u.username === username);
+        }
+
+        if (!user) return res.status(401).json({ error: 'Usuario no encontrado' });
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(401).json({ error: 'Contraseña incorrecta' });
+
+        // Generar Token
+        const token = jwt.sign(
+            { id: user._id, username: user.username, rol: user.rol, nombreFull: user.nombreFull },
+            JWT_SECRET,
+            { expiresIn: '30d' }
+        );
+
+        res.json({
+            token,
+            user: {
+                id: user._id,
+                username: user.username,
+                nombreFull: user.nombreFull,
+                rol: user.rol
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ error: 'Error en el proceso de login' });
     }
 });
 
