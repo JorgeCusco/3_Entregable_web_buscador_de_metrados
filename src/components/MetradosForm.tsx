@@ -2,14 +2,16 @@ import React from 'react';
 import { SearchCombobox } from './ui/SearchCombobox';
 import { Select } from './ui/Select';
 import type { Partida } from '../types';
+import type { Especialidad } from '../App';
 import { isAcero } from '../hooks/useMetradosForm';
-import { mockPartidas } from '../data/mockDB';
+import { mockPartidas2 } from '../data/mockDB_2';
 import { Save } from 'lucide-react';
 
 interface MetradosFormProps {
     state: any;
     actions: any;
     onGuardar: () => void;
+    especialidad: Especialidad;
 }
 
 export const RenderModificacionBadge = (modificacionStr?: string) => {
@@ -37,7 +39,7 @@ export const RenderModificacionBadge = (modificacionStr?: string) => {
     );
 };
 
-export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar }) => {
+export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, especialidad }) => {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>, nextId: string) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -76,7 +78,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 <div className="space-y-1">
                     <label className="text-[11px] font-bold text-slate-600 block uppercase tracking-wider">Partida (Buscador)</label>
                     <SearchCombobox
-                        partidas={mockPartidas}
+                        partidas={mockPartidas2.filter(p => !p.especialidad || p.especialidad === especialidad)}
                         value={state.partidaSeleccionada ? state.partidaSeleccionada.descripcion : ''}
                         onSelect={(p: Partida) => {
                             actions.setPartidaSeleccionada(p);

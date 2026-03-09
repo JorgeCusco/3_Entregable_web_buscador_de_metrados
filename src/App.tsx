@@ -3,17 +3,24 @@ import { MetradosForm } from './components/MetradosForm';
 import { MetradosTable } from './components/MetradosTable';
 import { useMetradosForm } from './hooks/useMetradosForm';
 import type { Metrado } from './types';
-import { Building2 } from 'lucide-react';
+import { Building2, Stethoscope, AlertTriangle } from 'lucide-react';
+
+// Tipo de especialidad disponible en el sistema
+export type Especialidad = 'hospital' | 'contingencia';
 
 function App() {
   const { state, actions } = useMetradosForm();
   const [metrados, setMetrados] = useState<Metrado[]>([]);
   const [toast, setToast] = useState<string | null>(null);
+  // Estado global de especialidad activa
+  const [especialidad, setEspecialidad] = useState<Especialidad>('hospital');
 
   const handleGuardar = () => {
     const nuevo = actions.procesarRegistro();
     if (nuevo) {
-      setMetrados(prev => [nuevo, ...prev]);
+      // El metrado hereda la especialidad activa al momento de registrarse
+      const nuevoConEsp = { ...nuevo, especialidad };
+      setMetrados(prev => [nuevoConEsp, ...prev]);
       setToast(`Metrado guardado: ${nuevo.codigo_partida}`);
       setTimeout(() => setToast(null), 3000);
     }
@@ -31,9 +38,7 @@ function App() {
 
       const updated = { ...m, [field]: value };
 
-      // Si modificó dimensiones o cantidad, recalcular parcial y total
       if (['cantidad', 'longitud_area', 'ancho_empalme', 'altura_gancho', 'nro_veces'].includes(field as string)) {
-
         const parseVal = (v: any) => {
           if (v === "" || v === undefined || v === null) return null;
           const num = parseFloat(String(v));
@@ -45,7 +50,6 @@ function App() {
         const a = parseVal(updated.ancho_empalme);
         const h = parseVal(updated.altura_gancho);
 
-        // Multiplicar todo lo que no sea null
         let product = 1;
         let hasFactors = false;
 
@@ -56,10 +60,7 @@ function App() {
           }
         });
 
-        // Si todos están vacíos (cosa rara pero posible), el parcial es 0
         updated.parcial = hasFactors ? product : 0;
-
-        // Recalcular Total (Parcial * Nro de Veces)
         const veces = parseVal(updated.nro_veces);
         updated.total = updated.parcial * (veces !== null ? veces : 1);
       }
@@ -68,19 +69,49 @@ function App() {
     }));
   };
 
+  // Filtra los metrados mostrados según la especialidad activa
+  const metradosFiltrados = metrados.filter(m => !m.especialidad || m.especialidad === especialidad);
+
   return (
     <div className="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col gap-6 relative max-w-[1600px] mx-auto">
 
       {/* Header */}
-      <header className="flex items-center gap-3 px-2">
-        <div className="bg-primary text-white p-2.5 rounded-xl shadow-lg shadow-primary/30">
-          <Building2 className="w-6 h-6" />
+      <header className="flex items-center justify-between px-2">
+        <div className="flex items-center gap-3">
+          <div className="bg-primary text-white p-2.5 rounded-xl shadow-lg shadow-primary/30">
+            <Building2 className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+              Metrados Belempampa
+            </h1>
+            <p className="text-sm text-gray-500 font-medium">Plataforma Costos y Presupuestos</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-            Metrados Belempampa
-          </h1>
-          <p className="text-sm text-gray-500 font-medium">Plataforma Costos y Presupuestos</p>
+
+        {/* ─── Selector de Especialidad ─── */}
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner">
+          <button
+            onClick={() => { setEspecialidad('hospital'); actions.setPartidaSeleccionada(null); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${especialidad === 'hospital'
+                ? 'bg-white text-blue-700 shadow-md border border-blue-100'
+                : 'text-slate-500 hover:text-slate-700'
+              }`}
+          >
+            <Stethoscope className="w-4 h-4" />
+            Hospital
+          </button>
+          <button
+            onClick={() => { setEspecialidad('contingencia'); actions.setPartidaSeleccionada(null); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${especialidad === 'contingencia'
+                ? 'bg-white text-amber-600 shadow-md border border-amber-100'
+                : 'text-slate-500 hover:text-slate-700'
+              }`}
+          >
+            <AlertTriangle className="w-4 h-4" />
+            Contingencia
+            <span className="text-[10px] bg-amber-100 text-amber-600 px-1.5 py-0.5 rounded-full font-bold">Próx.</span>
+          </button>
         </div>
       </header>
 
@@ -88,6 +119,16 @@ function App() {
       {toast && (
         <div className="fixed top-6 right-6 z-50 animate-in slide-in-from-top-5 mt-2 bg-green-500 text-white px-4 py-3 rounded-lg shadow-xl font-medium flex items-center gap-2">
           <span className="text-xl">✨</span> {toast}
+        </div>
+      )}
+
+      {/* Aviso Contingencia (placeholder) */}
+      {especialidad === 'contingencia' && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 flex items-center gap-3">
+          <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
+          <p className="text-sm text-amber-800 font-medium">
+            La base de datos de <strong>Contingencia</strong> está en preparación. Cuando el responsable entregue los datos, se integrará automáticamente aquí.
+          </p>
         </div>
       )}
 
@@ -100,13 +141,14 @@ function App() {
             state={state}
             actions={actions}
             onGuardar={handleGuardar}
+            especialidad={especialidad}
           />
         </div>
 
         {/* Right Column: Table History */}
         <div className="lg:col-span-8 xl:col-span-9 flex flex-col">
           <MetradosTable
-            metrados={metrados}
+            metrados={metradosFiltrados}
             onUpdate={handleUpdateMetrado}
             onDelete={handleDeleteMetrado}
           />
