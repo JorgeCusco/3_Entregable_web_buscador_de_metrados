@@ -6,7 +6,15 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+    origin: [
+        'http://localhost:5173',
+        'https://inkaia.pe',
+        'https://www.inkaia.pe'
+    ],
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 
 app.get('/', (req, res) => {
