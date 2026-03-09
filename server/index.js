@@ -91,18 +91,42 @@ app.post('/api/export/metrados', async (req, res) => {
 
         // Mutador Polimórfico INKAIA (Formato Extendido V2 - 18 Columnas)
         const values2D = metrados.map(m => {
-            // Caso A: Fila es un Título o Cabecera del Presupuesto
-            if (m.is_template) {
+            // Caso A: Fila es un Título o Cabecera del Presupuesto (estilo S10)
+            if (m.is_template && m.es_titulo) {
                 return [
-                    m.codigo || "", // B: Código WBS
-                    "", // C: Fecha
-                    "", // D: Frente
-                    "", // E: Bloque
-                    "", // F: Nivel
-                    "", // G: Código Partida (en títulos no aplica)
-                    "", // H: Partida (Nombre corto)
-                    m.descripcion || "", // I: Descripción / Título (OE.1 ...)
+                    m.nivel_jerarquia || "",  // B: NIVEL IND (1, 2, 3...)
+                    "",                        // C: Fecha
+                    "",                        // D: Frente
+                    "",                        // E: Bloque
+                    "",                        // F: Nivel
+                    m.codigo || "",            // G: CÓDIGO WBS (OE.1, OE.1.1...)
+                    "",                        // H: Partida (vacío en títulos)
+                    m.descripcion || "",       // I: DESCRIPCIÓN (Nombre del título)
                     "", "", "", "", "", "", "", "", "", "" // J -> S vacíos
+                ];
+            }
+
+            // Caso A2: Fila Virtual de Elemento (agrupador intermedio dentro de una partida)
+            if (m.is_template && m.is_elemento_virtual) {
+                return [
+                    "",               // B: nivel ind vacío
+                    "", "", "", "", "", "",
+                    m.descripcion || "", // I: descripción del elemento
+                    "", "", "", "", "", "", "", "", "", ""
+                ];
+            }
+
+            // Caso A3: Cabecera de Partida (el nodo hoja del presupuesto, línea azul en pantalla)
+            // Es is_template=true, es_titulo=false. Aparece como línea que agrupa los metrados.
+            if (m.is_template && !m.es_titulo) {
+                const nivelNum = m.nivel_jerarquia || "";
+                return [
+                    nivelNum,          // B: NIVEL IND
+                    "", "", "", "",    // C-F vacíos
+                    m.codigo || "",    // G: CÓDIGO de la partida
+                    m.descripcion || "", // H: Nombre de la partida
+                    "",                // I: descripción vacío (los metrados lo llenan)
+                    "", "", "", "", "", "", "", m.unidad || "", "", "" // J-S, solo unidad en R
                 ];
             }
 
