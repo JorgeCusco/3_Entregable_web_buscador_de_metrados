@@ -5,7 +5,46 @@ const { google } = require('googleapis');
 const fs = require('fs');
 const path = require('path');
 
+const mongoose = require('mongoose');
+
 const app = express();
+
+// Conexión a MongoDB Atlas
+const MONGODB_URI = process.env.MONGODB_URI;
+if (MONGODB_URI) {
+    mongoose.connect(MONGODB_URI)
+        .then(() => console.log("[INKAIA] Conectado a MongoDB Atlas"))
+        .catch(err => console.error("[INKAIA] Error conectando a MongoDB:", err));
+} else {
+    console.warn("[INKAIA] MONGODB_URI no definida. El servidor funcionará sin persistencia en nube.");
+}
+
+// Esquema de Metrado para Multi-usuario
+const metradoSchema = new mongoose.Schema({
+    fecha: String,
+    frente: String,
+    bloque: String,
+    nivel: String,
+    codigo_partida: String,
+    descripcion_partida: String,
+    elemento: String,
+    detalle: String,
+    diametro: String,
+    cantidad: Number,
+    longitud_area: Number,
+    ancho_empalme: Number,
+    altura_gancho: Number,
+    parcial: Number,
+    nro_veces: Number,
+    total: Number,
+    unidad: String,
+    autor_usuario: String, // Campo clave para identificar al técnico
+    modificacion: String,
+    created_at: { type: Date, default: Date.now }
+});
+
+const Metrado = mongoose.model('Metrado', metradoSchema);
+
 const corsOptions = {
     origin: [
         'http://localhost:5173',
@@ -52,6 +91,42 @@ const sheets = google.sheets({ version: 'v4', auth });
 const TEMPLATE_ID = process.env.TEMPLATE_SPREADSHEET_ID;
 const TARGET_SHEET = process.env.TARGET_SHEET_NAME || 'Metrado Estructuras';
 const STARTING_CELL = process.env.STARTING_CELL || 'A7';
+
+// --- ENDPOINTS DE BASE DE DATOS (NUBE) ---
+
+// Obtener todos los metrados (Para el Visor de Administrador)
+app.get('/api/metrados', async (req, res) => {
+    try {
+        const metrados = await Metrado.find().sort({ created_at: -1 });
+        res.json(metrados);
+    } catch (err) {
+        res.status(500).json({ error: 'Error al obtener metrados de la nube' });
+    }
+});
+
+// Guardar un nuevo metrado (Llamado desde el formulario de los técnicos)
+app.post('/api/metrados', async (req, res) => {
+    try {
+        const nuevoMetrado = new Metrado(req.body);
+        await nuevoMetrado.save();
+        res.status(201).json(nuevoMetrado);
+    } catch (err) {
+        console.error("[INKAIA] Error guardando metrado:", err);
+        res.status(500).json({ error: 'Error al guardar el metrado en la nube' });
+    }
+});
+
+// Eliminar un metrado
+app.delete('/api/metrados/:id', async (req, res) => {
+    try {
+        await Metrado.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Registro eliminado de la nube' });
+    } catch (err) {
+        res.status(500).json({ error: 'Error al eliminar el registro' });
+    }
+});
+
+// --- ENDPOINT DE EXPORTACIÓN ---
 
 // Diccionario de pesos de acero (igual que frontend para validación)
 const validacionesPesoAcero = {
