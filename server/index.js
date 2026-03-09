@@ -23,7 +23,6 @@ app.get('/', (req, res) => {
 });
 
 // Inicializar Google Auth (Service Account)
-// Inicializar Google Auth
 let authOptions = {
     scopes: [
         'https://www.googleapis.com/auth/drive',
@@ -45,15 +44,13 @@ if (process.env.GOOGLE_CREDENTIALS_JSON) {
 }
 
 const auth = new google.auth.GoogleAuth(authOptions);
-
-const drive = google.drive({ version: 'v3', auth });
 const sheets = google.sheets({ version: 'v4', auth });
 
 const TEMPLATE_ID = process.env.TEMPLATE_SPREADSHEET_ID;
 const TARGET_SHEET = process.env.TARGET_SHEET_NAME || 'Metrado Estructuras';
 const STARTING_CELL = process.env.STARTING_CELL || 'A7';
 
-// Diccionario de pesos de acero (igual que frontend para validación)
+// Pesos nominales de acero (kg/m)
 const validacionesPesoAcero = {
     "6mm": 0.222,
     "8mm": 0.395,
@@ -66,71 +63,73 @@ const validacionesPesoAcero = {
     "1 3/8\"": 7.907
 };
 
+// Helper para determinar si una partida es de acero
+const esPartidaAcero = (m) =>
+    m.unidad && m.unidad.toLowerCase() === 'kg' &&
+    m.descripcion_partida &&
+    m.descripcion_partida.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes('acero');
+
 app.post('/api/export/metrados', async (req, res) => {
     try {
         const metrados = req.body;
-        if (!Array.isArray(metrados) || metrados.length === 0) return res.status(400).json({ error: 'Payload vacío.' });
-        console.log(`[INKAIA] Iniciando Pipeline de Tab-Clone Interno: ${metrados.length} registros`);
+        if (!Array.isArray(metrados) || metrados.length === 0)
+            return res.status(400).json({ error: 'Payload vacío.' });
 
-        // 1. Obtener ID original de la hoja a copiar
+        console.log(`[INKAIA] Pipeline Export — Filas recibidas: ${metrados.length}`);
+
+        // ─── 1. Obtener ID de la pestaña maestra ───────────────────────────────
         const documentMeta = await sheets.spreadsheets.get({ spreadsheetId: TEMPLATE_ID });
         const targetSheet = documentMeta.data.sheets.find(s => s.properties.title === TARGET_SHEET);
-        if (!targetSheet) throw new Error("No se encontró la pestaña maestra " + TARGET_SHEET);
+        if (!targetSheet) throw new Error("No se encontró la pestaña maestra: " + TARGET_SHEET);
         const sourceSheetId = targetSheet.properties.sheetId;
 
-        // 2. Clonar Tab Interno EN EL MISMO SPREADSHEET (No rompe la Cuota de Creación de Archivos)
-        console.log(`[INKAIA] Clonando Pestaña internamente (GID: ${sourceSheetId})...`);
+        // ─── 2. Clonar pestaña dentro del mismo Spreadsheet ────────────────────
+        console.log(`[INKAIA] Clonando pestaña (GID: ${sourceSheetId})...`);
         const copyRes = await sheets.spreadsheets.sheets.copyTo({
             spreadsheetId: TEMPLATE_ID,
             sheetId: sourceSheetId,
-            requestBody: { destinationSpreadsheetId: TEMPLATE_ID } // Clona hacia el mismo libro
+            requestBody: { destinationSpreadsheetId: TEMPLATE_ID }
         });
         const tempSheetId = copyRes.data.sheetId;
         const tempSheetTitle = copyRes.data.title;
-        console.log(`[INKAIA] Pestaña Temp Creada: ${tempSheetTitle} (ID: ${tempSheetId})`);
+        console.log(`[INKAIA] Pestaña Temp: "${tempSheetTitle}" (ID: ${tempSheetId})`);
 
-        // Mutador Polimórfico INKAIA (Formato Extendido V2 - 18 Columnas)
+        // ─── 3. Transformar filas al formato de 18 columnas ────────────────────
+        // El array 'metrados' contiene tanto filas virtuales (títulos, cabeceras) como registros reales.
+        // Todas deben producir EXACTAMENTE 18 columnas para que Google Sheets acepte el batchUpdate.
+        const EMPTY18 = () => ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+
         const values2D = metrados.map(m => {
-            // Caso A: Fila es un Título o Cabecera del Presupuesto (estilo S10)
+            // CASO A: Título del presupuesto (OE.1, OE.1.1, ...) — is_template=true, es_titulo=true
             if (m.is_template && m.es_titulo) {
-                return [
-                    m.nivel_jerarquia || "",  // B: NIVEL IND (1, 2, 3...)
-                    "",                        // C: Fecha
-                    "",                        // D: Frente
-                    "",                        // E: Bloque
-                    "",                        // F: Nivel
-                    m.codigo || "",            // G: CÓDIGO WBS (OE.1, OE.1.1...)
-                    "",                        // H: Partida (vacío en títulos)
-                    m.descripcion || "",       // I: DESCRIPCIÓN (Nombre del título)
-                    "", "", "", "", "", "", "", "", "", "" // J -> S vacíos
-                ];
+                const row = EMPTY18();
+                row[0] = m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : "";  // B: NIVEL IND
+                row[5] = m.codigo || "";           // G: Código WBS
+                row[7] = m.descripcion || "";      // I: Descripción del título
+                return row;
             }
 
-            // Caso A2: Fila Virtual de Elemento (agrupador intermedio dentro de una partida)
+            // CASO A2: Sub-agrupador de Elemento (ej. "Viga BV-206") — virtual, no es metrado
             if (m.is_template && m.is_elemento_virtual) {
-                return [
-                    "",               // B: nivel ind vacío
-                    "", "", "", "", "", "",
-                    m.descripcion || "", // I: descripción del elemento
-                    "", "", "", "", "", "", "", "", "", ""
-                ];
+                const row = EMPTY18();
+                row[7] = m.descripcion || "";       // I: Nombre del elemento
+                return row;
             }
 
-            // Caso A3: Cabecera de Partida (el nodo hoja del presupuesto, línea azul en pantalla)
-            // Es is_template=true, es_titulo=false. Aparece como línea que agrupa los metrados.
+            // CASO A3: Cabecera de Partida (línea azul, nodo hoja del presupuesto)
+            // is_template=true, es_titulo=false, is_elemento_virtual=undefined
             if (m.is_template && !m.es_titulo) {
-                const nivelNum = m.nivel_jerarquia || "";
-                return [
-                    nivelNum,          // B: NIVEL IND
-                    "", "", "", "",    // C-F vacíos
-                    m.codigo || "",    // G: CÓDIGO de la partida
-                    m.descripcion || "", // H: Nombre de la partida
-                    "",                // I: descripción vacío (los metrados lo llenan)
-                    "", "", "", "", "", "", "", m.unidad || "", "", "" // J-S, solo unidad en R
-                ];
+                const row = EMPTY18();
+                row[0] = m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : "";  // B: NIVEL IND
+                row[5] = m.codigo || "";            // G: Código de la partida
+                row[6] = m.descripcion || "";       // H: Nombre de la partida
+                row[16] = m.unidad || "";            // R: Unidad de medida
+                return row;
             }
 
-            // Caso B: Fila es un Registro de Metrado Real
+            // CASO B: Registro de Metrado Real (ingresado por el usuario)
+            const flagAcero = esPartidaAcero(m);
             const separador = m.elemento ? `${m.elemento.trim()} / ` : " - / ";
             const concatDesc = separador + (m.detalle || "").trim();
 
@@ -139,75 +138,78 @@ app.post('/api/export/metrados', async (req, res) => {
             let alto = m.altura_gancho;
             let parcial = m.parcial;
 
-            if (m.unidad && m.unidad.toLowerCase() === 'kg' && m.descripcion_partida && m.descripcion_partida.toLowerCase().includes('acero')) {
-                largo = m.longitud_area; alto = m.altura_gancho; ancho = "";
+            if (flagAcero) {
+                // Para acero: limpiar ancho y recalcular parcial con peso nominal
+                ancho = "";
                 const peso_diametro = validacionesPesoAcero[m.diametro] || 0;
                 const q = parseFloat(m.cantidad) || 0;
-                const v = parseFloat(m.nro_veces) || 0;
+                const v = parseFloat(m.nro_veces) || 1;
                 const l = parseFloat(largo) || 0;
                 const a = parseFloat(alto) || 0;
                 if (peso_diametro > 0) parcial = q * v * (l + a) * peso_diametro;
             }
 
             return [
-                m.nivelJerarquia || "", // B: WBS
-                m.fecha || "",          // C
-                m.frente || "",         // D
-                m.bloque || "",         // E
-                m.nivel || "",          // F
-                m.codigo_partida || "", // G
-                m.descripcion_partida || "", // H
-                concatDesc,            // I
-                m.cantidad || "",      // J
-                largo || "",           // K
-                ancho || "",           // L
-                alto || "",            // M
-                m.diametro || "",       // N
-                parcial || 0,          // O
-                m.nro_veces || "",     // P
-                m.total || 0,          // Q
-                m.unidad || "",        // R
-                m.modificacion || ""   // S
+                m.nivelJerarquia != null ? String(m.nivelJerarquia) : "", // B: NIVEL IND
+                m.fecha || "",  // C: Fecha
+                m.frente || "",  // D: Frente
+                m.bloque || "",  // E: Bloque
+                m.nivel || "",  // F: Nivel constructivo
+                m.codigo_partida || "",  // G: Código de Partida
+                m.descripcion_partida || "",  // H: Nombre de la Partida
+                concatDesc,                   // I: Elemento / Detalle
+                m.cantidad || "",  // J: Cantidad (N°)
+                largo || "",  // K: Longitud / Área
+                ancho || "",  // L: Ancho / Empalme
+                alto || "",  // M: Altura / Gancho
+                flagAcero ? (m.diametro || "") : "", // N: Acero Ø (SOLO si es acero)
+                parcial || 0,   // O: Parcial
+                m.nro_veces || "",  // P: Nro de Veces
+                m.total || 0,   // Q: Total
+                m.unidad || "",  // R: Unidades
+                m.modificacion || ""   // S: Modificaciones/Estado
             ];
         });
 
-        // 3. Inyección Masiva en la hoja clonada dentro del archivo viejo (Evitando tocar la pestaña maestra original)
+        console.log(`[INKAIA] Filas transformadas: ${values2D.length}. Primera fila:`, JSON.stringify(values2D[0]));
+
+        // ─── 4. Inyectar datos en la pestaña clonada ───────────────────────────
         const range = `'${tempSheetTitle}'!${STARTING_CELL}`;
-        console.log(`[INKAIA] Inyectando datos en ${tempSheetTitle}...`);
+        console.log(`[INKAIA] Inyectando en rango: ${range}`);
         await sheets.spreadsheets.values.batchUpdate({
             spreadsheetId: TEMPLATE_ID,
-            requestBody: { valueInputOption: 'RAW', data: [{ range: range, values: values2D }] }
-        });
-
-        // 4. Descarga Binaria usando GET nativo de Fetch pasando un Access Token y GID=tempSheetId
-        console.log(`[INKAIA] Descargando buffer intermedio de Pestaña Clona vía Fetch Auth...`);
-        const token = await auth.getAccessToken();
-        const exportUrl = `https://docs.google.com/spreadsheets/d/${TEMPLATE_ID}/export?format=xlsx&gid=${tempSheetId}`;
-
-        const exportReq = await fetch(exportUrl, {
-            headers: { Authorization: `Bearer ${token.token}` } // Use token.token for the actual access token string
-        });
-        if (!exportReq.ok) throw new Error("Google rechazó la extracción binaria fetch export.");
-        const fileBuffer = await exportReq.arrayBuffer();
-
-        // 5. Purga (Limpia la pestaña creada en el libro original)
-        console.log(`[INKAIA] Ocultando Rastro: Borrando Pestaña temp ${tempSheetId}...`);
-        await sheets.spreadsheets.batchUpdate({
-            spreadsheetId: TEMPLATE_ID,
             requestBody: {
-                requests: [{ deleteSheet: { sheetId: tempSheetId } }]
+                valueInputOption: 'RAW',
+                data: [{ range: range, values: values2D }]
             }
         });
 
-        // Enviar Response al cliente final
+        // ─── 5. Descargar el archivo Excel generado ────────────────────────────
+        console.log(`[INKAIA] Descargando Excel de Google Sheets...`);
+        const token = await auth.getAccessToken();
+        const exportUrl = `https://docs.google.com/spreadsheets/d/${TEMPLATE_ID}/export?format=xlsx&gid=${tempSheetId}`;
+        const exportReq = await fetch(exportUrl, {
+            headers: { Authorization: `Bearer ${token.token}` }
+        });
+        if (!exportReq.ok) throw new Error("Google rechazó la descarga: " + exportReq.statusText);
+        const fileBuffer = await exportReq.arrayBuffer();
+
+        // ─── 6. Borrar la pestaña temporal ─────────────────────────────────────
+        console.log(`[INKAIA] Limpiando pestaña temporal (${tempSheetId})...`);
+        await sheets.spreadsheets.batchUpdate({
+            spreadsheetId: TEMPLATE_ID,
+            requestBody: { requests: [{ deleteSheet: { sheetId: tempSheetId } }] }
+        });
+
+        // ─── 7. Enviar el Excel al cliente ─────────────────────────────────────
         const filename = `Export_Inkaia_${new Date().toISOString().replace(/[:.]/g, '-')}.xlsx`;
-        console.log(`[INKAIA] Ciclo exitoso. Lanzando ${filename} (${fileBuffer.byteLength} bytes) al Frontend.`);
+        console.log(`[INKAIA] ✅ Ciclo completo. Enviando ${filename} (${fileBuffer.byteLength} bytes)`);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
         res.send(Buffer.from(fileBuffer));
 
     } catch (err) {
-        console.error(`[INKAIA] ERROR CRÍTICO:`, err);
+        console.error(`[INKAIA] ❌ ERROR CRÍTICO:`, err);
         res.status(500).json({ error: 'Error procesando exportación', detail: err.message || err });
     }
 });
