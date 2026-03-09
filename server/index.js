@@ -78,6 +78,21 @@ app.post('/api/export/metrados', async (req, res) => {
 
         console.log(`[INKAIA] Pipeline Export — Filas recibidas: ${metrados.length}`);
 
+        // LOG DIAGNÓSTICO: Muestra la estructura de las primeras 3 filas para verificar el mapping
+        metrados.slice(0, 5).forEach((m, i) => {
+            console.log(`[DIAG] Fila[${i}]:`, JSON.stringify({
+                is_template: m.is_template,
+                es_titulo: m.es_titulo,
+                is_elemento_virtual: m.is_elemento_virtual,
+                codigo: m.codigo,
+                descripcion: m.descripcion,
+                nivel_jerarquia: m.nivel_jerarquia,
+                codigo_partida: m.codigo_partida,
+                nivelJerarquia: m.nivelJerarquia,
+                fecha: m.fecha
+            }));
+        });
+
         // ─── 1. Obtener ID de la pestaña maestra ───────────────────────────────
         const documentMeta = await sheets.spreadsheets.get({ spreadsheetId: TEMPLATE_ID });
         const targetSheet = documentMeta.data.sheets.find(s => s.properties.title === TARGET_SHEET);
@@ -106,7 +121,7 @@ app.post('/api/export/metrados', async (req, res) => {
                 const row = EMPTY18();
                 row[0] = m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : "";  // B: NIVEL IND
                 row[5] = m.codigo || "";           // G: Código WBS
-                row[7] = m.descripcion || "";      // I: Descripción del título
+                row[6] = m.descripcion || "";      // H: Descripción del título
                 return row;
             }
 
