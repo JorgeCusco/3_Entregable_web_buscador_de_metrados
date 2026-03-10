@@ -56,24 +56,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
                 .filter(m => m.codigo_partida === node.codigo)
                 .sort((a, b) => a.created_at - b.created_at);
 
-            let lastElemento: string | null | undefined = null;
-
             relatedMetrados.forEach(m => {
-                if (m.elemento && m.elemento !== lastElemento) {
-                    finalRows.push({
-                        is_template: true,
-                        es_titulo: false,
-                        is_elemento_virtual: true,
-                        codigo: '',
-                        descripcion: m.elemento,
-                        id: `virtual-${m.id}`,
-                        parcial: 0,
-                        total: 0
-                    });
-                    lastElemento = m.elemento;
-                } else if (!m.elemento && lastElemento !== null) {
-                    lastElemento = null;
-                }
                 finalRows.push({ ...m, is_template: false });
             });
         }
