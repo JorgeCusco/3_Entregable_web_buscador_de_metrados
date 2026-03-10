@@ -141,6 +141,7 @@ function App() {
             metrados={metradosFiltrados}
             onUpdate={handleUpdateMetrado}
             onDelete={handleDeleteMetrado}
+            especialidad={especialidad}
           />
         </div>
 

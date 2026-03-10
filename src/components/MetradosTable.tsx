@@ -1,13 +1,15 @@
 import React, { useMemo } from 'react';
 import type { Metrado, Partida } from '../types';
 import { Download, Trash2, Loader2 } from 'lucide-react';
-import { mockPartidas2 as mockPartidas } from '../data/mockDB_2';
+import { mockPartidas } from '../data/mockDB';
+import { mockPartidasContingencia } from '../data/mockDB_contingencia';
 import { RenderModificacionBadge } from './MetradosForm';
 
 interface MetradosTableProps {
     metrados: Metrado[];
     onUpdate?: (id: string, field: keyof Metrado, value: any) => void;
     onDelete?: (id: string) => void;
+    especialidad?: string;
 }
 
 /**
@@ -20,24 +22,23 @@ const getIndentLevel = (codigo: string): number => {
 };
 
 /**
- * Función que genera el array secuencial para el Data Grid con "Tree Pruning".
+ * Genera el array secuencial para el Data Grid con "Tree Pruning".
+ * @param activeMetrados Metrados registrados a mostrar.
+ * @param partidasCatalogo Catálogo maestro de partidas de la especialidad activa.
  */
-const getHierarchicalRows = (activeMetrados: Metrado[]): any[] => {
-    // 1. Identificar Partidas Hoja activas
+const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partida[]): any[] => {
     const activePartidaCodes = new Set(activeMetrados.map(m => m.codigo_partida));
     const activeIds = new Set<string>();
 
-    // 2. Algoritmo de Rescate de Rama (Bottom-Up)
-    mockPartidas.forEach((node: Partida) => {
+    // Algoritmo de Rescate de Rama (Bottom-Up): activa la cadena entera de ancestros
+    partidasCatalogo.forEach((node: Partida) => {
         if (!node.es_titulo && activePartidaCodes.has(node.codigo)) {
             activeIds.add(node.codigo);
-
-            // Escalar recursivamente hacia arriba
             let parentId = node.parent_id;
             while (parentId) {
-                if (activeIds.has(parentId)) break; // Ya rescatado
+                if (activeIds.has(parentId)) break;
                 activeIds.add(parentId);
-                const parent = mockPartidas.find(p => p.codigo === parentId);
+                const parent = partidasCatalogo.find(p => p.codigo === parentId);
                 parentId = parent?.parent_id;
             }
         }
@@ -45,17 +46,15 @@ const getHierarchicalRows = (activeMetrados: Metrado[]): any[] => {
 
     const finalRows: any[] = [];
 
-    // 3. Generar filas solo para los nodos rescatados
-    mockPartidas.forEach((node: Partida) => {
+    partidasCatalogo.forEach((node: Partida) => {
         if (!activeIds.has(node.codigo)) return;
 
-        // Agregar el nodo (Título o Partida Base)
         finalRows.push({ ...node, is_template: true });
 
-        // Si es partida, inyectar sus metrados
         if (!node.es_titulo) {
-            const relatedMetrados = activeMetrados.filter(m => m.codigo_partida === node.codigo);
-            relatedMetrados.sort((a, b) => a.created_at - b.created_at);
+            const relatedMetrados = activeMetrados
+                .filter(m => m.codigo_partida === node.codigo)
+                .sort((a, b) => a.created_at - b.created_at);
 
             let lastElemento: string | null | undefined = null;
 
@@ -84,8 +83,10 @@ const getHierarchicalRows = (activeMetrados: Metrado[]): any[] => {
 };
 
 
-export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onDelete }) => {
-    const rows = useMemo(() => getHierarchicalRows(metrados), [metrados]);
+export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onDelete, especialidad = 'hospital' }) => {
+    // Seleccionar el catálogo de partidas correcto según la especialidad
+    const catalogoActivo = especialidad === 'hospital' ? mockPartidas : mockPartidasContingencia;
+    const rows = useMemo(() => getHierarchicalRows(metrados, catalogoActivo), [metrados, especialidad]);
     const [isExporting, setIsExporting] = React.useState(false);
 
     // Calcular totales por partida para las filas de cabecera

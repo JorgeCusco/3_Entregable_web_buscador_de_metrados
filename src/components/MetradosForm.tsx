@@ -4,7 +4,8 @@ import { Select } from './ui/Select';
 import type { Partida } from '../types';
 import type { Especialidad } from '../App';
 import { isAcero } from '../hooks/useMetradosForm';
-import { mockPartidas2 } from '../data/mockDB_2';
+import { mockPartidas } from '../data/mockDB';
+import { mockPartidasContingencia } from '../data/mockDB_contingencia';
 import { Save } from 'lucide-react';
 
 interface MetradosFormProps {
@@ -78,7 +79,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 <div className="space-y-1">
                     <label className="text-[11px] font-bold text-slate-600 block uppercase tracking-wider">Partida (Buscador)</label>
                     <SearchCombobox
-                        partidas={mockPartidas2.filter(p => !p.especialidad || p.especialidad === especialidad)}
+                        partidas={especialidad === 'hospital' ? mockPartidas : mockPartidasContingencia}
                         value={state.partidaSeleccionada ? state.partidaSeleccionada.descripcion : ''}
                         onSelect={(p: Partida) => {
                             actions.setPartidaSeleccionada(p);
