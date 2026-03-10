@@ -93,16 +93,21 @@ app.post('/api/export/metrados', async (req, res) => {
             }));
         });
 
-        // ─── 1. Determinar Pestaña Maestra (Hospital o Contingencia) ──────────
-        // Buscar en cualquier fila que tenga la propiedad especialidad (partidas o metrados)
-        const firstMetrado = metrados.find(m => m.especialidad);
-        const especialidad = firstMetrado?.especialidad?.toLowerCase();
+        // ─── 0. Verificar Credenciales ────────────────────────────────────────
+        if (!process.env.GOOGLE_CREDENTIALS_JSON && !process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+            throw new Error("Faltan credenciales de Google (GOOGLE_CREDENTIALS_JSON o GOOGLE_APPLICATION_CREDENTIALS).");
+        }
 
-        let sheetToFind = TARGET_SHEET; // 'METRADO' (default)
+        // ─── 1. Determinar Pestaña Maestra (Hospital o Contingencia) ──────────
+        // Priorizar rows que tengan definida la especialidad (partidas o metrados)
+        const rowWithEspecialidad = metrados.find(m => m && m.especialidad);
+        const especialidad = rowWithEspecialidad?.especialidad?.toLowerCase();
+
+        let sheetToFind = TARGET_SHEET; // 'METRADO' o 'Metrado Estructuras' según .env
         if (especialidad === 'hospital') sheetToFind = 'Hospital';
         else if (especialidad === 'contingencia') sheetToFind = 'Contingencia';
 
-        console.log(`[INKAIA] Especialidad detectada: ${especialidad || 'n/a'}. Buscando pestaña: "${sheetToFind}"`);
+        console.log(`[INKAIA] Especialidad: ${especialidad || 'n/a'}. Buscando: "${sheetToFind}"`);
 
         const documentMeta = await sheets.spreadsheets.get({ spreadsheetId: TEMPLATE_ID });
         const allSheets = documentMeta.data.sheets || [];
@@ -114,7 +119,7 @@ app.post('/api/export/metrados', async (req, res) => {
 
         if (!targetSheet) {
             console.error(`[INKAIA] ❌ ERROR: No se encontró "${sheetToFind}". Disponibles: [${availableTitles.join(', ')}]`);
-            throw new Error(`No se encontró la pestaña "${sheetToFind}". Pestañas en el Excel: ${availableTitles.join(', ')}`);
+            throw new Error(`Pestaña "${sheetToFind}" no existe. Disponibles: [${availableTitles.join(', ')}]`);
         }
         const sourceSheetId = targetSheet.properties.sheetId;
 
