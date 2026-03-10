@@ -225,18 +225,30 @@ app.post('/api/export/metrados', async (req, res) => {
         // Filtrar nulos (filas virtuales y cabeceras redundantes omitidas)
         const values2D = rawRows.filter(r => r !== null);
 
-        console.log(`[INKAIA] Filas transformadas: ${values2D.length}. Primera fila:`, JSON.stringify(values2D[0]));
+        console.log(`[INKAIA] Filas transformadas: ${values2D.length}. Primera fila col count: ${values2D[0]?.length}`);
+
+        // VALIDACIÓN CRÍTICA: Google Sheets API rechaza si alguna fila no tiene el mismo número de columnas
+        const invalidRowIndex = values2D.findIndex(r => !Array.isArray(r) || r.length !== 18);
+        if (invalidRowIndex !== -1) {
+            console.error(`[INKAIA] ❌ ERROR DE FORMATO: Fila ${invalidRowIndex} tiene ${values2D[invalidRowIndex]?.length} columnas, se esperaban 18.`);
+            throw new Error(`Error interno de formato en fila ${invalidRowIndex}.`);
+        }
 
         // ─── 4. Inyectar datos en la pestaña clonada ───────────────────────────
         const range = `'${tempSheetTitle}'!${STARTING_CELL}`;
         console.log(`[INKAIA] Inyectando en rango: ${range}`);
-        await sheets.spreadsheets.values.batchUpdate({
-            spreadsheetId: TEMPLATE_ID,
-            requestBody: {
-                valueInputOption: 'RAW',
-                data: [{ range: range, values: values2D }]
-            }
-        });
+        try {
+            await sheets.spreadsheets.values.batchUpdate({
+                spreadsheetId: TEMPLATE_ID,
+                requestBody: {
+                    valueInputOption: 'RAW',
+                    data: [{ range: range, values: values2D }]
+                }
+            });
+        } catch (gErr) {
+            console.error(`[INKAIA] ❌ ERROR GOOGLE VALUES:`, gErr.response?.data || gErr.message);
+            throw new Error(`Google Sheets rechazó la escritura: ${gErr.message}`);
+        }
 
         // ─── 5. Descargar el archivo Excel generado ────────────────────────────
         console.log(`[INKAIA] Descargando Excel de Google Sheets...`);
