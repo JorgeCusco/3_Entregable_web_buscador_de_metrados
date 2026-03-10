@@ -133,21 +133,19 @@ app.post('/api/export/metrados', async (req, res) => {
             }
 
             if (rowData) {
-                // Inyectar en la hoja a partir de la columna B (índice 2)
-                // Usamos row.values para setear el rango completo
-                // Nota: rowData[0] es vacío para alinear con columna B
                 const row = worksheet.getRow(currentExcelRow);
-                for (let i = 1; i < rowData.length; i++) {
-                    if (rowData[i] !== undefined) {
-                        row.getCell(i + 1).value = rowData[i];
+                rowData.forEach((val, i) => {
+                    if (val !== undefined && val !== "") {
+                        // i+1 porque rowData[0] es vacío para alinear con Col B
+                        const cell = row.getCell(i + 1);
+                        cell.value = val;
                     }
-                }
-                row.commit();
+                });
                 currentExcelRow++;
             }
         });
 
-        // Generar Buffer
+        // Generar Buffer (ExcelJS se encarga de reestructurar el XML)
         const buffer = await workbook.xlsx.writeBuffer();
 
         const filename = `Export_Excel_Directo_${new Date().toISOString().replace(/[:.]/g, '-')}.xlsx`;
