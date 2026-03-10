@@ -13,7 +13,7 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
     const [isOpen, setIsOpen] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    // Sync external value
+    // Sincronizar valor externo (ej. cuando cambia la especialidad o se limpia desde afuera)
     useEffect(() => {
         setQuery(value);
     }, [value]);
@@ -21,13 +21,10 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
     const filteredPartidas = query.trim() === ''
         ? partidas
         : partidas.filter((partida) => {
-            // 1. Tokenización
             const searchTokens = query.toLowerCase().split(' ').filter(token => token.trim() !== '');
             const descLower = partida.descripcion.toLowerCase();
             const codLower = partida.codigo.toLowerCase();
-
-            // 2. Coincidencia Booleana (AND)
-            // Cada token DEBE estar presente en la descripción o en el código
+            // Coincidencia booleana AND: todos los tokens deben aparecer
             return searchTokens.every(token => descLower.includes(token) || codLower.includes(token));
         });
 
@@ -51,7 +48,7 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
                     placeholder="Buscar por código o descripción..."
                     value={query}
                     onFocus={(e) => {
-                        e.target.select();  // Selecciona todo al hacer foco
+                        e.target.select();  // Selecciona todo al hacer foco para edición rápida
                         setIsOpen(true);
                     }}
                     onClick={() => setIsOpen(true)}
@@ -66,7 +63,7 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
             {isOpen && (
                 <div className="absolute z-50 w-full mt-1 bg-white border border-gray-100 rounded-lg shadow-xl max-h-60 overflow-auto">
                     {filteredPartidas.length === 0 ? (
-                        <div className="p-3 text-sm text-gray-500 text-center">Niguna partida encontrada.</div>
+                        <div className="p-3 text-sm text-gray-500 text-center">Ninguna partida encontrada.</div>
                     ) : (
                         <ul className="py-1">
                             {filteredPartidas.map((partida) => (

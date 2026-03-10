@@ -143,10 +143,15 @@ app.post('/api/export/metrados', async (req, res) => {
                 return row;
             }
 
-            // CASO B: Registro de Metrado Real (ingresado por el usuario)
+            // CASO B: Registro de Metrado Real
             const flagAcero = esPartidaAcero(m);
-            const separador = m.elemento ? `${m.elemento.trim()} / ` : " - / ";
-            const concatDesc = separador + (m.detalle || "").trim();
+
+            // Concatenar Elemento + Detalle solo con '/' cuando ambos existen
+            const elemTrim = (m.elemento || '').trim();
+            const detalleTrim = (m.detalle || '').trim();
+            const concatDesc = elemTrim && detalleTrim
+                ? `${elemTrim} / ${detalleTrim}`  // Ambos presentes → con separador
+                : elemTrim || detalleTrim;          // Solo uno → sin separador
 
             let largo = m.longitud_area;
             let ancho = m.ancho_empalme;
@@ -171,8 +176,8 @@ app.post('/api/export/metrados', async (req, res) => {
                 m.bloque || "",  // E: Bloque
                 m.nivel || "",  // F: Nivel constructivo
                 m.codigo_partida || "",  // G: Código de Partida
-                m.descripcion_partida || "",  // H: Nombre de la Partida
-                concatDesc,                   // I: Elemento / Detalle
+                m.descripcion_partida || m.codigo_partida || "",  // H: Nombre de la Partida (nunca vacío)
+                concatDesc,                   // I: Elemento / Detalle (sin separador si falta uno)
                 m.cantidad || "",  // J: Cantidad (N°)
                 largo || "",  // K: Longitud / Área
                 ancho || "",  // L: Ancho / Empalme
