@@ -56,7 +56,24 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
                 .filter(m => m.codigo_partida === node.codigo)
                 .sort((a, b) => a.created_at - b.created_at);
 
+            let lastElemento: string | null | undefined = null;
+
             relatedMetrados.forEach(m => {
+                if (m.elemento && m.elemento !== lastElemento) {
+                    finalRows.push({
+                        is_template: true,
+                        es_titulo: false,
+                        is_elemento_virtual: true,
+                        codigo: '',
+                        descripcion: m.elemento,
+                        id: `virtual-${m.id}`,
+                        parcial: 0,
+                        total: 0
+                    });
+                    lastElemento = m.elemento;
+                } else if (!m.elemento && lastElemento !== null) {
+                    lastElemento = null;
+                }
                 finalRows.push({ ...m, is_template: false });
             });
         }
@@ -195,12 +212,12 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 );
                             }
 
-                            // CASO 2.5: Fila Virtual de Elemento
+                            // CASO 2.5: Fila Virtual de Elemento (Agrupador)
                             if (r.is_template && r.is_elemento_virtual) {
                                 return (
-                                    <tr key={r.id} className="bg-white border-b border-slate-100 font-bold group">
+                                    <tr key={r.id} className="bg-slate-50/50 border-b border-slate-100 group">
                                         <td className="w-[90px] min-w-[90px] px-3 py-1 text-left"></td>
-                                        <td className="px-3 py-1 text-slate-800 text-[11px] uppercase tracking-wide" colSpan={9} style={{ paddingLeft: '55px' }}>
+                                        <td className="px-3 py-1 text-slate-600 text-[11px] font-bold uppercase tracking-wider" colSpan={9} style={{ paddingLeft: '55px' }}>
                                             {r.descripcion}
                                         </td>
                                     </tr>
@@ -265,7 +282,6 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     </td>
                                     <td className="px-3 py-0.5" style={{ paddingLeft: '55px' }}>
                                         <div className="flex items-center gap-1 w-full">
-                                            {r.elemento && <span className="text-blue-400 font-black text-[10px]">↳</span>}
                                             {r.diametro && <span className="text-orange-600 font-bold tracking-wider text-[9px] bg-orange-100/80 px-1.5 py-0.5 rounded shadow-sm border border-orange-200 shrink-0">Φ {r.diametro}</span>}
                                             <input
                                                 type="text"
