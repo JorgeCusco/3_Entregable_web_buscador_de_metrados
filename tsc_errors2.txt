@@ -1,8 +1,0 @@
-﻿src/App.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
-src/App.tsx(5,10): error TS1484: 'Metrado' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
-src/components/MetradosForm.tsx(3,10): error TS1484: 'Partida' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
-src/components/MetradosTable.tsx(2,10): error TS1484: 'Metrado' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
-src/components/ui/SearchCombobox.tsx(3,10): error TS1484: 'Partida' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
-src/data/mockDB.ts(1,10): error TS1484: 'Partida' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
-src/hooks/useMetradosForm.ts(2,10): error TS1484: 'Partida' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
-src/hooks/useMetradosForm.ts(2,19): error TS1484: 'Metrado' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.

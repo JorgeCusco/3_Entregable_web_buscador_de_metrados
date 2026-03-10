@@ -42,3 +42,6 @@ venv/
 # Build
 dist/
 build/
+
+# Carpeta de archivos archivados (no va al repo)
+_archivo/
