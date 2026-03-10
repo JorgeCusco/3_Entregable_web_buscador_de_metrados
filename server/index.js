@@ -93,10 +93,24 @@ app.post('/api/export/metrados', async (req, res) => {
             }));
         });
 
-        // ─── 1. Obtener ID de la pestaña maestra ───────────────────────────────
+        // ─── 1. Determinar Pestaña Maestra (Hospital o Contingencia) ──────────
+        const firstMetrado = metrados.find(m => m.especialidad);
+        const especialidad = firstMetrado?.especialidad?.toLowerCase();
+
+        let sheetToFind = TARGET_SHEET; // Default 'METRADO' from env
+        if (especialidad === 'hospital') sheetToFind = 'Hospital';
+        if (especialidad === 'contingencia') sheetToFind = 'Contingencia';
+
+        console.log(`[INKAIA] Especialidad detectada: ${especialidad || 'n/a'}. Buscando pestaña: "${sheetToFind}"`);
+
         const documentMeta = await sheets.spreadsheets.get({ spreadsheetId: TEMPLATE_ID });
-        const targetSheet = documentMeta.data.sheets.find(s => s.properties.title === TARGET_SHEET);
-        if (!targetSheet) throw new Error("No se encontró la pestaña maestra: " + TARGET_SHEET);
+        const targetSheet = documentMeta.data.sheets.find(s =>
+            s.properties.title.trim().toLowerCase() === sheetToFind.toLowerCase()
+        );
+
+        if (!targetSheet) {
+            throw new Error(`No se encontró la pestaña maestra: "${sheetToFind}". Verifique el nombre en Google Sheets.`);
+        }
         const sourceSheetId = targetSheet.properties.sheetId;
 
         // ─── 2. Clonar pestaña dentro del mismo Spreadsheet ────────────────────
