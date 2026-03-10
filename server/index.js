@@ -131,9 +131,13 @@ app.post('/api/export/metrados', async (req, res) => {
                 return null;
             }
 
-            // CASO A3: Cabecera de Partida (línea azul, nodo hoja del presupuesto)
-            // is_template=true, es_titulo=false, is_elemento_virtual=undefined
+            // CASO A3: Cabecera de Partida (línea azul / nodo hoja)
             if (m.is_template && !m.es_titulo) {
+                // OPTIMIZACIÓN: Si la partida tiene metrados reales registrados, OMITIMOS esta fila de cabecera
+                // porque los metrados individuales ya llevan la descripción de la partida.
+                const hasRealMetrados = metrados.some(item => !item.is_template && item.codigo_partida === m.codigo);
+                if (hasRealMetrados) return null;
+
                 const row = EMPTY18();
                 row[0] = m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : "";  // B: NIVEL IND
                 row[5] = m.codigo || "";            // G: Código de la partida
@@ -190,19 +194,8 @@ app.post('/api/export/metrados', async (req, res) => {
             ];
         });
 
-        // Filtrar nulos (filas virtuales omitidas) y deduplicar cabeceras de partida con mismo código
-        const seenPartidaHeaders = new Set();
-        const values2D = rawRows
-            .filter(r => r !== null)
-            .filter(r => {
-                // Cabecera de partida: tiene código (col[5]) pero NO tiene fecha (col[1])
-                const esCabeceraPartida = r[5] && !r[1];
-                if (esCabeceraPartida) {
-                    if (seenPartidaHeaders.has(r[5])) return false; // Repetida → skip
-                    seenPartidaHeaders.add(r[5]);
-                }
-                return true;
-            });
+        // Filtrar nulos (filas virtuales y cabeceras redundantes omitidas)
+        const values2D = rawRows.filter(r => r !== null);
 
         console.log(`[INKAIA] Filas transformadas: ${values2D.length}. Primera fila:`, JSON.stringify(values2D[0]));
 
