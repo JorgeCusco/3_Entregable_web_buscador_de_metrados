@@ -115,6 +115,11 @@ app.post('/api/export/metrados', async (req, res) => {
         // Todas deben producir EXACTAMENTE 18 columnas para que Google Sheets acepte el batchUpdate.
         const EMPTY18 = () => ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 
+        // OPTIMIZACIÓN O(N): Pre-calcular el conjunto de códigos de partidas que tienen metrados reales
+        const codesWithMetrados = new Set(
+            metrados.filter(m => !m.is_template).map(m => m.codigo_partida)
+        );
+
         const rawRows = metrados.map(m => {
             // CASO A: Título del presupuesto (OE.1, OE.1.1, ...) — is_template=true, es_titulo=true
             if (m.is_template && m.es_titulo) {
@@ -133,10 +138,9 @@ app.post('/api/export/metrados', async (req, res) => {
 
             // CASO A3: Cabecera de Partida (línea azul / nodo hoja)
             if (m.is_template && !m.es_titulo) {
-                // OPTIMIZACIÓN: Si la partida tiene metrados reales registrados, OMITIMOS esta fila de cabecera
+                // Si la partida tiene metrados reales registrados, OMITIMOS esta fila de cabecera
                 // porque los metrados individuales ya llevan la descripción de la partida.
-                const hasRealMetrados = metrados.some(item => !item.is_template && item.codigo_partida === m.codigo);
-                if (hasRealMetrados) return null;
+                if (codesWithMetrados.has(m.codigo)) return null;
 
                 const row = EMPTY18();
                 row[0] = m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : "";  // B: NIVEL IND

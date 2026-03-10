@@ -282,6 +282,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     </td>
                                     <td className="px-3 py-0.5" style={{ paddingLeft: '55px' }}>
                                         <div className="flex items-center gap-1 w-full">
+                                            {r.elemento && <span className="text-blue-400 font-black text-[10px]">↳</span>}
                                             {r.diametro && <span className="text-orange-600 font-bold tracking-wider text-[9px] bg-orange-100/80 px-1.5 py-0.5 rounded shadow-sm border border-orange-200 shrink-0">Φ {r.diametro}</span>}
                                             <input
                                                 type="text"
