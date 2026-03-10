@@ -98,30 +98,34 @@ app.post('/api/export/metrados', async (req, res) => {
             throw new Error("Faltan credenciales de Google (GOOGLE_CREDENTIALS_JSON o GOOGLE_APPLICATION_CREDENTIALS).");
         }
 
-        // ─── 1. Determinar Pestaña Maestra (Hospital o Contingencia) ──────────
-        // Priorizar rows que tengan definida la especialidad (partidas o metrados)
-        const rowWithEspecialidad = metrados.find(m => m && m.especialidad);
-        const especialidad = rowWithEspecialidad?.especialidad?.toLowerCase();
+        // ─── 1. Determinar Pestaña Maestra (METRADO) ──────────────────────────
+        // El usuario usa la plantilla "METRADO_PLANTILLA_2" que tiene la pestaña principal "METRADO"
+        // o "Metrado Estructuras". Automáticamente buscaremos la más adecuada.
 
-        let sheetToFind = TARGET_SHEET; // 'METRADO' o 'Metrado Estructuras' según .env
-        if (especialidad === 'hospital') sheetToFind = 'Hospital';
-        else if (especialidad === 'contingencia') sheetToFind = 'Contingencia';
+        let sheetToFind = TARGET_SHEET; // 'METRADO' por defecto en .env
 
-        console.log(`[INKAIA] Especialidad: ${especialidad || 'n/a'}. Buscando: "${sheetToFind}"`);
+        console.log(`[INKAIA] Buscando pestaña maestra: "${sheetToFind}"`);
 
         const documentMeta = await sheets.spreadsheets.get({ spreadsheetId: TEMPLATE_ID });
         const allSheets = documentMeta.data.sheets || [];
         const availableTitles = allSheets.map(s => s.properties.title);
 
-        const targetSheet = allSheets.find(s =>
-            s.properties.title.trim().toLowerCase() === sheetToFind.toLowerCase()
-        );
+        // Búsqueda inteligente: 
+        // 1. Intentar el TARGET_SHEET exacto (METRADO)
+        // 2. Si no, intentar "Metrado Estructuras" (nombre común en sus archivos)
+        // 3. Si no, usar la primera pestaña que encuentre que no sea un resumen.
+        const targetSheet = allSheets.find(s => s.properties.title.trim().toLowerCase() === sheetToFind.toLowerCase())
+            || allSheets.find(s => s.properties.title.includes('METRADO'))
+            || allSheets.find(s => s.properties.title.includes('Estructuras'))
+            || allSheets[0];
 
         if (!targetSheet) {
-            console.error(`[INKAIA] ❌ ERROR: No se encontró "${sheetToFind}". Disponibles: [${availableTitles.join(', ')}]`);
-            throw new Error(`Pestaña "${sheetToFind}" no existe. Disponibles: [${availableTitles.join(', ')}]`);
+            throw new Error(`No se encontró ninguna pestaña de metrado. Disponibles: [${availableTitles.join(', ')}]`);
         }
+
+        const finalSheetTitle = targetSheet.properties.title;
         const sourceSheetId = targetSheet.properties.sheetId;
+        console.log(`[INKAIA] ✅ Pestaña origen seleccionada: "${finalSheetTitle}" (ID: ${sourceSheetId})`);
 
         // ─── 2. Clonar pestaña dentro del mismo Spreadsheet ────────────────────
         console.log(`[INKAIA] Clonando pestaña (GID: ${sourceSheetId})...`);
