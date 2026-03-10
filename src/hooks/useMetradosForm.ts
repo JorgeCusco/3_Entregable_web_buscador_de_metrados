@@ -79,7 +79,7 @@ export const useMetradosForm = () => {
     }, [parcial, nroVeces]);
 
     const limpiarCampos = () => {
-        setPartidaSeleccionada(null);
+        // La partida seleccionada se mantiene para facilitar el ingreso de múltiples metrados
         // NO BORRAMOS EL ELEMENTO (para que persista y acelere el ingreso de datos)
         setDetalle('');
         setCantidad('');

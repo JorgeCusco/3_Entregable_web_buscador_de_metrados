@@ -50,6 +50,10 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
                     className="w-full pl-10 pr-10 py-2.5 rounded-lg border border-gray-200 bg-white shadow-sm focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all text-sm outline-none font-medium"
                     placeholder="Buscar por código o descripción..."
                     value={query}
+                    onFocus={(e) => {
+                        e.target.select();  // Selecciona todo al hacer foco
+                        setIsOpen(true);
+                    }}
                     onClick={() => setIsOpen(true)}
                     onChange={(e) => {
                         setQuery(e.target.value);
