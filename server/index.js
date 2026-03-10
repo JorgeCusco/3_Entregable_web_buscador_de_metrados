@@ -276,7 +276,11 @@ app.post('/api/export/metrados', async (req, res) => {
 
     } catch (err) {
         console.error(`[INKAIA] ❌ ERROR CRÍTICO:`, err);
-        res.status(500).json({ error: 'Error procesando exportación', detail: err.message || err });
+        // Error descriptivo para el cliente
+        res.status(500).json({
+            error: err.message || 'Error desconocido en el servidor',
+            detail: err.stack || err
+        });
     }
 });
 
