@@ -110,17 +110,20 @@ app.post('/api/export/metrados', async (req, res) => {
         const allSheets = documentMeta.data.sheets || [];
         const availableTitles = allSheets.map(s => s.properties.title);
 
-        // Búsqueda inteligente: 
-        // 1. Intentar el TARGET_SHEET exacto (METRADO)
-        // 2. Si no, intentar "Metrado Estructuras" (nombre común en sus archivos)
-        // 3. Si no, usar la primera pestaña que encuentre que no sea un resumen.
-        const targetSheet = allSheets.find(s => s.properties.title.trim().toLowerCase() === sheetToFind.toLowerCase())
-            || allSheets.find(s => s.properties.title.includes('METRADO'))
-            || allSheets.find(s => s.properties.title.includes('Estructuras'))
+        console.log(`[INKAIA] Pestañas disponibles en Drive: [${availableTitles.join(', ')}]`);
+
+        // Búsqueda Ultra-Robusta (insensible a mayúsculas/espacios)
+        const findSheet = (name) => allSheets.find(s =>
+            s.properties.title.trim().toUpperCase() === name.trim().toUpperCase()
+        );
+
+        const targetSheet = findSheet(sheetToFind)
+            || allSheets.find(s => s.properties.title.toUpperCase().includes('METRADO'))
+            || allSheets.find(s => s.properties.title.toUpperCase().includes('ESTRUCTURAS'))
             || allSheets[0];
 
         if (!targetSheet) {
-            throw new Error(`No se encontró ninguna pestaña de metrado. Disponibles: [${availableTitles.join(', ')}]`);
+            throw new Error(`Google no devolvió ninguna pestaña. Disponibles: [${availableTitles.join(', ')}]`);
         }
 
         const finalSheetTitle = targetSheet.properties.title;
