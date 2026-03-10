@@ -115,7 +115,7 @@ app.post('/api/export/metrados', async (req, res) => {
         // Todas deben producir EXACTAMENTE 18 columnas para que Google Sheets acepte el batchUpdate.
         const EMPTY18 = () => ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 
-        const values2D = metrados.map(m => {
+        const rawRows = metrados.map(m => {
             // CASO A: Título del presupuesto (OE.1, OE.1.1, ...) — is_template=true, es_titulo=true
             if (m.is_template && m.es_titulo) {
                 const row = EMPTY18();
@@ -125,11 +125,10 @@ app.post('/api/export/metrados', async (req, res) => {
                 return row;
             }
 
-            // CASO A2: Sub-agrupador de Elemento (ej. "Viga BV-206") — virtual, no es metrado
+            // CASO A2: Sub-agrupador de Elemento virtual (ej. "ACERO", "Viga BV-206")
+            // → Se omite del export: la descripción de cada fila de metrado ya incluye el elemento.
             if (m.is_template && m.is_elemento_virtual) {
-                const row = EMPTY18();
-                row[7] = m.descripcion || "";       // I: Nombre del elemento
-                return row;
+                return null;
             }
 
             // CASO A3: Cabecera de Partida (línea azul, nodo hoja del presupuesto)
@@ -190,6 +189,20 @@ app.post('/api/export/metrados', async (req, res) => {
                 m.modificacion || ""   // S: Modificaciones/Estado
             ];
         });
+
+        // Filtrar nulos (filas virtuales omitidas) y deduplicar cabeceras de partida con mismo código
+        const seenPartidaHeaders = new Set();
+        const values2D = rawRows
+            .filter(r => r !== null)
+            .filter(r => {
+                // Cabecera de partida: tiene código (col[5]) pero NO tiene fecha (col[1])
+                const esCabeceraPartida = r[5] && !r[1];
+                if (esCabeceraPartida) {
+                    if (seenPartidaHeaders.has(r[5])) return false; // Repetida → skip
+                    seenPartidaHeaders.add(r[5]);
+                }
+                return true;
+            });
 
         console.log(`[INKAIA] Filas transformadas: ${values2D.length}. Primera fila:`, JSON.stringify(values2D[0]));
 
