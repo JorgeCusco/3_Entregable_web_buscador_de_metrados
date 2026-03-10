@@ -94,22 +94,27 @@ app.post('/api/export/metrados', async (req, res) => {
         });
 
         // ─── 1. Determinar Pestaña Maestra (Hospital o Contingencia) ──────────
+        // Buscar en cualquier fila que tenga la propiedad especialidad (partidas o metrados)
         const firstMetrado = metrados.find(m => m.especialidad);
         const especialidad = firstMetrado?.especialidad?.toLowerCase();
 
-        let sheetToFind = TARGET_SHEET; // Default 'METRADO' from env
+        let sheetToFind = TARGET_SHEET; // 'METRADO' (default)
         if (especialidad === 'hospital') sheetToFind = 'Hospital';
-        if (especialidad === 'contingencia') sheetToFind = 'Contingencia';
+        else if (especialidad === 'contingencia') sheetToFind = 'Contingencia';
 
         console.log(`[INKAIA] Especialidad detectada: ${especialidad || 'n/a'}. Buscando pestaña: "${sheetToFind}"`);
 
         const documentMeta = await sheets.spreadsheets.get({ spreadsheetId: TEMPLATE_ID });
-        const targetSheet = documentMeta.data.sheets.find(s =>
+        const allSheets = documentMeta.data.sheets || [];
+        const availableTitles = allSheets.map(s => s.properties.title);
+
+        const targetSheet = allSheets.find(s =>
             s.properties.title.trim().toLowerCase() === sheetToFind.toLowerCase()
         );
 
         if (!targetSheet) {
-            throw new Error(`No se encontró la pestaña maestra: "${sheetToFind}". Verifique el nombre en Google Sheets.`);
+            console.error(`[INKAIA] ❌ ERROR: No se encontró "${sheetToFind}". Disponibles: [${availableTitles.join(', ')}]`);
+            throw new Error(`No se encontró la pestaña "${sheetToFind}". Pestañas en el Excel: ${availableTitles.join(', ')}`);
         }
         const sourceSheetId = targetSheet.properties.sheetId;
 
