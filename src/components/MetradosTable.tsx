@@ -113,7 +113,17 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         try {
             // El backend se encargará de cruzar la data cruda con la maestría de la DB, 
             // ordenar WBS y escupir la plantilla binaria.
-            let apiUrl = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3001`;
+            // DETERMINAR URL DEL BACKEND
+            let apiUrl = import.meta.env.VITE_API_URL;
+
+            if (!apiUrl) {
+                // Si no hay variable de entorno, decidir según el entorno
+                const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                apiUrl = isLocal
+                    ? `http://${window.location.hostname}:3001`
+                    : 'https://inkaia-backend.onrender.com'; // URL de producción en Render
+            }
+
             // Limpiar barra diagonal final si existe
             if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1);
 
