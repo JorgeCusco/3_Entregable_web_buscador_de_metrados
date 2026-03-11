@@ -19,7 +19,7 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 
 // Ruta a la plantilla local
-const TEMPLATE_PATH = path.join(__dirname, '..', 'METRADO_PLANTILLA_2.xlsx');
+const TEMPLATE_PATH = path.join(__dirname, '..', 'METRADO_PLANTILLA_3.xlsx');
 const STARTING_ROW = 8; // B8 corresponde a Fila 8
 
 app.get('/', (req, res) => {
@@ -64,15 +64,11 @@ app.post('/api/export/metrados', async (req, res) => {
         const workbook = new ExcelJS.Workbook();
         await workbook.xlsx.readFile(TEMPLATE_PATH);
 
-        // Determinar qué pestaña base usar según el proyecto (Hospital o Contingencia)
-        let sheetToFind = 'METRADO'; // Default
-        if (proyecto === 'hospital') sheetToFind = 'Hospital';
-        else if (proyecto === 'contingencia') sheetToFind = 'Contingencia';
-
-        // Seleccionar pestaña
-        let worksheet = workbook.getWorksheet(sheetToFind)
-            || workbook.getWorksheet('Metrado Estructuras') // Fallback si la pestaña específica no existe
-            || workbook.worksheets[0]; // Último fallback a la primera pestaña
+        // Determinar qué pestaña base usar. Priorizamos 'METRADO' o 'Hospital'/'Contingencia'
+        let worksheet = workbook.getWorksheet('METRADO')
+            || workbook.getWorksheet(proyecto === 'hospital' ? 'Hospital' : 'Contingencia')
+            || workbook.getWorksheet('Metrado Estructuras')
+            || workbook.worksheets[0];
 
         if (!worksheet) throw new Error("No se encontró una pestaña válida en la plantilla.");
 
@@ -83,6 +79,14 @@ app.post('/api/export/metrados', async (req, res) => {
             metrados.filter(m => !m.is_template).map(m => m.codigo_partida)
         );
 
+        // Pre-calcular sumas por partida para la fila "Total 2"
+        const partidaTotals = {};
+        metrados.forEach(m => {
+            if (!m.is_template) {
+                partidaTotals[m.codigo_partida] = (partidaTotals[m.codigo_partida] || 0) + (m.total || 0);
+            }
+        });
+
         // Transformar y filtrar filas
         let currentExcelRow = STARTING_ROW;
 
@@ -91,16 +95,28 @@ app.post('/api/export/metrados', async (req, res) => {
 
             // CASO A: Título
             if (m.is_template && m.es_titulo) {
-                rowData = ["", m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : "", "", "", "", "", m.codigo || "", m.descripcion || ""];
+                rowData = new Array(22).fill("");
+                rowData[1] = m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : ""; // B
+                rowData[8] = m.codigo || ""; // I
+                rowData[9] = m.descripcion || ""; // J
+                rowData[21] = m.modificacion || ""; // V
             }
             // CASO A2: Elemento virtual (se omite)
             else if (m.is_template && m.is_elemento_virtual) {
                 return;
             }
-            // CASO A3: Cabecera Partida
             else if (m.is_template && !m.es_titulo) {
-                if (codesWithMetrados.has(m.codigo)) return;
-                rowData = ["", m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : "", "", "", "", "", m.codigo || "", m.descripcion || "", "", "", "", "", "", "", "", "", m.unidad || ""];
+                // Si es una fila de cabecera (maestra) y tiene metrados reales, mostramos el total 2 aquí
+                const totalSum = partidaTotals[m.codigo] || 0;
+                const hasMetrados = codesWithMetrados.has(m.codigo);
+
+                rowData = new Array(22).fill("");
+                rowData[1] = m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : ""; // B
+                rowData[8] = m.codigo || ""; // I
+                rowData[9] = m.descripcion || ""; // J
+                rowData[19] = hasMetrados ? totalSum : ""; // T (Total 2)
+                rowData[20] = m.unidad || ""; // U (Unidad)
+                rowData[21] = m.modificacion || ""; // V
             }
             // CASO B: Registro Real
             else if (!m.is_template) {
@@ -115,34 +131,34 @@ app.post('/api/export/metrados', async (req, res) => {
                     if (peso > 0) parcial = (parseFloat(m.cantidad) || 0) * (parseFloat(m.nro_veces) || 1) * ((parseFloat(m.longitud_area) || 0) + (parseFloat(m.altura_gancho) || 0)) * peso;
                 }
 
-                rowData = [
-                    "", // Col A (vacia si empezamos en B)
-                    m.nivelJerarquia != null ? String(m.nivelJerarquia) : "", // B
-                    m.fecha || "", // C
-                    m.frente || "", // D
-                    m.bloque || "", // E
-                    m.nivel || "", // F
-                    m.codigo_partida || "", // G
-                    m.descripcion_partida || m.codigo_partida || "", // H
-                    concatDesc, // I
-                    m.cantidad || "", // J
-                    m.longitud_area || "", // K
-                    flagAcero ? "" : (m.ancho_empalme || ""), // L
-                    m.altura_gancho || "", // M
-                    flagAcero ? (m.diametro || "") : "", // N
-                    parcial || 0, // O
-                    m.nro_veces || "", // P
-                    m.total || 0, // Q
-                    m.unidad || "", // R
-                    m.modificacion || "" // S
-                ];
+                rowData = new Array(22).fill("");
+                rowData[1] = m.nivelJerarquia != null ? String(m.nivelJerarquia) : ""; // B
+                rowData[2] = m.fecha || ""; // C
+                rowData[3] = m.especialidad || ""; // D
+                rowData[4] = m.frente || ""; // E
+                rowData[5] = m.bloque || ""; // F
+                rowData[6] = m.nivel || ""; // G
+                rowData[7] = m.cuadrilla || ""; // H
+                rowData[8] = m.codigo_partida || ""; // I
+                rowData[9] = m.descripcion_partida || m.codigo_partida || ""; // J
+                rowData[10] = concatDesc; // K
+                rowData[11] = m.cantidad || ""; // L
+                rowData[12] = m.longitud_area || ""; // M
+                rowData[13] = flagAcero ? "" : (m.ancho_empalme || ""); // N
+                rowData[14] = m.altura_gancho || ""; // O
+                rowData[15] = parcial || 0; // P
+                rowData[16] = m.nro_veces || ""; // Q
+                rowData[17] = flagAcero ? (m.diametro || "") : ""; // R
+                rowData[18] = m.total || 0; // S
+                rowData[21] = m.modificacion || ""; // V
             }
 
             if (rowData) {
                 const row = worksheet.getRow(currentExcelRow);
                 rowData.forEach((val, i) => {
-                    if (val !== undefined && val !== "") {
-                        // i+1 porque rowData[0] es vacío para alinear con Col B
+                    // Escribimos siempre a partir de Col B (i=1) si el valor no es undefined
+                    if (i === 0) return; // Saltamos Col A
+                    if (val !== undefined) {
                         const cell = row.getCell(i + 1);
                         cell.value = val;
                     }

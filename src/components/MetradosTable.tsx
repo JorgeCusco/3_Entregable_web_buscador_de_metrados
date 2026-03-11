@@ -238,6 +238,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             if (r.is_template && !r.es_titulo) {
                                 const total = partidaTotals[r.codigo] || 0;
                                 const hasMetrados = total > 0;
+
                                 return (
                                     <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors`}>
                                         <td className="w-[90px] min-w-[90px] px-3 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>

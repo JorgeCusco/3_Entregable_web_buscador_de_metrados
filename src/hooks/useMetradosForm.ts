@@ -34,6 +34,7 @@ export const useMetradosForm = () => {
     const [frente, setFrente] = useState<string>('');
     const [bloque, setBloque] = useState<string>('');
     const [nivel, setNivel] = useState<string>('');
+    const [cuadrilla, setCuadrilla] = useState<string>('C1');
 
     const [partidaSeleccionada, setPartidaSeleccionada] = useState<Partida | null>(null);
     const [elemento, setElemento] = useState<string>('');
@@ -98,7 +99,7 @@ export const useMetradosForm = () => {
 
         const nuevoMetrado: Metrado = {
             id: Date.now().toString(),
-            fecha, frente, bloque, nivel,
+            fecha, frente, bloque, nivel, cuadrilla,
             codigo_partida: partidaSeleccionada.codigo,
             descripcion_partida: partidaSeleccionada.descripcion,
             elemento,
@@ -130,13 +131,14 @@ export const useMetradosForm = () => {
             fecha, frente, bloque, nivel,
             partidaSeleccionada, elemento, detalle, diametro,
             cantidad, longitud, ancho, altura, nroVeces,
-            parcial, total, especialidadSeleccionada
+            parcial, total, especialidadSeleccionada, cuadrilla
         },
         actions: {
             setFecha, setFrente, setBloque, setNivel,
             setPartidaSeleccionada, setElemento, setDetalle, setDiametro,
             setCantidad, setLongitud, setAncho, setAltura, setNroVeces,
             setEspecialidadSeleccionada,
+            setCuadrilla,
             limpiarCampos, procesarRegistro
         }
     };

@@ -7,7 +7,7 @@ import { isAcero } from '../hooks/useMetradosForm';
 import { mockPartidas } from '../data/mockDB';
 import { mockPartidasContingencia } from '../data/mockDB_contingencia';
 import { ESPECIALIDADES_PARTIDA } from '../constants/especialidades';
-import { Save, Filter } from 'lucide-react';
+import { Save } from 'lucide-react';
 
 interface MetradosFormProps {
     state: any;
@@ -61,142 +61,145 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
     };
 
     return (
-        <div className="glass-panel rounded-2xl p-6 h-full flex flex-col">
-            <div className="flex items-center justify-between mb-5 border-b border-gray-100 pb-3">
-                <h2 className="text-lg font-bold text-gray-800 tracking-tight">Registro de Metrados</h2>
+        <div className="glass-panel rounded-2xl p-4 h-full flex flex-col gap-3">
+            {/* Cabecera Compacta */}
+            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                <h2 className="text-sm font-bold text-gray-800 tracking-tight uppercase flex items-center gap-2">
+                    <div className="w-1.5 h-4 bg-blue-600 rounded-full" /> Registro de Metrados
+                </h2>
                 <div className="flex items-center gap-3">
                     <input
                         type="date"
                         value={state.fecha}
                         onChange={e => actions.setFecha(e.target.value)}
-                        className="text-[11px] font-mono font-medium text-slate-500 bg-transparent border-none p-0 focus:ring-0 cursor-pointer outline-none"
+                        className="text-[10px] font-mono font-bold text-slate-500 bg-transparent border-none p-0 focus:ring-0 cursor-pointer outline-none"
                     />
-                    <span className="text-[9px] bg-slate-100 text-slate-600 px-2.5 py-1 rounded font-bold uppercase tracking-widest border border-slate-200">v4.0</span>
+                    <span className="text-[9px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold border border-slate-200">v4.1</span>
                 </div>
             </div>
 
             <div className="space-y-4 flex-grow">
-                {/* ─── FILTRO POR ESPECIALIDAD (OE Mapping) ─── */}
-                <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-600 block uppercase tracking-wider flex items-center gap-1.5">
-                        <Filter className="w-3 h-3 text-blue-500" /> Especialidad (Filtro OE)
-                    </label>
-                    <Select
-                        value={state.especialidadSeleccionada}
-                        onSelect={val => {
-                            actions.setEspecialidadSeleccionada(val);
-                            actions.setPartidaSeleccionada(null);
-                        }}
-                        options={ESPECIALIDADES_PARTIDA.map(esp => esp.nombre)}
-                        className="bg-white/50 backdrop-blur-sm border-slate-200 hover:border-blue-300 transition-colors"
-                    />
-                </div>
+                {/* ─── PASO 1: ESPECIALIDAD Y BÚSQUEDA ─── */}
+                <div className="space-y-3">
+                    <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Especialidad (Filtro OE)</label>
+                        <Select
+                            value={state.especialidadSeleccionada}
+                            onSelect={val => {
+                                actions.setEspecialidadSeleccionada(val);
+                                actions.setPartidaSeleccionada(null);
+                            }}
+                            options={ESPECIALIDADES_PARTIDA.map(esp => esp.nombre)}
+                            className="bg-white/50"
+                        />
+                    </div>
 
-                {/* BUSCADOR Y METADATOS */}
-                <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-600 block uppercase tracking-wider">Partida (Buscador)</label>
-                    <SearchCombobox
-                        partidas={(proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia).filter(p => {
-                            if (state.especialidadSeleccionada === 'TODAS') return true;
-                            const mapping = ESPECIALIDADES_PARTIDA.find(e => e.nombre === state.especialidadSeleccionada);
-                            if (!mapping) return true;
-                            return mapping.prefijos.some(pref => p.codigo.startsWith(pref));
-                        })}
-                        value={state.partidaSeleccionada ? state.partidaSeleccionada.descripcion : ''}
-                        onSelect={(p: Partida) => {
-                            actions.setPartidaSeleccionada(p);
-                            actions.setCantidad(1);
-                            // En aceros no se asume largo.
-                            actions.setLongitud('');
-                            actions.setAncho('');
-                            actions.setAltura('');
-                        }}
-                    />
+                    <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Partida (Buscador)</label>
+                        <SearchCombobox
+                            partidas={(proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia).filter(p => {
+                                if (state.especialidadSeleccionada === 'TODAS') return true;
+                                const mapping = ESPECIALIDADES_PARTIDA.find(e => e.nombre === state.especialidadSeleccionada);
+                                if (!mapping) return true;
+                                return mapping.prefijos.some(pref => p.codigo.startsWith(pref));
+                            })}
+                            value={state.partidaSeleccionada ? state.partidaSeleccionada.descripcion : ''}
+                            onSelect={(p: Partida) => {
+                                actions.setPartidaSeleccionada(p);
+                                actions.setCantidad(1);
+                                actions.setLongitud('');
+                                actions.setAncho('');
+                                actions.setAltura('');
+                            }}
+                        />
+                    </div>
+
                     {state.partidaSeleccionada && (
-                        <div className="px-1 pt-1.5 pb-0.5 flex items-center justify-between">
-                            <span className="text-[10px] text-slate-500 font-mono tracking-wider">
-                                CÓDIGO: <strong className="text-slate-700">{state.partidaSeleccionada.codigo}</strong> <span className="mx-2 text-slate-300">|</span> UNIDAD: <strong className="text-slate-700">{state.partidaSeleccionada.unidad}</strong>
+                        <div className="bg-blue-50/50 px-3 py-2 rounded-xl border border-blue-100 flex items-center justify-between shadow-sm animate-in fade-in slide-in-from-top-1">
+                            <span className="text-[10px] text-blue-700 font-mono tracking-wider font-black">
+                                <span className="text-blue-400 opacity-50 mr-1">ID:</span> {state.partidaSeleccionada.codigo}
+                                <span className="mx-3 opacity-20">|</span>
+                                <span className="text-blue-400 opacity-50 mr-1">UNIDAD:</span> {state.partidaSeleccionada.unidad}
                             </span>
                             {RenderModificacionBadge(state.partidaSeleccionada.modificacion)}
                         </div>
                     )}
                 </div>
 
-                <div className="h-px bg-slate-100 my-1" />
+                <div className="h-px bg-slate-100 mx-2" />
 
-                <div className="h-px bg-gray-100 my-2" />
-
-                {/* Ubicación Grid Compacto */}
-                <div className="grid grid-cols-3 gap-3 bg-slate-50/50 p-2.5 rounded-lg border border-slate-100">
-                    <Select
-                        label="Frente"
-                        value={state.frente}
-                        options={['F1', 'F2', 'F3', 'F4', 'Azotea']}
-                        onSelect={(val) => actions.setFrente(val)}
-                    />
-                    <Select
-                        label="Bloque"
-                        value={state.bloque}
-                        options={['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI']}
-                        onSelect={(val) => actions.setBloque(val)}
-                    />
-                    <Select
-                        label="Nivel"
-                        value={state.nivel}
-                        options={['ZZ', 'N1', 'N2', 'N3']}
-                        onSelect={(val) => actions.setNivel(val)}
-                    />
-                </div>
-
-                {/* Bloque Descriptivo Acoplado */}
-                <div className="space-y-1 bg-white">
-                    <div className="space-y-1">
-                        <label className="text-[11px] font-bold text-slate-600 block uppercase tracking-wider">Elemento / Agrupador</label>
-                        <input
-                            type="text"
-                            value={state.elemento}
-                            onChange={e => actions.setElemento(e.target.value)}
-                            className="w-full px-3 py-1.5 border border-slate-200 rounded shadow-sm text-sm font-semibold text-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors"
-                            placeholder="Ej. Viga BV-206 Eje A..."
+                {/* ─── PASO 2: UBICACIÓN Y ELEMENTO ─── */}
+                <div className="space-y-3">
+                    <div className="grid grid-cols-4 gap-2">
+                        <Select
+                            label="Frente"
+                            value={state.frente}
+                            options={['F1', 'F2', 'F3', 'F4', 'Azotea']}
+                            onSelect={(val) => actions.setFrente(val)}
+                        />
+                        <Select
+                            label="Bloque"
+                            value={state.bloque}
+                            options={['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI']}
+                            onSelect={(val) => actions.setBloque(val)}
+                        />
+                        <Select
+                            label="Nivel"
+                            value={state.nivel}
+                            options={['ZZ', 'N1', 'N2', 'N3']}
+                            onSelect={(val) => actions.setNivel(val)}
+                        />
+                        <Select
+                            label="CDLLA"
+                            value={state.cuadrilla}
+                            options={['C1', 'C2', 'C3', 'C4', 'C5', 'SUB']}
+                            onSelect={(val) => actions.setCuadrilla(val)}
                         />
                     </div>
-                    <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-blue-600 block flex items-center gap-1 uppercase tracking-wider">
-                            <span className="text-blue-400 font-black">↳</span> Detalle (Material, Actividad)
-                        </label>
-                        <input
-                            type="text"
-                            value={state.detalle}
-                            onChange={e => actions.setDetalle(e.target.value)}
-                            className="w-full px-3 py-1.5 border border-blue-200 rounded shadow-sm text-sm border-l-4 border-l-blue-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors"
-                            placeholder="Ej. Acero longitudinal 3/4''..."
-                        />
+
+                    <div className="space-y-3 p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Elemento / Agrupador</label>
+                            <input
+                                type="text"
+                                value={state.elemento}
+                                onChange={e => actions.setElemento(e.target.value)}
+                                className="w-full px-4 py-2 border border-slate-200 rounded-xl shadow-sm text-xs font-bold text-slate-700 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition-all h-9"
+                                placeholder="Ej. Viga BV-206 Ejes 1-4..."
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <label className="text-[9px] font-bold text-blue-600 flex items-center gap-1 uppercase tracking-wider pl-1">
+                                <span className="text-blue-400 font-black">↳</span> Detalle Específico
+                            </label>
+                            <input
+                                type="text"
+                                value={state.detalle}
+                                onChange={e => actions.setDetalle(e.target.value)}
+                                className="w-full px-4 py-1.5 border border-blue-100 rounded-xl shadow-sm text-xs border-l-4 border-l-blue-500 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none h-8"
+                                placeholder="Mat. / Esp. / Actividad..."
+                            />
+                        </div>
                     </div>
                 </div>
 
-                {/* Flujo Matemático Integrado */}
-                <div className="grid grid-cols-5 gap-2 pt-2">
+                {/* FILA 4: MATEMÁTICA */}
+                <div className="grid grid-cols-5 gap-2 bg-white/50 p-2 rounded-xl border border-slate-100 shadow-sm">
                     {(() => {
                         const flagAcero = isAcero(state.partidaSeleccionada);
-
                         let config = [
-                            { key: 'cantidad', label: flagAcero ? 'CANT. (N°)' : 'CANTIDAD', nextId: 'input-longitud' },
-                            { key: 'longitud', label: flagAcero ? 'LONG(R)' : 'LARGO', nextId: flagAcero ? 'input-altura' : 'input-ancho' },
+                            { key: 'cantidad', label: flagAcero ? 'N°' : 'CANT.', nextId: 'input-longitud' },
+                            { key: 'longitud', label: flagAcero ? 'LONG' : 'LARGO', nextId: flagAcero ? 'input-altura' : 'input-ancho' },
                         ];
-
-                        if (!flagAcero) {
-                            config.push({ key: 'ancho', label: 'ANCHO', nextId: 'input-altura' });
-                        }
-
-                        config.push({ key: 'altura', label: flagAcero ? 'ALTO(G)' : 'ALTO', nextId: 'input-veces' });
+                        if (!flagAcero) config.push({ key: 'ancho', label: 'ANCHO', nextId: 'input-altura' });
+                        config.push({ key: 'altura', label: flagAcero ? 'GAN' : 'ALTO', nextId: 'input-veces' });
 
                         const fields = config.map(({ key, label, nextId }) => {
                             const valKey = key as 'cantidad' | 'longitud' | 'ancho' | 'altura';
                             return (
                                 <div key={key} className="space-y-1">
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate block flex justify-center text-center h-4">
-                                        {label}
-                                    </label>
+                                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-tighter text-center block">{label}</label>
                                     <input
                                         id={`input-${key}`}
                                         type="number"
@@ -205,7 +208,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                         onChange={e => actions[`set${key.charAt(0).toUpperCase() + key.slice(1)}`](e.target.value === "" ? "" : Number(e.target.value))}
                                         onKeyDown={e => handleKeyDown(e, nextId)}
                                         onFocus={e => e.target.select()}
-                                        className="w-full px-1 py-1.5 border rounded-md text-sm text-right font-mono outline-none transition-colors shadow-inner bg-white border-slate-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                        className="w-full px-1 py-1 border border-slate-200 rounded text-xs text-right font-mono font-bold bg-white focus:border-blue-500 outline-none"
                                         placeholder="-"
                                     />
                                 </div>
@@ -214,9 +217,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
                         const vecesField = (
                             <div key="veces" className="space-y-1">
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block flex justify-center text-center h-4">
-                                    VECES
-                                </label>
+                                <label className="text-[9px] font-black text-slate-400 uppercase tracking-tighter text-center block">VECES</label>
                                 <input
                                     id="input-veces"
                                     type="number"
@@ -224,7 +225,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                     onChange={e => actions.setNroVeces(e.target.value === "" ? "" : Number(e.target.value))}
                                     onKeyDown={e => handleKeyDown(e, 'submit')}
                                     onFocus={e => e.target.select()}
-                                    className="w-full px-1 py-1.5 border border-slate-300 rounded-md text-sm text-right font-mono bg-white shadow-inner focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                                    className="w-full px-1 py-1 border border-slate-200 rounded text-xs text-right font-mono font-bold bg-white focus:border-blue-500 outline-none"
                                     placeholder="1"
                                 />
                             </div>
@@ -233,15 +234,13 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         if (flagAcero) {
                             const diametroField = (
                                 <div key="diametro" className="space-y-1">
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block flex justify-center text-center h-4">
-                                        DIÁMETRO
-                                    </label>
+                                    <label className="text-[9px] font-black text-orange-400 uppercase tracking-tighter text-center block">DIÁM</label>
                                     <select
                                         id="input-diametro"
                                         value={state.diametro}
                                         onChange={e => actions.setDiametro(e.target.value)}
                                         onKeyDown={e => handleKeyDown(e as any, 'input-cantidad')}
-                                        className="w-full px-0 border border-orange-200 bg-orange-50 rounded-md text-xs font-bold text-orange-700 h-[34px] text-center outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 cursor-pointer shadow-sm relative bottom-[1px]"
+                                        className="w-full border border-orange-100 bg-orange-50 rounded text-[10px] font-black text-orange-700 h-[26px] text-center outline-none"
                                     >
                                         {['1/4"', '3/8"', '1/2"', '5/8"', '3/4"', '1"'].map(opt => (
                                             <option key={opt} value={opt}>{opt}</option>
@@ -249,40 +248,39 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                     </select>
                                 </div>
                             );
-                            // Layout = Diametro, Cantidad, Longitud, Alto, Veces -> 5 cols exacto
                             return [diametroField, fields[0], fields[1], fields[2], vecesField];
                         }
                         return [...fields, vecesField];
                     })()}
                 </div>
 
-                {/* Desaturación de Resultados (UI Financiera) */}
-                <div className="flex flex-col items-end gap-1 mt-4 pt-4 border-t border-slate-100">
-                    <div className="text-right flex items-baseline gap-2 font-mono">
-                        <span className="text-slate-400 text-xs font-bold tracking-widest">PARCIAL:</span>
-                        <span className="text-slate-700 font-semibold text-[15px]">{state.parcial.toFixed(2)}</span>
-                    </div>
-                    <div className="text-right flex items-baseline gap-2 font-mono">
-                        <span className="text-slate-500 text-xs font-bold tracking-widest">TOTAL ACUMULADO:</span>
-                        <span className="text-slate-900 font-black text-2xl tracking-tight">{state.total.toFixed(2)}</span>
+                {/* RESULTADOS INTEGRADOS */}
+                <div className="flex items-center justify-between px-2 -mb-1">
+                    <div className="flex gap-4">
+                        <div className="flex flex-col">
+                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Parcial</span>
+                            <span className="text-sm font-bold text-slate-700 font-mono">{state.parcial.toFixed(2)}</span>
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Total</span>
+                            <span className="text-xl font-black text-blue-900 font-mono -mt-1">{state.total.toFixed(2)}</span>
+                        </div>
                     </div>
                 </div>
-
             </div>
 
             <button
                 id="submit"
                 onClick={onGuardar}
                 disabled={!state.partidaSeleccionada || (state.total === 0 && !(isAcero(state.partidaSeleccionada) && state.cantidad !== "" && state.cantidad > 0))}
-                className={`mt-4 w-full py-3.5 rounded-lg font-bold text-[13px] tracking-widest uppercase flex items-center justify-center gap-2 transition-all shadow-md ${(!state.partidaSeleccionada || (state.total === 0 && !(isAcero(state.partidaSeleccionada) && state.cantidad !== "" && state.cantidad > 0)))
+                className={`w-full py-3 rounded-xl font-black text-[11px] tracking-[0.2em] uppercase flex items-center justify-center gap-2 transition-all shadow-md ${(!state.partidaSeleccionada || (state.total === 0 && !(isAcero(state.partidaSeleccionada) && state.cantidad !== "" && state.cantidad > 0)))
                     ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
-                    : 'bg-slate-900 hover:bg-slate-800 text-white hover:shadow-lg'
+                    : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-lg active:scale-[0.98]'
                     }`}
             >
-                <Save className="w-5 h-5" />
+                <Save className="w-4 h-4" />
                 REGISTRAR METRADO
             </button>
-
         </div>
     );
 };

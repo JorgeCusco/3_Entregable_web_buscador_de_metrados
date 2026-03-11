@@ -26,28 +26,34 @@ export const Select: React.FC<SelectProps> = ({ value, options, onSelect, placeh
 
     return (
         <div ref={wrapperRef} className={`relative w-full ${className}`}>
-            {label && <label className="text-xs font-semibold text-gray-600 block mb-1">{label}</label>}
+            {label && <label className="text-[10px] font-bold text-slate-500 block mb-1 uppercase tracking-widest pl-1">{label}</label>}
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className={`w-full px-3 py-2 border rounded-md text-sm text-left flex justify-between items-center transition-all outline-none
-                    ${isOpen ? 'border-primary ring-1 ring-primary ring-opacity-20 shadow-sm bg-white' : 'border-blue-100 bg-blue-50/30 hover:border-blue-200'}
+                className={`w-full px-3 py-2 border rounded-xl text-xs text-left flex justify-between items-center transition-all duration-300 outline-none
+                    ${isOpen
+                        ? 'border-blue-400 ring-4 ring-blue-50 bg-white shadow-sm'
+                        : 'border-slate-200 bg-white hover:border-blue-300 hover:shadow-md'
+                    }
                 `}
             >
-                <span className={value ? "text-gray-800 font-medium" : "text-gray-400"}>
+                <span className={value ? "text-slate-800 font-bold" : "text-slate-400 font-medium"}>
                     {value || placeholder}
                 </span>
-                <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180 text-blue-500' : ''}`} />
             </button>
 
             {isOpen && (
-                <div className="absolute z-50 w-full mt-1 bg-white border border-gray-100 rounded-lg shadow-xl max-h-48 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
-                    <ul className="py-1">
+                <div className="absolute z-[100] w-full mt-2 bg-white/95 backdrop-blur-md border border-slate-200 rounded-2xl shadow-2xl max-h-60 overflow-y-auto animate-in fade-in zoom-in-95 duration-200 origin-top">
+                    <ul className="py-1.5 p-1">
                         {options.map((option) => (
                             <li
                                 key={option}
-                                className={`px-4 py-2 text-sm cursor-pointer transition-colors
-                                    ${value === option ? 'bg-primary/10 text-primary font-bold' : 'text-gray-600 hover:bg-slate-50'}
+                                className={`px-4 py-2.5 text-xs cursor-pointer rounded-lg transition-all duration-200 flex items-center justify-between
+                                    ${value === option
+                                        ? 'bg-blue-600 text-white font-black shadow-lg shadow-blue-200'
+                                        : 'text-slate-600 hover:bg-blue-50 hover:text-blue-700'
+                                    }
                                 `}
                                 onClick={() => {
                                     onSelect(option);
@@ -55,6 +61,7 @@ export const Select: React.FC<SelectProps> = ({ value, options, onSelect, placeh
                                 }}
                             >
                                 {option}
+                                {value === option && <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />}
                             </li>
                         ))}
                     </ul>

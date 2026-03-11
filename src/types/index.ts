@@ -38,6 +38,7 @@ export interface Metrado {
     frente: string;
     bloque: string;
     nivel: string;
+    cuadrilla?: string;
     codigo_partida: string;
     descripcion_partida: string;
     elemento?: string | null;
