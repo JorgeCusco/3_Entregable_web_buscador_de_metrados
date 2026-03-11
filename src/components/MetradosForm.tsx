@@ -149,12 +149,16 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                             options={['ZZ', 'N1', 'N2', 'N3']}
                             onSelect={(val) => actions.setNivel(val)}
                         />
-                        <Select
-                            label="CDLLA"
-                            value={state.cuadrilla}
-                            options={['C1', 'C2', 'C3', 'C4', 'C5', 'SUB']}
-                            onSelect={(val) => actions.setCuadrilla(val)}
-                        />
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">CDLLA</label>
+                            <input
+                                type="text"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-sm font-semibold text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase"
+                                value={state.cuadrilla}
+                                onChange={(e) => actions.setCuadrilla(e.target.value.toUpperCase())}
+                                placeholder="Ej. C1"
+                            />
+                        </div>
                     </div>
 
                     <div className="space-y-3 p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
