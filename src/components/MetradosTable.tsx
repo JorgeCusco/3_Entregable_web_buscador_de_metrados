@@ -121,7 +121,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
                 apiUrl = isLocal
                     ? `http://${window.location.hostname}:3001`
-                    : 'https://inkaia-backend.onrender.com'; // URL de producción en Render
+                    : 'https://copgorecusco.com'; // URL de producción en Hostinger
             }
 
             // Limpiar barra diagonal final si existe
