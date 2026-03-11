@@ -121,7 +121,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
                 apiUrl = isLocal
                     ? `http://${window.location.hostname}:3001`
-                    : 'https://copgorecusco.com'; // URL de producción en Hostinger
+                    : ''; // URL de producción relativa en Hostinger
             }
 
             // Limpiar barra diagonal final si existe
@@ -137,7 +137,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     body: JSON.stringify({ metrados: rows, proyecto })
                 });
             } catch (error) {
-                throw new Error(`Error de conexión: No se pudo contactar con el servidor en ${apiUrl}. Verifique que el servicio en Render esté Activo.`);
+                let actualDomain = typeof window !== 'undefined' ? window.location.hostname : 'Hostinger';
+                throw new Error(`Error de conexión: No se pudo contactar con el servidor en ${apiUrl || actualDomain}. Verifique que la App Node.js esté "Running" en Hostinger.`);
             }
 
             if (!response.ok) {
