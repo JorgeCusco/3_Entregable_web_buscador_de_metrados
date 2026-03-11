@@ -48,7 +48,8 @@ const esPartidaAcero = (m) =>
 
 app.post('/api/export/metrados', async (req, res) => {
     try {
-        const metrados = req.body;
+        const { metrados, proyecto } = req.body;
+        console.log(`Iniciando exportación de ${metrados.length} registros para proyecto: ${proyecto}`);
         if (!Array.isArray(metrados) || metrados.length === 0)
             return res.status(400).json({ error: 'Payload vacío.' });
 
@@ -63,10 +64,15 @@ app.post('/api/export/metrados', async (req, res) => {
         const workbook = new ExcelJS.Workbook();
         await workbook.xlsx.readFile(TEMPLATE_PATH);
 
-        // Seleccionar pestaña (METRADO es la prioridad)
-        let worksheet = workbook.getWorksheet('METRADO')
-            || workbook.getWorksheet('Metrado Estructuras')
-            || workbook.worksheets[0];
+        // Determinar qué pestaña base usar según el proyecto (Hospital o Contingencia)
+        let sheetToFind = 'METRADO'; // Default
+        if (proyecto === 'hospital') sheetToFind = 'Hospital';
+        else if (proyecto === 'contingencia') sheetToFind = 'Contingencia';
+
+        // Seleccionar pestaña
+        let worksheet = workbook.getWorksheet(sheetToFind)
+            || workbook.getWorksheet('Metrado Estructuras') // Fallback si la pestaña específica no existe
+            || workbook.worksheets[0]; // Último fallback a la primera pestaña
 
         if (!worksheet) throw new Error("No se encontró una pestaña válida en la plantilla.");
 

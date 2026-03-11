@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import type { Partida, Metrado } from '../types';
+import { getEspecialidadPorCodigo } from '../constants/especialidades';
 
 const PESOS_ACERO: Record<string, number> = {
     "1/4": 0.254,
@@ -44,6 +45,9 @@ export const useMetradosForm = () => {
     const [ancho, setAncho] = useState<number | "">("");
     const [altura, setAltura] = useState<number | "">("");
     const [nroVeces, setNroVeces] = useState<number | "">("");
+
+    // Nueva Especialidad (OE mapping) para filtrado en UI
+    const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState<string>('TODAS');
 
     const parcial = useMemo(() => {
         const flagAcero = isAcero(partidaSeleccionada);
@@ -111,6 +115,8 @@ export const useMetradosForm = () => {
             jerarquia: partidaSeleccionada.jerarquia,
             nivelJerarquia: partidaSeleccionada.nivel_jerarquia,
             modificacion: partidaSeleccionada.modificacion,
+            // Asignación automática de ESPECIALIDAD según código OE
+            especialidad: getEspecialidadPorCodigo(partidaSeleccionada.codigo),
             autor_usuario: "UserWeb",
             created_at: Date.now(),
         };
@@ -124,12 +130,13 @@ export const useMetradosForm = () => {
             fecha, frente, bloque, nivel,
             partidaSeleccionada, elemento, detalle, diametro,
             cantidad, longitud, ancho, altura, nroVeces,
-            parcial, total
+            parcial, total, especialidadSeleccionada
         },
         actions: {
             setFecha, setFrente, setBloque, setNivel,
             setPartidaSeleccionada, setElemento, setDetalle, setDiametro,
             setCantidad, setLongitud, setAncho, setAltura, setNroVeces,
+            setEspecialidadSeleccionada,
             limpiarCampos, procesarRegistro
         }
     };

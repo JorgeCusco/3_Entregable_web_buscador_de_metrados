@@ -5,22 +5,23 @@ import { useMetradosForm } from './hooks/useMetradosForm';
 import type { Metrado } from './types';
 import { Building2, Stethoscope, AlertTriangle } from 'lucide-react';
 
-// Tipo de especialidad disponible en el sistema
-export type Especialidad = 'hospital' | 'contingencia';
+// Tipo de proyecto disponible en el sistema (Hospital o Contingencia)
+export type TipoProyecto = 'hospital' | 'contingencia';
 
 function App() {
   const { state, actions } = useMetradosForm();
   const [metrados, setMetrados] = useState<Metrado[]>([]);
   const [toast, setToast] = useState<string | null>(null);
-  // Estado global de especialidad activa
-  const [especialidad, setEspecialidad] = useState<Especialidad>('hospital');
+  // Estado global de proyecto activo (sustituye a la anterior 'especialidad' de sistema)
+  const [proyecto, setProyecto] = useState<TipoProyecto>('hospital');
 
   const handleGuardar = () => {
     const nuevo = actions.procesarRegistro();
     if (nuevo) {
-      // El metrado hereda la especialidad activa al momento de registrarse
-      const nuevoConEsp = { ...nuevo, especialidad };
-      setMetrados(prev => [nuevoConEsp, ...prev]);
+      // El metrado hereda el proyecto activo al momento de registrarse
+      // La "especialidad" (OE mapping) ya viene seteada desde el hook
+      const nuevoConProy = { ...nuevo, proyecto };
+      setMetrados(prev => [nuevoConProy, ...prev]);
       setToast(`Metrado guardado: ${nuevo.codigo_partida}`);
       setTimeout(() => setToast(null), 3000);
     }
@@ -69,8 +70,8 @@ function App() {
     }));
   };
 
-  // Filtra los metrados mostrados según la especialidad activa
-  const metradosFiltrados = metrados.filter(m => !m.especialidad || m.especialidad === especialidad);
+  // Filtra los metrados mostrados según el proyecto activo
+  const metradosFiltrados = metrados.filter(m => !m.proyecto || m.proyecto === proyecto);
 
   return (
     <div className="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col gap-6 relative max-w-[1600px] mx-auto">
@@ -92,8 +93,8 @@ function App() {
         {/* ─── Selector de Especialidad ─── */}
         <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner">
           <button
-            onClick={() => { setEspecialidad('hospital'); actions.setPartidaSeleccionada(null); }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${especialidad === 'hospital'
+            onClick={() => { setProyecto('hospital'); actions.setPartidaSeleccionada(null); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${proyecto === 'hospital'
               ? 'bg-white text-blue-700 shadow-md border border-blue-100'
               : 'text-slate-500 hover:text-slate-700'
               }`}
@@ -102,8 +103,8 @@ function App() {
             Hospital
           </button>
           <button
-            onClick={() => { setEspecialidad('contingencia'); actions.setPartidaSeleccionada(null); }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${especialidad === 'contingencia'
+            onClick={() => { setProyecto('contingencia'); actions.setPartidaSeleccionada(null); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${proyecto === 'contingencia'
               ? 'bg-white text-amber-600 shadow-md border border-amber-100'
               : 'text-slate-500 hover:text-slate-700'
               }`}
@@ -131,7 +132,7 @@ function App() {
             state={state}
             actions={actions}
             onGuardar={handleGuardar}
-            especialidad={especialidad}
+            proyecto={proyecto}
           />
         </div>
 
@@ -141,7 +142,7 @@ function App() {
             metrados={metradosFiltrados}
             onUpdate={handleUpdateMetrado}
             onDelete={handleDeleteMetrado}
-            especialidad={especialidad}
+            proyecto={proyecto}
           />
         </div>
 

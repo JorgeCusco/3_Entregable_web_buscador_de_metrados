@@ -27,7 +27,8 @@ export interface Partida {
     parent_id?: string;
     nivel_jerarquia?: number;
     modificacion?: string;
-    especialidad?: 'hospital' | 'contingencia' | string;
+    proyecto?: 'hospital' | 'contingencia' | string;
+    especialidad?: string;
     apu?: APU | null;
 }
 
@@ -57,5 +58,6 @@ export interface Metrado {
     parent_id?: string;
     nivelJerarquia?: number;
     modificacion?: string;
+    proyecto?: string;
     especialidad?: string;
 }

@@ -7,9 +7,10 @@ interface SelectProps {
     onSelect: (value: string) => void;
     placeholder?: string;
     label?: string;
+    className?: string;
 }
 
-export const Select: React.FC<SelectProps> = ({ value, options, onSelect, placeholder = "Seleccionar...", label }) => {
+export const Select: React.FC<SelectProps> = ({ value, options, onSelect, placeholder = "Seleccionar...", label, className }) => {
     const [isOpen, setIsOpen] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -24,7 +25,7 @@ export const Select: React.FC<SelectProps> = ({ value, options, onSelect, placeh
     }, [wrapperRef]);
 
     return (
-        <div ref={wrapperRef} className="relative w-full">
+        <div ref={wrapperRef} className={`relative w-full ${className}`}>
             {label && <label className="text-xs font-semibold text-gray-600 block mb-1">{label}</label>}
             <button
                 type="button"

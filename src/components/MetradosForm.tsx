@@ -2,17 +2,18 @@ import React from 'react';
 import { SearchCombobox } from './ui/SearchCombobox';
 import { Select } from './ui/Select';
 import type { Partida } from '../types';
-import type { Especialidad } from '../App';
+import type { TipoProyecto } from '../App';
 import { isAcero } from '../hooks/useMetradosForm';
 import { mockPartidas } from '../data/mockDB';
 import { mockPartidasContingencia } from '../data/mockDB_contingencia';
-import { Save } from 'lucide-react';
+import { ESPECIALIDADES_PARTIDA } from '../constants/especialidades';
+import { Save, Filter } from 'lucide-react';
 
 interface MetradosFormProps {
     state: any;
     actions: any;
     onGuardar: () => void;
-    especialidad: Especialidad;
+    proyecto: TipoProyecto;
 }
 
 export const RenderModificacionBadge = (modificacionStr?: string) => {
@@ -40,7 +41,7 @@ export const RenderModificacionBadge = (modificacionStr?: string) => {
     );
 };
 
-export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, especialidad }) => {
+export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, proyecto }) => {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>, nextId: string) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -75,11 +76,32 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
             </div>
 
             <div className="space-y-4 flex-grow">
+                {/* ─── FILTRO POR ESPECIALIDAD (OE Mapping) ─── */}
+                <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-slate-600 block uppercase tracking-wider flex items-center gap-1.5">
+                        <Filter className="w-3 h-3 text-blue-500" /> Especialidad (Filtro OE)
+                    </label>
+                    <Select
+                        value={state.especialidadSeleccionada}
+                        onSelect={val => {
+                            actions.setEspecialidadSeleccionada(val);
+                            actions.setPartidaSeleccionada(null);
+                        }}
+                        options={ESPECIALIDADES_PARTIDA.map(esp => esp.nombre)}
+                        className="bg-white/50 backdrop-blur-sm border-slate-200 hover:border-blue-300 transition-colors"
+                    />
+                </div>
+
                 {/* BUSCADOR Y METADATOS */}
                 <div className="space-y-1">
                     <label className="text-[11px] font-bold text-slate-600 block uppercase tracking-wider">Partida (Buscador)</label>
                     <SearchCombobox
-                        partidas={especialidad === 'hospital' ? mockPartidas : mockPartidasContingencia}
+                        partidas={(proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia).filter(p => {
+                            if (state.especialidadSeleccionada === 'TODAS') return true;
+                            const mapping = ESPECIALIDADES_PARTIDA.find(e => e.nombre === state.especialidadSeleccionada);
+                            if (!mapping) return true;
+                            return mapping.prefijos.some(pref => p.codigo.startsWith(pref));
+                        })}
                         value={state.partidaSeleccionada ? state.partidaSeleccionada.descripcion : ''}
                         onSelect={(p: Partida) => {
                             actions.setPartidaSeleccionada(p);

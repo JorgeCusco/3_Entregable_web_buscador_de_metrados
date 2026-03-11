@@ -9,7 +9,7 @@ interface MetradosTableProps {
     metrados: Metrado[];
     onUpdate?: (id: string, field: keyof Metrado, value: any) => void;
     onDelete?: (id: string) => void;
-    especialidad?: string;
+    proyecto?: string;
 }
 
 /**
@@ -24,7 +24,7 @@ const getIndentLevel = (codigo: string): number => {
 /**
  * Genera el array secuencial para el Data Grid con "Tree Pruning".
  * @param activeMetrados Metrados registrados a mostrar.
- * @param partidasCatalogo Catálogo maestro de partidas de la especialidad activa.
+ * @param partidasCatalogo Catálogo maestro de partidas del proyecto activo.
  */
 const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partida[]): any[] => {
     const activePartidaCodes = new Set(activeMetrados.map(m => m.codigo_partida));
@@ -83,10 +83,10 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 };
 
 
-export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onDelete, especialidad = 'hospital' }) => {
-    // Seleccionar el catálogo de partidas correcto según la especialidad
-    const catalogoActivo = especialidad === 'hospital' ? mockPartidas : mockPartidasContingencia;
-    const rows = useMemo(() => getHierarchicalRows(metrados, catalogoActivo), [metrados, especialidad]);
+export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onDelete, proyecto = 'hospital' }) => {
+    // Seleccionar el catálogo de partidas correcto según el proyecto
+    const catalogoActivo = proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia;
+    const rows = useMemo(() => getHierarchicalRows(metrados, catalogoActivo), [metrados, proyecto]);
     const [isExporting, setIsExporting] = React.useState(false);
 
     // Calcular totales por partida para las filas de cabecera
@@ -134,7 +134,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(rows)
+                    body: JSON.stringify({ metrados: rows, proyecto })
                 });
             } catch (error) {
                 throw new Error(`Error de conexión: No se pudo contactar con el servidor en ${apiUrl}. Verifique que el servicio en Render esté Activo.`);
