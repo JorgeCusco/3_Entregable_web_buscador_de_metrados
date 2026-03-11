@@ -11,7 +11,9 @@ const corsOptions = {
         'http://localhost:5173',
         'https://inkaia.pe',
         'https://www.inkaia.pe',
-        'https://3-entregable-web-buscador-de-metrad.vercel.app'
+        'https://3-entregable-web-buscador-de-metrad.vercel.app',
+        'https://copgorecusco.com',
+        'https://www.copgorecusco.com'
     ],
     optionsSuccessStatus: 200
 };
