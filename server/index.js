@@ -140,7 +140,7 @@ app.post('/api/export/metrados', async (req, res) => {
                 rowData[12] = colM;     // M
                 rowData[22] = hasMetrados ? total2 : ""; // W: Total 2
                 rowData[23] = unidadActual; // X: Unidad
-                rowData[24] = m.modificacion || ""; // Y
+                rowData[24] = m.modificacion || "SM"; // Y
             }
             // CASO B: Registro Real
             else if (!m.is_template) {
@@ -181,7 +181,7 @@ app.post('/api/export/metrados', async (req, res) => {
 
                 rowData[22] = total2; // W: Total 2
                 rowData[23] = unidadActual; // X: Unidad
-                rowData[24] = m.modificacion || ""; // Y: modificacion
+                rowData[24] = m.modificacion || "SM"; // Y: modificacion
             }
 
             if (rowData) {
