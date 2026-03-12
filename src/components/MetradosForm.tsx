@@ -193,17 +193,17 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     {(() => {
                         const flagAcero = isAcero(state.partidaSeleccionada);
                         let config = [
-                            { key: 'cantidad', label: flagAcero ? 'N°' : 'CANT.', nextId: 'input-longitud' },
-                            { key: 'longitud', label: flagAcero ? 'LONG' : 'LARGO', nextId: flagAcero ? 'input-altura' : 'input-ancho' },
+                            { key: 'cantidad', label: flagAcero ? 'N°' : 'CANTIDAD', nextId: 'input-longitud' },
+                            { key: 'longitud', label: flagAcero ? 'LONG' : 'LONGITUD/AREA', nextId: flagAcero ? 'input-altura' : 'input-ancho' },
                         ];
-                        if (!flagAcero) config.push({ key: 'ancho', label: 'ANCHO', nextId: 'input-altura' });
-                        config.push({ key: 'altura', label: flagAcero ? 'GAN' : 'ALTO', nextId: 'input-veces' });
+                        if (!flagAcero) config.push({ key: 'ancho', label: 'ANCHO / EMPAME', nextId: 'input-altura' });
+                        config.push({ key: 'altura', label: flagAcero ? 'GAN' : 'ALTURA / GANCHO', nextId: 'input-veces' });
 
                         const fields = config.map(({ key, label, nextId }) => {
                             const valKey = key as 'cantidad' | 'longitud' | 'ancho' | 'altura';
                             return (
                                 <div key={key} className="space-y-1">
-                                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-tighter text-center block">{label}</label>
+                                    <label className="text-[7px] font-black text-slate-400 uppercase tracking-tighter text-center block leading-[1.1] h-[18px] flex items-end justify-center pb-0.5">{label}</label>
                                     <input
                                         id={`input-${key}`}
                                         type="number"
