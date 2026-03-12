@@ -146,7 +146,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         <Select
                             label="Nivel"
                             value={state.nivel}
-                            options={['ZZ', 'N1', 'N2', 'N3']}
+                            options={['ZZ', 'N1', 'N2', 'N3', 'N4']}
                             onSelect={(val) => actions.setNivel(val)}
                         />
                         <div className="space-y-1">
@@ -156,7 +156,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-sm font-semibold text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase"
                                 value={state.cuadrilla}
                                 onChange={(e) => actions.setCuadrilla(e.target.value.toUpperCase())}
-                                placeholder="Ej. C1"
+                                placeholder="C1"
                             />
                         </div>
                     </div>

@@ -34,7 +34,7 @@ export const useMetradosForm = () => {
     const [frente, setFrente] = useState<string>('');
     const [bloque, setBloque] = useState<string>('');
     const [nivel, setNivel] = useState<string>('');
-    const [cuadrilla, setCuadrilla] = useState<string>('C1');
+    const [cuadrilla, setCuadrilla] = useState<string>('');
 
     const [partidaSeleccionada, setPartidaSeleccionada] = useState<Partida | null>(null);
     const [elemento, setElemento] = useState<string>('');
