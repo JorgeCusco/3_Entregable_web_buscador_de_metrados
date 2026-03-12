@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import type { Metrado, Partida } from '../types';
 import { Download, Trash2, Loader2 } from 'lucide-react';
-import { mockPartidas } from '../data/mockDB';
+import { mockPartidas } from '../data/mockDB_1';
 import { mockPartidasContingencia } from '../data/mockDB_contingencia';
 import { RenderModificacionBadge } from './MetradosForm';
 

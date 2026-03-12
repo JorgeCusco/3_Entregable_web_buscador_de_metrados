@@ -4,7 +4,7 @@ import { Select } from './ui/Select';
 import type { Partida } from '../types';
 import type { TipoProyecto } from '../App';
 import { isAcero } from '../hooks/useMetradosForm';
-import { mockPartidas } from '../data/mockDB';
+import { mockPartidas } from '../data/mockDB_1';
 import { mockPartidasContingencia } from '../data/mockDB_contingencia';
 import { ESPECIALIDADES_PARTIDA } from '../constants/especialidades';
 import { Save } from 'lucide-react';
