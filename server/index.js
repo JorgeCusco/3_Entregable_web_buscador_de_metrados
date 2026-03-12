@@ -76,8 +76,16 @@ app.post('/api/export/metrados', async (req, res) => {
 
         // Pre-calcular sumas por partida para la fila "Total 2"
         const partidaTotals = {};
+        const codigosMap = new Map();
+
         metrados.forEach(m => {
-            if (!m.is_template) {
+            if (m.is_template) {
+                codigosMap.set(m.codigo, {
+                    descripcion: m.descripcion,
+                    nivel_jerarquia: m.nivel_jerarquia,
+                    unidad: m.unidad
+                });
+            } else {
                 partidaTotals[m.codigo_partida] = (partidaTotals[m.codigo_partida] || 0) + (m.total || 0);
             }
         });
@@ -88,30 +96,50 @@ app.post('/api/export/metrados', async (req, res) => {
         metrados.forEach(m => {
             let rowData = null;
 
-            // CASO A: Título
+            // CASO A: Título de jerarquía (se omite)
             if (m.is_template && m.es_titulo) {
-                rowData = new Array(22).fill("");
-                rowData[1] = m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : ""; // B
-                rowData[8] = m.codigo || ""; // I
-                rowData[9] = m.descripcion || ""; // J
-                rowData[21] = m.modificacion || ""; // V
+                return;
             }
             // CASO A2: Elemento virtual (se omite)
             else if (m.is_template && m.is_elemento_virtual) {
                 return;
             }
-            else if (m.is_template && !m.es_titulo) {
-                // Si es una fila de cabecera (maestra) y tiene metrados reales, mostramos el total 2 aquí
-                const totalSum = partidaTotals[m.codigo] || 0;
-                const hasMetrados = codesWithMetrados.has(m.codigo);
 
-                rowData = new Array(22).fill("");
+            // Calculamos Grados
+            const isSumatoria = m.is_template && !m.es_titulo;
+            const codigoActual = isSumatoria ? m.codigo : m.codigo_partida;
+            const descActual = isSumatoria ? m.descripcion : (m.descripcion_partida || m.codigo_partida || "");
+
+            const grados = ["", "", "", ""];
+            let ancestors = [];
+            for (let [key, val] of codigosMap.entries()) {
+                if (codigoActual === key || codigoActual.startsWith(key + '.')) {
+                    ancestors.push({ codigo: key, descripcion: val.descripcion });
+                }
+            }
+            // Ordenar por nivel (longitud del código)
+            ancestors.sort((a, b) => a.codigo.length - b.codigo.length);
+            for (let i = 0; i < ancestors.length && i < 4; i++) {
+                grados[i] = `${ancestors[i].codigo}-${ancestors[i].descripcion}`;
+            }
+
+            const colM = `${codigoActual}-${descActual}`;
+            const total2 = partidaTotals[codigoActual] || 0;
+            const unidadActual = (m.unidad) || (codigosMap.get(codigoActual)?.unidad) || "";
+
+            rowData = new Array(26).fill("");
+
+            if (isSumatoria) {
+                const hasMetrados = codesWithMetrados.has(codigoActual);
                 rowData[1] = m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : ""; // B
-                rowData[8] = m.codigo || ""; // I
-                rowData[9] = m.descripcion || ""; // J
-                rowData[19] = hasMetrados ? totalSum : ""; // T (Total 2)
-                rowData[20] = m.unidad || ""; // U (Unidad)
-                rowData[21] = m.modificacion || ""; // V
+                rowData[8] = grados[0]; // I: Grado 1
+                rowData[9] = grados[1]; // J: Grado 2
+                rowData[10] = grados[2]; // K: Grado 3
+                rowData[11] = grados[3]; // L: Grado 4
+                rowData[12] = colM;     // M
+                rowData[22] = hasMetrados ? total2 : ""; // W: Total 2
+                rowData[23] = unidadActual; // X: Unidad
+                rowData[24] = m.modificacion || ""; // Y
             }
             // CASO B: Registro Real
             else if (!m.is_template) {
@@ -126,7 +154,6 @@ app.post('/api/export/metrados', async (req, res) => {
                     if (peso > 0) parcial = (parseFloat(m.cantidad) || 0) * (parseFloat(m.nro_veces) || 1) * ((parseFloat(m.longitud_area) || 0) + (parseFloat(m.altura_gancho) || 0)) * peso;
                 }
 
-                rowData = new Array(22).fill("");
                 rowData[1] = m.nivelJerarquia != null ? String(m.nivelJerarquia) : ""; // B
                 rowData[2] = m.fecha || ""; // C
                 rowData[3] = m.especialidad || ""; // D
@@ -134,18 +161,26 @@ app.post('/api/export/metrados', async (req, res) => {
                 rowData[5] = m.bloque || ""; // F
                 rowData[6] = m.nivel || ""; // G
                 rowData[7] = m.cuadrilla || ""; // H
-                rowData[8] = m.codigo_partida || ""; // I
-                rowData[9] = m.descripcion_partida || m.codigo_partida || ""; // J
-                rowData[10] = concatDesc; // K
-                rowData[11] = m.cantidad || ""; // L
-                rowData[12] = m.longitud_area || ""; // M
-                rowData[13] = flagAcero ? "" : (m.ancho_empalme || ""); // N
-                rowData[14] = m.altura_gancho || ""; // O
-                rowData[15] = parcial || 0; // P
-                rowData[16] = m.nro_veces || ""; // Q
-                rowData[17] = flagAcero ? (m.diametro || "") : ""; // R
-                rowData[18] = m.total || 0; // S
-                rowData[21] = m.modificacion || ""; // V
+
+                rowData[8] = grados[0]; // I: Grado 1
+                rowData[9] = grados[1]; // J: Grado 2
+                rowData[10] = grados[2]; // K: Grado 3
+                rowData[11] = grados[3]; // L: Grado 4
+
+                rowData[12] = colM; // M
+                rowData[13] = concatDesc; // N
+                rowData[14] = m.cantidad || ""; // O
+                rowData[15] = m.longitud_area || ""; // P
+                rowData[16] = flagAcero ? "" : (m.ancho_empalme || ""); // Q
+                rowData[17] = m.altura_gancho || ""; // R
+                rowData[18] = parcial || 0; // S
+                rowData[19] = m.nro_veces || ""; // T
+                rowData[20] = flagAcero ? (m.diametro || "") : ""; // U
+                rowData[21] = m.total || 0; // V: total
+
+                rowData[22] = total2; // W: Total 2
+                rowData[23] = unidadActual; // X: Unidad
+                rowData[24] = m.modificacion || ""; // Y: modificacion
             }
 
             if (rowData) {
