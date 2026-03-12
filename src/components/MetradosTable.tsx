@@ -30,6 +30,10 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
     const activePartidaCodes = new Set(activeMetrados.map(m => m.codigo_partida));
     const activeIds = new Set<string>();
 
+    // Optimización O(1) Lookup:
+    const catalogoMap = new Map<string, Partida>();
+    partidasCatalogo.forEach(p => catalogoMap.set(p.codigo, p));
+
     // Algoritmo de Rescate de Rama (Bottom-Up): activa la cadena entera de ancestros
     partidasCatalogo.forEach((node: Partida) => {
         if (!node.es_titulo && activePartidaCodes.has(node.codigo)) {
@@ -38,7 +42,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
             while (parentId) {
                 if (activeIds.has(parentId)) break;
                 activeIds.add(parentId);
-                const parent = partidasCatalogo.find(p => p.codigo === parentId);
+                const parent = catalogoMap.get(parentId);
                 parentId = parent?.parent_id;
             }
         }
@@ -115,13 +119,13 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             // ordenar WBS y escupir la plantilla binaria.
             // DETERMINAR URL DEL BACKEND
             let apiUrl = import.meta.env.VITE_API_URL;
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-            if (!apiUrl) {
-                // Si no hay variable de entorno, decidir según el entorno
-                const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-                apiUrl = isLocal
-                    ? `http://${window.location.hostname}:3001`
-                    : 'https://inkaia-backend.onrender.com'; // URL del Backend en Render
+            // Forzar en producción que siempre agarre Render para evitar fallas si el Env está mal confugurado en Vercel
+            if (!isLocal) {
+                apiUrl = 'https://inkaia-backend.onrender.com';
+            } else if (!apiUrl) {
+                apiUrl = `http://${window.location.hostname}:3001`;
             }
 
             // Limpiar barra diagonal final si existe
