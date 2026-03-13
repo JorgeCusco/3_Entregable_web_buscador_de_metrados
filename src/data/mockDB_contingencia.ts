@@ -1,10 +1,6 @@
 // @ts-nocheck
 import type { Partida } from "../types";
 
-// Generado por scripts/generar_contingencia.cjs desde Base_datos_MODIF3.xlsx
-// Especialidad: contingencia | Partidas: 1271
-// Fuente única: Excel MODIF3, hoja "Contingencia"
-
 export const mockPartidasContingencia: Partida[] = [
     {
         "id": "1",
@@ -13,9 +9,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE",
-        "nivel_jerarquia": 1,
+        "nivel_jerarquia": 2,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -25,9 +22,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.1",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -37,9 +35,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.1.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -49,7 +48,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.1.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
@@ -66,7 +65,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.1.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
@@ -83,7 +82,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.1.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
@@ -100,9 +99,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.1.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -112,7 +112,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.1.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
@@ -129,7 +129,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.1.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
@@ -146,9 +146,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.1.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -158,9 +159,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.1.1.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -170,7 +172,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.1.1.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
@@ -178,7 +180,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.1.1.3.1 LIMPIEZA DE TERRENO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -188,7 +190,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.1.1.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
@@ -196,7 +198,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.1.1.3.1 LIMPIEZA DE TERRENO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -206,7 +208,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.1.1.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
@@ -214,7 +216,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.1.1.3.1 LIMPIEZA DE TERRENO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -224,7 +226,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.1.1.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
@@ -232,7 +234,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.1.1.3.1 LIMPIEZA DE TERRENO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -242,7 +244,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.1.1.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
@@ -260,9 +262,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.1.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -272,13 +275,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.1.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
             "OE.1.1.7 MOVILIZACIÓN DE CAMPAMENTO, MAQUINARIA Y HERRAMIENTAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -288,13 +292,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.1.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
             "OE.1.1.7 MOVILIZACIÓN DE CAMPAMENTO, MAQUINARIA Y HERRAMIENTAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -304,9 +309,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.1.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -316,13 +322,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.1.1.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
             "OE.1.1.9 TRAZOS, NIVELES Y REPLANTEO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -332,7 +339,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.1.1.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.1 OBRAS PROVISIONALES Y TRABAJOS PRELIMINARES",
@@ -349,9 +356,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.1",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -361,9 +369,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.1.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -373,13 +382,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
             "OE.1.2.1 ELABORACIÓN, IMPLEMENTACIÓN Y ADMINISTRACIÓN DEL PLAN DE SEGURIDAD Y SALUD EN EL TRABAJO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -389,13 +399,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.1.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
             "OE.1.2.1 ELABORACIÓN, IMPLEMENTACIÓN Y ADMINISTRACIÓN DEL PLAN DE SEGURIDAD Y SALUD EN EL TRABAJO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -405,13 +416,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
             "OE.1.2.1 ELABORACIÓN, IMPLEMENTACIÓN Y ADMINISTRACIÓN DEL PLAN DE SEGURIDAD Y SALUD EN EL TRABAJO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -421,13 +433,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
             "OE.1.2.1 ELABORACIÓN, IMPLEMENTACIÓN Y ADMINISTRACIÓN DEL PLAN DE SEGURIDAD Y SALUD EN EL TRABAJO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -437,13 +450,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
             "OE.1.2.1 ELABORACIÓN, IMPLEMENTACIÓN Y ADMINISTRACIÓN DEL PLAN DE SEGURIDAD Y SALUD EN EL TRABAJO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -453,9 +467,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.1.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -465,13 +480,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
             "OE.1.2.2 RECURSOS PARA RESPUESTAS ANTE EMERGENCIAS EN SEGURIDAD Y SALUD DURANTE EL TRABAJO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -481,13 +497,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
             "OE.1.2.2 RECURSOS PARA RESPUESTAS ANTE EMERGENCIAS EN SEGURIDAD Y SALUD DURANTE EL TRABAJO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -497,9 +514,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.1.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -509,13 +527,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.1.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
             "OE.1.2.3 PLAN PARA LA VIGILANCIA PREVENCION Y CONTROL DE COVID EN EL TRABAJO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -525,13 +544,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.1.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
             "OE.1.2.3 PLAN PARA LA VIGILANCIA PREVENCION Y CONTROL DE COVID EN EL TRABAJO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -541,13 +561,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
             "OE.1.2.3 PLAN PARA LA VIGILANCIA PREVENCION Y CONTROL DE COVID EN EL TRABAJO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -557,13 +578,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.1.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
             "OE.1.2.3 PLAN PARA LA VIGILANCIA PREVENCION Y CONTROL DE COVID EN EL TRABAJO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -573,7 +595,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.1.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.1 OBRAS PROVISIONALES, TRABAJOS PRELIMINARES, SEGURIDAD Y SALUD.",
             "OE.1.2 SEGURIDAD Y SALUD",
@@ -590,9 +612,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE",
-        "nivel_jerarquia": 1,
+        "nivel_jerarquia": 2,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -602,9 +625,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -614,9 +638,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -626,7 +651,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.1 MOVIMIENTO DE TIERRAS",
@@ -643,9 +668,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -655,9 +681,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.1.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -667,7 +694,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.1.2.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.1 MOVIMIENTO DE TIERRAS",
@@ -675,6 +702,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.2.1.2.1 EXCAVACIONES SIMPLES"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -684,7 +712,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.1.2.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.1 MOVIMIENTO DE TIERRAS",
@@ -692,6 +720,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.2.1.2.1 EXCAVACIONES SIMPLES"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -701,9 +730,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -713,13 +743,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.1.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.1 MOVIMIENTO DE TIERRAS",
             "OE.2.1.4 RELLENOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -729,13 +760,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.1.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.1 MOVIMIENTO DE TIERRAS",
             "OE.2.1.4 RELLENOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -745,9 +777,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.1.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -757,8 +790,12 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.1.5",
-        "nivel_jerarquia": 4,
-        "jerarquia": [],
+        "nivel_jerarquia": 5,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.1 MOVIMIENTO DE TIERRAS",
+            "OE.2.1.4 RELLENOS"
+        ],
         "especialidad": "contingencia",
         "modificacion": "MM1",
         "apu": null
@@ -770,9 +807,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.1.5",
-        "nivel_jerarquia": 4,
-        "jerarquia": [],
+        "nivel_jerarquia": 5,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.1 MOVIMIENTO DE TIERRAS",
+            "OE.2.1.4 RELLENOS"
+        ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -782,9 +824,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -794,13 +837,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.1.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.1 MOVIMIENTO DE TIERRAS",
             "OE.2.1.6 ELIMINACION DE MATERIAL EXCEDENTE"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -810,13 +854,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.1.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.1 MOVIMIENTO DE TIERRAS",
             "OE.2.1.6 ELIMINACION DE MATERIAL EXCEDENTE"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -826,9 +871,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -838,9 +884,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -850,7 +897,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.2 OBRAS DE CONCRETO SIMPLE",
@@ -867,9 +914,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -879,13 +927,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.2 OBRAS DE CONCRETO SIMPLE",
             "OE.2.2.3 SOLADOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -895,9 +944,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -907,7 +957,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.2 OBRAS DE CONCRETO SIMPLE",
@@ -924,7 +974,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.2 OBRAS DE CONCRETO SIMPLE",
@@ -941,9 +991,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -953,9 +1004,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -965,7 +1017,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.3.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -982,7 +1034,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.3.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -999,9 +1051,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1011,7 +1064,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.3.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1028,7 +1081,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.3.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1045,7 +1098,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.3.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1062,9 +1115,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1074,7 +1128,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.3.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1091,7 +1145,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.3.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1108,7 +1162,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.3.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1125,9 +1179,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1137,9 +1192,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.3.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1149,7 +1205,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.3.9.7",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1167,7 +1223,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.3.9.7",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1185,7 +1241,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.3.9.7",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1203,9 +1259,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.3.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1215,7 +1272,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.3.9.8",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1233,7 +1290,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.3.9.8",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1251,7 +1308,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.3.9.8",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1269,9 +1326,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1281,7 +1339,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.3.12",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1298,13 +1356,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.3.12",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
             "OE.2.3.12 CISTERNA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -1314,7 +1373,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.3.12",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1331,9 +1390,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1343,7 +1403,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.3.13",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1360,7 +1420,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.3.13",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1377,7 +1437,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.3.13",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1394,9 +1454,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1406,7 +1467,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.2.3.14",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1423,7 +1484,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.3.14",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.3 OBRAS DE CONCRETO ARMADO",
@@ -1440,9 +1501,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1452,9 +1514,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1464,8 +1527,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.4.1.1",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.1 COLUMNAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento"
+        ],
         "especialidad": "contingencia",
         "modificacion": "DD1",
         "apu": null
@@ -1477,8 +1545,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.4.1.1",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.1 COLUMNAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento"
+        ],
         "especialidad": "contingencia",
         "modificacion": "DD1",
         "apu": null
@@ -1490,8 +1563,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.1.1",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.1 COLUMNAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento"
+        ],
         "especialidad": "contingencia",
         "modificacion": "DD1",
         "apu": null
@@ -1503,8 +1581,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.1.1",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.1 COLUMNAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento"
+        ],
         "especialidad": "contingencia",
         "modificacion": "DD1",
         "apu": null
@@ -1516,8 +1599,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.1.1",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.1 COLUMNAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento"
+        ],
         "especialidad": "contingencia",
         "modificacion": "DD1",
         "apu": null
@@ -1529,8 +1617,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.1.1",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.1 COLUMNAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento"
+        ],
         "especialidad": "contingencia",
         "modificacion": "DD1",
         "apu": null
@@ -1542,10 +1635,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.1.1",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.1 COLUMNAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento"
+        ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -1555,10 +1653,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.4.1.1",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.1 COLUMNAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento"
+        ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -1568,10 +1671,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.4.1.1",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.1 COLUMNAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento"
+        ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -1581,9 +1689,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1593,8 +1702,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.4.2.1",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.2 VIGAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento"
+        ],
         "especialidad": "contingencia",
         "modificacion": "DD1",
         "apu": null
@@ -1606,8 +1720,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.4.2.2",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.2 VIGAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento"
+        ],
         "especialidad": "contingencia",
         "modificacion": "DD1",
         "apu": null
@@ -1619,9 +1738,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.4.2.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1631,8 +1751,12 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.2.2.2",
-        "nivel_jerarquia": 6,
+        "nivel_jerarquia": 7,
         "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.2 VIGAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento",
             "OE.2.4.2.2.2 PERNOS"
         ],
         "especialidad": "contingencia",
@@ -1646,8 +1770,12 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.2.2.2",
-        "nivel_jerarquia": 6,
+        "nivel_jerarquia": 7,
         "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.2 VIGAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento",
             "OE.2.4.2.2.2 PERNOS"
         ],
         "especialidad": "contingencia",
@@ -1661,8 +1789,12 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.2.2.2",
-        "nivel_jerarquia": 6,
+        "nivel_jerarquia": 7,
         "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.2 VIGAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento",
             "OE.2.4.2.2.2 PERNOS"
         ],
         "especialidad": "contingencia",
@@ -1676,8 +1808,12 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.2.2.2",
-        "nivel_jerarquia": 6,
+        "nivel_jerarquia": 7,
         "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.2 VIGAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento",
             "OE.2.4.2.2.2 PERNOS"
         ],
         "especialidad": "contingencia",
@@ -1691,12 +1827,16 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.2.2.2",
-        "nivel_jerarquia": 6,
+        "nivel_jerarquia": 7,
         "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.2 VIGAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento",
             "OE.2.4.2.2.2 PERNOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -1706,12 +1846,16 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.2.4.2.2.2",
-        "nivel_jerarquia": 6,
+        "nivel_jerarquia": 7,
         "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.2 VIGAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento",
             "OE.2.4.2.2.2 PERNOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -1721,12 +1865,16 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.2.4.2.2.2",
-        "nivel_jerarquia": 6,
+        "nivel_jerarquia": 7,
         "jerarquia": [
+            "OE.2 ESTRUCTURAS.",
+            "OE.2.4 ESTRUCTURAS METÁLICAS",
+            "OE.2.4.2 VIGAS METALICAS",
+            "OE.2.3.14.2 Encofrado y desencofrado en cimiento",
             "OE.2.4.2.2.2 PERNOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -1736,9 +1884,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1748,7 +1897,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.4.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -1765,9 +1914,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.4.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1777,7 +1927,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.1.1",
-        "nivel_jerarquia": 6,
+        "nivel_jerarquia": 7,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -1796,9 +1946,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.4.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1808,7 +1959,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -1826,7 +1977,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -1834,7 +1985,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.2.4.3.2 Armado de Tijeral Metalico"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -1844,7 +1995,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -1862,7 +2013,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -1880,7 +2031,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -1888,7 +2039,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.2.4.3.2 Armado de Tijeral Metalico"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -1898,7 +2049,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -1906,7 +2057,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.2.4.3.2 Armado de Tijeral Metalico"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -1916,7 +2067,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -1924,7 +2075,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.2.4.3.2 Armado de Tijeral Metalico"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -1934,7 +2085,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -1952,7 +2103,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -1970,9 +2121,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.4.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -1982,7 +2134,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -2000,7 +2152,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -2008,7 +2160,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.2.4.3.3 Montaje de Tijeral Metalico"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -2018,7 +2170,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -2036,7 +2188,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -2054,7 +2206,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -2062,7 +2214,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.2.4.3.3 Montaje de Tijeral Metalico"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -2072,7 +2224,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -2080,7 +2232,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.2.4.3.3 Montaje de Tijeral Metalico"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -2090,7 +2242,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -2098,7 +2250,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.2.4.3.3 Montaje de Tijeral Metalico"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -2108,7 +2260,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -2126,7 +2278,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.4.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -2144,9 +2296,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2156,7 +2309,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.4.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -2173,7 +2326,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.2.4.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.4 ESTRUCTURAS METÁLICAS",
@@ -2190,9 +2343,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2202,9 +2356,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2214,7 +2369,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2231,7 +2386,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2248,7 +2403,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2265,9 +2420,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2277,7 +2433,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2294,7 +2450,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2311,7 +2467,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.2.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2328,9 +2484,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2340,7 +2497,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.2.6.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2357,7 +2514,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.2.6.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2374,7 +2531,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.2.6.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2391,9 +2548,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2403,13 +2561,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
             "OE.2.6.4 PINTURA DE PROTECCION ANTICORROSIVA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -2419,9 +2578,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2431,7 +2591,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.6.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2448,13 +2608,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.6.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
             "OE.2.6.5 CONTROL DE CALIDAD"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -2464,13 +2625,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.6.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
             "OE.2.6.5 CONTROL DE CALIDAD"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -2480,7 +2642,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.6.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2497,7 +2659,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.2.6.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2514,9 +2676,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2526,7 +2689,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "mes",
         "es_titulo": false,
         "parent_id": "OE.2.6.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2543,7 +2706,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.2.6.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2560,9 +2723,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.2.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2572,7 +2736,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.2.6.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.2 ESTRUCTURAS.",
             "OE.2.6 VARIOS",
@@ -2589,9 +2753,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE",
-        "nivel_jerarquia": 1,
+        "nivel_jerarquia": 2,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2601,9 +2766,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2613,9 +2779,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2625,7 +2792,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.1.10",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.1 MUROS Y TABIQUES DE ALBAÑILERIA",
@@ -2642,7 +2809,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.1.10",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.1 MUROS Y TABIQUES DE ALBAÑILERIA",
@@ -2659,7 +2826,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.1.10",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.1 MUROS Y TABIQUES DE ALBAÑILERIA",
@@ -2676,7 +2843,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.1.10",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.1 MUROS Y TABIQUES DE ALBAÑILERIA",
@@ -2693,14 +2860,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.1.10",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.1 MUROS Y TABIQUES DE ALBAÑILERIA",
             "OE.3.1.10 MUROS CON EL SISTEMA DE CONSTRUCCIÓN EN SECO (SISTEMA DRY WALL O SIMILAR)"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -2710,14 +2877,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.1.10",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.1 MUROS Y TABIQUES DE ALBAÑILERIA",
             "OE.3.1.10 MUROS CON EL SISTEMA DE CONSTRUCCIÓN EN SECO (SISTEMA DRY WALL O SIMILAR)"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -2727,7 +2894,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.1.10",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.1 MUROS Y TABIQUES DE ALBAÑILERIA",
@@ -2744,14 +2911,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.1.10",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.1 MUROS Y TABIQUES DE ALBAÑILERIA",
             "OE.3.1.10 MUROS CON EL SISTEMA DE CONSTRUCCIÓN EN SECO (SISTEMA DRY WALL O SIMILAR)"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -2761,9 +2928,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2773,7 +2941,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.3.1.11",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.1 MUROS Y TABIQUES DE ALBAÑILERIA",
@@ -2790,9 +2958,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2802,9 +2971,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2814,14 +2984,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.3.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.3 CIELORRASOS",
             "OE.3.3.6 FALSO CIELO RASO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM1-MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -2831,7 +3001,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.3.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.3 CIELORRASOS",
@@ -2848,7 +3018,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.3.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.3 CIELORRASOS",
@@ -2865,14 +3035,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.3.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.3 CIELORRASOS",
             "OE.3.3.6 FALSO CIELO RASO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-DD2",
+        "modificacion": "DD2",
         "apu": null
     },
     {
@@ -2882,14 +3052,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.3.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.3 CIELORRASOS",
             "OE.3.3.6 FALSO CIELO RASO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -2899,9 +3069,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2911,9 +3082,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2923,7 +3095,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -2940,9 +3112,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2952,14 +3125,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
             "OE.3.4.2 PISOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -2969,7 +3142,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -2986,9 +3159,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.4.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -2998,7 +3172,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.2.23",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3016,14 +3190,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
             "OE.3.4.2 PISOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -3033,14 +3207,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
             "OE.3.4.2 PISOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -3050,14 +3224,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
             "OE.3.4.2 PISOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -3067,7 +3241,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3084,9 +3258,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3096,9 +3271,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.4.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3108,7 +3284,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3126,7 +3302,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3144,7 +3320,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3162,7 +3338,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.4.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3180,9 +3356,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.4.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3192,7 +3369,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3210,7 +3387,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3218,6 +3395,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.3.4.3.2 VEREDAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -3227,7 +3405,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3245,7 +3423,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3253,6 +3431,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.3.4.3.2 VEREDAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -3262,7 +3441,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.4.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3270,6 +3449,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.3.4.3.2 VEREDAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -3279,9 +3459,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.4.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3291,7 +3472,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.4.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3299,7 +3480,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.3.4.3.3 CIRCULACION EN PATIO DE MANIOBRAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -3309,7 +3490,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.3.4.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.4 PISOS Y PAVIMENTOS",
@@ -3317,7 +3498,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.3.4.3.3 CIRCULACION EN PATIO DE MANIOBRAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -3327,9 +3508,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3339,9 +3521,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3351,7 +3534,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.5 ZOCALOS Y CONTRAZOCALOS",
@@ -3368,14 +3551,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.5 ZOCALOS Y CONTRAZOCALOS",
             "OE.3.5.1 ZOCALOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -3385,14 +3568,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.5 ZOCALOS Y CONTRAZOCALOS",
             "OE.3.5.1 ZOCALOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -3402,9 +3585,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3414,9 +3598,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.5.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3426,7 +3611,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.5.2.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.5 ZOCALOS Y CONTRAZOCALOS",
@@ -3444,7 +3629,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.5.2.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.5 ZOCALOS Y CONTRAZOCALOS",
@@ -3452,7 +3637,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.3.5.2.3 CONTRAZOCALOS DE CERAMICO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -3462,7 +3647,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.5.2.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.5 ZOCALOS Y CONTRAZOCALOS",
@@ -3470,7 +3655,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.3.5.2.3 CONTRAZOCALOS DE CERAMICO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -3480,7 +3665,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.5.2.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.5 ZOCALOS Y CONTRAZOCALOS",
@@ -3498,7 +3683,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.5.2.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.5 ZOCALOS Y CONTRAZOCALOS",
@@ -3506,7 +3691,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.3.5.2.3 CONTRAZOCALOS DE CERAMICO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -3516,9 +3701,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.5.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3528,7 +3714,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.5.2.11",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.5 ZOCALOS Y CONTRAZOCALOS",
@@ -3536,7 +3722,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.3.5.2.11 OTROS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD2-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -3546,9 +3732,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3558,9 +3745,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3570,7 +3758,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.6.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.6 COBERTURAS",
@@ -3587,7 +3775,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.6.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.6 COBERTURAS",
@@ -3604,7 +3792,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.6.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.6 COBERTURAS",
@@ -3621,14 +3809,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.6.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.6 COBERTURAS",
             "OE.3.6.7 RECUBRIMIENTOS SOBRE ESTRUCTURAS DE MADERA, METAL, ETC."
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -3638,14 +3826,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.6.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.6 COBERTURAS",
             "OE.3.6.7 RECUBRIMIENTOS SOBRE ESTRUCTURAS DE MADERA, METAL, ETC."
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3",
+        "modificacion": "MM3",
         "apu": null
     },
     {
@@ -3655,14 +3843,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.6.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.6 COBERTURAS",
             "OE.3.6.7 RECUBRIMIENTOS SOBRE ESTRUCTURAS DE MADERA, METAL, ETC."
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -3672,7 +3860,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.6.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.6 COBERTURAS",
@@ -3689,9 +3877,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3701,7 +3890,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.6.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.6 COBERTURAS",
@@ -3718,14 +3907,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.6.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.6 COBERTURAS",
             "OE.3.6.9 OTROS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -3735,9 +3924,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3747,9 +3937,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -3759,7 +3950,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
@@ -3776,7 +3967,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
@@ -3793,7 +3984,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
@@ -3810,7 +4001,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
@@ -3827,7 +4018,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
@@ -3844,7 +4035,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
@@ -3861,14 +4052,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -3878,14 +4069,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -3895,14 +4086,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -3912,14 +4103,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -3929,14 +4120,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -3946,14 +4137,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -3963,14 +4154,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -3980,14 +4171,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -3997,14 +4188,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -4014,14 +4205,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -4031,14 +4222,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -4048,14 +4239,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -4065,14 +4256,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
             "OE.3.7.1 PUERTAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -4082,7 +4273,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
@@ -4099,7 +4290,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
@@ -4116,7 +4307,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
@@ -4133,7 +4324,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
@@ -4150,9 +4341,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -4162,11 +4354,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -4179,11 +4371,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -4196,11 +4388,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -4213,11 +4405,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -4230,11 +4422,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -4247,11 +4439,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -4264,11 +4456,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -4281,11 +4473,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -4298,11 +4490,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -4315,11 +4507,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -4332,11 +4524,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -4349,11 +4541,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "PN3",
@@ -4366,11 +4558,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "PN6",
@@ -4383,11 +4575,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "PN6",
@@ -4400,11 +4592,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "PN6",
@@ -4417,11 +4609,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.7 CARPINTERIA DE MADERA",
-            "OE.3.7.2 VENTANAS"
+            "OE.3.7.2 MUEBLES DE LABORATORIO Y SIMILARES"
         ],
         "especialidad": "contingencia",
         "modificacion": "PN6",
@@ -4434,9 +4626,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -4446,9 +4639,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -4458,7 +4652,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4475,7 +4669,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4492,7 +4686,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4509,7 +4703,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4526,7 +4720,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4543,7 +4737,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4560,7 +4754,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4577,7 +4771,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4594,7 +4788,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4611,9 +4805,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -4623,7 +4818,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4640,7 +4835,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4657,7 +4852,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4674,7 +4869,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4691,14 +4886,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.2 PUERTA DE FIERRO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -4708,7 +4903,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4725,7 +4920,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4742,7 +4937,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4759,7 +4954,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4776,14 +4971,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.2 PUERTA DE FIERRO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -4793,7 +4988,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4810,14 +5005,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.2 PUERTA DE FIERRO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -4827,14 +5022,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.2 PUERTA DE FIERRO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -4844,7 +5039,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4861,7 +5056,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4878,9 +5073,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -4890,7 +5086,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4907,7 +5103,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4924,7 +5120,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -4941,14 +5137,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.4 VENTANA DE ALUMINIO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -4958,14 +5154,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.4 VENTANA DE ALUMINIO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -4975,14 +5171,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.4 VENTANA DE ALUMINIO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -4992,14 +5188,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.4 VENTANA DE ALUMINIO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -5009,7 +5205,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5026,14 +5222,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.4 VENTANA DE ALUMINIO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -5043,7 +5239,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5060,7 +5256,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5077,7 +5273,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5094,7 +5290,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5111,7 +5307,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5128,7 +5324,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5145,7 +5341,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5162,9 +5358,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5174,7 +5371,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5191,9 +5388,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5203,13 +5401,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.8.13",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.13 DIVISION DE ALUMINIO PARA SERVICIOS HIGIENICOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -5219,9 +5418,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5231,7 +5431,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.8.14",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5248,14 +5448,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.8.14",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.14 BARANDA METALICA"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -5265,7 +5465,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.8.14",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5282,7 +5482,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.8.14",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5299,9 +5499,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5311,7 +5512,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.15",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5328,7 +5529,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.15",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5345,7 +5546,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.8.15",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5362,9 +5563,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5374,7 +5576,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5391,7 +5593,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.8.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5408,14 +5610,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.8.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
             "OE.3.8.18 ELEMENTOS METALICOS ESPECIALES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -5425,7 +5627,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.8.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5442,7 +5644,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.8.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.8 CARPINTERÍA METÁLICA Y HERRERÍA",
@@ -5459,9 +5661,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5471,9 +5674,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.9",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5483,7 +5687,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.9.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.9 CERRAJERIA",
@@ -5500,14 +5704,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.9.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.9 CERRAJERIA",
             "OE.3.9.1 BISAGRAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -5517,9 +5721,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.9",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5529,7 +5734,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.9.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.9 CERRAJERIA",
@@ -5546,7 +5751,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.9.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.9 CERRAJERIA",
@@ -5563,7 +5768,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.9.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.9 CERRAJERIA",
@@ -5580,7 +5785,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.9.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.9 CERRAJERIA",
@@ -5597,7 +5802,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.9.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.9 CERRAJERIA",
@@ -5614,14 +5819,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.9.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.9 CERRAJERIA",
             "OE.3.9.2 CERRADURAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -5631,14 +5836,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.9.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.9 CERRAJERIA",
             "OE.3.9.2 CERRADURAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -5648,14 +5853,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.9.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.9 CERRAJERIA",
             "OE.3.9.2 CERRADURAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -5665,9 +5870,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.9",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5677,7 +5883,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.9.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.9 CERRAJERIA",
@@ -5694,9 +5900,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5706,9 +5913,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.10",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5718,13 +5926,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.10.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.10 VIDRIOS, CRISTALES Y SIMILARES",
             "OE.3.10.1 ESPEJOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -5734,9 +5943,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5746,8 +5956,12 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.10.4",
-        "nivel_jerarquia": 4,
-        "jerarquia": [],
+        "nivel_jerarquia": 5,
+        "jerarquia": [
+            "OE.3 ARQUITECTURA",
+            "OE.3.10 VIDRIOS, CRISTALES Y SIMILARES",
+            "OE.3.7.1 PUERTAS"
+        ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
         "apu": null
@@ -5759,9 +5973,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5771,13 +5986,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
-            "OE.3.7 CARPINTERIA DE MADERA",
+            "OE.3.10 VIDRIOS, CRISTALES Y SIMILARES",
             "OE.3.7.2 VENTANAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -5787,9 +6003,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.10",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5799,7 +6016,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.3.10.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.10 VIDRIOS, CRISTALES Y SIMILARES",
@@ -5816,9 +6033,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5828,9 +6046,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.11",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -5840,7 +6059,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.11.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.11 PINTURA",
@@ -5857,7 +6076,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.11.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.11 PINTURA",
@@ -5874,7 +6093,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.11.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.11 PINTURA",
@@ -5891,14 +6110,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.11.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.11 PINTURA",
             "OE.3.11.1 PINTURA DE CIELOS RASOS, VIGAS, COLUMNAS Y PAREDES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -5908,14 +6127,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.11.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.11 PINTURA",
             "OE.3.11.1 PINTURA DE CIELOS RASOS, VIGAS, COLUMNAS Y PAREDES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -5925,14 +6144,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.11.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.11 PINTURA",
             "OE.3.11.1 PINTURA DE CIELOS RASOS, VIGAS, COLUMNAS Y PAREDES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -5942,14 +6161,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.11.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.11 PINTURA",
             "OE.3.11.1 PINTURA DE CIELOS RASOS, VIGAS, COLUMNAS Y PAREDES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN1-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -5959,7 +6178,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.11.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.11 PINTURA",
@@ -5976,7 +6195,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.11.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.11 PINTURA",
@@ -5993,7 +6212,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.11.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.11 PINTURA",
@@ -6010,7 +6229,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.3.11.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.11 PINTURA",
@@ -6027,9 +6246,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6039,7 +6259,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.3.12",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.12 VARIOS, LIMPIEZA, JARDINERIA"
@@ -6055,7 +6275,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.3.12",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.12 VARIOS, LIMPIEZA, JARDINERIA"
@@ -6071,9 +6291,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.12",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6083,14 +6304,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.12.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.12 VARIOS, LIMPIEZA, JARDINERIA",
             "OE.3.12.5 SEMBRIO DE GRASS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -6100,14 +6321,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.12.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.12 VARIOS, LIMPIEZA, JARDINERIA",
             "OE.3.12.5 SEMBRIO DE GRASS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -6117,9 +6338,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6129,9 +6351,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.13",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6141,7 +6364,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.13.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6158,9 +6381,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.13",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6170,13 +6394,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
             "OE.3.13.2 LETREROS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -6186,9 +6411,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.13",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6198,7 +6424,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6215,7 +6441,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6232,7 +6458,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6249,7 +6475,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6266,7 +6492,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6283,7 +6509,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6300,7 +6526,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6317,7 +6543,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6334,7 +6560,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6351,9 +6577,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.13",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6363,7 +6590,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6380,7 +6607,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6397,13 +6624,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
             "OE.3.13.4 SEÑALETICA DE SEGURIDAD"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -6413,13 +6641,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
             "OE.3.13.4 SEÑALETICA DE SEGURIDAD"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -6429,7 +6658,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6446,9 +6675,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.13",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6458,13 +6688,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
             "OE.3.13.5 EXTINTORES"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -6474,7 +6705,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6491,7 +6722,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6508,9 +6739,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.13",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6520,7 +6752,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.13.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6537,14 +6769,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.13.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
             "OE.3.13.6 MESAS DE CONCRETO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -6554,9 +6786,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3.13",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6566,7 +6799,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6583,7 +6816,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6600,7 +6833,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.3.13.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.13 OTROS",
@@ -6617,9 +6850,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.3",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6629,7 +6863,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.14",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.14 RESERVORIO APOYADO"
@@ -6645,7 +6879,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.14",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.14 RESERVORIO APOYADO"
@@ -6661,7 +6895,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.14",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.14 RESERVORIO APOYADO"
@@ -6677,7 +6911,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.3.14",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.14 RESERVORIO APOYADO"
@@ -6693,7 +6927,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.3.14",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.14 RESERVORIO APOYADO"
@@ -6709,7 +6943,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.3.14",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.3 ARQUITECTURA",
             "OE.3.14 RESERVORIO APOYADO"
@@ -6725,9 +6959,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE",
-        "nivel_jerarquia": 1,
+        "nivel_jerarquia": 2,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6737,9 +6972,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE4",
-        "nivel_jerarquia": 1,
+        "nivel_jerarquia": 2,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6749,9 +6985,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6761,9 +6998,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6773,13 +7011,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.1.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.1 SUMINISTRO DE APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.1.1.1 SUMINISTRO DE URINARIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -6789,8 +7029,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.1.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.1 SUMINISTRO DE APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.1.1.1 SUMINISTRO DE URINARIOS"
         ],
@@ -6805,9 +7047,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6817,13 +7060,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.1.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.1 SUMINISTRO DE APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.1.1.2 SUMINISTRO DE INODOROS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -6833,13 +7078,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.1.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.1 SUMINISTRO DE APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.1.1.2 SUMINISTRO DE INODOROS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -6849,8 +7096,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.1.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.1 SUMINISTRO DE APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.1.1.2 SUMINISTRO DE INODOROS"
         ],
@@ -6865,9 +7114,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6877,13 +7127,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.1 SUMINISTRO DE APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.1.1.3 SUMINISTRO DE LAVATORIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -6893,8 +7145,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.1 SUMINISTRO DE APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.1.1.3 SUMINISTRO DE LAVATORIOS"
         ],
@@ -6909,13 +7163,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.1 SUMINISTRO DE APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.1.1.3 SUMINISTRO DE LAVATORIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -6925,13 +7181,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.1 SUMINISTRO DE APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.1.1.3 SUMINISTRO DE LAVATORIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -6941,8 +7199,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.1 SUMINISTRO DE APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.1.1.3 SUMINISTRO DE LAVATORIOS"
         ],
@@ -6957,8 +7217,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.1 SUMINISTRO DE APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.1.1.3 SUMINISTRO DE LAVATORIOS"
         ],
@@ -6973,9 +7235,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6985,9 +7248,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -6997,8 +7261,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.2.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.2 SUMINISTRO DE ACCESORIOS",
             "OE.4.1.2.1 SUMINISTRO DE ACCESORIOS PARA URINARIOS"
         ],
@@ -7013,9 +7279,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7025,13 +7292,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.2.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.2 SUMINISTRO DE ACCESORIOS",
             "OE.4.1.2.2 SUMINISTRO DE ACCESORIOS PARA INODOROS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7041,13 +7310,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.2.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.2 SUMINISTRO DE ACCESORIOS",
             "OE.4.1.2.2 SUMINISTRO DE ACCESORIOS PARA INODOROS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -7057,9 +7328,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7069,13 +7341,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.2.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.2 SUMINISTRO DE ACCESORIOS",
             "OE.4.1.2.3 SUMINISTRO DE ACCESORIOS PARA LAVATORIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -7085,13 +7359,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.2.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.2 SUMINISTRO DE ACCESORIOS",
             "OE.4.1.2.3 SUMINISTRO DE ACCESORIOS PARA LAVATORIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7101,9 +7377,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7113,13 +7390,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.2.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.2 SUMINISTRO DE ACCESORIOS",
             "OE.4.1.2.4 SUMINISTRO DE GRIFERIA"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -7129,13 +7408,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.2.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.2 SUMINISTRO DE ACCESORIOS",
             "OE.4.1.2.4 SUMINISTRO DE GRIFERIA"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7145,8 +7426,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.2.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.2 SUMINISTRO DE ACCESORIOS",
             "OE.4.1.2.4 SUMINISTRO DE GRIFERIA"
         ],
@@ -7161,9 +7444,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7173,13 +7457,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.2.5",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.2 SUMINISTRO DE ACCESORIOS",
             "OE.4.1.2.5 SUMINISTRO DE ACCESORIOS COMPLEMENTARIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -7189,13 +7475,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.2.5",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.2 SUMINISTRO DE ACCESORIOS",
             "OE.4.1.2.5 SUMINISTRO DE ACCESORIOS COMPLEMENTARIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7205,13 +7493,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.2.5",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.2 SUMINISTRO DE ACCESORIOS",
             "OE.4.1.2.5 SUMINISTRO DE ACCESORIOS COMPLEMENTARIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7221,9 +7511,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7233,9 +7524,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7245,8 +7537,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.3 INSTALACIÓN DE APARATOS SANITARIOS",
             "OE.4.1.3.1 INSTALACIÓN DE URINARIOS"
         ],
@@ -7261,9 +7555,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7273,13 +7568,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.3 INSTALACIÓN DE APARATOS SANITARIOS",
             "OE.4.1.3.2 INSTALACIÓN DE INODOROS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7289,13 +7586,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.3 INSTALACIÓN DE APARATOS SANITARIOS",
             "OE.4.1.3.2 INSTALACIÓN DE INODOROS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -7305,9 +7604,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7317,13 +7617,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.3 INSTALACIÓN DE APARATOS SANITARIOS",
             "OE.4.1.3.3 INSTALACIÓN DE LAVATORIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -7333,8 +7635,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.3 INSTALACIÓN DE APARATOS SANITARIOS",
             "OE.4.1.3.3 INSTALACIÓN DE LAVATORIOS"
         ],
@@ -7349,13 +7653,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.3 INSTALACIÓN DE APARATOS SANITARIOS",
             "OE.4.1.3.3 INSTALACIÓN DE LAVATORIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7365,13 +7671,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.3.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.3 INSTALACIÓN DE APARATOS SANITARIOS",
             "OE.4.1.3.3 INSTALACIÓN DE LAVATORIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -7381,9 +7689,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7393,9 +7702,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7405,8 +7715,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.4.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.4 INSTALACIÓN DE ACCESORIOS",
             "OE.4.1.4.1 INSTALACIÓN DE ACCESORIOS PARA URINARIOS"
         ],
@@ -7421,9 +7733,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7433,13 +7746,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.4.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.4 INSTALACIÓN DE ACCESORIOS",
             "OE.4.1.4.2 INSTALACIÓN DE ACCESORIOS PARA INODOROS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7449,13 +7764,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.4.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.4 INSTALACIÓN DE ACCESORIOS",
             "OE.4.1.4.2 INSTALACIÓN DE ACCESORIOS PARA INODOROS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -7465,9 +7782,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7477,13 +7795,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.4.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.4 INSTALACIÓN DE ACCESORIOS",
             "OE.4.1.4.3 INSTALACIÓN DE ACCESORIOS PARA LAVATORIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -7493,13 +7813,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.4.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.4 INSTALACIÓN DE ACCESORIOS",
             "OE.4.1.4.3 INSTALACIÓN DE ACCESORIOS PARA LAVATORIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7509,9 +7831,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7521,13 +7844,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.4.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.4 INSTALACIÓN DE ACCESORIOS",
             "OE.4.1.4.4 INSTALACIÓN DE GRIFERIA"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -7537,13 +7862,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.4.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.4 INSTALACIÓN DE ACCESORIOS",
             "OE.4.1.4.4 INSTALACIÓN DE GRIFERIA"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7553,8 +7880,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.4.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.4 INSTALACIÓN DE ACCESORIOS",
             "OE.4.1.4.4 INSTALACIÓN DE GRIFERIA"
         ],
@@ -7569,9 +7898,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.1.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7581,13 +7911,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.4.5",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.4 INSTALACIÓN DE ACCESORIOS",
             "OE.4.1.4.5 INSTALACIÓN DE ACCESORIOS COMPLEMENTARIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -7597,13 +7929,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.4.5",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.4 INSTALACIÓN DE ACCESORIOS",
             "OE.4.1.4.5 INSTALACIÓN DE ACCESORIOS COMPLEMENTARIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7613,13 +7947,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.1.4.5",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
+            "OE.3.14 RESERVORIO APOYADO",
             "OE.4.1.4 INSTALACIÓN DE ACCESORIOS",
             "OE.4.1.4.5 INSTALACIÓN DE ACCESORIOS COMPLEMENTARIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "DD3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -7629,9 +7965,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7641,9 +7978,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7653,14 +7991,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.4.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.1 SALIDA DE AGUA FRIA"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -7670,9 +8008,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.1 SALIDA DE AGUA FRIA"
         ],
@@ -7687,9 +8025,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.1 SALIDA DE AGUA FRIA"
         ],
@@ -7704,9 +8042,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7716,13 +8055,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.4.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.2 REDES DE DISTRIBUCIÓN"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -7732,9 +8072,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.2 REDES DE DISTRIBUCIÓN"
         ],
@@ -7749,9 +8089,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.2 REDES DE DISTRIBUCIÓN"
         ],
@@ -7766,9 +8106,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7778,9 +8119,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -7790,9 +8132,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
@@ -7808,14 +8150,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -7825,14 +8168,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -7842,14 +8186,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -7859,14 +8204,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -7876,9 +8222,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
@@ -7894,9 +8240,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
@@ -7912,9 +8258,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
@@ -7930,9 +8276,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
@@ -7948,14 +8294,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -7965,14 +8312,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -7982,14 +8330,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -7999,14 +8348,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -8016,14 +8366,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.1 MOVIMIENTO DE TIERRAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -8033,9 +8384,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -8045,9 +8397,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.2 REDES DE ALIMENTACIÓN EXTERIORES"
@@ -8063,9 +8415,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.2 REDES DE ALIMENTACIÓN EXTERIORES"
@@ -8081,9 +8433,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.2 REDES DE ALIMENTACIÓN EXTERIORES"
@@ -8099,9 +8451,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.2 REDES DE ALIMENTACIÓN EXTERIORES"
@@ -8117,9 +8469,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.2 REDES DE ALIMENTACIÓN EXTERIORES"
@@ -8135,9 +8487,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.2 REDES DE ALIMENTACIÓN EXTERIORES"
@@ -8153,9 +8505,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.3 REDES DE ALIMENTACIÓN EXTERIORES",
             "OE.4.2.3.2 REDES DE ALIMENTACIÓN EXTERIORES"
@@ -8171,9 +8523,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -8183,9 +8536,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8200,9 +8553,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8217,9 +8570,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8234,9 +8587,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8251,9 +8604,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8268,9 +8621,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8285,9 +8638,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8302,9 +8655,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8319,9 +8672,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8336,9 +8689,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8353,9 +8706,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8370,9 +8723,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8387,9 +8740,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8404,9 +8757,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8421,9 +8774,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8438,9 +8791,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8455,9 +8808,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8472,9 +8825,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8489,9 +8842,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8506,9 +8859,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8523,9 +8876,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8540,9 +8893,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8557,9 +8910,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8574,9 +8927,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8591,9 +8944,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8608,9 +8961,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8625,9 +8978,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8642,9 +8995,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8659,9 +9012,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8676,9 +9029,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8693,9 +9046,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8710,9 +9063,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8727,9 +9080,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8744,9 +9097,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8761,9 +9114,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8778,9 +9131,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8795,9 +9148,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8812,9 +9165,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8829,9 +9182,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8846,9 +9199,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8863,9 +9216,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8880,9 +9233,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8897,9 +9250,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8914,9 +9267,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8931,9 +9284,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8948,9 +9301,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8965,9 +9318,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8982,9 +9335,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -8999,9 +9352,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -9016,9 +9369,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -9033,9 +9386,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.4 ACCESORIOS DE REDES DE AGUA"
         ],
@@ -9050,9 +9403,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -9062,14 +9416,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.5 VALVULAS Y LLAVES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -9079,14 +9433,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.5 VALVULAS Y LLAVES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -9096,14 +9450,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.5 VALVULAS Y LLAVES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -9113,14 +9467,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.5 VALVULAS Y LLAVES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -9130,14 +9484,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.5 VALVULAS Y LLAVES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -9147,14 +9501,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.5 VALVULAS Y LLAVES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -9164,14 +9518,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.5 VALVULAS Y LLAVES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -9181,9 +9535,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -9193,9 +9548,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -9205,9 +9561,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
@@ -9223,9 +9579,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
@@ -9241,9 +9597,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
@@ -9259,9 +9615,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
@@ -9277,9 +9633,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
@@ -9295,9 +9651,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
@@ -9313,9 +9669,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
@@ -9331,9 +9687,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
@@ -9349,9 +9705,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
@@ -9367,15 +9723,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -9385,9 +9741,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
@@ -9403,9 +9759,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
@@ -9421,15 +9777,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.1 RED DE CISTERNA"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -9439,9 +9795,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -9451,9 +9808,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.2 VALVULAS Y LLAVES"
@@ -9469,9 +9826,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.2 VALVULAS Y LLAVES"
@@ -9487,9 +9844,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.2 VALVULAS Y LLAVES"
@@ -9505,9 +9862,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.2 VALVULAS Y LLAVES"
@@ -9523,9 +9880,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.2 VALVULAS Y LLAVES"
@@ -9541,9 +9898,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.2 VALVULAS Y LLAVES"
@@ -9559,9 +9916,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -9571,9 +9929,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.3 ADITAMENTOS VARIOS"
@@ -9589,9 +9947,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.3 ADITAMENTOS VARIOS"
@@ -9607,9 +9965,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.3 ADITAMENTOS VARIOS"
@@ -9625,9 +9983,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.3 ADITAMENTOS VARIOS"
@@ -9643,9 +10001,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.3 ADITAMENTOS VARIOS"
@@ -9661,9 +10019,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.3 ADITAMENTOS VARIOS"
@@ -9679,14 +10037,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.3 ADITAMENTOS VARIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -9696,14 +10055,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.3 ADITAMENTOS VARIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -9713,14 +10073,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.3 ADITAMENTOS VARIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -9730,9 +10091,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.3 ADITAMENTOS VARIOS"
@@ -9748,9 +10109,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.3 ADITAMENTOS VARIOS"
@@ -9766,9 +10127,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -9778,15 +10140,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.6.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.6 SISTEMA DE ALMACENAMIENTO CISTERNA DE AGUA",
             "OE.4.2.6.4 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -9796,9 +10158,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -9808,13 +10171,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.7 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -9824,13 +10188,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.2 SISTEMA DE AGUA FRIA",
             "OE.4.2.7 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -9840,9 +10205,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -9852,9 +10218,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -9864,9 +10231,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.1 TUBERIA DE BAJADA Y DISTRIBUCION DE DESAGUE PLUVIAL"
         ],
@@ -9881,9 +10248,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.1 TUBERIA DE BAJADA Y DISTRIBUCION DE DESAGUE PLUVIAL"
         ],
@@ -9898,14 +10265,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.1 TUBERIA DE BAJADA Y DISTRIBUCION DE DESAGUE PLUVIAL"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -9915,9 +10282,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.1 TUBERIA DE BAJADA Y DISTRIBUCION DE DESAGUE PLUVIAL"
         ],
@@ -9932,9 +10299,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.1 TUBERIA DE BAJADA Y DISTRIBUCION DE DESAGUE PLUVIAL"
         ],
@@ -9949,9 +10316,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.1 TUBERIA DE BAJADA Y DISTRIBUCION DE DESAGUE PLUVIAL"
         ],
@@ -9966,9 +10333,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.1 TUBERIA DE BAJADA Y DISTRIBUCION DE DESAGUE PLUVIAL"
         ],
@@ -9983,9 +10350,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.1 TUBERIA DE BAJADA Y DISTRIBUCION DE DESAGUE PLUVIAL"
         ],
@@ -10000,9 +10367,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pza",
         "es_titulo": false,
         "parent_id": "OE.4.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.1 TUBERIA DE BAJADA Y DISTRIBUCION DE DESAGUE PLUVIAL"
         ],
@@ -10017,9 +10384,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.4.5.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.1 TUBERIA DE BAJADA Y DISTRIBUCION DE DESAGUE PLUVIAL"
         ],
@@ -10034,9 +10401,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -10046,13 +10414,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.5.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.2 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -10062,14 +10431,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.5.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.2 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -10079,14 +10448,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.4.5.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.2 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -10096,14 +10465,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.5.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.2 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -10113,14 +10482,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.4.5.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.2 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -10130,14 +10499,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.4.5.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.2 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -10147,14 +10516,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.4.5.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.2 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -10164,14 +10533,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.5.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.5 SISTEMA DE DRENAJE PLUVIAL",
             "OE.4.5.2 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -10181,9 +10550,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -10193,9 +10563,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -10205,14 +10576,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.4.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.1 SALIDAS DE DESAGÜE"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -10222,14 +10593,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.4.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.1 SALIDAS DE DESAGÜE"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -10239,9 +10610,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -10251,13 +10623,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.4.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.2 REDES DE DERIVACIÓN"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -10267,9 +10640,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.2 REDES DE DERIVACIÓN"
         ],
@@ -10284,14 +10657,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.2 REDES DE DERIVACIÓN"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -10301,9 +10674,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.2 REDES DE DERIVACIÓN"
         ],
@@ -10318,14 +10691,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.2 REDES DE DERIVACIÓN"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -10335,9 +10708,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -10347,9 +10721,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -10359,9 +10734,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.3 REDES COLECTORAS",
             "OE.4.6.3.1 MOVIMIENTO DE TIERRAS"
@@ -10377,14 +10752,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.4.6.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.3 REDES COLECTORAS",
             "OE.4.6.3.1 MOVIMIENTO DE TIERRAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -10394,9 +10770,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.3 REDES COLECTORAS",
             "OE.4.6.3.1 MOVIMIENTO DE TIERRAS"
@@ -10412,9 +10788,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.3 REDES COLECTORAS",
             "OE.4.6.3.1 MOVIMIENTO DE TIERRAS"
@@ -10430,9 +10806,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.3 REDES COLECTORAS",
             "OE.4.6.3.1 MOVIMIENTO DE TIERRAS"
@@ -10448,14 +10824,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m3",
         "es_titulo": false,
         "parent_id": "OE.4.6.3.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.3 REDES COLECTORAS",
             "OE.4.6.3.1 MOVIMIENTO DE TIERRAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -10465,9 +10842,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -10477,14 +10855,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.3 REDES COLECTORAS",
             "OE.4.6.3.2 INSTALACION DE TUBERIA COLECTORA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -10494,9 +10873,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.3 REDES COLECTORAS",
             "OE.4.6.3.2 INSTALACION DE TUBERIA COLECTORA"
@@ -10512,14 +10891,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.3 REDES COLECTORAS",
             "OE.4.6.3.2 INSTALACION DE TUBERIA COLECTORA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -10529,14 +10909,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.3 REDES COLECTORAS",
             "OE.4.6.3.2 INSTALACION DE TUBERIA COLECTORA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -10546,9 +10927,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.3.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.3 REDES COLECTORAS",
             "OE.4.6.3.2 INSTALACION DE TUBERIA COLECTORA"
@@ -10564,9 +10945,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -10576,9 +10958,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS"
         ],
@@ -10593,13 +10975,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -10609,13 +10992,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -10625,9 +11009,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -10637,15 +11022,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS",
             "OE.4.6.4.4 ADITAMENTOS VARIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -10655,15 +11040,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS",
             "OE.4.6.4.4 ADITAMENTOS VARIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -10673,9 +11058,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS",
             "OE.4.6.4.4 ADITAMENTOS VARIOS"
@@ -10691,15 +11076,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS",
             "OE.4.6.4.4 ADITAMENTOS VARIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -10709,9 +11094,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS",
             "OE.4.6.4.4 ADITAMENTOS VARIOS"
@@ -10727,9 +11112,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS"
         ],
@@ -10744,9 +11129,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS"
         ],
@@ -10761,9 +11146,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS"
         ],
@@ -10778,9 +11163,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS"
         ],
@@ -10795,9 +11180,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS"
         ],
@@ -10812,9 +11197,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS"
         ],
@@ -10829,9 +11214,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS"
         ],
@@ -10846,9 +11231,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.4 ACCESORIOS DE REDES COLECTORAS"
         ],
@@ -10863,9 +11248,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -10875,9 +11261,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -10887,15 +11274,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.5.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.5 CÁMARAS DE INSPECCIÓN",
             "OE.4.6.5.1 CAJAS DE REGISTRO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -10905,15 +11292,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.5.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.5 CÁMARAS DE INSPECCIÓN",
             "OE.4.6.5.1 CAJAS DE REGISTRO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -10923,9 +11310,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.5.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.5 CÁMARAS DE INSPECCIÓN",
             "OE.4.6.5.1 CAJAS DE REGISTRO"
@@ -10941,9 +11328,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.5.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.5 CÁMARAS DE INSPECCIÓN",
             "OE.4.6.5.1 CAJAS DE REGISTRO"
@@ -10959,9 +11346,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m³",
         "es_titulo": false,
         "parent_id": "OE.4.6.5.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.5 CÁMARAS DE INSPECCIÓN",
             "OE.4.6.5.1 CAJAS DE REGISTRO"
@@ -10977,9 +11364,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.4.6.5.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.5 CÁMARAS DE INSPECCIÓN",
             "OE.4.6.5.1 CAJAS DE REGISTRO"
@@ -10995,9 +11382,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.4.6.5.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.5 CÁMARAS DE INSPECCIÓN",
             "OE.4.6.5.1 CAJAS DE REGISTRO"
@@ -11013,9 +11400,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.5.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11025,15 +11413,16 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.5.1.5",
-        "nivel_jerarquia": 6,
+        "nivel_jerarquia": 7,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.5 CÁMARAS DE INSPECCIÓN",
             "OE.4.6.5.1 CAJAS DE REGISTRO",
             "OE.4.6.5.1.5 EMPALME Y PRUEBAS HIDRAULICAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -11043,9 +11432,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11055,9 +11445,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11067,15 +11458,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.7.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.7 EQUIPAMIENTO",
             "OE.4.6.7.1 ELECTROBOMBAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -11085,9 +11476,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "ser",
         "es_titulo": false,
         "parent_id": "OE.4.6.7.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.7 EQUIPAMIENTO",
             "OE.4.6.7.1 ELECTROBOMBAS"
@@ -11103,9 +11494,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11115,9 +11507,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.4.6.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR"
         ],
@@ -11132,9 +11524,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.4.6.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR"
         ],
@@ -11149,9 +11541,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.4.6.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR"
         ],
@@ -11166,9 +11558,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m³",
         "es_titulo": false,
         "parent_id": "OE.4.6.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR"
         ],
@@ -11183,9 +11575,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m³",
         "es_titulo": false,
         "parent_id": "OE.4.6.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR"
         ],
@@ -11200,9 +11592,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR"
         ],
@@ -11217,9 +11609,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR"
         ],
@@ -11234,9 +11626,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11246,9 +11639,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.4.6.8.8",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR",
             "OE.4.6.8.8 TUBERIAS Y ACCESORIOS"
@@ -11264,9 +11657,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.4.6.8.8",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR",
             "OE.4.6.8.8 TUBERIAS Y ACCESORIOS"
@@ -11282,9 +11675,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m³",
         "es_titulo": false,
         "parent_id": "OE.4.6.8.8",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR",
             "OE.4.6.8.8 TUBERIAS Y ACCESORIOS"
@@ -11300,9 +11693,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m³",
         "es_titulo": false,
         "parent_id": "OE.4.6.8.8",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR",
             "OE.4.6.8.8 TUBERIAS Y ACCESORIOS"
@@ -11318,9 +11711,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.8.8",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.8 INSTALACION DE BIODIGESTOR",
             "OE.4.6.8.8 TUBERIAS Y ACCESORIOS"
@@ -11336,9 +11729,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11348,9 +11742,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11360,9 +11755,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.4.6.9.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.9 POZO PERCOLADOR",
             "OE.4.6.9.1 TRABAJOS PRELIMINARES"
@@ -11378,9 +11773,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.4.6.9.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.9 POZO PERCOLADOR",
             "OE.4.6.9.1 TRABAJOS PRELIMINARES"
@@ -11396,9 +11791,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11408,9 +11804,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m³",
         "es_titulo": false,
         "parent_id": "OE.4.6.9.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.9 POZO PERCOLADOR",
             "OE.4.6.9.2 MOVIMIENTO DE TIERRAS"
@@ -11426,9 +11822,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m³",
         "es_titulo": false,
         "parent_id": "OE.4.6.9.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.9 POZO PERCOLADOR",
             "OE.4.6.9.2 MOVIMIENTO DE TIERRAS"
@@ -11444,9 +11840,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m³",
         "es_titulo": false,
         "parent_id": "OE.4.6.9.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.9 POZO PERCOLADOR",
             "OE.4.6.9.2 MOVIMIENTO DE TIERRAS"
@@ -11462,9 +11858,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11474,9 +11871,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.6.9.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.9 POZO PERCOLADOR",
             "OE.4.6.9.3 OBRAS DE CONCRETO SIMPLE"
@@ -11492,9 +11889,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11504,9 +11902,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m³",
         "es_titulo": false,
         "parent_id": "OE.4.6.9.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.9 POZO PERCOLADOR",
             "OE.4.6.9.4 OBRAS DE CONCRETO ARMADO"
@@ -11522,9 +11920,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.4.6.9.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.9 POZO PERCOLADOR",
             "OE.4.6.9.4 OBRAS DE CONCRETO ARMADO"
@@ -11540,9 +11938,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.4.6.9.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.9 POZO PERCOLADOR",
             "OE.4.6.9.4 OBRAS DE CONCRETO ARMADO"
@@ -11558,9 +11956,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11570,9 +11969,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.4.6.9.5",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.9 POZO PERCOLADOR",
             "OE.4.6.9.5 TUBERIAS Y ACCESORIOS"
@@ -11588,9 +11987,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4.6.9",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11600,9 +12000,9 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m²",
         "es_titulo": false,
         "parent_id": "OE.4.6.9.6",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.6 DESAGÜE Y VENTILACIÓN",
             "OE.4.6.9 POZO PERCOLADOR",
             "OE.4.6.9.6 MAMPOSTERIA"
@@ -11618,9 +12018,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.4",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11630,13 +12031,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.4.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
-            "OE.4 INSTALACIONES SANITARIAS",
+            "OE4.1 APARATOS SANITARIOS Y ACCESORIOS",
             "OE.4.7 ADITAMENTOS VARIOS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -11646,9 +12047,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE",
-        "nivel_jerarquia": 1,
+        "nivel_jerarquia": 2,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11658,9 +12060,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11670,12 +12073,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.5.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.1 CONEXIÓN A LA RED EXTERNA DE SUMINISTRO DE ENERGIA ELÉCTRICA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -11685,9 +12089,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11697,9 +12102,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11709,9 +12115,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11721,7 +12128,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11729,7 +12136,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.5.2.1.1 SALIDA PARA ALUMBRADO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -11739,7 +12146,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11757,7 +12164,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11765,7 +12172,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.5.2.1.1 SALIDA PARA ALUMBRADO"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -11775,9 +12182,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11787,7 +12195,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11795,7 +12203,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.5.2.1.2 SALIDA PARA TOMACORRIENTES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -11805,7 +12213,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11823,7 +12231,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11831,7 +12239,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.5.2.1.2 SALIDA PARA TOMACORRIENTES"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -11841,7 +12249,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11859,9 +12267,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -11871,7 +12280,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11889,7 +12298,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11907,7 +12316,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11925,7 +12334,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11933,7 +12342,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.5.2.1.3 SALIDA PARA TOMACORRIENTES DE FUERZA"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -11943,7 +12352,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11961,7 +12370,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11979,7 +12388,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -11997,7 +12406,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12015,7 +12424,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12033,9 +12442,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.2.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -12045,7 +12455,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12053,7 +12463,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.5.2.1.4 SALIDA PARA INTERRUPTOR"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM6-DD3",
+        "modificacion": "DD3",
         "apu": null
     },
     {
@@ -12063,7 +12473,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12071,7 +12481,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.5.2.1.4 SALIDA PARA INTERRUPTOR"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -12081,7 +12491,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12099,7 +12509,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12107,6 +12517,7 @@ export const mockPartidasContingencia: Partida[] = [
             "OE.5.2.1.4 SALIDA PARA INTERRUPTOR"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -12116,7 +12527,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12134,9 +12545,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE5.2.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -12146,8 +12558,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.5",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
+            "OE5.2.1.5 CAJAS DE PASO",
+            "OE.5.2.1.4 SALIDA PARA INTERRUPTOR"
+        ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
         "apu": null
@@ -12159,9 +12576,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.5",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
+            "OE5.2.1.5 CAJAS DE PASO",
+            "OE.5.2.1.4 SALIDA PARA INTERRUPTOR"
+        ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -12171,9 +12594,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.5",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
+            "OE5.2.1.5 CAJAS DE PASO",
+            "OE.5.2.1.4 SALIDA PARA INTERRUPTOR"
+        ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -12183,8 +12612,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.5",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
+            "OE5.2.1.5 CAJAS DE PASO",
+            "OE.5.2.1.4 SALIDA PARA INTERRUPTOR"
+        ],
         "especialidad": "contingencia",
         "modificacion": "MM3",
         "apu": null
@@ -12196,9 +12630,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.5",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
+            "OE5.2.1.5 CAJAS DE PASO",
+            "OE.5.2.1.4 SALIDA PARA INTERRUPTOR"
+        ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -12208,10 +12648,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.5",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
+            "OE5.2.1.5 CAJAS DE PASO",
+            "OE.5.2.1.4 SALIDA PARA INTERRUPTOR"
+        ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -12221,8 +12666,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.1.5",
-        "nivel_jerarquia": 5,
-        "jerarquia": [],
+        "nivel_jerarquia": 6,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
+            "OE5.2.1.5 CAJAS DE PASO",
+            "OE.5.2.1.4 SALIDA PARA INTERRUPTOR"
+        ],
         "especialidad": "contingencia",
         "modificacion": "PN3",
         "apu": null
@@ -12234,9 +12684,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -12246,7 +12697,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12263,7 +12714,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12280,7 +12731,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12297,7 +12748,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12314,7 +12765,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12331,7 +12782,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12348,7 +12799,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12365,7 +12816,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12382,7 +12833,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12399,7 +12850,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12416,7 +12867,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12433,7 +12884,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12450,7 +12901,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12467,7 +12918,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12484,7 +12935,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12501,7 +12952,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12518,7 +12969,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12535,7 +12986,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12552,7 +13003,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12569,7 +13020,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12586,7 +13037,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12603,7 +13054,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12620,7 +13071,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12637,7 +13088,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12654,7 +13105,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12671,7 +13122,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12688,7 +13139,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12705,7 +13156,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12722,7 +13173,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12739,14 +13190,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.2 CANALIZACIONES, CONDUCTOS O TUBERÍAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -12756,14 +13207,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.2 CANALIZACIONES, CONDUCTOS O TUBERÍAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -12773,7 +13224,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12790,14 +13241,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.2 CANALIZACIONES, CONDUCTOS O TUBERÍAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -12807,7 +13258,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12824,7 +13275,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12841,7 +13292,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -12858,9 +13309,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -12870,14 +13322,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -12887,8 +13339,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE5.2.3",
-        "nivel_jerarquia": 3,
-        "jerarquia": [],
+        "nivel_jerarquia": 4,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS"
+        ],
         "especialidad": "contingencia",
         "modificacion": "MM3",
         "apu": null
@@ -12900,11 +13355,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
         "modificacion": "MM3",
@@ -12917,11 +13372,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -12934,11 +13389,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -12951,11 +13406,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -12968,11 +13423,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -12985,11 +13440,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -13002,11 +13457,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -13019,11 +13474,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
         "modificacion": "DD3",
@@ -13036,13 +13491,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -13052,11 +13508,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
         "modificacion": "PN3",
@@ -13069,11 +13525,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
         "modificacion": "PN3",
@@ -13086,11 +13542,11 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
-            "OE.5.2.3 CONDUCTORES Y CABLES DE ENERGÍA EN TUBERÍAS"
+            "OE5.2.3.2 Cable Cu NH-80 1 x 6 mm2 Alimentadores Fuerza"
         ],
         "especialidad": "contingencia",
         "modificacion": "PN3",
@@ -13103,9 +13559,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -13115,7 +13572,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13132,7 +13589,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13149,7 +13606,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13166,7 +13623,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13183,7 +13640,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13200,9 +13657,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -13212,7 +13670,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13229,7 +13687,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.5.2.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13246,9 +13704,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -13258,7 +13717,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13275,7 +13734,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13292,7 +13751,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13309,7 +13768,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13326,7 +13785,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13343,7 +13802,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13360,7 +13819,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13377,7 +13836,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13394,7 +13853,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13411,7 +13870,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13428,7 +13887,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13445,7 +13904,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13462,7 +13921,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13479,7 +13938,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13496,7 +13955,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13513,7 +13972,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13530,13 +13989,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.7 TABLEROS DE DISTRIBUCION"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -13546,13 +14006,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.7 TABLEROS DE DISTRIBUCION"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -13562,13 +14023,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.7 TABLEROS DE DISTRIBUCION"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -13578,13 +14040,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.7 TABLEROS DE DISTRIBUCION"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -13594,7 +14057,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13611,7 +14074,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13628,7 +14091,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13645,7 +14108,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13662,7 +14125,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13679,7 +14142,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13696,7 +14159,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13713,7 +14176,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13730,7 +14193,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13747,7 +14210,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13764,7 +14227,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13781,7 +14244,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13798,7 +14261,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13815,7 +14278,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13832,7 +14295,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13849,7 +14312,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13866,7 +14329,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13883,7 +14346,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13900,14 +14363,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.7 TABLEROS DE DISTRIBUCION"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -13917,7 +14380,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13934,7 +14397,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13951,9 +14414,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -13963,7 +14427,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13980,7 +14444,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -13997,7 +14461,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14014,7 +14478,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14031,7 +14495,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14048,7 +14512,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14065,7 +14529,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14082,7 +14546,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14099,7 +14563,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14116,7 +14580,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14133,7 +14597,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14150,14 +14614,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.8 DISPOSITIVOS DE MANIOBRA Y PROTECCIÓN"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -14167,7 +14631,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14184,14 +14648,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.8 DISPOSITIVOS DE MANIOBRA Y PROTECCIÓN"
         ],
         "especialidad": "contingencia",
-        "modificacion": "MM3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -14201,7 +14665,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14218,7 +14682,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14235,13 +14699,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.8 DISPOSITIVOS DE MANIOBRA Y PROTECCIÓN"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -14251,13 +14716,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.8 DISPOSITIVOS DE MANIOBRA Y PROTECCIÓN"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -14267,7 +14733,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14284,7 +14750,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14301,7 +14767,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14318,7 +14784,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14335,14 +14801,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
             "OE.5.2.8 DISPOSITIVOS DE MANIOBRA Y PROTECCIÓN"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-DD6",
+        "modificacion": "DD6",
         "apu": null
     },
     {
@@ -14352,7 +14818,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14369,7 +14835,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14386,7 +14852,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14403,7 +14869,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.2.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.2 SALIDA PARA INSTALACIONES ELÉCTRICAS",
@@ -14420,9 +14886,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -14432,7 +14899,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.3 SUMINISTRO E INSTALACION DE POSTES DE CAC 8m"
@@ -14448,9 +14915,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -14460,7 +14928,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.4 INSTALACION DE PARARRAYOS"
@@ -14476,7 +14944,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.4 INSTALACION DE PARARRAYOS"
@@ -14492,9 +14960,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -14504,7 +14973,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.5 INSTALACIÓN DEL SISTEMA DE PUESTA A TIERRA"
@@ -14520,7 +14989,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.5 INSTALACIÓN DEL SISTEMA DE PUESTA A TIERRA"
@@ -14536,7 +15005,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.5 INSTALACIÓN DEL SISTEMA DE PUESTA A TIERRA"
@@ -14552,9 +15021,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -14564,9 +15034,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -14576,7 +15047,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14593,7 +15064,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14610,7 +15081,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14627,7 +15098,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14644,7 +15115,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14661,7 +15132,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14678,13 +15149,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
             "OE.5.6.1 LUMINARIAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -14694,7 +15166,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14711,7 +15183,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14728,7 +15200,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14745,7 +15217,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14762,13 +15234,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
             "OE.5.6.1 LUMINARIAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -14778,14 +15251,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
             "OE.5.6.1 LUMINARIAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -14795,7 +15268,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14812,14 +15285,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
             "OE.5.6.1 LUMINARIAS"
         ],
         "especialidad": "contingencia",
-        "modificacion": "PN3-MM6",
+        "modificacion": "MM6",
         "apu": null
     },
     {
@@ -14829,7 +15302,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14846,7 +15319,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14863,7 +15336,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14880,7 +15353,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14897,7 +15370,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14914,7 +15387,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14931,7 +15404,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14948,7 +15421,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14965,7 +15438,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14982,7 +15455,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.6 ARTEFACTOS",
@@ -14999,9 +15472,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15011,9 +15485,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15023,7 +15498,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.5.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.7 EQUIPAMIENTO",
@@ -15040,7 +15515,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.5.7.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.7 EQUIPAMIENTO",
@@ -15057,9 +15532,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15069,7 +15545,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.5.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.7 EQUIPAMIENTO",
@@ -15086,7 +15562,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.5.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.7 EQUIPAMIENTO",
@@ -15103,7 +15579,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.5.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.7 EQUIPAMIENTO",
@@ -15120,7 +15596,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.7 EQUIPAMIENTO",
@@ -15137,7 +15613,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.7 EQUIPAMIENTO",
@@ -15154,7 +15630,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.7 EQUIPAMIENTO",
@@ -15171,7 +15647,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.7 EQUIPAMIENTO",
@@ -15188,7 +15664,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.7.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.7 EQUIPAMIENTO",
@@ -15205,9 +15681,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15217,9 +15694,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15229,7 +15707,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.8 INSTALACIONES INDUSTRIALES",
@@ -15246,7 +15724,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.8 INSTALACIONES INDUSTRIALES",
@@ -15263,7 +15741,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.8 INSTALACIONES INDUSTRIALES",
@@ -15280,7 +15758,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
             "OE.5.8 INSTALACIONES INDUSTRIALES",
@@ -15297,9 +15775,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15309,9 +15788,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.16",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15321,14 +15801,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.1 SISTEMA DE INYECCIÓN DE AIRE EN SALA DE RAYOS X Y SALA DEECOGRAFÍAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15338,14 +15819,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.1 SISTEMA DE INYECCIÓN DE AIRE EN SALA DE RAYOS X Y SALA DEECOGRAFÍAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15355,14 +15837,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.1 SISTEMA DE INYECCIÓN DE AIRE EN SALA DE RAYOS X Y SALA DEECOGRAFÍAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15372,14 +15855,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.1 SISTEMA DE INYECCIÓN DE AIRE EN SALA DE RAYOS X Y SALA DEECOGRAFÍAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15389,9 +15873,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.16",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15401,14 +15886,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.2 SISTEMA DE EXTRACCIÓN DE AIRE EN SALA DE RAYOS X Y SALA DE ECOGRAFÍAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15418,14 +15904,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.2 SISTEMA DE EXTRACCIÓN DE AIRE EN SALA DE RAYOS X Y SALA DE ECOGRAFÍAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15435,14 +15922,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.2 SISTEMA DE EXTRACCIÓN DE AIRE EN SALA DE RAYOS X Y SALA DE ECOGRAFÍAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15452,14 +15940,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.2 SISTEMA DE EXTRACCIÓN DE AIRE EN SALA DE RAYOS X Y SALA DE ECOGRAFÍAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15469,9 +15958,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.16",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15481,14 +15971,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.3 SISTEMA DE INYECCIÓN DE AIRE EN LABORATORIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15498,14 +15989,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.3 SISTEMA DE INYECCIÓN DE AIRE EN LABORATORIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15515,14 +16007,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.3 SISTEMA DE INYECCIÓN DE AIRE EN LABORATORIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15532,14 +16025,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.3 SISTEMA DE INYECCIÓN DE AIRE EN LABORATORIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15549,9 +16043,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.16",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15561,14 +16056,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.4 SISTEMA DE EXTRACCIÓN DE AIRE EN LABORATORIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15578,14 +16074,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.4 SISTEMA DE EXTRACCIÓN DE AIRE EN LABORATORIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15595,14 +16092,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.4 SISTEMA DE EXTRACCIÓN DE AIRE EN LABORATORIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15612,14 +16110,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.4 SISTEMA DE EXTRACCIÓN DE AIRE EN LABORATORIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15629,9 +16128,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.16",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15641,14 +16141,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.5",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.5 SISTEMA DE INYECCIÓN DE AIRE EN SALA DE PARTOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15658,14 +16159,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.5",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.5 SISTEMA DE INYECCIÓN DE AIRE EN SALA DE PARTOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15675,14 +16177,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.5",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.5 SISTEMA DE INYECCIÓN DE AIRE EN SALA DE PARTOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15692,14 +16195,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.5",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.5 SISTEMA DE INYECCIÓN DE AIRE EN SALA DE PARTOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15709,9 +16213,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.16",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15721,14 +16226,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.6",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.6 SISTEMA DE EXTRACCIÓN DE AIRE EN SALA DE PARTOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15738,14 +16244,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.6",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.6 SISTEMA DE EXTRACCIÓN DE AIRE EN SALA DE PARTOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15755,14 +16262,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.6",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.6 SISTEMA DE EXTRACCIÓN DE AIRE EN SALA DE PARTOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15772,14 +16280,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.16.6",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.16 SISTEMA DE VENTILACION MECANICA",
             "OE.5.6.16.6 SISTEMA DE EXTRACCIÓN DE AIRE EN SALA DE PARTOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15789,9 +16298,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15801,9 +16311,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15813,14 +16324,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.1",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.1 SUMINISTRO E INSTALACIONE DE UNIDADES EXTERIORES/ UNIDADES CONDENSADORAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15830,9 +16342,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15842,14 +16355,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.2 SUMINISTRO E INSTALACION DE UNIDADES INTERIORES/ UNIDADES EVAPORADORAS (VRF)"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15859,14 +16373,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.2 SUMINISTRO E INSTALACION DE UNIDADES INTERIORES/ UNIDADES EVAPORADORAS (VRF)"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15876,14 +16391,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.2",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.2 SUMINISTRO E INSTALACION DE UNIDADES INTERIORES/ UNIDADES EVAPORADORAS (VRF)"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15893,9 +16409,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15905,14 +16422,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.3 SUMINISTRO E INSTALACION DE SISTEMA CONVENCIONAL (FRÍO /CALOR)"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15922,14 +16440,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.3",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.3 SUMINISTRO E INSTALACION DE SISTEMA CONVENCIONAL (FRÍO /CALOR)"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15939,9 +16458,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15951,14 +16471,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.4",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.4 SUMINISTRO E INSTALACION DE REFNETS (BRANCH)."
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15968,9 +16489,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -15980,9 +16502,16 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.3.5",
-        "nivel_jerarquia": 6,
-        "jerarquia": [],
+        "nivel_jerarquia": 7,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
+            "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
+            "OE.5.6.18.5 SUMINISTRO E INSTALACION DE CONTROLES Y PANEL DECORATIVO",
+            "OE.5.6.18.4.1 REFNET JOINT TIPO 1 (Branch Kit)."
+        ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -15992,9 +16521,16 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.3.5",
-        "nivel_jerarquia": 6,
-        "jerarquia": [],
+        "nivel_jerarquia": 7,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
+            "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
+            "OE.5.6.18.5 SUMINISTRO E INSTALACION DE CONTROLES Y PANEL DECORATIVO",
+            "OE.5.6.18.4.1 REFNET JOINT TIPO 1 (Branch Kit)."
+        ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16004,9 +16540,16 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.3.5",
-        "nivel_jerarquia": 6,
-        "jerarquia": [],
+        "nivel_jerarquia": 7,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
+            "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
+            "OE.5.6.18.5 SUMINISTRO E INSTALACION DE CONTROLES Y PANEL DECORATIVO",
+            "OE.5.6.18.4.1 REFNET JOINT TIPO 1 (Branch Kit)."
+        ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16016,9 +16559,16 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.3.5",
-        "nivel_jerarquia": 6,
-        "jerarquia": [],
+        "nivel_jerarquia": 7,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
+            "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
+            "OE.5.6.18.5 SUMINISTRO E INSTALACION DE CONTROLES Y PANEL DECORATIVO",
+            "OE.5.6.18.4.1 REFNET JOINT TIPO 1 (Branch Kit)."
+        ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16028,9 +16578,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -16040,14 +16591,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.6",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.6 SUMINISTRO E INSTALACION DE TUBERIAS DE REFRIGERACION"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16057,14 +16609,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.6",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.6 SUMINISTRO E INSTALACION DE TUBERIAS DE REFRIGERACION"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16074,14 +16627,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.6",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.6 SUMINISTRO E INSTALACION DE TUBERIAS DE REFRIGERACION"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16091,14 +16645,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.6",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.6 SUMINISTRO E INSTALACION DE TUBERIAS DE REFRIGERACION"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16108,9 +16663,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -16120,14 +16676,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "kg",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.7",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.7 CARGA DE REFRIGERACION"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16137,9 +16694,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -16149,14 +16707,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.8",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.8 BASES DE APOYO PARA EQUIPOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16166,9 +16725,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.5.6.18",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -16178,14 +16738,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.9",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.9 COLGADORES Y SOPORTES PARA TUBERIAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16195,14 +16756,15 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.5.6.18.9",
-        "nivel_jerarquia": 5,
+        "nivel_jerarquia": 6,
         "jerarquia": [
             "OE.5 INSTALACIONES ELÉCTRICAS",
-            "OE.5.6 ARTEFACTOS",
+            "OE.5.8 INSTALACIONES INDUSTRIALES",
             "OE.5.6.18 SISTEMA DE AIRE ACONDICIONADO",
             "OE.5.6.18.9 COLGADORES Y SOPORTES PARA TUBERIAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16212,9 +16774,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE",
-        "nivel_jerarquia": 1,
+        "nivel_jerarquia": 2,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -16224,9 +16787,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -16236,9 +16800,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -16248,7 +16813,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16265,7 +16830,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16282,7 +16847,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16299,13 +16864,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
             "OE.6.1.1 CABLES EN TUBERÍAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16315,7 +16881,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16332,7 +16898,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16349,7 +16915,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16366,7 +16932,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16383,7 +16949,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16400,7 +16966,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16417,7 +16983,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16434,7 +17000,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16451,7 +17017,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.1.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.1 CABLEADO ESTRUCTURADO EN INTERIORES DE EDIFICIOS",
@@ -16468,9 +17034,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -16480,7 +17047,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16496,7 +17063,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16512,7 +17079,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16528,12 +17095,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16543,7 +17111,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16559,7 +17127,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16575,7 +17143,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16591,7 +17159,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16607,7 +17175,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16623,7 +17191,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16639,7 +17207,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16655,7 +17223,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16671,7 +17239,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16687,7 +17255,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16703,7 +17271,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16719,7 +17287,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16735,7 +17303,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16751,7 +17319,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16767,7 +17335,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16783,7 +17351,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16799,7 +17367,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16815,7 +17383,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.2 CANALETAS, CONDUCTOS Y/O TUBERÍAS"
@@ -16831,9 +17399,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -16843,7 +17412,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -16859,7 +17428,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -16875,7 +17444,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -16891,7 +17460,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -16907,7 +17476,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -16923,12 +17492,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16938,7 +17508,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -16954,12 +17524,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16969,12 +17540,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16984,12 +17556,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -16999,12 +17572,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -17014,12 +17588,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -17029,12 +17604,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -17044,12 +17620,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -17059,7 +17636,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17075,7 +17652,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17091,7 +17668,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17107,7 +17684,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17123,7 +17700,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17139,7 +17716,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17155,7 +17732,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17171,7 +17748,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17187,7 +17764,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17203,7 +17780,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17219,7 +17796,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17235,7 +17812,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17251,7 +17828,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17267,7 +17844,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17283,7 +17860,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17299,7 +17876,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17315,7 +17892,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17331,7 +17908,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17347,7 +17924,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17363,7 +17940,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17379,7 +17956,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.3 SALIDA DE COMUNICACIONES"
@@ -17395,9 +17972,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -17407,7 +17985,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.4 CONDUCTORES DE COMUNICACIONES"
@@ -17423,7 +18001,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m",
         "es_titulo": false,
         "parent_id": "OE.6.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.4 CONDUCTORES DE COMUNICACIONES"
@@ -17439,7 +18017,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.4 CONDUCTORES DE COMUNICACIONES"
@@ -17455,9 +18033,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -17467,7 +18046,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17483,7 +18062,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17499,7 +18078,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17515,12 +18094,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -17530,7 +18110,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17546,7 +18126,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17562,7 +18142,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17578,7 +18158,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17594,7 +18174,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17610,7 +18190,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17626,7 +18206,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17642,7 +18222,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17658,7 +18238,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17674,7 +18254,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17690,7 +18270,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17706,7 +18286,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.5 PATCH PANEL"
@@ -17722,9 +18302,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -17734,9 +18315,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -17746,13 +18328,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
             "OE.6.6.1 SWITCH"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -17762,13 +18345,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.6.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
             "OE.6.6.1 SWITCH"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -17778,7 +18362,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
@@ -17795,7 +18379,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
@@ -17812,7 +18396,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
@@ -17829,7 +18413,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
@@ -17846,7 +18430,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
@@ -17863,9 +18447,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -17875,7 +18460,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
@@ -17892,13 +18477,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
             "OE.6.6.2 GABINETE DE COMUNICACION"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -17908,7 +18494,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "pto",
         "es_titulo": false,
         "parent_id": "OE.6.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
@@ -17925,7 +18511,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
@@ -17942,7 +18528,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
@@ -17959,7 +18545,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
@@ -17976,7 +18562,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.6.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.6 RACK DE COMUNICACIONES",
@@ -17993,9 +18579,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -18005,7 +18592,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR"
@@ -18021,12 +18608,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18036,12 +18624,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18051,7 +18640,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR"
@@ -18067,7 +18656,7 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR"
@@ -18083,9 +18672,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -18095,9 +18685,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -18107,8 +18698,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.1 SISTEMA DE DETECCION Y ALARMA CONTRA INCENDIOS"
         ],
         "especialidad": "contingencia",
@@ -18122,8 +18715,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.1 SISTEMA DE DETECCION Y ALARMA CONTRA INCENDIOS"
         ],
         "especialidad": "contingencia",
@@ -18137,8 +18732,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.1 SISTEMA DE DETECCION Y ALARMA CONTRA INCENDIOS"
         ],
         "especialidad": "contingencia",
@@ -18152,11 +18749,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.1 SISTEMA DE DETECCION Y ALARMA CONTRA INCENDIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18166,11 +18766,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.6.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.1 SISTEMA DE DETECCION Y ALARMA CONTRA INCENDIOS"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18180,8 +18783,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.1 SISTEMA DE DETECCION Y ALARMA CONTRA INCENDIOS"
         ],
         "especialidad": "contingencia",
@@ -18195,8 +18800,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.1 SISTEMA DE DETECCION Y ALARMA CONTRA INCENDIOS"
         ],
         "especialidad": "contingencia",
@@ -18210,8 +18817,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.1 SISTEMA DE DETECCION Y ALARMA CONTRA INCENDIOS"
         ],
         "especialidad": "contingencia",
@@ -18225,8 +18834,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.1 SISTEMA DE DETECCION Y ALARMA CONTRA INCENDIOS"
         ],
         "especialidad": "contingencia",
@@ -18240,8 +18851,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.1 SISTEMA DE DETECCION Y ALARMA CONTRA INCENDIOS"
         ],
         "especialidad": "contingencia",
@@ -18255,8 +18868,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.1",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.1 SISTEMA DE DETECCION Y ALARMA CONTRA INCENDIOS"
         ],
         "especialidad": "contingencia",
@@ -18270,9 +18885,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -18282,8 +18898,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18297,8 +18915,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18312,11 +18932,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18326,11 +18949,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18340,11 +18966,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18354,8 +18983,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18369,8 +19000,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18384,8 +19017,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18399,8 +19034,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18414,8 +19051,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18429,8 +19068,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18444,8 +19085,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18459,8 +19102,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18474,8 +19119,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18489,8 +19136,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.2",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.2 SISTEMA DE VIDEO VIGILANCIA"
         ],
         "especialidad": "contingencia",
@@ -18504,9 +19153,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -18516,8 +19166,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.3 SISTEMA DE SONIDO AMBIENTAL"
         ],
         "especialidad": "contingencia",
@@ -18531,11 +19183,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.3 SISTEMA DE SONIDO AMBIENTAL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18545,11 +19200,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.3 SISTEMA DE SONIDO AMBIENTAL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18559,11 +19217,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.3 SISTEMA DE SONIDO AMBIENTAL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18573,11 +19234,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.6.8.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.3 SISTEMA DE SONIDO AMBIENTAL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18587,8 +19251,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.3 SISTEMA DE SONIDO AMBIENTAL"
         ],
         "especialidad": "contingencia",
@@ -18602,8 +19268,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.3 SISTEMA DE SONIDO AMBIENTAL"
         ],
         "especialidad": "contingencia",
@@ -18617,8 +19285,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.3 SISTEMA DE SONIDO AMBIENTAL"
         ],
         "especialidad": "contingencia",
@@ -18632,8 +19302,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.3 SISTEMA DE SONIDO AMBIENTAL"
         ],
         "especialidad": "contingencia",
@@ -18647,8 +19319,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.3 SISTEMA DE SONIDO AMBIENTAL"
         ],
         "especialidad": "contingencia",
@@ -18662,8 +19336,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.3",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.3 SISTEMA DE SONIDO AMBIENTAL"
         ],
         "especialidad": "contingencia",
@@ -18677,9 +19353,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -18689,11 +19366,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18703,11 +19383,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18717,8 +19400,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
@@ -18732,11 +19417,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18746,11 +19434,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18760,11 +19451,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18774,11 +19468,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18788,11 +19485,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18802,11 +19502,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18816,8 +19519,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
@@ -18831,8 +19536,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
@@ -18846,8 +19553,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
@@ -18861,8 +19570,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
@@ -18876,8 +19587,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
@@ -18891,8 +19604,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
@@ -18906,8 +19621,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.4",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.4 SISTEMAS DE LLAMADA DE ENFERMERA"
         ],
         "especialidad": "contingencia",
@@ -18921,9 +19638,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -18933,11 +19651,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.5 SISTEMAS DE TELEFONIA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18947,11 +19668,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.5 SISTEMAS DE TELEFONIA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18961,11 +19685,14 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.6.8.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.5 SISTEMAS DE TELEFONIA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -18975,8 +19702,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.5 SISTEMAS DE TELEFONIA"
         ],
         "especialidad": "contingencia",
@@ -18990,8 +19719,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.5",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.5 SISTEMAS DE TELEFONIA"
         ],
         "especialidad": "contingencia",
@@ -19005,9 +19736,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19017,8 +19749,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.6 POZO DE PUESTA A TIERRA"
         ],
         "especialidad": "contingencia",
@@ -19032,8 +19766,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.6 POZO DE PUESTA A TIERRA"
         ],
         "especialidad": "contingencia",
@@ -19047,8 +19783,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.6 POZO DE PUESTA A TIERRA"
         ],
         "especialidad": "contingencia",
@@ -19062,8 +19800,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.6",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.6 POZO DE PUESTA A TIERRA"
         ],
         "especialidad": "contingencia",
@@ -19077,9 +19817,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19089,8 +19830,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.7 SISTEMA DE SONIDO EN SALA DE REUNIONES"
         ],
         "especialidad": "contingencia",
@@ -19104,8 +19847,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.7 SISTEMA DE SONIDO EN SALA DE REUNIONES"
         ],
         "especialidad": "contingencia",
@@ -19119,8 +19864,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.7",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.7 SISTEMA DE SONIDO EN SALA DE REUNIONES"
         ],
         "especialidad": "contingencia",
@@ -19134,9 +19881,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.6.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19146,8 +19894,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.8 SISTEMA VISUAL EN SALA DE REUNIONES"
         ],
         "especialidad": "contingencia",
@@ -19161,8 +19911,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.6.8.8",
-        "nivel_jerarquia": 4,
+        "nivel_jerarquia": 5,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
+            "OE.6.7 CAJA DE PASE PARA TRANSFORMADOR",
             "OE.6.8.8 SISTEMA VISUAL EN SALA DE REUNIONES"
         ],
         "especialidad": "contingencia",
@@ -19176,9 +19928,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.7",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19188,9 +19941,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.7",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19200,11 +19954,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.1 TRASLADO Y PROTECCION DE EQUIPAMIENTO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19214,11 +19970,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.1 TRASLADO Y PROTECCION DE EQUIPAMIENTO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19228,9 +19986,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.7",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19240,11 +19999,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.2 TRASLADO EQUIPO BIOMEDICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19254,11 +20015,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.2 TRASLADO EQUIPO BIOMEDICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19268,11 +20031,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.2 TRASLADO EQUIPO BIOMEDICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19282,11 +20047,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.2 TRASLADO EQUIPO BIOMEDICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19296,11 +20063,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.2 TRASLADO EQUIPO BIOMEDICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19310,11 +20079,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.2",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.2 TRASLADO EQUIPO BIOMEDICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19324,9 +20095,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.7",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19336,11 +20108,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.3 TRASLADO EQUIPO ELECTROMECANICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19350,11 +20124,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.3 TRASLADO EQUIPO ELECTROMECANICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19364,11 +20140,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.3 TRASLADO EQUIPO ELECTROMECANICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19378,11 +20156,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.3 TRASLADO EQUIPO ELECTROMECANICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19392,11 +20172,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.3 TRASLADO EQUIPO ELECTROMECANICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19406,11 +20188,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.3",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.3 TRASLADO EQUIPO ELECTROMECANICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19420,9 +20204,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.7",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19432,11 +20217,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.4 TRASLADO EQUIPO INFORMATICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19446,11 +20233,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.4 TRASLADO EQUIPO INFORMATICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19460,11 +20249,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.4 TRASLADO EQUIPO INFORMATICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19474,11 +20265,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.4 TRASLADO EQUIPO INFORMATICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19488,11 +20281,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.4 TRASLADO EQUIPO INFORMATICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19502,11 +20297,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.4 TRASLADO EQUIPO INFORMATICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19516,9 +20313,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.7",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19528,11 +20326,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.5 TRASLADO INSTRUMENTAL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19542,11 +20342,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.5 TRASLADO INSTRUMENTAL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19556,11 +20358,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.5 TRASLADO INSTRUMENTAL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19570,11 +20374,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.5",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.5 TRASLADO INSTRUMENTAL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19584,9 +20390,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.7",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19596,11 +20403,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.6 TRASLADO MOBILIARIO ADMINISTRATIVO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19610,11 +20419,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.6 TRASLADO MOBILIARIO ADMINISTRATIVO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19624,11 +20435,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.6 TRASLADO MOBILIARIO ADMINISTRATIVO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19638,11 +20451,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.6 TRASLADO MOBILIARIO ADMINISTRATIVO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19652,11 +20467,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.6",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.6 TRASLADO MOBILIARIO ADMINISTRATIVO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19666,9 +20483,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.7",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19678,11 +20496,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.7 TRASLADO MOBILIARIO CLINICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19692,11 +20512,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.7 TRASLADO MOBILIARIO CLINICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19706,11 +20528,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.7 TRASLADO MOBILIARIO CLINICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19720,11 +20544,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.7 TRASLADO MOBILIARIO CLINICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19734,11 +20560,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.7",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.7 TRASLADO MOBILIARIO CLINICO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19748,9 +20576,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.7",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19760,11 +20589,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.8 TRASLADO PRODUCTOS FARMACEUTICOS Y LABORATORIO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19774,11 +20605,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.8 TRASLADO PRODUCTOS FARMACEUTICOS Y LABORATORIO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19788,11 +20621,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.8 TRASLADO PRODUCTOS FARMACEUTICOS Y LABORATORIO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19802,11 +20637,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.7.8",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
+            "OE.6 INSTALACIONES DE COMUNICACIONES",
             "OE.7.8 TRASLADO PRODUCTOS FARMACEUTICOS Y LABORATORIO"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19816,9 +20653,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE",
-        "nivel_jerarquia": 1,
+        "nivel_jerarquia": 2,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19828,9 +20666,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.8",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19840,12 +20679,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.8.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.8 IMPACTO AMBIENTAL",
             "OE.8.1 PLAN DE MANEJO AMBIENTAL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19855,12 +20695,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.8.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.8 IMPACTO AMBIENTAL",
             "OE.8.1 PLAN DE MANEJO AMBIENTAL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19870,12 +20711,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.8.1",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.8 IMPACTO AMBIENTAL",
             "OE.8.1 PLAN DE MANEJO AMBIENTAL"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19885,9 +20727,10 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "",
         "es_titulo": true,
         "parent_id": "OE.8",
-        "nivel_jerarquia": 2,
+        "nivel_jerarquia": 3,
         "jerarquia": [],
         "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     },
     {
@@ -19897,12 +20740,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "m2",
         "es_titulo": false,
         "parent_id": "OE.8.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.8 IMPACTO AMBIENTAL",
             "OE.8.4 PLAN DE CIERRE DE OBRA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19912,12 +20756,13 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "und",
         "es_titulo": false,
         "parent_id": "OE.8.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.8 IMPACTO AMBIENTAL",
             "OE.8.4 PLAN DE CIERRE DE OBRA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
         "apu": null
     },
     {
@@ -19927,12 +20772,65 @@ export const mockPartidasContingencia: Partida[] = [
         "unidad": "glb",
         "es_titulo": false,
         "parent_id": "OE.8.4",
-        "nivel_jerarquia": 3,
+        "nivel_jerarquia": 4,
         "jerarquia": [
             "OE.8 IMPACTO AMBIENTAL",
             "OE.8.4 PLAN DE CIERRE DE OBRA"
         ],
         "especialidad": "contingencia",
+        "modificacion": "ET",
+        "apu": null
+    },
+    {
+        "id": "1272",
+        "codigo": "Modificacion N°2",
+        "descripcion": "VARIACION DE PRECIOS",
+        "unidad": "",
+        "es_titulo": true,
+        "parent_id": "OE",
+        "nivel_jerarquia": 1,
+        "jerarquia": [],
+        "especialidad": "contingencia",
+        "modificacion": "SM",
+        "apu": null
+    },
+    {
+        "id": "1273",
+        "codigo": "Modificacion N°3",
+        "descripcion": "VARIACION DE PRECIOS",
+        "unidad": "",
+        "es_titulo": true,
+        "parent_id": "OE",
+        "nivel_jerarquia": 1,
+        "jerarquia": [],
+        "especialidad": "contingencia",
+        "modificacion": "SM",
+        "apu": null
+    },
+    {
+        "id": "1274",
+        "codigo": "Modificacion N°",
+        "descripcion": null,
+        "unidad": "",
+        "es_titulo": true,
+        "parent_id": "OE",
+        "nivel_jerarquia": 1,
+        "jerarquia": [],
+        "especialidad": "contingencia",
+        "modificacion": "SM",
+        "apu": null
+    },
+    {
+        "id": "1275",
+        "codigo": "1",
+        "descripcion": "2",
+        "unidad": "3",
+        "es_titulo": false,
+        "parent_id": "OE",
+        "nivel_jerarquia": 1,
+        "jerarquia": [],
+        "especialidad": "contingencia",
+        "modificacion": "SM",
         "apu": null
     }
 ];

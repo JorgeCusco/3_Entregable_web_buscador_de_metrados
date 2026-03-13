@@ -130,11 +130,11 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
                 {/* ─── PASO 2: UBICACIÓN Y ELEMENTO ─── */}
                 <div className="space-y-3">
-                    <div className="grid grid-cols-4 gap-1.5">
+                    <div className="grid grid-cols-4 gap-1.5 p-2 bg-slate-50/50 rounded-2xl border border-slate-100">
                         <Select
                             label="Frente"
                             value={state.frente}
-                            options={['F1', 'F2', 'F3', 'F4', 'Azotea']}
+                            options={['F1', 'F2', 'F3', 'F4', 'F5']}
                             onSelect={(val) => actions.setFrente(val)}
                         />
                         <Select
@@ -150,10 +150,10 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                             onSelect={(val) => actions.setNivel(val)}
                         />
                         <div className="space-y-1">
-                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">CDLLA</label>
+                            <label className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter pl-1">CDLLA</label>
                             <input
                                 type="text"
-                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-sm font-semibold text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase"
+                                className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase text-center"
                                 value={state.cuadrilla}
                                 onChange={(e) => actions.setCuadrilla(e.target.value.toUpperCase())}
                                 placeholder="C1"

@@ -4,83 +4,82 @@ import { MetradosTable } from './components/MetradosTable';
 import { useMetradosForm } from './hooks/useMetradosForm';
 import type { Metrado } from './types';
 import { Building2, Stethoscope, AlertTriangle } from 'lucide-react';
+import { useMetradosStore } from './store/useMetradosStore';
 
 // Tipo de proyecto disponible en el sistema (Hospital o Contingencia)
 export type TipoProyecto = 'hospital' | 'contingencia';
 
 function App() {
   const { state, actions } = useMetradosForm();
-  const [metrados, setMetrados] = useState<Metrado[]>([]);
+  const { metrados, context, setContext, addMetrado, updateMetrado, deleteMetrado, updateGroup } = useMetradosStore();
   const [toast, setToast] = useState<string | null>(null);
-  // Estado global de proyecto activo (sustituye a la anterior 'especialidad' de sistema)
-  const [proyecto, setProyecto] = useState<TipoProyecto>('hospital');
 
   const handleGuardar = () => {
     const nuevo = actions.procesarRegistro();
     if (nuevo) {
       // El metrado hereda el proyecto activo al momento de registrarse
-      // La "especialidad" (OE mapping) ya viene seteada desde el hook
-      const nuevoConProy = { ...nuevo, proyecto };
-      setMetrados(prev => [nuevoConProy, ...prev]);
+      const nuevoConProy = { ...nuevo, proyecto: context.proyecto };
+      addMetrado(nuevoConProy);
       setToast(`Metrado guardado: ${nuevo.codigo_partida}`);
       setTimeout(() => setToast(null), 3000);
     }
   };
 
   const handleDeleteMetrado = (id: string) => {
-    setMetrados(prev => prev.filter(m => m.id !== id));
+    deleteMetrado(id);
     setToast('Registro eliminado exitosamente');
     setTimeout(() => setToast(null), 3000);
   };
 
   const handleUpdateMetrado = (id: string, field: keyof Metrado, value: any) => {
-    setMetrados(prev => prev.map(m => {
-      if (m.id !== id) return m;
+    // Primero calculamos el nuevo valor para campos numéricos si es necesario
+    const metradoOriginal = metrados.find(m => m.id === id);
+    if (!metradoOriginal) return;
 
-      const updated = { ...m, [field]: value };
+    let updatedValue = value;
+    let finalMetrado = { ...metradoOriginal, [field]: value };
 
-      if (['cantidad', 'longitud_area', 'ancho_empalme', 'altura_gancho', 'nro_veces'].includes(field as string)) {
-        const parseVal = (v: any) => {
-          if (v === "" || v === undefined || v === null) return null;
-          const num = parseFloat(String(v));
-          return isNaN(num) ? null : num;
-        };
+    if (['cantidad', 'longitud_area', 'ancho_empalme', 'altura_gancho', 'nro_veces'].includes(field as string)) {
+      const parseVal = (v: any) => {
+        if (v === "" || v === undefined || v === null) return null;
+        const num = parseFloat(String(v));
+        return isNaN(num) ? null : num;
+      };
 
-        const cant = parseVal(updated.cantidad);
-        const l = parseVal(updated.longitud_area);
-        const a = parseVal(updated.ancho_empalme);
-        const h = parseVal(updated.altura_gancho);
+      const cant = parseVal(finalMetrado.cantidad);
+      const l = parseVal(finalMetrado.longitud_area);
+      const a = parseVal(finalMetrado.ancho_empalme);
+      const h = parseVal(finalMetrado.altura_gancho);
 
-        let product = 1;
-        let hasFactors = false;
+      let product = 1;
+      let hasFactors = false;
 
-        [cant, l, a, h].forEach(val => {
-          if (val !== null) {
-            product *= val;
-            hasFactors = true;
-          }
-        });
+      [cant, l, a, h].forEach(val => {
+        if (val !== null) {
+          product *= val;
+          hasFactors = true;
+        }
+      });
 
-        updated.parcial = hasFactors ? product : 0;
-        const veces = parseVal(updated.nro_veces);
-        updated.total = updated.parcial * (veces !== null ? veces : 1);
-      }
+      finalMetrado.parcial = hasFactors ? product : 0;
+      const veces = parseVal(finalMetrado.nro_veces);
+      finalMetrado.total = finalMetrado.parcial * (veces !== null ? veces : 1);
 
-      return updated;
-    }));
+      // Actualizamos todo el metrado en el store si hubo cambios en los cálculos
+      updateMetrado(id, field, value);
+      updateMetrado(id, 'parcial', finalMetrado.parcial);
+      updateMetrado(id, 'total', finalMetrado.total);
+    } else {
+      updateMetrado(id, field, value);
+    }
   };
 
   const handleUpdateGroup = (codigoPartida: string, oldElemento: string, newElemento: string) => {
-    setMetrados(prev => prev.map(m => {
-      if (m.codigo_partida === codigoPartida && m.elemento === oldElemento) {
-        return { ...m, elemento: newElemento };
-      }
-      return m;
-    }));
+    updateGroup(codigoPartida, oldElemento, newElemento);
   };
 
   // Filtra los metrados mostrados según el proyecto activo
-  const metradosFiltrados = metrados.filter(m => !m.proyecto || m.proyecto === proyecto);
+  const metradosFiltrados = metrados.filter(m => !m.proyecto || m.proyecto === context.proyecto);
 
   return (
     <div className="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col gap-6 relative max-w-[1450px] mx-auto">
@@ -102,8 +101,8 @@ function App() {
         {/* ─── Selector de Especialidad ─── */}
         <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner">
           <button
-            onClick={() => { setProyecto('hospital'); actions.setPartidaSeleccionada(null); }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${proyecto === 'hospital'
+            onClick={() => { setContext({ proyecto: 'hospital' }); actions.setPartidaSeleccionada(null); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${context.proyecto === 'hospital'
               ? 'bg-white text-blue-700 shadow-md border border-blue-100'
               : 'text-slate-500 hover:text-slate-700'
               }`}
@@ -112,8 +111,8 @@ function App() {
             Hospital
           </button>
           <button
-            onClick={() => { setProyecto('contingencia'); actions.setPartidaSeleccionada(null); }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${proyecto === 'contingencia'
+            onClick={() => { setContext({ proyecto: 'contingencia' }); actions.setPartidaSeleccionada(null); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${context.proyecto === 'contingencia'
               ? 'bg-white text-amber-600 shadow-md border border-amber-100'
               : 'text-slate-500 hover:text-slate-700'
               }`}
@@ -141,7 +140,7 @@ function App() {
             state={state}
             actions={actions}
             onGuardar={handleGuardar}
-            proyecto={proyecto}
+            proyecto={context.proyecto}
           />
         </div>
 
@@ -152,7 +151,7 @@ function App() {
             onUpdate={handleUpdateMetrado}
             onGroupUpdate={handleUpdateGroup}
             onDelete={handleDeleteMetrado}
-            proyecto={proyecto}
+            proyecto={context.proyecto}
           />
         </div>
 

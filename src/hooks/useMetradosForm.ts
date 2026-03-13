@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import type { Partida, Metrado } from '../types';
 import { getEspecialidadPorCodigo } from '../constants/especialidades';
+import { useMetradosStore } from '../store/useMetradosStore';
 
 const PESOS_ACERO: Record<string, number> = {
     "1/4": 0.254,
@@ -22,6 +23,8 @@ export const isAcero = (partida: Partida | null): boolean => {
 };
 
 export const useMetradosForm = () => {
+    const { context, setContext } = useMetradosStore();
+
     const getLocalDateString = () => {
         const d = new Date();
         const year = d.getFullYear();
@@ -31,10 +34,12 @@ export const useMetradosForm = () => {
     };
 
     const [fecha, setFecha] = useState<string>(getLocalDateString());
-    const [frente, setFrente] = useState<string>('');
-    const [bloque, setBloque] = useState<string>('');
-    const [nivel, setNivel] = useState<string>('');
-    const [cuadrilla, setCuadrilla] = useState<string>('');
+
+    // Estos campos ahora son proxies al contexto del store
+    const frente = context.frente;
+    const bloque = context.bloque;
+    const nivel = context.nivel;
+    const cuadrilla = context.cuadrilla;
 
     const [partidaSeleccionada, setPartidaSeleccionada] = useState<Partida | null>(null);
     const [elemento, setElemento] = useState<string>('');
@@ -47,14 +52,12 @@ export const useMetradosForm = () => {
     const [altura, setAltura] = useState<number | "">("");
     const [nroVeces, setNroVeces] = useState<number | "">("");
 
-    // Nueva Especialidad (OE mapping) para filtrado en UI
     const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState<string>('TODAS');
 
     const parcial = useMemo(() => {
         const flagAcero = isAcero(partidaSeleccionada);
 
         if (flagAcero) {
-            // RUTA 1: ACERO (Suma de longitudes * multiplicadores * factor)
             const c = typeof cantidad === 'number' ? cantidad : 0;
             const longitudRecta = typeof longitud === 'number' ? longitud : 0;
             const longitudGancho = typeof altura === 'number' ? altura : 0;
@@ -63,13 +66,9 @@ export const useMetradosForm = () => {
             const longitudTotal = longitudRecta + longitudGancho;
 
             if (c === 0 && longitudRecta === 0 && longitudGancho === 0) return 0;
-
             return c * longitudTotal * factorKg;
         } else {
-            // RUTA 2: ESTÁNDAR
-            if (cantidad === "" && longitud === "" && ancho === "" && altura === "") {
-                return 0;
-            }
+            if (cantidad === "" && longitud === "" && ancho === "" && altura === "") return 0;
             const c = cantidad !== "" ? cantidad : 1;
             const l = longitud !== "" ? longitud : 1;
             const a = ancho !== "" ? ancho : 1;
@@ -84,8 +83,6 @@ export const useMetradosForm = () => {
     }, [parcial, nroVeces]);
 
     const limpiarCampos = () => {
-        // La partida seleccionada se mantiene para facilitar el ingreso de múltiples metrados
-        // NO BORRAMOS EL ELEMENTO (para que persista y acelere el ingreso de datos)
         setDetalle('');
         setCantidad('');
         setLongitud('');
@@ -99,7 +96,11 @@ export const useMetradosForm = () => {
 
         const nuevoMetrado: Metrado = {
             id: Date.now().toString(),
-            fecha, frente, bloque, nivel, cuadrilla,
+            fecha,
+            frente,
+            bloque,
+            nivel,
+            cuadrilla,
             codigo_partida: partidaSeleccionada.codigo,
             descripcion_partida: partidaSeleccionada.descripcion,
             elemento,
@@ -116,7 +117,6 @@ export const useMetradosForm = () => {
             jerarquia: partidaSeleccionada.jerarquia,
             nivelJerarquia: partidaSeleccionada.nivel_jerarquia,
             modificacion: partidaSeleccionada.modificacion,
-            // Asignación automática de ESPECIALIDAD según código OE
             especialidad: getEspecialidadPorCodigo(partidaSeleccionada.codigo),
             autor_usuario: "UserWeb",
             created_at: Date.now(),
@@ -128,17 +128,20 @@ export const useMetradosForm = () => {
 
     return {
         state: {
-            fecha, frente, bloque, nivel,
+            fecha, frente, bloque, nivel, cuadrilla,
             partidaSeleccionada, elemento, detalle, diametro,
             cantidad, longitud, ancho, altura, nroVeces,
-            parcial, total, especialidadSeleccionada, cuadrilla
+            parcial, total, especialidadSeleccionada
         },
         actions: {
-            setFecha, setFrente, setBloque, setNivel,
+            setFecha,
+            setFrente: (val: string) => setContext({ frente: val }),
+            setBloque: (val: string) => setContext({ bloque: val }),
+            setNivel: (val: string) => setContext({ nivel: val }),
+            setCuadrilla: (val: string) => setContext({ cuadrilla: val }),
             setPartidaSeleccionada, setElemento, setDetalle, setDiametro,
             setCantidad, setLongitud, setAncho, setAltura, setNroVeces,
             setEspecialidadSeleccionada,
-            setCuadrilla,
             limpiarCampos, procesarRegistro
         }
     };
