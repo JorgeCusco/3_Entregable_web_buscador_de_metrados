@@ -36,7 +36,6 @@ function App() {
     const metradoOriginal = metrados.find(m => m.id === id);
     if (!metradoOriginal) return;
 
-    let updatedValue = value;
     let finalMetrado = { ...metradoOriginal, [field]: value };
 
     if (['cantidad', 'longitud_area', 'ancho_empalme', 'altura_gancho', 'nro_veces'].includes(field as string)) {

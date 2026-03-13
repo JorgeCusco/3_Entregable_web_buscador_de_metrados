@@ -15,7 +15,7 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 
 // Ruta a la plantilla local
-const TEMPLATE_PATH = path.join(__dirname, '..', 'METRADO_PLANTILLA_3.xlsx');
+const TEMPLATE_PATH = path.join(__dirname, '..', 'METRADO_PLANTILLA_4.xlsx');
 const STARTING_ROW = 8; // B8 corresponde a Fila 8
 
 app.get('/', (req, res) => {

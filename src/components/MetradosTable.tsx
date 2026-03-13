@@ -5,6 +5,7 @@ import { mockPartidas } from '../data/mockDB_1';
 import { mockPartidasContingencia } from '../data/mockDB_contingencia';
 import { RenderModificacionBadge } from './MetradosForm';
 import { useMetradosStore } from '../store/useMetradosStore';
+import { SPECIALTY_RULES } from '../data/specialtyConfig';
 
 interface MetradosTableProps {
     metrados: Metrado[];
@@ -93,17 +94,29 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital' }) => {
     // Seleccionar el catálogo de partidas correcto según el proyecto
     const catalogoActivo = proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia;
-    const rows = useMemo(() => getHierarchicalRows(metrados, catalogoActivo), [metrados, proyecto]);
+    const [selectedSpecialty, setSelectedSpecialty] = React.useState('TODAS');
+
+    // Filtrar metrados por especialidad dinámica
+    const filteredMetrados = useMemo(() => {
+        if (selectedSpecialty === 'TODAS') return metrados;
+        const rule = SPECIALTY_RULES.find(r => r.id === selectedSpecialty);
+        if (!rule) return metrados;
+        return metrados.filter(m =>
+            rule.ranges.some(prefix => m.codigo_partida.startsWith(prefix))
+        );
+    }, [metrados, selectedSpecialty]);
+
+    const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo), [filteredMetrados, proyecto]);
     const [isExporting, setIsExporting] = React.useState(false);
 
     // Calcular totales por partida para las filas de cabecera
     const partidaTotals = useMemo(() => {
         const totals: Record<string, number> = {};
-        metrados.forEach(m => {
+        filteredMetrados.forEach(m => {
             totals[m.codigo_partida] = (totals[m.codigo_partida] || 0) + m.total;
         });
         return totals;
-    }, [metrados]);
+    }, [filteredMetrados]);
 
 
     const formatNumber = (num: number) => {
@@ -113,25 +126,22 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         }).format(num);
     };
 
-    const cantPartidasRegistradas = new Set(metrados.map(m => m.codigo_partida)).size;
+    const cantPartidasRegistradas = new Set(filteredMetrados.map(m => m.codigo_partida)).size;
 
     const exportToExcel = async () => {
         setIsExporting(true);
         try {
             // El backend se encargará de cruzar la data cruda con la maestría de la DB, 
             // ordenar WBS y escupir la plantilla binaria.
-            // DETERMINAR URL DEL BACKEND
-            let apiUrl = import.meta.env.VITE_API_URL;
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            // DETERMINAR URL DEL BACKEND MEDIANTE VARIABLES DE ENTORNO (VITE)
+            let apiUrl = import.meta.env.VITE_API_URL || '';
 
-            // Forzar en producción que siempre agarre Render para evitar fallas si el Env está mal confugurado en Vercel
-            if (!isLocal) {
-                apiUrl = 'https://inkaia-backend.onrender.com';
-            } else if (!apiUrl) {
+            // Si no hay variable definida (dev mode), asumimos puerto 3001 local
+            if (!apiUrl && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
                 apiUrl = `http://${window.location.hostname}:3001`;
             }
 
-            // Limpiar barra diagonal final si existe
+            // Sanitización: Limpiar barra diagonal final si existe
             if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1);
 
             let response: Response;
@@ -179,7 +189,18 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             <div className="p-4 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
                 <div className="flex flex-col">
                     <h3 className="font-bold text-slate-800 text-lg tracking-tight">Planilla de Metrados Dinámica</h3>
-                    <p className="text-[10px] text-slate-500 font-medium uppercase tracking-widest mt-0.5">Vista Jerárquica Secuencial</p>
+                    <div className="flex items-center gap-2 mt-0.5">
+                        <p className="text-[10px] text-slate-500 font-medium uppercase tracking-widest">Especialidad:</p>
+                        <select
+                            value={selectedSpecialty}
+                            onChange={(e) => setSelectedSpecialty(e.target.value)}
+                            className="text-[9px] font-bold uppercase bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 focus:ring-1 focus:ring-blue-500/30 text-slate-700 outline-none cursor-pointer hover:bg-slate-200 transition-colors"
+                        >
+                            {SPECIALTY_RULES.map(rule => (
+                                <option key={rule.id} value={rule.id}>{rule.label}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
                 <div className="flex items-center gap-3">
                     <button
@@ -408,8 +429,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             {/* Footer de Resumen */}
             < div className="p-3 border-t border-slate-200 bg-white flex justify-between items-center text-[11px] font-bold text-slate-500 uppercase tracking-tighter" >
                 <div className="flex gap-4">
-                    <span>Partidas con metrado: {cantPartidasRegistradas}</span>
-                    <span>Total de líneas de registro: {metrados.length}</span>
+                    <span>Partidas con metrado (vista): {cantPartidasRegistradas}</span>
+                    <span>Total de registros (vista): {filteredMetrados.length}</span>
                 </div>
                 <div className="bg-slate-800 text-white px-3 py-1 rounded-md">
                     Control de Planilla Web v3.0
