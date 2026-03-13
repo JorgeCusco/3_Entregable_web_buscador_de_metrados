@@ -70,6 +70,15 @@ function App() {
     }));
   };
 
+  const handleUpdateGroup = (codigoPartida: string, oldElemento: string, newElemento: string) => {
+    setMetrados(prev => prev.map(m => {
+      if (m.codigo_partida === codigoPartida && m.elemento === oldElemento) {
+        return { ...m, elemento: newElemento };
+      }
+      return m;
+    }));
+  };
+
   // Filtra los metrados mostrados según el proyecto activo
   const metradosFiltrados = metrados.filter(m => !m.proyecto || m.proyecto === proyecto);
 
@@ -141,6 +150,7 @@ function App() {
           <MetradosTable
             metrados={metradosFiltrados}
             onUpdate={handleUpdateMetrado}
+            onGroupUpdate={handleUpdateGroup}
             onDelete={handleDeleteMetrado}
             proyecto={proyecto}
           />

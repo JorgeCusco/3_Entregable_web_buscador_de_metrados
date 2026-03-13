@@ -139,3 +139,16 @@ Cualquier esfuerzo de desarrollo futuro debe perseguir estas 4 macro-metas V5.0:
 
 > **"Keep the Data Atomic. Trust Contextual Rollups. Protect Horizontal Real Estate. Build Clinical Finances UI."**
 > -- Mandato General de Ingeniería (Antigravity V5)
+---
+
+## 7. 🏷️ ESTRUCTURA DE DATOS MAESTRA (PARA MIGRACIÓN)
+
+Para cualquier actualización masiva de datos (Limpieza de Excel -> JSON), se debe seguir estrictamente la anatomía definida en [ESTRUCTURA_DATOS_MAESTRA.md](./ESTRUCTURA_DATOS_MAESTRA.md).
+
+### Resumen de Requisitos para Importación:
+- **Códigos WBS (OE)**: Deben ser únicos y consistentes.
+- **Unidades**: Normalizadas (kg, m3, m2, und).
+- **Relaciones**: Todo metrado debe apuntar a un `codigo_partida` existente en el catálogo.
+- **Detección de Acero**: Basada en `unidad === 'kg'` para activar cálculos de pesos nominales.
+
+> **Nota:** La base de datos es orientada a objetos JSON planos para maximizar la velocidad de búsqueda en el frontend mediante el uso de `Hashmaps` (O(1)).

@@ -8,6 +8,7 @@ import { RenderModificacionBadge } from './MetradosForm';
 interface MetradosTableProps {
     metrados: Metrado[];
     onUpdate?: (id: string, field: keyof Metrado, value: any) => void;
+    onGroupUpdate?: (codigoPartida: string, oldElemento: string, newElemento: string) => void;
     onDelete?: (id: string) => void;
     proyecto?: string;
 }
@@ -70,6 +71,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
                         is_elemento_virtual: true,
                         codigo: '',
                         descripcion: m.elemento,
+                        codigo_partida: node.codigo,
                         id: `virtual-${m.id}`,
                         parcial: 0,
                         total: 0
@@ -87,7 +89,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 };
 
 
-export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onDelete, proyecto = 'hospital' }) => {
+export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital' }) => {
     // Seleccionar el catálogo de partidas correcto según el proyecto
     const catalogoActivo = proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia;
     const rows = useMemo(() => getHierarchicalRows(metrados, catalogoActivo), [metrados, proyecto]);
@@ -227,13 +229,19 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 );
                             }
 
-                            // CASO 2.5: Fila Virtual de Elemento (Agrupador)
+                            // CASO 2.5: Fila Virtual de Elemento (Agrupador) - EDITABLE
                             if (r.is_template && r.is_elemento_virtual) {
                                 return (
                                     <tr key={r.id} className="bg-slate-50/50 border-b border-slate-100 group">
                                         <td className="w-[90px] min-w-[90px] px-3 py-1 text-left"></td>
-                                        <td className="px-3 py-1 text-slate-600 text-[11px] font-bold uppercase tracking-wider" colSpan={9} style={{ paddingLeft: '55px' }}>
-                                            {r.descripcion}
+                                        <td className="px-3 py-1" colSpan={9} style={{ paddingLeft: '55px' }}>
+                                            <input
+                                                type="text"
+                                                className="w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] font-bold uppercase tracking-wider placeholder:text-slate-300"
+                                                value={r.descripcion}
+                                                onChange={(e) => onGroupUpdate?.(r.codigo_partida, r.descripcion, e.target.value.toUpperCase())}
+                                                onFocus={(e) => e.target.select()}
+                                            />
                                         </td>
                                     </tr>
                                 );
@@ -299,6 +307,14 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     <td className="px-3 py-0.5" style={{ paddingLeft: '55px' }}>
                                         <div className="flex items-center gap-1 w-full">
                                             {r.elemento && <span className="text-blue-400 font-black text-[10px]">↳</span>}
+                                            <input
+                                                type="text"
+                                                className="metrado-input w-24 bg-slate-100/50 border-none px-1 py-0 rounded focus:ring-0 text-blue-700 text-[9px] font-bold uppercase shrink-0"
+                                                value={r.elemento || ''}
+                                                placeholder="AGRUPADOR..."
+                                                onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())}
+                                                onFocus={(e) => e.target.select()}
+                                            />
                                             {r.diametro && <span className="text-orange-600 font-bold tracking-wider text-[9px] bg-orange-100/80 px-1.5 py-0.5 rounded shadow-sm border border-orange-200 shrink-0">Φ {r.diametro}</span>}
                                             <input
                                                 type="text"
