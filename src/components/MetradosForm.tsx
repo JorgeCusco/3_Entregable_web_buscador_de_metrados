@@ -78,7 +78,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 </div>
             </div>
 
-            <div className="space-y-4 flex-grow">
+            <div className="space-y-3 flex-grow">
                 {/* ─── PASO 1: ESPECIALIDAD Y BÚSQUEDA ─── */}
                 <div className="space-y-3">
                     <div className="space-y-1">
@@ -130,7 +130,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
                 {/* ─── PASO 2: UBICACIÓN Y ELEMENTO ─── */}
                 <div className="space-y-3">
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-4 gap-1.5">
                         <Select
                             label="Frente"
                             value={state.frente}
@@ -161,7 +161,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         </div>
                     </div>
 
-                    <div className="space-y-3 p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
+                    <div className="space-y-2 p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
                         <div className="space-y-1">
                             <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Elemento / Agrupador</label>
                             <input
@@ -189,7 +189,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 </div>
 
                 {/* FILA 4: MATEMÁTICA */}
-                <div className="grid grid-cols-5 gap-2 bg-white/50 p-2 rounded-xl border border-slate-100 shadow-sm">
+                <div className="grid grid-cols-5 gap-1.5 bg-white/50 p-2 rounded-xl border border-slate-100 shadow-sm">
                     {(() => {
                         const flagAcero = isAcero(state.partidaSeleccionada);
                         let config = [

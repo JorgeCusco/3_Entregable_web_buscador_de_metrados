@@ -200,16 +200,16 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 <table className="w-full text-[13px] text-left align-middle border-collapse table-fixed">
                     <thead className="text-[11px] text-slate-400 bg-white uppercase whitespace-nowrap sticky top-0 shadow-[0_1px_0_0_rgba(0,0,0,0.05)] z-10 font-bold">
                         <tr className="border-b border-slate-100">
-                            <th className="w-[90px] min-w-[90px] px-4 py-3">Item / Código</th>
-                            <th className="px-4 py-3">Descripción / Partida / Metrado</th>
-                            <th className="w-[60px] min-w-[60px] px-4 py-3 text-center">Und</th>
-                            <th className="w-[90px] min-w-[90px] px-1 py-3 text-right text-[10px]">CANTIDAD</th>
-                            <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px]">LONGITUD/AREA</th>
-                            <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px]">ANCHO/EMPAME</th>
-                            <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px]">ALTURA/GANCHO</th>
-                            <th className="w-[100px] min-w-[100px] px-4 py-3 text-right">Parcial</th>
-                            <th className="w-[70px] min-w-[70px] px-4 py-3 text-center">Veces</th>
-                            <th className="w-[110px] min-w-[110px] px-4 py-3 text-right">Total</th>
+                            <th className="w-[85px] min-w-[85px] px-2 py-3">Item / Código</th>
+                            <th className="px-2 py-3">Descripción / Partida / Metrado</th>
+                            <th className="w-[45px] min-w-[45px] px-1 py-3 text-center">Und</th>
+                            <th className="w-[60px] min-w-[60px] px-1 py-3 text-right text-[10px]">CANT.</th>
+                            <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px]">LONG./AREA</th>
+                            <th className="w-[70px] min-w-[70px] px-1 py-3 text-right text-[10px]">ANCHO</th>
+                            <th className="w-[70px] min-w-[70px] px-1 py-3 text-right text-[10px]">ALT./GAN.</th>
+                            <th className="w-[80px] min-w-[80px] px-2 py-3 text-right text-[10px]">Parcial</th>
+                            <th className="w-[50px] min-w-[50px] px-1 py-3 text-center text-[10px]">Veces</th>
+                            <th className="w-[85px] min-w-[85px] px-2 py-3 text-right text-[10px]">Total</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white">
@@ -218,7 +218,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             if (r.is_template && r.es_titulo) {
                                 return (
                                     <tr key={`title-${r.codigo}`} className="bg-slate-800 text-white font-bold border-b border-slate-700">
-                                        <td className="w-[90px] min-w-[90px] px-3 py-1 font-mono text-[10px] tracking-wider text-left">
+                                        <td className="w-[85px] min-w-[85px] px-2 py-1 font-mono text-[10px] tracking-wider text-left">
                                             {r.codigo}
                                         </td>
                                         <td colSpan={9} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50"
@@ -233,8 +233,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             if (r.is_template && r.is_elemento_virtual) {
                                 return (
                                     <tr key={r.id} className="bg-slate-50/50 border-b border-slate-100 group">
-                                        <td className="w-[90px] min-w-[90px] px-3 py-1 text-left"></td>
-                                        <td className="px-3 py-1" colSpan={9} style={{ paddingLeft: '55px' }}>
+                                        <td className="w-[85px] min-w-[85px] px-2 py-1 text-left"></td>
+                                        <td className="px-2 py-1" colSpan={9} style={{ paddingLeft: '55px' }}>
                                             <input
                                                 type="text"
                                                 className="w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] font-bold uppercase tracking-wider placeholder:text-slate-300"
@@ -254,19 +254,19 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
                                 return (
                                     <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors`}>
-                                        <td className="w-[90px] min-w-[90px] px-3 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
+                                        <td className="w-[85px] min-w-[85px] px-2 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
                                             <span className="font-mono text-[10px] text-blue-600 bg-blue-100/50 px-1 py-0.5 rounded">
                                                 {r.codigo}
                                             </span>
                                         </td>
-                                        <td className="px-3 py-1 flex items-center gap-2"
+                                        <td className="px-2 py-1 flex items-center gap-2"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 1 + 0.75}rem` }}>
                                             {RenderModificacionBadge(r.modificacion)}
-                                            <span className="text-slate-800 text-[12px]">{r.descripcion}</span>
+                                            <span className="text-slate-800 text-[11px] leading-tight">{r.descripcion}</span>
                                         </td>
-                                        <td className="w-[60px] min-w-[60px] px-3 py-1 text-center text-slate-500 font-bold text-[11px]">{r.unidad}</td>
-                                        <td colSpan={6} className="px-3 py-1"></td>
-                                        <td className="w-[110px] min-w-[110px] px-3 py-1 text-right text-blue-700 font-black text-[13px]">
+                                        <td className="w-[45px] min-w-[45px] px-2 py-1 text-center text-slate-500 font-bold text-[10px]">{r.unidad}</td>
+                                        <td colSpan={6} className="px-1 py-1"></td>
+                                        <td className="w-[85px] min-w-[85px] px-2 py-1 text-right text-blue-700 font-black text-[12px]">
                                             {hasMetrados ? formatNumber(total) : '-'}
                                         </td>
                                     </tr>
@@ -288,8 +288,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
                             return (
                                 <tr key={`rec-${r.id}`} className="hover:bg-blue-50/30 border-b border-slate-100 group transition-all duration-200">
-                                    <td className="w-[90px] min-w-[90px] px-1 py-0.5">
-                                        <div className="flex items-center gap-0.5" style={{ marginLeft: '27px' }}>
+                                    <td className="w-[85px] min-w-[85px] px-0.5 py-0.5">
+                                        <div className="flex items-center gap-0.5" style={{ marginLeft: '15px' }}>
                                             <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
                                             <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0 rounded shrink-0 focus:ring-0 w-[30px] text-center"
                                                 value={r.frente} onChange={(e) => onUpdate?.(r.id, 'frente', e.target.value)}
@@ -304,7 +304,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                                 onFocus={(e) => e.target.select()} />
                                         </div>
                                     </td>
-                                    <td className="px-3 py-0.5" style={{ paddingLeft: '55px' }}>
+                                    <td className="px-2 py-0.5" style={{ paddingLeft: '40px' }}>
                                         <div className="flex items-center gap-1 w-full">
                                             {r.elemento && <span className="text-blue-400 font-black text-[10px]">↳</span>}
                                             <input
@@ -326,7 +326,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             />
                                         </div>
                                     </td>
-                                    <td className="px-3 py-0.5 text-center text-slate-300">-</td>
+                                    <td className="px-2 py-0.5 text-center text-slate-300">-</td>
 
                                     {/* Dimensiones Editables */}
                                     <td className="px-1 py-0.5 text-center">
@@ -354,25 +354,25 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             onKeyDown={(e) => handleKeyDown(e)} />
                                     </td>
 
-                                    <td className="px-3 py-0.5 text-right font-semibold text-slate-500 text-[12px]">{formatNumber(r.parcial)}</td>
+                                    <td className="px-2 py-0.5 text-right font-semibold text-slate-500 text-[11px]">{formatNumber(r.parcial)}</td>
 
                                     <td className="px-1 py-0.5 text-center">
-                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[12px]"
+                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
                                             value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
                                             onFocus={(e) => e.target.select()}
                                             onKeyDown={(e) => handleKeyDown(e)} />
                                     </td>
 
                                     {/* Total + Acciones */}
-                                    <td className="px-3 py-0.5 text-right font-bold text-slate-800 relative text-[13px]">
-                                        <div className="flex items-center justify-end gap-3">
+                                    <td className="w-[85px] min-w-[85px] px-2 py-0.5 text-right font-bold text-slate-800 relative text-[12px]">
+                                        <div className="flex items-center justify-end gap-1.5">
                                             <span>{r.total.toFixed(2)}</span>
                                             <button
                                                 onClick={() => onDelete?.(r.id)}
                                                 className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all p-0.5 hover:bg-red-50 rounded-md"
                                                 title="Eliminar Registro"
                                             >
-                                                <Trash2 size={12} />
+                                                <Trash2 size={11} />
                                             </button>
                                         </div>
                                     </td>

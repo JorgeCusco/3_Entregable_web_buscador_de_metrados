@@ -83,7 +83,7 @@ function App() {
   const metradosFiltrados = metrados.filter(m => !m.proyecto || m.proyecto === proyecto);
 
   return (
-    <div className="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col gap-6 relative max-w-[1600px] mx-auto">
+    <div className="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col gap-6 relative max-w-[1450px] mx-auto">
 
       {/* Header */}
       <header className="flex items-center justify-between px-2">
