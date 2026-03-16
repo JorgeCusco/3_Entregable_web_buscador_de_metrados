@@ -15,7 +15,7 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 
 // Ruta a la plantilla local
-const TEMPLATE_PATH = path.join(__dirname, '..', 'METRADO_PLANTILLA_4.xlsx');
+const TEMPLATE_PATH = path.join(__dirname, '..', 'METRADO_PLANTILLA_5.xlsx');
 const STARTING_ROW = 8; // B8 corresponde a Fila 8
 
 app.get('/', (req, res) => {
@@ -179,7 +179,7 @@ app.post('/api/export/metrados', async (req, res) => {
                 rowData[20] = flagAcero ? (m.diametro || "") : ""; // U
                 rowData[21] = m.total || 0; // V: total
 
-                rowData[22] = total2; // W: Total 2
+                rowData[22] = ""; // W: Total 2 (Solo en cabeceras)
                 rowData[23] = unidadActual; // X: Unidad
                 rowData[24] = m.modificacion || "SM"; // Y: modificacion
             }
@@ -192,16 +192,35 @@ app.post('/api/export/metrados', async (req, res) => {
                     if (val !== undefined) {
                         const cell = row.getCell(i + 1);
                         cell.value = val;
+
+                        // Limpieza específica para Columna W (Total 2) en registros reales
+                        if (i === 22 && !isSumatoria) {
+                            cell.value = null;
+                            // Quitar color de relleno si existe (para quitar el amarillo residual)
+                            cell.fill = {
+                                type: 'pattern',
+                                pattern: 'none'
+                            };
+                        }
                     }
                 });
                 currentExcelRow++;
             }
         });
 
-        // Generar Buffer (ExcelJS se encarga de reestructurar el XML)
+        // Generar Buffer
         const buffer = await workbook.xlsx.writeBuffer();
 
-        const filename = `Export_Excel_Directo_${new Date().toISOString().replace(/[:.]/g, '-')}.xlsx`;
+        // Determinar nombre descriptivo basado en la primera especialidad encontrada
+        let especialidadNombre = "MODIF";
+        const firstReal = metrados.find(m => !m.is_template && m.especialidad);
+        if (firstReal && firstReal.especialidad) {
+            especialidadNombre = firstReal.especialidad.toUpperCase();
+        }
+
+        const dateStr = new Date().toISOString().split('T')[0];
+        const filename = `Metrado_${especialidadNombre}_${dateStr}.xlsx`;
+
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
         res.send(buffer);

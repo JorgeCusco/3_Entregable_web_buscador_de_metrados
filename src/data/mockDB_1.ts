@@ -71382,5 +71382,52 @@ export const mockPartidas: Partida[] = [
         "especialidad": "hospital",
         "modificacion": "SM",
         "apu": null
+    },
+    {
+        "id": "4315",
+        "codigo": "OE.5.2",
+        "descripcion": "SALIDA PARA ALUMBRADO, TOMACORRIENTES Y FUERZA",
+        "unidad": "pto",
+        "es_titulo": false,
+        "parent_id": "OE.5",
+        "nivel_jerarquia": 3,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS"
+        ],
+        "especialidad": "hospital",
+        "modificacion": "PN6",
+        "apu": null
+    },
+    {
+        "id": "4316",
+        "codigo": "OE.5.4.4.1",
+        "descripcion": "ACARREO DE MATERIALES ELECTRICOS EN OBRA",
+        "unidad": "glb",
+        "es_titulo": false,
+        "parent_id": "OE.5.4.4",
+        "nivel_jerarquia": 4,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.4 INSTALACIONES ELÉCTRICAS EXTERIORES"
+        ],
+        "especialidad": "hospital",
+        "modificacion": "PN6",
+        "apu": null
+    },
+    {
+        "id": "4317",
+        "codigo": "OE.5.4.4.2",
+        "descripcion": "TRASLADO VERTICAL DE MATERIALES ELECTRICOS EN OBRA H=16m",
+        "unidad": "glb",
+        "es_titulo": false,
+        "parent_id": "OE.5.4.4",
+        "nivel_jerarquia": 4,
+        "jerarquia": [
+            "OE.5 INSTALACIONES ELÉCTRICAS",
+            "OE.5.4 INSTALACIONES ELÉCTRICAS EXTERIORES"
+        ],
+        "especialidad": "hospital",
+        "modificacion": "PN6",
+        "apu": null
     }
 ];

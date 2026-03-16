@@ -83,6 +83,14 @@ export const useMetradosForm = () => {
     }, [parcial, nroVeces]);
 
     const limpiarCampos = () => {
+        setPartidaSeleccionada(null);
+        setContext({
+            frente: '',
+            bloque: '',
+            nivel: '',
+            cuadrilla: ''
+        });
+        setElemento('');
         setDetalle('');
         setCantidad('');
         setLongitud('');

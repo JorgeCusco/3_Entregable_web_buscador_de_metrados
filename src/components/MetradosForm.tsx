@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { SearchCombobox } from './ui/SearchCombobox';
 import { Select } from './ui/Select';
 import type { Partida } from '../types';
@@ -7,7 +7,7 @@ import { isAcero } from '../hooks/useMetradosForm';
 import { mockPartidas } from '../data/mockDB_1';
 import { mockPartidasContingencia } from '../data/mockDB_contingencia';
 import { ESPECIALIDADES_PARTIDA } from '../constants/especialidades';
-import { Save } from 'lucide-react';
+import { Save, Eraser } from 'lucide-react';
 
 interface MetradosFormProps {
     state: any;
@@ -32,6 +32,7 @@ export const RenderModificacionBadge = (modificacionStr?: string) => {
                 if (tag.startsWith('DD')) colorClass = "bg-red-500 border-red-600";
                 if (tag.startsWith('PN')) colorClass = "bg-green-500 border-green-600";
                 if (tag.startsWith('MM')) colorClass = "bg-blue-500 border-blue-600";
+                if (tag.startsWith('PC')) colorClass = "bg-[#FF69B4] border-[#FF1493]"; // Rosado (Partidas Creadas)
 
                 return (
                     <div key={i} className={`w-[10px] h-[10px] rounded-full border shadow-sm ${colorClass}`} title={tag} />
@@ -43,6 +44,8 @@ export const RenderModificacionBadge = (modificacionStr?: string) => {
 
 // @ts-ignore
 window.RenderModificacionBadge = RenderModificacionBadge;
+
+import { SimpleSearchInput } from './ui/SimpleSearchInput';
 
 export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, proyecto }) => {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>, nextId: string) => {
@@ -66,17 +69,24 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
     const [showNuevaPartidaModal, setShowNuevaPartidaModal] = useState(false);
     const [nuevaPartidaData, setNuevaPartidaData] = useState({ codigo: '', descripcion: '', unidad: 'm' });
 
+    const catalogoSugerencias = useMemo(() => {
+        return [
+            ...(proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia),
+            ...state.customPartidas
+        ];
+    }, [proyecto, state.customPartidas]);
+
     const handleCrearPartida = () => {
         if (!nuevaPartidaData.codigo || !nuevaPartidaData.descripcion) return;
         
         const nuevaP: Partida = {
             id: `custom-${Date.now()}`,
             codigo: nuevaPartidaData.codigo,
-            descripcion: nuevaPartidaData.descripcion,
+            descripcion: nuevaPartidaData.descripcion.toUpperCase(), // Forzamos UPPERCASE para consistencia
             unidad: nuevaPartidaData.unidad,
             jerarquia: [],
             nivel_jerarquia: 1,
-            modificacion: 'PN' // Por defecto Partida Nueva
+            modificacion: 'PC' // "Partidas Creadas" - Etiqueta Rosa
         };
 
         actions.addCustomPartida(nuevaP);
@@ -93,28 +103,30 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     <div className="glass-panel p-5 rounded-2xl shadow-xl border border-blue-100 flex flex-col gap-4">
                         <div className="flex items-center justify-between">
                             <h3 className="text-xs font-black text-blue-900 uppercase tracking-widest">Crear Nueva Partida</h3>
-                            <button onClick={() => setShowNuevaPartidaModal(false)} className="text-slate-400 hover:text-red-500 font-bold text-xs px-2">X</button>
+                            <button onClick={() => setShowNuevaPartidaModal(false)} className="text-slate-400 hover:text-red-500 font-bold text-xs px-2 cursor-pointer">X</button>
                         </div>
                         
                         <div className="space-y-3">
-                            <div className="space-y-1">
-                                <label className="text-[9px] font-bold text-slate-500 uppercase">Código (OE.x.x.x)</label>
-                                <input 
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold focus:border-blue-500 outline-none"
-                                    value={nuevaPartidaData.codigo}
-                                    onChange={e => setNuevaPartidaData({...nuevaPartidaData, codigo: e.target.value.toUpperCase()})}
-                                    placeholder="OE.1.1.2.3.99"
-                                />
-                            </div>
-                            <div className="space-y-1">
-                                <label className="text-[9px] font-bold text-slate-500 uppercase">Descripción</label>
-                                <textarea 
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold focus:border-blue-500 outline-none h-20 resize-none"
-                                    value={nuevaPartidaData.descripcion}
-                                    onChange={e => setNuevaPartidaData({...nuevaPartidaData, descripcion: e.target.value})}
-                                    placeholder="Ej. Suministro de materiales no catalogados..."
-                                />
-                            </div>
+                            <SimpleSearchInput 
+                                label="Código (OE.x.x.x)"
+                                placeholder="OE.1.1.2.3.99"
+                                value={nuevaPartidaData.codigo}
+                                onChange={val => setNuevaPartidaData({...nuevaPartidaData, codigo: val.toUpperCase()})}
+                                onSelect={p => setNuevaPartidaData({ ...nuevaPartidaData, codigo: p.codigo, descripcion: p.descripcion })}
+                                suggestions={catalogoSugerencias}
+                                searchField="codigo"
+                            />
+                            
+                            <SimpleSearchInput 
+                                label="Descripción"
+                                placeholder="Ej. Suministro de materiales no catalogados..."
+                                value={nuevaPartidaData.descripcion}
+                                onChange={val => setNuevaPartidaData({...nuevaPartidaData, descripcion: val})}
+                                onSelect={p => setNuevaPartidaData({ ...nuevaPartidaData, codigo: p.codigo, descripcion: p.descripcion })}
+                                suggestions={catalogoSugerencias}
+                                searchField="descripcion"
+                            />
+
                             <div className="space-y-1">
                                 <label className="text-[9px] font-bold text-slate-500 uppercase">Unidad</label>
                                 <Select 
@@ -128,7 +140,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         <button 
                             onClick={handleCrearPartida}
                             disabled={!nuevaPartidaData.codigo || !nuevaPartidaData.descripcion}
-                            className="w-full py-3 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none transition-all"
+                            className="w-full py-3 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none transition-all cursor-pointer"
                         >
                             Confirmar y Seleccionar
                         </button>
@@ -148,7 +160,17 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         onChange={e => actions.setFecha(e.target.value)}
                         className="text-[10px] font-mono font-bold text-slate-500 bg-transparent border-none p-0 focus:ring-0 cursor-pointer outline-none"
                     />
-                    <span className="text-[9px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold border border-slate-200">v4.1</span>
+                    <div className="flex items-center gap-2">
+                        <button 
+                            onClick={() => actions.limpiarCampos()}
+                            className="text-[9px] font-bold text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1 cursor-pointer px-1.5 py-0.5 rounded hover:bg-red-50"
+                            title="Limpiar medidas y detalle"
+                        >
+                            <Eraser size={10} />
+                            Limpiar
+                        </button>
+                        <span className="text-[9px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold border border-slate-200">v4.1</span>
+                    </div>
                 </div>
             </div>
 
@@ -218,13 +240,13 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         <Select
                             label="Bloque"
                             value={state.bloque}
-                            options={['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI']}
+                            options={['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'EXT']}
                             onSelect={(val) => actions.setBloque(val)}
                         />
                         <Select
                             label="Nivel"
                             value={state.nivel}
-                            options={['ZZ', 'N1', 'N2', 'N3', 'N4']}
+                            options={['ZZ', 'N1', 'N2', 'N3', 'N4', 'AZ']}
                             onSelect={(val) => actions.setNivel(val)}
                         />
                         <div className="space-y-1">
