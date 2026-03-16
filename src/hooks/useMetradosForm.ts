@@ -23,7 +23,7 @@ export const isAcero = (partida: Partida | null): boolean => {
 };
 
 export const useMetradosForm = () => {
-    const { context, setContext } = useMetradosStore();
+    const { context, setContext, customPartidas, addCustomPartida } = useMetradosStore();
 
     const getLocalDateString = () => {
         const d = new Date();
@@ -131,7 +131,8 @@ export const useMetradosForm = () => {
             fecha, frente, bloque, nivel, cuadrilla,
             partidaSeleccionada, elemento, detalle, diametro,
             cantidad, longitud, ancho, altura, nroVeces,
-            parcial, total, especialidadSeleccionada
+            parcial, total, especialidadSeleccionada,
+            customPartidas
         },
         actions: {
             setFecha,
@@ -142,7 +143,8 @@ export const useMetradosForm = () => {
             setPartidaSeleccionada, setElemento, setDetalle, setDiametro,
             setCantidad, setLongitud, setAncho, setAltura, setNroVeces,
             setEspecialidadSeleccionada,
-            limpiarCampos, procesarRegistro
+            limpiarCampos, procesarRegistro,
+            addCustomPartida
         }
     };
 };

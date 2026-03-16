@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Metrado } from '../types';
+import { Metrado, Partida } from '../types';
 
 interface MetradosContext {
     frente: string;
@@ -17,12 +17,16 @@ interface MetradosState {
     // B) Array temporal de metrados
     metrados: Metrado[];
 
+    // C) Partidas personalizadas
+    customPartidas: Partida[];
+
     // Acciones
     setContext: (context: Partial<MetradosContext>) => void;
     addMetrado: (metrado: Metrado) => void;
     updateMetrado: (id: string, field: keyof Metrado, value: any) => void;
     deleteMetrado: (id: string) => void;
     updateGroup: (codigo_partida: string, old_elemento: string, new_elemento: string) => void;
+    addCustomPartida: (partida: Partida) => void;
     clearAll: () => void;
 }
 
@@ -37,6 +41,7 @@ export const useMetradosStore = create<MetradosState>()(
                 proyecto: 'hospital'
             },
             metrados: [],
+            customPartidas: [],
 
             setContext: (newContext) =>
                 set((state) => ({
@@ -69,7 +74,12 @@ export const useMetradosStore = create<MetradosState>()(
                     ),
                 })),
 
-            clearAll: () => set({ metrados: [] }),
+            addCustomPartida: (partida) =>
+                set((state) => ({
+                    customPartidas: [...state.customPartidas, partida]
+                })),
+
+            clearAll: () => set({ metrados: [], customPartidas: [] }),
         }),
         {
             name: 'inkaia-metrados-storage',

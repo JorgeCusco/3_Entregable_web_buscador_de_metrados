@@ -92,8 +92,14 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 
 
 export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital' }) => {
-    // Seleccionar el catálogo de partidas correcto según el proyecto
-    const catalogoActivo = proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia;
+    const { customPartidas } = useMetradosStore();
+
+    // Seleccionar el catálogo de partidas correcto según el proyecto y sumarle las personalizadas
+    const catalogoActivo = useMemo(() => {
+        const base = proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia;
+        return [...base, ...customPartidas];
+    }, [proyecto, customPartidas]);
+
     const [selectedSpecialty, setSelectedSpecialty] = React.useState('TODAS');
 
     // Filtrar metrados por especialidad dinámica
@@ -106,7 +112,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         );
     }, [metrados, selectedSpecialty]);
 
-    const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo), [filteredMetrados, proyecto]);
+    const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo), [filteredMetrados, catalogoActivo]);
     const [isExporting, setIsExporting] = React.useState(false);
 
     // Calcular totales por partida para las filas de cabecera
@@ -136,7 +142,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             // DETERMINAR URL DEL BACKEND MEDIANTE VARIABLES DE ENTORNO (VITE)
             let apiUrl = import.meta.env.VITE_API_URL || '';
 
-            // Si no hay variable definida (dev mode), asumimos puerto 3001 local
+            // Si no hay variable definida y estamos en local, fallback al puerto 3001
             if (!apiUrl && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
                 apiUrl = `http://${window.location.hostname}:3001`;
             }
@@ -154,8 +160,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     body: JSON.stringify({ metrados: rows, proyecto })
                 });
             } catch (error) {
-                let actualDomain = typeof window !== 'undefined' ? window.location.hostname : 'Hostinger';
-                throw new Error(`Error de conexión: No se pudo contactar con el servidor en ${apiUrl || actualDomain}. Verifique que la App Node.js esté "Running" en Hostinger.`);
+                const errorMsg = `No se pudo conectar con el servidor de exportación en: ${apiUrl || 'URL no definida'}. Verifique su conexión o que el servicio esté activo.`;
+                throw new Error(errorMsg);
             }
 
             if (!response.ok) {

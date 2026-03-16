@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SearchCombobox } from './ui/SearchCombobox';
 import { Select } from './ui/Select';
 import type { Partida } from '../types';
@@ -29,9 +29,9 @@ export const RenderModificacionBadge = (modificacionStr?: string) => {
         <div className="flex items-center gap-1 shrink-0">
             {tags.map((tag, i) => {
                 let colorClass = "bg-slate-200 border-slate-300";
-                if (tag.startsWith('DD')) colorClass = "bg-blue-500 border-blue-600";
+                if (tag.startsWith('DD')) colorClass = "bg-red-500 border-red-600";
                 if (tag.startsWith('PN')) colorClass = "bg-green-500 border-green-600";
-                if (tag.startsWith('MM')) colorClass = "bg-red-500 border-red-600";
+                if (tag.startsWith('MM')) colorClass = "bg-blue-500 border-blue-600";
 
                 return (
                     <div key={i} className={`w-[10px] h-[10px] rounded-full border shadow-sm ${colorClass}`} title={tag} />
@@ -40,6 +40,9 @@ export const RenderModificacionBadge = (modificacionStr?: string) => {
         </div>
     );
 };
+
+// @ts-ignore
+window.RenderModificacionBadge = RenderModificacionBadge;
 
 export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, proyecto }) => {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>, nextId: string) => {
@@ -60,8 +63,79 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
         }
     };
 
+    const [showNuevaPartidaModal, setShowNuevaPartidaModal] = useState(false);
+    const [nuevaPartidaData, setNuevaPartidaData] = useState({ codigo: '', descripcion: '', unidad: 'm' });
+
+    const handleCrearPartida = () => {
+        if (!nuevaPartidaData.codigo || !nuevaPartidaData.descripcion) return;
+        
+        const nuevaP: Partida = {
+            id: `custom-${Date.now()}`,
+            codigo: nuevaPartidaData.codigo,
+            descripcion: nuevaPartidaData.descripcion,
+            unidad: nuevaPartidaData.unidad,
+            jerarquia: [],
+            nivel_jerarquia: 1,
+            modificacion: 'PN' // Por defecto Partida Nueva
+        };
+
+        actions.addCustomPartida(nuevaP);
+        actions.setPartidaSeleccionada(nuevaP);
+        setShowNuevaPartidaModal(false);
+        setNuevaPartidaData({ codigo: '', descripcion: '', unidad: 'm' });
+    };
+
     return (
-        <div className="glass-panel rounded-2xl p-4 h-full flex flex-col gap-3">
+        <div className="glass-panel rounded-2xl p-4 h-full flex flex-col gap-3 relative">
+            {/* Modal para Nueva Partida */}
+            {showNuevaPartidaModal && (
+                <div className="absolute inset-0 z-[200] bg-white/90 backdrop-blur-sm p-4 flex flex-col justify-center animate-in fade-in zoom-in-95 duration-200">
+                    <div className="glass-panel p-5 rounded-2xl shadow-xl border border-blue-100 flex flex-col gap-4">
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-xs font-black text-blue-900 uppercase tracking-widest">Crear Nueva Partida</h3>
+                            <button onClick={() => setShowNuevaPartidaModal(false)} className="text-slate-400 hover:text-red-500 font-bold text-xs px-2">X</button>
+                        </div>
+                        
+                        <div className="space-y-3">
+                            <div className="space-y-1">
+                                <label className="text-[9px] font-bold text-slate-500 uppercase">Código (OE.x.x.x)</label>
+                                <input 
+                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold focus:border-blue-500 outline-none"
+                                    value={nuevaPartidaData.codigo}
+                                    onChange={e => setNuevaPartidaData({...nuevaPartidaData, codigo: e.target.value.toUpperCase()})}
+                                    placeholder="OE.1.1.2.3.99"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-[9px] font-bold text-slate-500 uppercase">Descripción</label>
+                                <textarea 
+                                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold focus:border-blue-500 outline-none h-20 resize-none"
+                                    value={nuevaPartidaData.descripcion}
+                                    onChange={e => setNuevaPartidaData({...nuevaPartidaData, descripcion: e.target.value})}
+                                    placeholder="Ej. Suministro de materiales no catalogados..."
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-[9px] font-bold text-slate-500 uppercase">Unidad</label>
+                                <Select 
+                                    value={nuevaPartidaData.unidad}
+                                    options={['m', 'm2', 'm3', 'kg', 'und', 'glb', 'pto', 'est']}
+                                    onSelect={val => setNuevaPartidaData({...nuevaPartidaData, unidad: val})}
+                                />
+                            </div>
+                        </div>
+
+                        <button 
+                            onClick={handleCrearPartida}
+                            disabled={!nuevaPartidaData.codigo || !nuevaPartidaData.descripcion}
+                            className="w-full py-3 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none transition-all"
+                        >
+                            Confirmar y Seleccionar
+                        </button>
+                    </div>
+                </div>
+            )}
+
             {/* Cabecera Compacta */}
             <div className="flex items-center justify-between border-b border-gray-100 pb-2">
                 <h2 className="text-sm font-bold text-gray-800 tracking-tight uppercase flex items-center gap-2">
@@ -97,7 +171,10 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     <div className="space-y-1">
                         <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Partida (Buscador)</label>
                         <SearchCombobox
-                            partidas={(proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia).filter(p => {
+                            partidas={[
+                                ...(proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia),
+                                ...state.customPartidas
+                            ].filter(p => {
                                 if (state.especialidadSeleccionada === 'TODAS') return true;
                                 const mapping = ESPECIALIDADES_PARTIDA.find(e => e.nombre === state.especialidadSeleccionada);
                                 if (!mapping) return true;
@@ -111,6 +188,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                 actions.setAncho('');
                                 actions.setAltura('');
                             }}
+                            onAddPartida={() => setShowNuevaPartidaModal(true)}
                         />
                     </div>
 
