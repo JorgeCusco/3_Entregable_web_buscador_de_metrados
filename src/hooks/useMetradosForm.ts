@@ -22,6 +22,23 @@ export const isAcero = (partida: Partida | null): boolean => {
     return isKg && descNormalizada.includes('acero');
 };
 
+export const getHvacCategory = (partida: Partida | null): string | null => {
+    if (!partida) return null;
+    const codigo = partida.codigo;
+    
+    // Categoría TEE, REDUCCIONES, CODOS
+    if (['OE.5.6.16.5.8', 'OE.5.6.16.5.11.2', 'OE.5.6.16.5.11.5', 'OE.5.6.16.5.12.1'].includes(codigo)) {
+        return 'ACCESORIO'; 
+    }
+    
+    // Categoría DUCTO
+    if (['OE.5.6.16.5.7', 'OE.5.6.16.5.11.1', 'OE.5.6.16.5.11.5', 'OE.5.6.16.5.12.1'].includes(codigo)) {
+        return 'DUCTO';
+    }
+    
+    return null;
+};
+
 export const useMetradosForm = () => {
     const { context, setContext, customPartidas, addCustomPartida } = useMetradosStore();
 
@@ -44,6 +61,8 @@ export const useMetradosForm = () => {
     const [partidaSeleccionada, setPartidaSeleccionada] = useState<Partida | null>(null);
     const [elemento, setElemento] = useState<string>('');
     const [detalle, setDetalle] = useState<string>('');
+    const [hvacFactor, setHvacFactor] = useState<number | null>(null);
+    const [hvacItemType, setHvacItemType] = useState<string | null>(null); // 'TEE', 'REDUCCION', 'CODO', 'DUCTO'
     const [diametro, setDiametro] = useState<string>('5/8"');
 
     const [cantidad, setCantidad] = useState<number | "">("");
@@ -67,6 +86,20 @@ export const useMetradosForm = () => {
 
             if (c === 0 && longitudRecta === 0 && longitudGancho === 0) return 0;
             return c * longitudTotal * factorKg;
+        } else if (hvacFactor !== null) {
+            // Lógica HVAC
+            // El usuario quiere que en CODOS se use Longitud.
+            // La fórmula del parcial para HVAC ahora debe contemplar si Longitud está habilitada.
+            const c = typeof cantidad === 'number' ? cantidad : 1;
+            
+            // Si es CODO o DUCTO, consideramos la Longitud en el cálculo si se ingresó
+            const l = (hvacItemType === 'CODO' || hvacItemType === 'DUCTO') && typeof longitud === 'number' ? longitud : 1;
+            
+            // Ancho y Altura están bloqueados para accesorios HVAC, así que usamos 1
+            const a = typeof ancho === 'number' ? ancho : 1;
+            const h = typeof altura === 'number' ? altura : 1;
+            
+            return c * l * a * h * hvacFactor;
         } else {
             if (cantidad === "" && longitud === "" && ancho === "" && altura === "") return 0;
             const c = cantidad !== "" ? cantidad : 1;
@@ -75,7 +108,18 @@ export const useMetradosForm = () => {
             const h = altura !== "" ? altura : 1;
             return c * l * a * h;
         }
-    }, [cantidad, longitud, ancho, altura, partidaSeleccionada, diametro]);
+    }, [cantidad, longitud, ancho, altura, partidaSeleccionada, diametro, hvacFactor, hvacItemType]);
+
+    const hvacConfig = useMemo(() => {
+        const category = getHvacCategory(partidaSeleccionada);
+        if (!category) return null;
+
+        return {
+            category,
+            isAccessory: category === 'ACCESORIO',
+            isDuct: category === 'DUCTO'
+        };
+    }, [partidaSeleccionada]);
 
     const total = useMemo(() => {
         const veces = nroVeces !== "" ? nroVeces : 1;
@@ -83,20 +127,9 @@ export const useMetradosForm = () => {
     }, [parcial, nroVeces]);
 
     const limpiarCampos = () => {
-        setPartidaSeleccionada(null);
-        setContext({
-            frente: '',
-            bloque: '',
-            nivel: '',
-            cuadrilla: ''
-        });
-        setElemento('');
         setDetalle('');
-        setCantidad('');
-        setLongitud('');
-        setAncho('');
-        setAltura('');
-        setNroVeces('');
+        setHvacFactor(null);
+        setHvacItemType(null);
     };
 
     const procesarRegistro = (): Metrado | null => {
@@ -140,7 +173,7 @@ export const useMetradosForm = () => {
             partidaSeleccionada, elemento, detalle, diametro,
             cantidad, longitud, ancho, altura, nroVeces,
             parcial, total, especialidadSeleccionada,
-            customPartidas
+            customPartidas, hvacFactor, hvacConfig, hvacItemType
         },
         actions: {
             setFecha,
@@ -150,9 +183,10 @@ export const useMetradosForm = () => {
             setCuadrilla: (val: string) => setContext({ cuadrilla: val }),
             setPartidaSeleccionada, setElemento, setDetalle, setDiametro,
             setCantidad, setLongitud, setAncho, setAltura, setNroVeces,
-            setEspecialidadSeleccionada,
+            setEspecialidadSeleccionada, setHvacFactor,
             limpiarCampos, procesarRegistro,
-            addCustomPartida
+            addCustomPartida,
+            setHvacItemType
         }
     };
 };

@@ -8,6 +8,7 @@ import { mockPartidas } from '../data/mockDB_1';
 import { mockPartidasContingencia } from '../data/mockDB_contingencia';
 import { ESPECIALIDADES_PARTIDA } from '../constants/especialidades';
 import { Save, Eraser } from 'lucide-react';
+import { HVAC_DATA } from '../data/hvacData';
 
 interface MetradosFormProps {
     state: any;
@@ -115,6 +116,16 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                 onSelect={p => setNuevaPartidaData({ ...nuevaPartidaData, codigo: p.codigo, descripcion: p.descripcion })}
                                 suggestions={catalogoSugerencias}
                                 searchField="codigo"
+                                renderItem={(p) => (
+                                    <>
+                                        <span className="text-[10px] font-bold text-slate-800 line-clamp-1">{p.descripcion}</span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[8px] font-mono text-blue-500 font-bold">{p.codigo}</span>
+                                            {/* @ts-ignore */}
+                                            {window.RenderModificacionBadge && window.RenderModificacionBadge(p.modificacion)}
+                                        </div>
+                                    </>
+                                )}
                             />
                             
                             <SimpleSearchInput 
@@ -125,6 +136,16 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                 onSelect={p => setNuevaPartidaData({ ...nuevaPartidaData, codigo: p.codigo, descripcion: p.descripcion })}
                                 suggestions={catalogoSugerencias}
                                 searchField="descripcion"
+                                renderItem={(p) => (
+                                    <>
+                                        <span className="text-[10px] font-bold text-slate-800 line-clamp-1">{p.descripcion}</span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[8px] font-mono text-blue-500 font-bold">{p.codigo}</span>
+                                            {/* @ts-ignore */}
+                                            {window.RenderModificacionBadge && window.RenderModificacionBadge(p.modificacion)}
+                                        </div>
+                                    </>
+                                )}
                             />
 
                             <div className="space-y-1">
@@ -275,15 +296,45 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
                         <div className="space-y-1">
                             <label className="text-[9px] font-bold text-blue-600 flex items-center gap-1 uppercase tracking-wider pl-1">
-                                <span className="text-blue-400 font-black">↳</span> Detalle Específico
+                                <span className="text-blue-400 font-black">↳</span> Detalle {state.hvacConfig ? `Especifico (${state.hvacConfig.category})` : 'Específico'}
                             </label>
-                            <input
-                                type="text"
-                                value={state.detalle}
-                                onChange={e => actions.setDetalle(e.target.value)}
-                                className="w-full px-4 py-1.5 border border-blue-100 rounded-xl shadow-sm text-xs border-l-4 border-l-blue-500 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none h-8"
-                                placeholder="Mat. / Esp. / Actividad..."
-                            />
+                            {state.hvacConfig ? (
+                                <SimpleSearchInput 
+                                    placeholder={`Buscar ${state.hvacConfig.category.toLowerCase()}...`}
+                                    value={state.detalle}
+                                    onChange={val => actions.setDetalle(val)}
+                                    // @ts-ignore
+                                    onSelect={(item: any) => {
+                                        actions.setDetalle(item.label);
+                                        actions.setHvacFactor(item.factor);
+                                        // Determinar tipo basado en el label o la sugerencia original
+                                        const type = item.label.startsWith('TEE') ? 'TEE' : 
+                                                     item.label.startsWith('RED') ? 'REDUCCION' : 
+                                                     item.label.startsWith('CODO') ? 'CODO' : 'DUCTO';
+                                        actions.setHvacItemType(type);
+                                    }}
+                                    suggestions={
+                                        state.hvacConfig.category === 'DUCTO' 
+                                        ? HVAC_DATA.DUCTO.map(i => ({ ...i, type: 'DUCTO' }))
+                                        : [
+                                            ...HVAC_DATA.TEE.map(i => ({ ...i, type: 'TEE' })), 
+                                            ...HVAC_DATA.REDUCCIONES.map(i => ({ ...i, type: 'REDUCCION' })), 
+                                            ...HVAC_DATA.CODO.map(i => ({ ...i, type: 'CODO' }))
+                                          ]
+                                    }
+                                    // @ts-ignore
+                                    searchField="label"
+                                    className="h-8 shadow-none"
+                                />
+                            ) : (
+                                <input
+                                    type="text"
+                                    value={state.detalle}
+                                    onChange={e => actions.setDetalle(e.target.value)}
+                                    className="w-full px-4 py-1.5 border border-blue-100 rounded-xl shadow-sm text-xs border-l-4 border-l-blue-500 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none h-8"
+                                    placeholder="Mat. / Esp. / Actividad..."
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
@@ -301,36 +352,69 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
                         const fields = config.map(({ key, label, nextId }) => {
                             const valKey = key as 'cantidad' | 'longitud' | 'ancho' | 'altura';
+                            
+                            // Lógica de bloqueo HVAC
+                            let isBlocked = false;
+                            if (state.hvacConfig) {
+                                if (state.hvacConfig.isAccessory) {
+                                    // TEE/RED/CODO
+                                    if (['ancho', 'altura', 'veces'].includes(key)) isBlocked = true;
+                                    
+                                    // Solo bloqueamos longitud si NO es un CODO
+                                    if (key === 'longitud' && state.hvacItemType !== 'CODO') isBlocked = true;
+                                } else if (state.hvacConfig.isDuct) {
+                                    // DUCTO: bloquea ANCHO, ALTURA, VECES (LONGITUD queda habilitada para metros lineales)
+                                    if (['ancho', 'altura', 'veces'].includes(key)) isBlocked = true;
+                                }
+                            }
+
                             return (
                                 <div key={key} className="space-y-1">
-                                    <label className="text-[7px] font-black text-slate-400 uppercase tracking-tighter text-center block leading-[1.1] h-[18px] flex items-end justify-center pb-0.5">{label}</label>
+                                    <label className={`text-[7px] font-black uppercase tracking-tighter text-center block leading-[1.1] h-[18px] flex items-end justify-center pb-0.5 ${isBlocked ? 'text-slate-300' : 'text-slate-400'}`}>
+                                        {label}
+                                    </label>
                                     <input
                                         id={`input-${key}`}
                                         type="number"
                                         step="any"
                                         value={state[valKey]}
+                                        disabled={isBlocked}
                                         onChange={e => actions[`set${key.charAt(0).toUpperCase() + key.slice(1)}`](e.target.value === "" ? "" : Number(e.target.value))}
                                         onKeyDown={e => handleKeyDown(e, nextId)}
                                         onFocus={e => e.target.select()}
-                                        className="w-full px-1 py-1 border border-slate-200 rounded text-xs text-right font-mono font-bold bg-white focus:border-blue-500 outline-none"
-                                        placeholder="-"
+                                        className={`w-full px-1 py-1 border rounded text-xs text-right font-mono font-bold outline-none transition-colors ${
+                                            isBlocked 
+                                            ? 'bg-slate-50 border-slate-100 text-slate-300 cursor-not-allowed' 
+                                            : 'border-slate-200 text-slate-700 bg-white focus:border-blue-500'
+                                        }`}
+                                        placeholder={isBlocked ? "N/A" : "-"}
                                     />
                                 </div>
                             );
                         });
 
+                        // El nroVeces también se bloquea para accesorios/ductos según el requisito ("VECES" bloqueado)
+                        const isVecesBlocked = !!state.hvacConfig;
+
                         const vecesField = (
                             <div key="veces" className="space-y-1">
-                                <label className="text-[9px] font-black text-slate-400 uppercase tracking-tighter text-center block">VECES</label>
+                                <label className={`text-[9px] font-black uppercase tracking-tighter text-center block ${isVecesBlocked ? 'text-slate-300' : 'text-slate-400'}`}>
+                                    VECES
+                                </label>
                                 <input
                                     id="input-veces"
                                     type="number"
                                     value={state.nroVeces}
+                                    disabled={isVecesBlocked}
                                     onChange={e => actions.setNroVeces(e.target.value === "" ? "" : Number(e.target.value))}
                                     onKeyDown={e => handleKeyDown(e, 'submit')}
                                     onFocus={e => e.target.select()}
-                                    className="w-full px-1 py-1 border border-slate-200 rounded text-xs text-right font-mono font-bold bg-white focus:border-blue-500 outline-none"
-                                    placeholder="1"
+                                    className={`w-full px-1 py-1 border rounded text-xs text-right font-mono font-bold outline-none transition-colors ${
+                                        isVecesBlocked 
+                                        ? 'bg-slate-50 border-slate-100 text-slate-300 cursor-not-allowed' 
+                                        : 'border-slate-200 text-slate-700 bg-white focus:border-blue-500'
+                                    }`}
+                                    placeholder={isVecesBlocked ? "1" : "1"}
                                 />
                             </div>
                         );
@@ -367,7 +451,14 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         </div>
                         <div className="flex flex-col">
                             <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Total</span>
-                            <span className="text-xl font-black text-blue-900 font-mono -mt-1">{state.total.toFixed(2)}</span>
+                            <span className="text-xl font-black text-blue-900 font-mono -mt-1">
+                                {state.total.toFixed(2)}
+                                {state.hvacFactor !== null && (
+                                    <span className="text-[10px] text-blue-400 ml-1 font-bold">
+                                        (x{state.hvacFactor.toFixed(3)})
+                                    </span>
+                                )}
+                            </span>
                         </div>
                     </div>
                 </div>
