@@ -1,26 +1,11 @@
 import { useState, useMemo } from 'react';
 import type { Partida, Metrado } from '../types';
 import { getEspecialidadPorCodigo } from '../constants/especialidades';
+import { usePersonalStore } from '../store/usePersonalStore';
 import { useMetradosStore } from '../store/useMetradosStore';
+import { calcularParcial, calcularTotal, isAcero as isAceroUtil } from '../utils/metradosCalculations';
 
-const PESOS_ACERO: Record<string, number> = {
-    "1/4": 0.254,
-    "3/8": 0.560,
-    "1/2": 0.994,
-    "5/8": 1.550,
-    "3/4": 2.240,
-    "1": 3.970
-};
-
-export const isAcero = (partida: Partida | null): boolean => {
-    if (!partida) return false;
-    const isKg = partida.unidad === 'kg';
-    const descNormalizada = partida.descripcion
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-    return isKg && descNormalizada.includes('acero');
-};
+export const isAcero = isAceroUtil;
 
 export const getHvacCategory = (partida: Partida | null): string | null => {
     if (!partida) return null;
@@ -57,11 +42,11 @@ export const useMetradosForm = () => {
 
     const [fecha, setFecha] = useState<string>(getLocalDateString());
 
-    // Estos campos ahora son proxies al contexto del store
     const frente = context.frente;
     const bloque = context.bloque;
     const nivel = context.nivel;
-    const cuadrilla = context.cuadrilla;
+    const cuadrilla = context.cuadrilla || 'VARIOS'; // Fallback legacy
+    const obreros_ids = context.obreros_ids || [];
 
     const [partidaSeleccionada, setPartidaSeleccionada] = useState<Partida | null>(null);
     const [elemento, setElemento] = useState<string>('');
@@ -79,40 +64,11 @@ export const useMetradosForm = () => {
     const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState<string>('TODAS');
 
     const parcial = useMemo(() => {
-        const flagAcero = isAcero(partidaSeleccionada);
-
-        if (flagAcero) {
-            const c = typeof cantidad === 'number' ? cantidad : 0;
-            const longitudRecta = typeof longitud === 'number' ? longitud : 0;
-            const longitudGancho = typeof altura === 'number' ? altura : 0;
-
-            const factorKg = PESOS_ACERO[diametro.replace('"', '')] || 0;
-            const longitudTotal = longitudRecta + longitudGancho;
-
-            if (c === 0 && longitudRecta === 0 && longitudGancho === 0) return 0;
-            return c * longitudTotal * factorKg;
-        } else if (hvacFactor !== null) {
-            // Lógica HVAC
-            // El usuario quiere que en CODOS se use Longitud.
-            // La fórmula del parcial para HVAC ahora debe contemplar si Longitud está habilitada.
-            const c = typeof cantidad === 'number' ? cantidad : 1;
-
-            // Si es CODO o DUCTO, consideramos la Longitud en el cálculo si se ingresó
-            const l = (hvacItemType === 'CODO' || hvacItemType === 'DUCTO') && typeof longitud === 'number' ? longitud : 1;
-
-            // Ancho y Altura están bloqueados para accesorios HVAC, así que usamos 1
-            const a = typeof ancho === 'number' ? ancho : 1;
-            const h = typeof altura === 'number' ? altura : 1;
-
-            return c * l * a * h * hvacFactor;
-        } else {
-            if (cantidad === "" && longitud === "" && ancho === "" && altura === "") return 0;
-            const c = cantidad !== "" ? cantidad : 1;
-            const l = longitud !== "" ? longitud : 1;
-            const a = ancho !== "" ? ancho : 1;
-            const h = altura !== "" ? altura : 1;
-            return c * l * a * h;
-        }
+        return calcularParcial({
+            partida: partidaSeleccionada,
+            cantidad, longitud, ancho, altura,
+            diametro, hvacFactor, hvacItemType
+        });
     }, [cantidad, longitud, ancho, altura, partidaSeleccionada, diametro, hvacFactor, hvacItemType]);
 
     const hvacConfig = useMemo(() => {
@@ -127,26 +83,48 @@ export const useMetradosForm = () => {
     }, [partidaSeleccionada]);
 
     const total = useMemo(() => {
-        const veces = nroVeces !== "" ? nroVeces : 1;
-        return parcial * veces;
+        return calcularTotal(parcial, nroVeces);
     }, [parcial, nroVeces]);
 
     const limpiarCampos = () => {
+        setElemento('');
         setDetalle('');
         setHvacFactor(null);
         setHvacItemType(null);
+        setCantidad('');
+        setLongitud('');
+        setAncho('');
+        setAltura('');
+        setNroVeces('');
     };
 
     const procesarRegistro = (): Metrado | null => {
         if (!partidaSeleccionada) return null;
 
+        const isCustom = partidaSeleccionada.modificacion === 'PC';
+        
+        // Obtener el personal desde el store usando los IDs seleccionados explícitamente
+        const personalStoreData = usePersonalStore.getState().personal;
+        const personalDeCuadrilla = personalStoreData.filter(p => (context.obreros_ids || []).includes(p.id));
+        
+        // Formatear obreros
+        const obrero_nombre_concatenado = personalDeCuadrilla.length > 0 
+            ? personalDeCuadrilla.map(p => `${p.nombre_formateado} (${p.categoria || 'Sin Cat'})`).join(' / ')
+            : undefined;
+
+        const isValidUUID = (id: string | undefined) => id && id.length === 36;
+
         const nuevoMetrado: Metrado = {
-            id: Date.now().toString(),
-            fecha,
+            id: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + Math.random().toString(36).substring(2)),
+            fecha: fecha,
             frente,
             bloque,
             nivel,
-            cuadrilla,
+            cuadrilla: context.cuadrilla || undefined,
+            obreros_ids: context.obreros_ids || [],
+            obrero_nombre: obrero_nombre_concatenado,
+            partida_id: (!isCustom && isValidUUID(partidaSeleccionada.id)) ? partidaSeleccionada.id : undefined,
+            custom_partida_id: (isCustom && isValidUUID(partidaSeleccionada.id)) ? partidaSeleccionada.id : undefined,
             codigo_partida: partidaSeleccionada.codigo,
             descripcion_partida: partidaSeleccionada.descripcion,
             elemento,
@@ -174,7 +152,7 @@ export const useMetradosForm = () => {
 
     return {
         state: {
-            fecha, frente, bloque, nivel, cuadrilla,
+            fecha, frente, bloque, nivel, cuadrilla, obreros_ids,
             partidaSeleccionada, elemento, detalle, diametro,
             cantidad, longitud, ancho, altura, nroVeces,
             parcial, total, especialidadSeleccionada,
@@ -186,6 +164,7 @@ export const useMetradosForm = () => {
             setBloque: (val: string) => setContext({ bloque: val }),
             setNivel: (val: string) => setContext({ nivel: val }),
             setCuadrilla: (val: string) => setContext({ cuadrilla: val }),
+            setObrerosIds: (ids: string[]) => setContext({ obreros_ids: ids }),
             setPartidaSeleccionada, setElemento, setDetalle, setDiametro,
             setCantidad, setLongitud, setAncho, setAltura, setNroVeces,
             setEspecialidadSeleccionada, setHvacFactor,

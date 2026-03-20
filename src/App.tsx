@@ -1,27 +1,48 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MetradosForm } from './components/MetradosForm';
 import { MetradosTable } from './components/MetradosTable';
 import { useMetradosForm } from './hooks/useMetradosForm';
-import type { Metrado } from './types';
-import { Building2, Stethoscope, AlertTriangle } from 'lucide-react';
+import type { Metrado, Partida } from './types';
+import { Building2, Stethoscope, AlertTriangle, Users } from 'lucide-react';
 import { useMetradosStore } from './store/useMetradosStore';
+import { usePersonalStore } from './store/usePersonalStore';
+import { DashboardPersonal } from './components/DashboardPersonal';
+import { calcularParcial, calcularTotal } from './utils/metradosCalculations';
 
 // Tipo de proyecto disponible en el sistema (Hospital o Contingencia)
 export type TipoProyecto = 'hospital' | 'contingencia';
 
 function App() {
   const { state, actions } = useMetradosForm();
-  const { metrados, context, setContext, addMetrado, updateMetrado, deleteMetrado, updateGroup } = useMetradosStore();
+  const { metrados, context, setContext, addMetrado, updateMetrado, deleteMetrado, updateGroup, fetchCustomPartidas, fetchMetrados } = useMetradosStore();
+  const { fetchPersonal } = usePersonalStore();
   const [toast, setToast] = useState<string | null>(null);
+  const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
 
-  const handleGuardar = () => {
-    const nuevo = actions.procesarRegistro();
-    if (nuevo) {
-      // El metrado hereda el proyecto activo al momento de registrarse
-      const nuevoConProy = { ...nuevo, proyecto: context.proyecto };
-      addMetrado(nuevoConProy);
-      setToast(`Metrado guardado: ${nuevo.codigo_partida}`);
-      setTimeout(() => setToast(null), 3000);
+  useEffect(() => {
+    fetchPersonal();
+    fetchCustomPartidas();
+    fetchMetrados();
+  }, [fetchCustomPartidas, fetchMetrados, fetchPersonal]);
+
+  const handleGuardar = async () => {
+    try {
+      const nuevo = actions.procesarRegistro();
+      if (nuevo) {
+        // El metrado hereda el proyecto activo al momento de registrarse
+        const nuevoConProy = { ...nuevo, proyecto: context.proyecto };
+        const result = await addMetrado(nuevoConProy);
+        if (result.success) {
+          setToast(`Metrado guardado: ${nuevo.codigo_partida}`);
+          alert(`¡Registro Exitoso!\n\nSe guardó correctamente la Partida: ${nuevo.codigo_partida}`);
+          setTimeout(() => setToast(null), 3000);
+        } else {
+          alert("Error de guardado en la nube (Supabase):\n\n" + result.error);
+        }
+      }
+    } catch (err: any) {
+      console.error("Error crítico al guardar:", err);
+      alert("Error crítico inesperado:\n\n" + (err.message || String(err)));
     }
   };
 
@@ -32,44 +53,33 @@ function App() {
   };
 
   const handleUpdateMetrado = (id: string, field: keyof Metrado, value: any) => {
-    // Primero calculamos el nuevo valor para campos numéricos si es necesario
     const metradoOriginal = metrados.find(m => m.id === id);
     if (!metradoOriginal) return;
 
-    let finalMetrado = { ...metradoOriginal, [field]: value };
-
-    if (['cantidad', 'longitud_area', 'ancho_empalme', 'altura_gancho', 'nro_veces'].includes(field as string)) {
-      const parseVal = (v: any) => {
-        if (v === "" || v === undefined || v === null) return null;
-        const num = parseFloat(String(v));
-        return isNaN(num) ? null : num;
-      };
-
-      const cant = parseVal(finalMetrado.cantidad);
-      const l = parseVal(finalMetrado.longitud_area);
-      const a = parseVal(finalMetrado.ancho_empalme);
-      const h = parseVal(finalMetrado.altura_gancho);
-
-      let product = 1;
-      let hasFactors = false;
-
-      [cant, l, a, h].forEach(val => {
-        if (val !== null) {
-          product *= val;
-          hasFactors = true;
-        }
+    const final = { ...metradoOriginal, [field]: value };
+    const calculusFields = ['cantidad', 'longitud_area', 'ancho_empalme', 'altura_gancho', 'nro_veces', 'diametro', 'hvac_factor'];
+    
+    if (calculusFields.includes(field as string)) {
+      const p = calcularParcial({
+        partida: { 
+          codigo: final.codigo_partida,
+          descripcion: final.descripcion_partida,
+          unidad: final.unidad 
+        } as Partida,
+        cantidad: final.cantidad,
+        longitud: final.longitud_area,
+        ancho: final.ancho_empalme,
+        altura: final.altura_gancho,
+        diametro: final.diametro,
+        hvacFactor: final.hvac_factor,
+        hvacItemType: final.hvac_item_type
       });
 
-      finalMetrado.parcial = hasFactors ? product : 0;
-      const veces = parseVal(finalMetrado.nro_veces);
-      finalMetrado.total = finalMetrado.parcial * (veces !== null ? veces : 1);
+      const t = calcularTotal(p, final.nro_veces);
 
-      // Actualizamos todo el metrado en el store si hubo cambios en los cálculos
-      updateMetrado(id, field, value);
-      updateMetrado(id, 'parcial', finalMetrado.parcial);
-      updateMetrado(id, 'total', finalMetrado.total);
+      updateMetrado(id, { [field]: value, parcial: p, total: t });
     } else {
-      updateMetrado(id, field, value);
+      updateMetrado(id, { [field]: value });
     }
   };
 
@@ -120,6 +130,14 @@ function App() {
             Contingencia
           </button>
         </div>
+
+        <button 
+          onClick={() => setShowPersonalDashboard(true)}
+          className="ml-auto bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 flex items-center gap-2 rounded-xl text-sm font-bold shadow-md transition-all shadow-slate-900/20"
+        >
+          <Users className="w-4 h-4" />
+          Personal y Cuadrillas
+        </button>
       </header>
 
       {/* Toast Notification */}
@@ -155,6 +173,10 @@ function App() {
         </div>
 
       </main>
+
+      {showPersonalDashboard && (
+        <DashboardPersonal onClose={() => setShowPersonalDashboard(false)} />
+      )}
 
     </div>
   );

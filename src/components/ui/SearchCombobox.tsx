@@ -19,12 +19,12 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
         setQuery(value);
     }, [value]);
 
-    const filteredPartidas = query.trim() === ''
+    const filteredPartidas = (query || "").trim() === ''
         ? partidas
         : partidas.filter((partida) => {
-            const searchTokens = query.toLowerCase().split(' ').filter(token => token.trim() !== '');
-            const descLower = partida.descripcion.toLowerCase();
-            const codLower = partida.codigo.toLowerCase();
+            const searchTokens = (query || "").toLowerCase().split(' ').filter(token => token.trim() !== '');
+            const descLower = (partida.descripcion || "").toLowerCase();
+            const codLower = (partida.codigo || "").toLowerCase();
             // Coincidencia booleana AND: todos los tokens deben aparecer
             return searchTokens.every(token => descLower.includes(token) || codLower.includes(token));
         });
@@ -47,7 +47,7 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
                     type="text"
                     className="w-full pl-10 pr-10 h-[34px] rounded-xl border border-slate-200 bg-white shadow-sm focus:border-blue-400 focus:ring-4 focus:ring-blue-50 transition-all text-xs outline-none font-bold text-slate-700"
                     placeholder="Buscar por código o descripción..."
-                    value={query}
+                    value={query || ""}
                     onFocus={(e) => {
                         e.target.select();
                         setIsOpen(true);
@@ -90,7 +90,7 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2">
                                             <span className="text-xs font-bold leading-tight block">
-                                                {partida.descripcion}
+                                                {partida.descripcion || "Sin Descripción"}
                                             </span>
                                         </div>
                                     </div>

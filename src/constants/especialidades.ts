@@ -26,3 +26,25 @@ export const getEspecialidadPorCodigo = (codigo: string): string => {
 
     return 'GENERAL';
 };
+
+export const getOficiosPorEspecialidad = (especialidad: string): string[] => {
+    switch (especialidad) {
+        case 'ESTRUCTURAS':
+            return ['CONCRETO', 'ACERO', 'FIERRERO', 'ALBAÑIL', 'SOLDADURA'];
+        case 'ARQUITECTURA':
+            return ['DRYWALL', 'CARPINTERO', 'ENCHAPADO', 'TARRAJEO', 'PINTURA', 'ASENTADO', 'ALBAÑIL'];
+        case 'INSTALACIONES SANITARIAS':
+            return ['GASFITERIA', 'SANITARIO'];
+        case 'ELÉCTRICAS':
+        case 'ELECTROMECÁNICAS':
+            return ['ELECTROMECÁNICO', 'SOLDADURA'];
+        case 'SEGURIDAD':
+            return ['VIGIA', 'SSOMA', 'GUARDIAN'];
+        case 'PLAN DE MANEJO AMBIENTAL':
+            return ['MEDIO AMBIENTE', 'SSOMA', 'VOLANTE DE RIEGO'];
+        case 'OBRAS PROVICIONALES':
+            return ['GUARDIAN', 'PEON'];
+        default:
+            return []; // Retorna vacío si es TODAS u otra cosa para aplicar lógica en UI
+    }
+};

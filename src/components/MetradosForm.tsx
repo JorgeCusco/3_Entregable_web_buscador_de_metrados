@@ -47,8 +47,10 @@ export const RenderModificacionBadge = (modificacionStr?: string) => {
 window.RenderModificacionBadge = RenderModificacionBadge;
 
 import { SimpleSearchInput } from './ui/SimpleSearchInput';
+import { PersonalMultiSelect } from './ui/PersonalMultiSelect';
 
 export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, proyecto }) => {
+    
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>, nextId: string) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -77,23 +79,27 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
         ];
     }, [proyecto, state.customPartidas]);
 
-    const handleCrearPartida = () => {
+    const handleCrearPartida = async () => {
         if (!nuevaPartidaData.codigo || !nuevaPartidaData.descripcion) return;
         
         const nuevaP: Partida = {
-            id: `custom-${Date.now()}`,
+            id: `custom-${Date.now()}`, // Temporary ID
             codigo: nuevaPartidaData.codigo,
-            descripcion: nuevaPartidaData.descripcion.toUpperCase(), // Forzamos UPPERCASE para consistencia
+            descripcion: nuevaPartidaData.descripcion.toUpperCase(), 
             unidad: nuevaPartidaData.unidad,
             jerarquia: [],
             nivel_jerarquia: 1,
-            modificacion: 'PC' // "Partidas Creadas" - Etiqueta Rosa
+            modificacion: 'PC' 
         };
 
-        actions.addCustomPartida(nuevaP);
-        actions.setPartidaSeleccionada(nuevaP);
-        setShowNuevaPartidaModal(false);
-        setNuevaPartidaData({ codigo: '', descripcion: '', unidad: 'm' });
+        const success = await actions.addCustomPartida(nuevaP);
+        if (success) {
+            actions.setPartidaSeleccionada(nuevaP);
+            setShowNuevaPartidaModal(false);
+            setNuevaPartidaData({ codigo: '', descripcion: '', unidad: 'm' });
+        } else {
+            alert('Error al guardar en Supabase.');
+        }
     };
 
     return (
@@ -251,7 +257,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
                 {/* ─── PASO 2: UBICACIÓN Y ELEMENTO ─── */}
                 <div className="space-y-3">
-                    <div className="grid grid-cols-4 gap-1.5 p-2 bg-slate-50/50 rounded-2xl border border-slate-100">
+                    <div className="grid grid-cols-3 gap-1.5 p-2 bg-slate-50/50 rounded-2xl border border-slate-100">
                         <Select
                             label="Frente"
                             value={state.frente}
@@ -270,16 +276,17 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                             options={['ZZ', 'N1', 'N2', 'N3', 'N4', 'AZ']}
                             onSelect={(val) => actions.setNivel(val)}
                         />
-                        <div className="space-y-1">
-                            <label className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter pl-1">CDLLA</label>
-                            <input
-                                type="text"
-                                className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase text-center"
-                                value={state.cuadrilla}
-                                onChange={(e) => actions.setCuadrilla(e.target.value.toUpperCase())}
-                                placeholder="C1"
-                            />
-                        </div>
+                    </div>
+
+                    <div className="space-y-1 p-2 bg-blue-50/30 rounded-2xl border border-blue-100/50">
+                        <label className="text-[10px] font-bold text-blue-800 uppercase tracking-widest pl-1 mb-1 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block"/> Cuadrilla / Personal
+                        </label>
+                        <PersonalMultiSelect 
+                            especialidad={state.especialidadSeleccionada}
+                            selectedIds={state.obreros_ids || []}
+                            onChange={(ids) => actions.setObrerosIds(ids)}
+                        />
                     </div>
 
                     <div className="space-y-2 p-3 bg-slate-50/50 rounded-2xl border border-slate-100">

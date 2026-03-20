@@ -30,6 +30,8 @@ export interface Partida {
     proyecto?: 'hospital' | 'contingencia' | string;
     especialidad?: string;
     apu?: APU | null;
+    is_template?: boolean;
+    is_elemento_virtual?: boolean;
 }
 
 export interface Metrado {
@@ -39,6 +41,10 @@ export interface Metrado {
     bloque: string;
     nivel: string;
     cuadrilla?: string;
+    obreros_ids?: string[];
+    obrero_nombre?: string;
+    partida_id?: string;
+    custom_partida_id?: string;
     codigo_partida: string;
     descripcion_partida: string;
     elemento?: string | null;
@@ -54,11 +60,14 @@ export interface Metrado {
     unidad: string;
     jerarquia?: string[];
     autor_usuario: string;
-    created_at: number;
+    created_at: any;
+    hvac_item_id?: string;
     es_titulo?: boolean;
     parent_id?: string;
     nivelJerarquia?: number;
     modificacion?: string;
     proyecto?: string;
     especialidad?: string;
+    hvac_factor?: number | null;
+    hvac_item_type?: string | null;
 }

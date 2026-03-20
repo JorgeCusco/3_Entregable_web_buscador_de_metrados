@@ -24,15 +24,13 @@ app.get('/', (req, res) => {
 
 // Pesos nominales de acero (kg/m)
 const validacionesPesoAcero = {
-    "6mm": 0.222,
-    "8mm": 0.395,
-    "3/8\"": 0.560,
-    "12mm": 0.888,
-    "1/2\"": 0.994,
-    "5/8\"": 1.552,
-    "3/4\"": 2.235,
-    "1\"": 3.973,
-    "1 3/8\"": 7.907
+    "1/4": 0.254,
+    "3/8": 0.560,
+    "1/2": 0.994,
+    "5/8": 1.550,
+    "3/4": 2.240,
+    "1": 3.970,
+    "1 3/8": 7.907
 };
 
 // Helper para determinar si una partida es de acero
@@ -50,6 +48,8 @@ app.post('/api/export/metrados', async (req, res) => {
             return res.status(400).json({ error: 'Payload vacío.' });
 
         console.log(`[INKAIA] Export Directo Excel — Filas: ${metrados.length}`);
+        // DEBUG: Muestra los primeros 3 registros para ver obrero_nombre
+        console.log('[INKAIA] DEBUG Payload (primeros 3):', JSON.stringify(metrados.slice(0, 3).map(m => ({ id: m.id, desc: m.descripcion_partida || m.descripcion, obrero: m.obrero_nombre })), null, 2));
 
         // Verificar si existe la plantilla
         if (!fs.existsSync(TEMPLATE_PATH)) {
@@ -141,6 +141,7 @@ app.post('/api/export/metrados', async (req, res) => {
                 rowData[22] = hasMetrados ? total2 : ""; // W: Total 2
                 rowData[23] = unidadActual; // X: Unidad
                 rowData[24] = m.modificacion || "SM"; // Y
+                rowData[25] = ""; // Z: Personal (Vacío en jerarquías)
             }
             // CASO B: Registro Real
             else if (!m.is_template) {
@@ -151,8 +152,17 @@ app.post('/api/export/metrados', async (req, res) => {
 
                 let parcial = m.parcial;
                 if (flagAcero) {
-                    const peso = validacionesPesoAcero[m.diametro] || 0;
-                    if (peso > 0) parcial = (parseFloat(m.cantidad) || 0) * (parseFloat(m.nro_veces) || 1) * ((parseFloat(m.longitud_area) || 0) + (parseFloat(m.altura_gancho) || 0)) * peso;
+                    const normalizedDiam = (m.diametro || "").replace('"', '');
+                    const peso = validacionesPesoAcero[normalizedDiam] || 0;
+                    if (peso > 0) {
+                        parcial = (parseFloat(m.cantidad) || 0) * ((parseFloat(m.longitud_area) || 0) + (parseFloat(m.altura_gancho) || 0)) * peso;
+                    }
+                } else if (m.hvac_factor) {
+                    const c = parseFloat(m.cantidad) || 1;
+                    const l = (m.hvac_item_type === 'CODO' || m.hvac_item_type === 'DUCTO') ? (parseFloat(m.longitud_area) || 1) : 1;
+                    const a = parseFloat(m.ancho_empalme) || 1;
+                    const h = parseFloat(m.altura_gancho) || 1;
+                    parcial = c * l * a * h * m.hvac_factor;
                 }
 
                 rowData[1] = m.nivelJerarquia != null ? String(m.nivelJerarquia) : ""; // B
@@ -182,6 +192,9 @@ app.post('/api/export/metrados', async (req, res) => {
                 rowData[22] = ""; // W: Total 2 (Solo en cabeceras)
                 rowData[23] = unidadActual; // X: Unidad
                 rowData[24] = m.modificacion || "SM"; // Y: modificacion
+                
+                // Z: Personal (Cuadrilla Consolidada)
+                rowData[25] = m.obrero_nombre || "";
             }
 
             if (rowData) {

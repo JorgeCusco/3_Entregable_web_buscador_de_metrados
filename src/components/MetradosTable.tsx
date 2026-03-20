@@ -61,7 +61,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
         if (!node.es_titulo) {
             const relatedMetrados = activeMetrados
                 .filter(m => m.codigo_partida === node.codigo)
-                .sort((a, b) => a.created_at - b.created_at);
+                .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
 
             let lastElemento: string | null | undefined = null;
 
@@ -351,7 +351,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                                 className="metrado-input w-[28px] bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-slate-900 text-[9px] font-black uppercase shrink-0 text-center shadow-inner"
                                                 value={r.cuadrilla || ''}
                                                 placeholder="C1"
-                                                title="Cuadrilla"
+                                                title={r.obrero_nombre || "Sin personal asignado"}
                                                 onChange={(e) => onUpdate?.(r.id, 'cuadrilla', e.target.value.toUpperCase())}
                                                 onFocus={(e) => e.target.select()}
                                             />
