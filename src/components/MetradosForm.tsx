@@ -9,6 +9,7 @@ import { mockPartidasContingencia } from '../data/mockDB_contingencia';
 import { ESPECIALIDADES_PARTIDA, getEspecialidadPorCodigo } from '../constants/especialidades';
 import { Save, Eraser } from 'lucide-react';
 import { HVAC_DATA } from '../data/hvacData';
+import { usePersonalStore } from '../store/usePersonalStore';
 
 interface MetradosFormProps {
     state: any;
@@ -50,6 +51,12 @@ import { SimpleSearchInput } from './ui/SimpleSearchInput';
 import { PersonalMultiSelect } from './ui/PersonalMultiSelect';
 
 export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, proyecto }) => {
+    const { personal } = usePersonalStore();
+    
+    const uniqueCuadrillas = useMemo(() => {
+        const cuadrillas = personal.map(p => p.cuadrilla).filter(c => c && c.trim() !== '' && c !== 'nan');
+        return Array.from(new Set(cuadrillas)).sort();
+    }, [personal]);
     
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>, nextId: string) => {
         if (e.key === 'Enter') {
@@ -278,15 +285,40 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         />
                     </div>
 
-                    <div className="space-y-1 p-2 bg-blue-50/30 rounded-2xl border border-blue-100/50">
+                    <div className="space-y-2 p-3 bg-blue-50/30 rounded-2xl border border-blue-100/50">
                         <label className="text-[10px] font-bold text-blue-800 uppercase tracking-widest pl-1 mb-1 flex items-center gap-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block"/> Cuadrilla / Personal
                         </label>
-                        <PersonalMultiSelect 
-                            especialidad={state.especialidadSeleccionada}
-                            selectedIds={state.obreros_ids || []}
-                            onChange={(ids) => actions.setObrerosIds(ids)}
-                        />
+                        
+                        <div className="flex flex-col gap-2 bg-white/60 p-2 rounded-xl border border-blue-50">
+                            {/* Input de Código de Cuadrilla (Ej: C1) */}
+                            <div className="flex items-center gap-2">
+                                <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wider w-14 shrink-0 text-right">Código:</label>
+                                <input
+                                    type="text"
+                                    list="cdlla-form-list"
+                                    className="flex-1 bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase"
+                                    value={state.cuadrilla === 'VARIOS' ? '' : state.cuadrilla}
+                                    onChange={(e) => actions.setCuadrilla(e.target.value.toUpperCase())}
+                                    placeholder="Nombre de cuadrilla (Ej: C1)"
+                                />
+                                <datalist id="cdlla-form-list">
+                                    {uniqueCuadrillas.map(c => <option key={c} value={c} />)}
+                                </datalist>
+                            </div>
+                            
+                            {/* Buscador de Personal Específico */}
+                            <div className="flex items-start gap-2">
+                                <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wider w-14 shrink-0 text-right pt-2.5">Obreros:</label>
+                                <div className="flex-1">
+                                    <PersonalMultiSelect 
+                                        especialidad={state.especialidadSeleccionada}
+                                        selectedIds={state.obreros_ids || []}
+                                        onChange={(ids) => actions.setObrerosIds(ids)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="space-y-2 p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
