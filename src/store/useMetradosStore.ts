@@ -179,7 +179,7 @@ export const useMetradosStore = create<MetradosState>()(
 
                     const obrerosIds = personalList.map((p: any) => p.id);
                     const formattedCuadrilla = personalList
-                        .map((p: any) => p.categoria ? `${p.nombre} (${p.categoria})` : p.nombre)
+                        .map((p: any) => p.categoria ? `${p.nombre_formateado} (${p.categoria})` : p.nombre_formateado)
                         .join(' / ');
 
                     return {
