@@ -3,9 +3,11 @@ import { MetradosForm } from './components/MetradosForm';
 import { MetradosTable } from './components/MetradosTable';
 import { useMetradosForm } from './hooks/useMetradosForm';
 import type { Metrado, Partida } from './types';
-import { Building2, Stethoscope, AlertTriangle, Users } from 'lucide-react';
+import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon } from 'lucide-react';
 import { useMetradosStore } from './store/useMetradosStore';
 import { usePersonalStore } from './store/usePersonalStore';
+import { useAuthStore } from './store/useAuthStore';
+import Login from './components/Login';
 import { DashboardPersonal } from './components/DashboardPersonal';
 import { calcularParcial, calcularTotal } from './utils/metradosCalculations';
 
@@ -16,22 +18,36 @@ function App() {
   const { state, actions } = useMetradosForm();
   const { metrados, context, setContext, addMetrado, updateMetrado, deleteMetrado, updateGroup, fetchCustomPartidas, fetchMetrados } = useMetradosStore();
   const { fetchPersonal } = usePersonalStore();
+  const { isAuthenticated, user, logout, checkAuth } = useAuthStore();
+  
   const [toast, setToast] = useState<string | null>(null);
   const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
 
+  // Verificar autenticación al montar
   useEffect(() => {
-    fetchPersonal();
-    fetchCustomPartidas();
-    fetchMetrados();
-  }, [fetchCustomPartidas, fetchMetrados, fetchPersonal]);
+    checkAuth();
+  }, [checkAuth]);
+
+  // Cargar datos iniciales solo si está autenticado
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchPersonal();
+      fetchCustomPartidas();
+      fetchMetrados();
+    }
+  }, [isAuthenticated, fetchCustomPartidas, fetchMetrados, fetchPersonal]);
 
   const handleGuardar = async () => {
     try {
       const nuevo = actions.procesarRegistro();
       if (nuevo) {
-        // El metrado hereda el proyecto activo al momento de registrarse
-        const nuevoConProy = { ...nuevo, proyecto: context.proyecto };
-        const result = await addMetrado(nuevoConProy);
+        // El metrado hereda el proyecto activo y el autor de la sesión
+        const nuevoConMetadata = { 
+          ...nuevo, 
+          proyecto: context.proyecto,
+          autor_usuario: user?.nombre_completo || 'Usuario Desconocido'
+        };
+        const result = await addMetrado(nuevoConMetadata);
         if (result.success) {
           setToast(`Metrado guardado: ${nuevo.codigo_partida}`);
           alert(`¡Registro Exitoso!\n\nSe guardó correctamente la Partida: ${nuevo.codigo_partida}`);
@@ -87,6 +103,11 @@ function App() {
     updateGroup(codigoPartida, oldElemento, newElemento);
   };
 
+  // Si no está autenticado, mostramos pantalla de Login
+  if (!isAuthenticated) {
+    return <Login />;
+  }
+
   // Filtra los metrados mostrados según el proyecto activo
   const metradosFiltrados = metrados.filter(m => !m.proyecto || m.proyecto === context.proyecto);
 
@@ -94,20 +115,23 @@ function App() {
     <div className="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col gap-6 relative max-w-[1450px] mx-auto">
 
       {/* Header */}
-      <header className="flex items-center justify-between px-2">
-        <div className="flex items-center gap-3">
+      <header className="flex flex-col md:flex-row items-center justify-between px-2 gap-4">
+        <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="bg-primary text-white p-2.5 rounded-xl shadow-lg shadow-primary/30">
             <Building2 className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent leading-tight">
               Metrados Belempampa
             </h1>
-            <p className="text-sm text-gray-500 font-medium">Plataforma Costos y Presupuestos</p>
+            <div className="flex items-center gap-2 text-xs text-blue-600 font-bold uppercase tracking-wider">
+              <UserIcon className="w-3 h-3" />
+              <span>{user?.nombre_completo} ({user?.cargo})</span>
+            </div>
           </div>
         </div>
 
-        {/* ─── Selector de Especialidad ─── */}
+        {/* ─── Selector de Especialidad (Proyecto) ─── */}
         <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner">
           <button
             onClick={() => { setContext({ proyecto: 'hospital' }); actions.setPartidaSeleccionada(null); }}
@@ -131,13 +155,23 @@ function App() {
           </button>
         </div>
 
-        <button 
-          onClick={() => setShowPersonalDashboard(true)}
-          className="ml-auto bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 flex items-center gap-2 rounded-xl text-sm font-bold shadow-md transition-all shadow-slate-900/20"
-        >
-          <Users className="w-4 h-4" />
-          Personal y Cuadrillas
-        </button>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => setShowPersonalDashboard(true)}
+            className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 flex items-center gap-2 rounded-xl text-sm font-bold shadow-md transition-all shadow-slate-900/20"
+          >
+            <Users className="w-4 h-4" />
+            <span className="hidden sm:inline">Personal</span>
+          </button>
+          
+          <button 
+            onClick={() => logout()}
+            className="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2.5 flex items-center gap-2 rounded-xl text-sm font-bold border border-red-100 transition-all active:scale-95"
+            title="Cerrar Sesión"
+          >
+            <LogOut className="w-5 h-5" />
+          </button>
+        </div>
       </header>
 
       {/* Toast Notification */}
@@ -171,13 +205,11 @@ function App() {
             proyecto={context.proyecto}
           />
         </div>
-
       </main>
 
       {showPersonalDashboard && (
         <DashboardPersonal onClose={() => setShowPersonalDashboard(false)} />
       )}
-
     </div>
   );
 }

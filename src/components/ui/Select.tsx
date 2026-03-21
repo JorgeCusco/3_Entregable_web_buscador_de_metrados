@@ -8,9 +8,10 @@ interface SelectProps {
     placeholder?: string;
     label?: string;
     className?: string;
+    disabled?: boolean;
 }
 
-export const Select: React.FC<SelectProps> = ({ value, options, onSelect, placeholder = "Seleccionar...", label, className }) => {
+export const Select: React.FC<SelectProps> = ({ value, options, onSelect, placeholder = "Seleccionar...", label, className, disabled }) => {
     const [isOpen, setIsOpen] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -29,9 +30,11 @@ export const Select: React.FC<SelectProps> = ({ value, options, onSelect, placeh
             {label && <label className="text-[10px] font-bold text-slate-500 block mb-1 uppercase tracking-widest pl-1">{label}</label>}
             <button
                 type="button"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => !disabled && setIsOpen(!isOpen)}
+                disabled={disabled}
                 className={`w-full px-3 py-2 border rounded-xl text-xs text-left flex justify-between items-center transition-all duration-300 outline-none
-                    ${isOpen
+                    ${disabled ? 'bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed opacity-75' : 
+                      isOpen
                         ? 'border-blue-400 ring-4 ring-blue-50 bg-white shadow-sm'
                         : 'border-slate-200 bg-white hover:border-blue-300 hover:shadow-md'
                     }

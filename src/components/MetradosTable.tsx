@@ -248,6 +248,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             <th className="w-[70px] min-w-[70px] px-1 py-3 text-right text-[10px]">ALT./GAN.</th>
                             <th className="w-[80px] min-w-[80px] px-2 py-3 text-right text-[10px]">Parcial</th>
                             <th className="w-[50px] min-w-[50px] px-1 py-3 text-center text-[10px]">Veces</th>
+                            <th className="w-[70px] min-w-[70px] px-1 py-3 text-center text-[10px]">AUTOR</th>
                             <th className="w-[85px] min-w-[85px] px-2 py-3 text-right text-[10px]">Total</th>
                         </tr>
                     </thead>
@@ -410,6 +411,10 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
                                             onFocus={(e) => e.target.select()}
                                             onKeyDown={(e) => handleKeyDown(e)} />
+                                    </td>
+
+                                    <td className="px-1 py-1.5 text-center text-[9px] font-bold text-slate-400 truncate max-w-[70px]" title={r.autor_usuario}>
+                                        {r.autor_usuario ? r.autor_usuario.split(' ')[0] : '-'}
                                     </td>
 
                                     {/* Total + Acciones */}

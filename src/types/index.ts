@@ -71,3 +71,17 @@ export interface Metrado {
     hvac_factor?: number | null;
     hvac_item_type?: string | null;
 }
+
+export interface User {
+    id: string;
+    dni_username: string;
+    nombre_completo: string;
+    correo?: string | null;
+    area?: string | null;
+    cargo?: string | null;
+    especialidad?: string | null;
+    roles_apps: {
+        metrados?: string;
+        [key: string]: string | undefined;
+    };
+}
