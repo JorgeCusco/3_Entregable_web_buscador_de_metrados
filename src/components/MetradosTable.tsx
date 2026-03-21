@@ -238,7 +238,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             <div className="overflow-auto flex-grow max-h-[calc(100vh-250px)] scrollbar-thin scrollbar-thumb-slate-200">
                 <table className="w-full text-[13px] text-left align-middle border-collapse table-fixed">
                     <thead className="text-[11px] text-slate-400 bg-white uppercase whitespace-nowrap sticky top-0 shadow-[0_1px_0_0_rgba(0,0,0,0.05)] z-10 font-bold">
-                        <tr className="border-b border-slate-100">
+                        <tr className="border-b border-slate-100 divide-x divide-slate-100">
+                            <th className="w-[85px] min-w-[85px] px-1.5 py-3 text-center">Fecha</th>
                             <th className="w-[80px] min-w-[80px] px-1.5 py-3 text-left">Item / Código</th>
                             <th className="px-2 py-3">Descripción / Partida / Metrado</th>
                             <th className="w-[45px] min-w-[45px] px-1 py-3 text-center">Und</th>
@@ -257,11 +258,12 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             // CASO 1: Es un Título WBS (Nodo Padre)
                             if (r.is_template && r.es_titulo) {
                                 return (
-                                    <tr key={`title-${r.codigo}`} className="bg-slate-800 text-white font-bold border-b border-slate-700">
+                                    <tr key={`title-${r.codigo}`} className="bg-slate-800 text-white font-bold border-b border-slate-700 divide-x divide-slate-700/50">
+                                        <td className="w-[85px] min-w-[85px] px-2 py-1 text-center font-mono text-[9px] text-slate-400"></td>
                                         <td className="w-[80px] min-w-[80px] px-2 py-1 font-mono text-[10px] tracking-wider text-left">
                                             {r.codigo}
                                         </td>
-                                        <td colSpan={9} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50"
+                                        <td colSpan={10} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
                                             {r.descripcion}
                                         </td>
@@ -272,9 +274,10 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             // CASO 2.5: Fila Virtual de Elemento (Agrupador) - EDITABLE
                             if (r.is_template && r.is_elemento_virtual) {
                                 return (
-                                    <tr key={r.id} className="bg-slate-50/50 border-b border-slate-100 group">
+                                    <tr key={r.id} className="bg-slate-50/50 border-b border-slate-100 group divide-x divide-slate-200/60">
+                                        <td className="w-[85px] min-w-[85px] px-2 py-1.5 text-center"></td>
                                         <td className="w-[80px] min-w-[80px] px-2 py-1.5 text-left"></td>
-                                        <td className="px-2 py-1.5" colSpan={9} style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.5 + 0.75}rem` }}>
+                                        <td className="px-2 py-1.5" colSpan={10} style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.5 + 0.75}rem` }}>
                                             <div className="flex items-center gap-2">
                                                 <span className="text-blue-300 font-black text-[10px]">▼</span>
                                                 <input
@@ -296,7 +299,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 const hasMetrados = total > 0;
 
                                 return (
-                                    <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors`}>
+                                    <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors divide-x divide-slate-200/50`}>
+                                        <td className="w-[85px] min-w-[85px] px-2 py-1 text-center"></td>
                                         <td className="w-[80px] min-w-[80px] px-2 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
                                             <span className="font-mono text-[10px] text-blue-600 bg-blue-100/50 px-1 py-0.5 rounded">
                                                 {r.codigo}
@@ -308,7 +312,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             <span className="text-slate-800 text-[11px] leading-tight">{r.descripcion}</span>
                                         </td>
                                         <td className="w-[45px] min-w-[45px] px-2 py-1 text-center text-slate-500 font-bold text-[10px]">{r.unidad}</td>
-                                        <td colSpan={6} className="px-1 py-1"></td>
+                                        <td colSpan={7} className="px-1 py-1"></td>
                                         <td className="w-[85px] min-w-[85px] px-2 py-1 text-right text-blue-700 font-black text-[12px]">
                                             {hasMetrados ? formatNumber(total) : '-'}
                                         </td>
@@ -330,7 +334,13 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             };
 
                             return (
-                                <tr key={`rec-${r.id}`} className="hover:bg-blue-50/20 border-b border-slate-100 group transition-all duration-200">
+                                <tr key={`rec-${r.id}`} className="hover:bg-blue-50/20 border-b border-slate-100 group transition-all duration-200 divide-x divide-slate-200/60">
+                                    <td className="px-1 py-1.5 text-center">
+                                        <input type="date" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-400 font-bold text-[9px] uppercase tracking-tighter"
+                                            value={r.fecha} onChange={(e) => onUpdate?.(r.id, 'fecha', e.target.value)}
+                                            onFocus={(e) => e.target.select()}
+                                            title={r.fecha} />
+                                    </td>
                                     <td className="w-[80px] min-w-[80px] px-0.5 py-1.5">
                                         <div className="flex items-center gap-0.5" style={{ marginLeft: `${getIndentLevel(r.codigo_partida) * 0.5 + 0.15}rem` }}>
                                             <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
