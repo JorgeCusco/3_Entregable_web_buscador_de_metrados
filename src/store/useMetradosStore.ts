@@ -129,21 +129,10 @@ export const useMetradosStore = create<MetradosState>()(
                         if (errorLinks) console.error('Error bindeando personal a metrado:', errorLinks);
                     }
 
-                    // 3. Generar obrero_nombre localmente para que aparezca en la tabla de inmediato
-                    let formattedCuadrilla = undefined;
-                    if (metrado.obreros_ids && metrado.obreros_ids.length > 0) {
-                        try {
-                            const { data: pData } = await supabase.from('personal').select('nombre, categoria').in('id', metrado.obreros_ids);
-                            if (pData) {
-                                formattedCuadrilla = pData.map(p => p.categoria ? `${p.nombre} (${p.categoria})` : p.nombre).join(' / ');
-                            }
-                        } catch (e) { console.error("Error recuperando nombres para CDLLA:", e); }
-                    }
-
                     const dbMetrado: Metrado = { 
                         ...metrado, 
                         id: data.id, 
-                        obrero_nombre: formattedCuadrilla,
+                        // obrero_nombre ya viene estructurado correctamente en 'metrado' desde useMetradosForm.ts
                         created_at: data.created_at || new Date().toISOString() 
                     };
                     set((state) => ({ metrados: [...state.metrados, dbMetrado] }));

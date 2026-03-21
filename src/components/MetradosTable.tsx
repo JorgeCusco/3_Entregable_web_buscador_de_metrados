@@ -349,12 +349,11 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                         <div className="flex items-center gap-1.5 w-full">
                                             <input
                                                 type="text"
-                                                className="metrado-input w-[28px] bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-slate-900 text-[9px] font-black uppercase shrink-0 text-center shadow-inner"
+                                                className="metrado-input w-[28px] bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded text-slate-500 text-[9px] font-black uppercase shrink-0 text-center shadow-inner cursor-not-allowed opacity-80"
                                                 value={r.cuadrilla || ''}
-                                                placeholder="C1"
-                                                title={r.obrero_nombre || "Sin personal asignado"}
-                                                onChange={(e) => onUpdate?.(r.id, 'cuadrilla', e.target.value.toUpperCase())}
-                                                onFocus={(e) => e.target.select()}
+                                                placeholder="CDLLA"
+                                                title={`Personal asignado: ${r.obrero_nombre || "Ninguno"}. La edición se hace desde el panel de ingreso.`}
+                                                readOnly
                                             />
                                             {r.elemento && <span className="text-blue-400 font-black text-[12px] shrink-0">↳</span>}
                                             <input
