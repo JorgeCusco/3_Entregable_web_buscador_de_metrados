@@ -17,7 +17,7 @@ if (!supabaseUrl || !supabaseKey) {
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function populate() {
-  const jsonPath = 'C:/Users/Legion/.gemini/antigravity/brain/3afdea43-f148-4ff8-95c8-e454b9e24dde/tmp/full_login_data.json';
+  const jsonPath = 'd:/00_OFI_PRESUPUESTOS_progra/3_Entregable_web_buscador_de_metrados/scripts/script_login_data.json';
   if (!fs.existsSync(jsonPath)) {
       console.error('No JSON file found!');
       return;
@@ -41,8 +41,12 @@ async function populate() {
       });
   }
 
-  const { data, error } = await supabase.from('ecosistema_usuarios').upsert(payload, { onConflict: 'dni_username' });
-  if (error) console.error(error);
-  else console.log('Successfully injected users!');
+  let successCount = 0;
+  for (const user of payload) {
+      const { error } = await supabase.from('ecosistema_usuarios').upsert(user, { onConflict: 'dni_username' });
+      if (error) console.error(`Error inyectando DNI ${user.dni_username}:`, error.message);
+      else successCount++;
+  }
+  console.log(`Successfully injected ${successCount} users!`);
 }
 populate();
