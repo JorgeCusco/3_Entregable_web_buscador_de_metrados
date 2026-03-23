@@ -40,16 +40,16 @@ export const usePersonalStore = create<PersonalState>()((set) => ({
     
     fetchPersonal: async () => {
         const { data, error } = await supabase.from('personal').select('*').order('nombre_formateado');
-        if (!error && data) {
-            set({ personal: data as Personal[] });
+        if (!error && (data as any)) {
+            set({ personal: data as any[] });
         }
     },
 
     addWorker: async (worker) => {
         const nombre_formateado = formatName(worker.nombre_original);
-        const { data, error } = await supabase.from('personal').insert([{ ...worker, nombre_formateado }]).select().single();
-        if (!error && data) {
-            set((state) => ({ personal: [...state.personal, data] }));
+        const { data, error } = await (supabase.from('personal') as any).insert([{ ...worker, nombre_formateado } as any]).select().single();
+        if (!error && (data as any)) {
+            set((state) => ({ personal: [...state.personal, data as any] }));
         }
     },
 
@@ -59,7 +59,7 @@ export const usePersonalStore = create<PersonalState>()((set) => ({
             updatePayload.nombre_formateado = formatName(value);
         }
         
-        const { error } = await supabase.from('personal').update(updatePayload).eq('id', id);
+        const { error } = await (supabase.from('personal') as any).update(updatePayload as any).eq('id', id);
         if (!error) {
             set((state) => ({
                 personal: state.personal.map(p => p.id === id ? { ...p, ...updatePayload } : p)
@@ -68,7 +68,7 @@ export const usePersonalStore = create<PersonalState>()((set) => ({
     },
 
     deleteWorker: async (id) => {
-        const { error } = await supabase.from('personal').delete().eq('id', id);
+        const { error } = await (supabase.from('personal') as any).delete().eq('id', id);
         if (!error) {
             set((state) => ({
                 personal: state.personal.filter(p => p.id !== id)

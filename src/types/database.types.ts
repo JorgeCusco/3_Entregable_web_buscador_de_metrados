@@ -148,6 +148,20 @@ export interface Database {
           fecha_ingreso?: string | null
         }
       }
+      metrados_personal: {
+        Row: {
+          metrado_id: string
+          personal_id: string
+        }
+        Insert: {
+          metrado_id: string
+          personal_id: string
+        }
+        Update: {
+          metrado_id?: string
+          personal_id?: string
+        }
+      }
       metrados: {
         Row: {
           id: string
@@ -156,9 +170,11 @@ export interface Database {
           bloque: string
           nivel: string
           cuadrilla: string | null
-          obrero_id: string | null
           partida_id: string | null
           custom_partida_id: string | null
+          codigo_partida: string | null
+          descripcion_partida: string | null
+          unidad: string | null
           elemento: string | null
           detalle: string | null
           diametro: string | null
@@ -169,10 +185,11 @@ export interface Database {
           parcial: number | null
           nro_veces: number | null
           total: number | null
-          hvac_item_id: string | null
           autor_usuario: string | null
-          proyecto?: string | null
+          proyecto: string | null
           created_at: string
+          hvac_factor: number | null
+          hvac_item_type: string | null
         }
         Insert: {
           id?: string
@@ -181,9 +198,11 @@ export interface Database {
           bloque: string
           nivel: string
           cuadrilla?: string | null
-          obrero_id?: string | null
           partida_id?: string | null
           custom_partida_id?: string | null
+          codigo_partida?: string | null
+          descripcion_partida?: string | null
+          unidad?: string | null
           elemento?: string | null
           detalle?: string | null
           diametro?: string | null
@@ -194,10 +213,11 @@ export interface Database {
           parcial?: number | null
           nro_veces?: number | null
           total?: number | null
-          hvac_item_id?: string | null
           autor_usuario?: string | null
           proyecto?: string | null
           created_at?: string
+          hvac_factor?: number | null
+          hvac_item_type?: string | null
         }
         Update: {
           id?: string
@@ -206,9 +226,11 @@ export interface Database {
           bloque?: string
           nivel?: string
           cuadrilla?: string | null
-          obrero_id?: string | null
           partida_id?: string | null
           custom_partida_id?: string | null
+          codigo_partida?: string | null
+          descripcion_partida?: string | null
+          unidad?: string | null
           elemento?: string | null
           detalle?: string | null
           diametro?: string | null
@@ -219,9 +241,52 @@ export interface Database {
           parcial?: number | null
           nro_veces?: number | null
           total?: number | null
-          hvac_item_id?: string | null
           autor_usuario?: string | null
+          proyecto?: string | null
           created_at?: string
+          hvac_factor?: number | null
+          hvac_item_type?: string | null
+        }
+      }
+      ecosistema_usuarios: {
+        Row: {
+          id: string
+          dni_username: string
+          password: string
+          nombre_completo: string
+          correo: string | null
+          area: string | null
+          cargo: string | null
+          especialidad: string | null
+          roles_apps: Json | null
+          created_at: string
+          last_login: string | null
+        }
+        Insert: {
+          id?: string
+          dni_username: string
+          password: string
+          nombre_completo: string
+          correo?: string | null
+          area?: string | null
+          cargo?: string | null
+          especialidad?: string | null
+          roles_apps?: Json | null
+          created_at?: string
+          last_login?: string | null
+        }
+        Update: {
+          id?: string
+          dni_username?: string
+          password?: string
+          nombre_completo?: string
+          correo?: string | null
+          area?: string | null
+          cargo?: string | null
+          especialidad?: string | null
+          roles_apps?: Json | null
+          created_at?: string
+          last_login?: string | null
         }
       }
     }

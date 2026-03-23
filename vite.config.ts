@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: './',
   build: {
-    assetsDir: '',
+    assetsDir: 'assets',
   },
   server: {
     host: true,

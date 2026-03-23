@@ -67,14 +67,14 @@ export const useMetradosStore = create<MetradosState>()(
                     if (!resolvedPartidaId && !resolvedCustomId) {
                         const isCustom = metrado.modificacion === 'PC'; 
                         if (isCustom) {
-                            const { data: catData } = await supabase.from('partidas_personalizadas').select('id').eq('codigo', metrado.codigo_partida).maybeSingle();
+                            const { data: catData } = await (supabase.from('partidas_personalizadas') as any).select('id').eq('codigo', metrado.codigo_partida).maybeSingle();
                             if (catData) resolvedCustomId = catData.id;
                         } else {
                             // Fetch de catálogo maestro usando el código y el proyecto
                             const projCode = (metrado.proyecto || 'hospital').toUpperCase().substring(0, 4);
-                            const { data: proj } = await supabase.from('proyectos').select('id').eq('codigo', projCode).maybeSingle();
+                            const { data: proj } = await (supabase.from('proyectos') as any).select('id').eq('codigo', projCode).maybeSingle();
                             if (proj) {
-                                const { data: catData } = await supabase.from('catalogo_partidas').select('id')
+                                const { data: catData } = await (supabase.from('catalogo_partidas') as any).select('id')
                                     .eq('codigo', metrado.codigo_partida).eq('proyecto_id', proj.id).maybeSingle();
                                 if (catData) resolvedPartidaId = catData.id;
                             }
@@ -82,8 +82,8 @@ export const useMetradosStore = create<MetradosState>()(
                     }
 
                     // 1. Insertamos el Metrado (Petición Consolidada)
-                    const { data, error } = await supabase
-                        .from('metrados')
+                    const { data, error } = await (supabase
+                        .from('metrados') as any)
                         .insert([{
                             fecha: metrado.fecha,
                             frente: metrado.frente,
@@ -122,18 +122,18 @@ export const useMetradosStore = create<MetradosState>()(
                     // 2. Vinculación Many-to-Many de Cuadrilla (Personal)
                     if (metrado.obreros_ids && metrado.obreros_ids.length > 0) {
                         const personalLinks = metrado.obreros_ids.map((id: string) => ({
-                            metrado_id: data.id,
+                            metrado_id: (data as any).id,
                             personal_id: id
                         }));
-                        const { error: errorLinks } = await supabase.from('metrados_personal').insert(personalLinks);
+                        const { error: errorLinks } = await (supabase.from('metrados_personal') as any).insert(personalLinks as any);
                         if (errorLinks) console.error('Error bindeando personal a metrado:', errorLinks);
                     }
 
                     const dbMetrado: Metrado = { 
                         ...metrado, 
-                        id: data.id, 
+                        id: (data as any).id, 
                         // obrero_nombre ya viene estructurado correctamente en 'metrado' desde useMetradosForm.ts
-                        created_at: data.created_at || new Date().toISOString() 
+                        created_at: (data as any).created_at || new Date().toISOString() 
                     };
                     set((state) => ({ metrados: [...state.metrados, dbMetrado] }));
                     return { success: true };
@@ -147,14 +147,14 @@ export const useMetradosStore = create<MetradosState>()(
                 // Fetch de metrados con sus relaciones de personal (Many-to-Many)
                 const { data, error } = await supabase
                     .from('metrados')
-                    .select('*, metrados_personal(personal(*))');
+                    .select('*, metrados_personal(personal(*))') as any;
                 
                 if (error) {
                     console.error('Error obteniendo metrados:', error);
                     return;
                 }
 
-                const fetchedMetrados: Metrado[] = (data || []).map(dbRow => {
+                const fetchedMetrados: Metrado[] = (data || []).map((dbRow: any) => {
                     // 1. Extraer lista desde Many-to-Many (Registros Nuevos)
                     let personalList = (dbRow.metrados_personal || [])
                         .map((rel: any) => rel.personal)
@@ -220,7 +220,7 @@ export const useMetradosStore = create<MetradosState>()(
                 delete (dbPayload as any).obrero_categoria;
                 delete (dbPayload as any).descripcion_partida;
 
-                const { error } = await supabase.from('metrados').update(dbPayload).eq('id', id);
+                const { error } = await (supabase.from('metrados') as any).update(dbPayload as any).eq('id', id);
                 if (error) console.error('Error Supabase Update Metrado:', error);
             },
 
@@ -228,7 +228,7 @@ export const useMetradosStore = create<MetradosState>()(
                 set((state) => ({
                     metrados: state.metrados.filter((m) => m.id !== id),
                 }));
-                const { error } = await supabase.from('metrados').delete().eq('id', id);
+                const { error } = await (supabase.from('metrados') as any).delete().eq('id', id);
                 if (error) console.error('Error Supabase Delete Metrado:', error);
             },
 
@@ -240,8 +240,8 @@ export const useMetradosStore = create<MetradosState>()(
                             : m
                     ),
                 }));
-                const { error } = await supabase.from('metrados')
-                    .update({ elemento: new_elemento })
+                const { error } = await (supabase.from('metrados') as any)
+                    .update({ elemento: new_elemento } as any)
                     .eq('codigo_partida', codigo_partida)
                     .match({ elemento: old_elemento });
                 if (error) console.error('Error Supabase Update Agrupador:', error);
@@ -250,16 +250,16 @@ export const useMetradosStore = create<MetradosState>()(
             addCustomPartida: async (partida) => {
                 try {
                     // 1. Insertar en Supabase
-                    const { data, error } = await supabase
-                        .from('partidas_personalizadas')
+                    const { data, error } = await (supabase
+                        .from('partidas_personalizadas') as any)
                         .insert([{
                             codigo: partida.codigo,
                             descripcion: partida.descripcion,
                             unidad: partida.unidad,
                             modificacion: partida.modificacion || 'PC'
-                        }])
+                        } as any])
                         .select()
-                        .single();
+                        .single() as any;
 
                     if (error) {
                         console.error('Error insertando partida personalizada en Supabase:', error);
@@ -294,10 +294,10 @@ export const useMetradosStore = create<MetradosState>()(
 
             fetchCustomPartidas: async () => {
                 try {
-                    const { data, error } = await supabase
-                        .from('partidas_personalizadas')
+                    const { data, error } = await (supabase
+                        .from('partidas_personalizadas') as any)
                         .select('*')
-                        .order('codigo');
+                        .order('codigo') as any;
 
                     if (error) {
                         console.error('Error fetching custom partidas:', error);
@@ -305,7 +305,7 @@ export const useMetradosStore = create<MetradosState>()(
                     }
 
                     if (data) {
-                        const parsedPartidas: Partida[] = data.map(dbRow => ({
+                        const parsedPartidas: Partida[] = (data as any[]).map((dbRow: any) => ({
                             id: dbRow.id,
                             codigo: dbRow.codigo,
                             descripcion: dbRow.descripcion,
