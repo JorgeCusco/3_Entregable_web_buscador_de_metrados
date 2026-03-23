@@ -203,6 +203,9 @@ function App() {
             onGroupUpdate={handleUpdateGroup}
             onDelete={handleDeleteMetrado}
             proyecto={context.proyecto}
+            especialidadSeleccionada={state.especialidadSeleccionada}
+            onEspecialidadChange={actions.setEspecialidadSeleccionada}
+            isSpecialtyLocked={state.isSpecialtyLocked}
           />
         </div>
       </main>

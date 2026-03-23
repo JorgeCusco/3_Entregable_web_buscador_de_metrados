@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { Partida, Metrado } from '../types';
 import { getEspecialidadPorCodigo } from '../constants/especialidades';
 import { usePersonalStore } from '../store/usePersonalStore';
 import { useMetradosStore } from '../store/useMetradosStore';
+import { useAuthStore } from '../store/useAuthStore';
 import { calcularParcial, calcularTotal, isAcero as isAceroUtil } from '../utils/metradosCalculations';
 
 export const isAcero = isAceroUtil;
@@ -31,6 +32,7 @@ export const getHvacCategory = (partida: Partida | null): string | null => {
 
 export const useMetradosForm = () => {
     const { context, setContext, customPartidas, addCustomPartida } = useMetradosStore();
+    const { user } = useAuthStore();
 
     const getLocalDateString = () => {
         const d = new Date();
@@ -61,7 +63,23 @@ export const useMetradosForm = () => {
     const [altura, setAltura] = useState<number | "">("");
     const [nroVeces, setNroVeces] = useState<number | "">("");
 
-    const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState<string>('TODAS');
+    const isSpecialtyLocked = useMemo(() => {
+        const role = user?.roles_apps?.metrados;
+        if (!role) return false;
+        const r = role.trim().toUpperCase();
+        // Roles que NO bloquean (dan libertad total)
+        const rolesLibres = ['TODAS', 'TODOS', 'ADMIN', 'SUPERVISOR', 'MASTER'];
+        return !rolesLibres.includes(r);
+    }, [user?.roles_apps?.metrados]);
+
+    const initialSpecialty = isSpecialtyLocked ? user!.roles_apps!.metrados!.trim().toUpperCase() : 'TODAS';
+    const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState<string>(initialSpecialty);
+
+    useEffect(() => {
+        if (isSpecialtyLocked && user?.roles_apps?.metrados) {
+            setEspecialidadSeleccionada(user.roles_apps.metrados.trim().toUpperCase());
+        }
+    }, [isSpecialtyLocked, user?.roles_apps?.metrados]);
 
     const parcial = useMemo(() => {
         return calcularParcial({
@@ -155,7 +173,7 @@ export const useMetradosForm = () => {
             fecha, frente, bloque, nivel, cuadrilla, obreros_ids,
             partidaSeleccionada, elemento, detalle, diametro,
             cantidad, longitud, ancho, altura, nroVeces,
-            parcial, total, especialidadSeleccionada,
+            parcial, total, especialidadSeleccionada, isSpecialtyLocked,
             customPartidas, hvacFactor, hvacConfig, hvacItemType
         },
         actions: {
@@ -163,7 +181,30 @@ export const useMetradosForm = () => {
             setFrente: (val: string) => setContext({ frente: val }),
             setBloque: (val: string) => setContext({ bloque: val }),
             setNivel: (val: string) => setContext({ nivel: val }),
-            setCuadrilla: (val: string) => setContext({ cuadrilla: val }),
+            setCuadrilla: (val: string) => {
+                setContext({ cuadrilla: val });
+                const cuadrillaUpper = val.trim().toUpperCase();
+                if (cuadrillaUpper && cuadrillaUpper !== 'VARIOS') {
+                    const allPersonal = usePersonalStore.getState().personal;
+                    const obrerosDeCuadrilla = allPersonal.filter(p => {
+                        if (p.cuadrilla?.toUpperCase() !== cuadrillaUpper) return false;
+                        
+                        if (especialidadSeleccionada && especialidadSeleccionada !== 'TODAS') {
+                            if (p.especialidad && p.especialidad.toUpperCase() === especialidadSeleccionada.toUpperCase()) {
+                                return true;
+                            }
+                            // Solo traemos a los que coinciden estrictamente con la especialidad o no tienen,
+                            // pero el usuario prefiere que respete la selección.
+                            return false;
+                        }
+                        
+                        return true;
+                    });
+                    if (obrerosDeCuadrilla.length > 0) {
+                        setContext({ obreros_ids: obrerosDeCuadrilla.map(p => p.id) });
+                    }
+                }
+            },
             setObrerosIds: (ids: string[]) => setContext({ obreros_ids: ids }),
             setPartidaSeleccionada, setElemento, setDetalle, setDiametro,
             setCantidad, setLongitud, setAncho, setAltura, setNroVeces,

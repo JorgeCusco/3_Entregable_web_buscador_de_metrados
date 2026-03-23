@@ -45,3 +45,7 @@ build/
 
 # Carpeta de archivos archivados (no va al repo)
 _archivo/
+
+# Logs de errores de build
+build_errors.txt
+build_errors_utf8.txt

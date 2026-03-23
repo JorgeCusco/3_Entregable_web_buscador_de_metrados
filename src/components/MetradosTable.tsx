@@ -13,6 +13,9 @@ interface MetradosTableProps {
     onGroupUpdate?: (codigoPartida: string, oldElemento: string, newElemento: string) => void;
     onDelete?: (id: string) => void;
     proyecto?: string;
+    especialidadSeleccionada?: string;
+    onEspecialidadChange?: (val: string) => void;
+    isSpecialtyLocked?: boolean;
 }
 
 /**
@@ -30,42 +33,52 @@ const getIndentLevel = (codigo: string): number => {
  * @param partidasCatalogo Catálogo maestro de partidas del proyecto activo.
  */
 const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partida[]): any[] => {
-    const activePartidaCodes = new Set(activeMetrados.map(m => m.codigo_partida));
+    // 1. Normalizar códigos activos (Trim y Uppercase) para evitar fallos por espacios
+    const activePartidaCodes = new Set(activeMetrados.map(m => m.codigo_partida.trim().toUpperCase()));
     const activeIds = new Set<string>();
 
     // Optimización O(1) Lookup:
     const catalogoMap = new Map<string, Partida>();
-    partidasCatalogo.forEach(p => catalogoMap.set(p.codigo, p));
+    partidasCatalogo.forEach(p => catalogoMap.set(p.codigo.trim().toUpperCase(), p));
 
-    // Algoritmo de Rescate de Rama (Bottom-Up): activa la cadena entera de ancestros
+    // 2. Algoritmo de Rescate de Rama (Bottom-Up):
+    // Activamos un nodo si tiene metrados directos O si es ancestro de uno con metrados.
     partidasCatalogo.forEach((node: Partida) => {
-        if (!node.es_titulo && activePartidaCodes.has(node.codigo)) {
-            activeIds.add(node.codigo);
-            let parentId = node.parent_id;
+        const nodeCodigo = node.codigo.trim().toUpperCase();
+        if (activePartidaCodes.has(nodeCodigo)) {
+            activeIds.add(nodeCodigo);
+            
+            // Subir por la jerarquía para marcar ancestros como activos
+            let parentId = node.parent_id?.trim().toUpperCase();
             while (parentId) {
                 if (activeIds.has(parentId)) break;
                 activeIds.add(parentId);
                 const parent = catalogoMap.get(parentId);
-                parentId = parent?.parent_id;
+                parentId = parent?.parent_id?.trim().toUpperCase();
             }
         }
     });
 
     const finalRows: any[] = [];
 
+    // 3. Segunda pasada para construir el array lineal final
     partidasCatalogo.forEach((node: Partida) => {
-        if (!activeIds.has(node.codigo)) return;
+        const nodeCodigo = node.codigo.trim().toUpperCase();
+        if (!activeIds.has(nodeCodigo)) return;
 
+        // Agregar fila de plantilla (Cabecera de Jerarquía o de Partida)
         finalRows.push({ ...node, is_template: true });
 
-        if (!node.es_titulo) {
-            const relatedMetrados = activeMetrados
-                .filter(m => m.codigo_partida === node.codigo)
-                .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+        // Si el nodo tiene metrados asociados, agregarlos debajo
+        const relatedMetrados = activeMetrados
+            .filter(m => m.codigo_partida.trim().toUpperCase() === nodeCodigo)
+            .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
 
+        if (relatedMetrados.length > 0) {
             let lastElemento: string | null | undefined = null;
 
             relatedMetrados.forEach(m => {
+                // Lógica de Agrupador (Elemento Virtual)
                 if (m.elemento && m.elemento !== lastElemento) {
                     finalRows.push({
                         is_template: true,
@@ -74,7 +87,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
                         codigo: '',
                         descripcion: m.elemento,
                         codigo_partida: node.codigo,
-                        id: `virtual-${m.id}`,
+                        id: `virtual-${m.id}-${m.elemento}`,
                         parcial: 0,
                         total: 0
                     });
@@ -82,6 +95,8 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
                 } else if (!m.elemento && lastElemento !== null) {
                     lastElemento = null;
                 }
+                
+                // Agregar el registro real
                 finalRows.push({ ...m, is_template: false });
             });
         }
@@ -91,7 +106,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 };
 
 
-export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital' }) => {
+export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital', especialidadSeleccionada = 'TODAS', onEspecialidadChange, isSpecialtyLocked }) => {
     const { customPartidas } = useMetradosStore();
 
     // Seleccionar el catálogo de partidas correcto según el proyecto y sumarle las personalizadas
@@ -100,17 +115,47 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         return [...base, ...customPartidas];
     }, [proyecto, customPartidas]);
 
-    const [selectedSpecialty, setSelectedSpecialty] = React.useState('TODAS');
+    const [filterAuthor, setFilterAuthor] = React.useState('TODOS');
+    const [filterDate, setFilterDate] = React.useState('');
 
-    // Filtrar metrados por especialidad dinámica
+    // Extraer todos los autores únicos presentes en la vista actual (filtrados por especialidad)
+    const availableAuthors = useMemo(() => {
+        let result = metrados;
+        if (especialidadSeleccionada !== 'TODAS') {
+            const rule = SPECIALTY_RULES.find(r => r.id === especialidadSeleccionada);
+            if (rule) {
+                result = result.filter(m =>
+                    rule.ranges.some(prefix => m.codigo_partida.startsWith(prefix))
+                );
+            }
+        }
+        const authors = new Set(result.map(m => m.autor_usuario).filter(Boolean));
+        return Array.from(authors).sort();
+    }, [metrados, especialidadSeleccionada]);
+
+    // Filtrar metrados por especialidad dinámica, autor y fecha
     const filteredMetrados = useMemo(() => {
-        if (selectedSpecialty === 'TODAS') return metrados;
-        const rule = SPECIALTY_RULES.find(r => r.id === selectedSpecialty);
-        if (!rule) return metrados;
-        return metrados.filter(m =>
-            rule.ranges.some(prefix => m.codigo_partida.startsWith(prefix))
-        );
-    }, [metrados, selectedSpecialty]);
+        let result = metrados;
+
+        if (especialidadSeleccionada !== 'TODAS') {
+            const rule = SPECIALTY_RULES.find(r => r.id === especialidadSeleccionada);
+            if (rule) {
+                result = result.filter(m =>
+                    rule.ranges.some(prefix => m.codigo_partida.startsWith(prefix))
+                );
+            }
+        }
+        
+        if (filterAuthor !== 'TODOS') {
+            result = result.filter(m => m.autor_usuario === filterAuthor);
+        }
+
+        if (filterDate) {
+            result = result.filter(m => m.fecha === filterDate);
+        }
+
+        return result;
+    }, [metrados, especialidadSeleccionada, filterAuthor, filterDate]);
 
     const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo), [filteredMetrados, catalogoActivo]);
     const [isExporting, setIsExporting] = React.useState(false);
@@ -191,17 +236,63 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             <div className="p-4 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
                 <div className="flex flex-col">
                     <h3 className="font-bold text-slate-800 text-lg tracking-tight">Planilla de Metrados Dinámica</h3>
-                    <div className="flex items-center gap-2 mt-0.5">
-                        <p className="text-[10px] text-slate-500 font-medium uppercase tracking-widest">Especialidad:</p>
-                        <select
-                            value={selectedSpecialty}
-                            onChange={(e) => setSelectedSpecialty(e.target.value)}
-                            className="text-[9px] font-bold uppercase bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 focus:ring-1 focus:ring-blue-500/30 text-slate-700 outline-none cursor-pointer hover:bg-slate-200 transition-colors"
-                        >
-                            {SPECIALTY_RULES.map(rule => (
-                                <option key={rule.id} value={rule.id}>{rule.label}</option>
-                            ))}
-                        </select>
+                    <div className="flex flex-wrap items-center gap-4 mt-1">
+                        {/* Filtro Especialidad */}
+                        <div className="flex items-center gap-2">
+                            <span className="text-[10px] text-slate-500 font-medium uppercase tracking-widest">Especialidad:</span>
+                            <select
+                                value={especialidadSeleccionada}
+                                onChange={(e) => {
+                                    onEspecialidadChange?.(e.target.value);
+                                    setFilterAuthor('TODOS'); // Reiniciar filtro de autor al cambiar especialidad
+                                }}
+                                disabled={isSpecialtyLocked}
+                                className={`text-[9px] font-bold uppercase border border-slate-200 rounded px-1.5 py-0.5 focus:ring-1 outline-none transition-colors ${
+                                    isSpecialtyLocked 
+                                    ? 'bg-slate-50 text-slate-400 cursor-not-allowed opacity-80' 
+                                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer focus:ring-blue-500/30'
+                                }`}
+                            >
+                                {SPECIALTY_RULES.map(rule => (
+                                    <option key={rule.id} value={rule.id}>{rule.label}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Filtro Autor */}
+                        <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
+                            <span className="text-[10px] text-slate-500 font-medium uppercase tracking-widest">Autor:</span>
+                            <select
+                                value={filterAuthor}
+                                onChange={(e) => setFilterAuthor(e.target.value)}
+                                className="text-[9px] font-bold uppercase bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 focus:ring-1 focus:ring-blue-500/30 text-slate-700 outline-none cursor-pointer hover:bg-slate-200 transition-colors"
+                            >
+                                <option value="TODOS">TODOS</option>
+                                {availableAuthors.map(author => (
+                                    <option key={author} value={author}>{author}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Filtro Fecha */}
+                        <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
+                            <span className="text-[10px] text-slate-500 font-medium uppercase tracking-widest">Fecha:</span>
+                            <div className="relative flex items-center">
+                                <input
+                                    type="date"
+                                    value={filterDate}
+                                    onChange={(e) => setFilterDate(e.target.value)}
+                                    className="text-[9px] font-bold uppercase bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 focus:ring-1 focus:ring-blue-500/30 text-slate-700 outline-none cursor-pointer hover:bg-slate-200 transition-colors"
+                                />
+                                {filterDate && (
+                                    <button 
+                                        onClick={() => setFilterDate('')}
+                                        className="absolute -right-5 w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-500 hover:text-white transition-colors text-[8px]"
+                                        title="Limpiar fecha"
+                                    >✕</button>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -235,7 +326,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 <table className="w-full text-[13px] text-left align-middle border-collapse table-fixed">
                     <thead className="text-[11px] text-slate-400 bg-white uppercase whitespace-nowrap sticky top-0 shadow-[0_1px_0_0_rgba(0,0,0,0.05)] z-10 font-bold">
                         <tr className="border-b border-slate-100">
-                            <th className="w-[85px] min-w-[85px] px-1.5 py-3 text-center">Fecha</th>
+                            <th className="w-[85px] min-w-[85px] max-w-[85px] px-1.5 py-3 text-center overflow-hidden">Fecha</th>
                             <th className="w-[80px] min-w-[80px] px-1.5 py-3 text-left">Item / Código</th>
                             <th className="px-2 py-3">Descripción / Partida / Metrado</th>
                             <th className="w-[45px] min-w-[45px] px-1 py-3 text-center">Und</th>
@@ -255,7 +346,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             if (r.is_template && r.es_titulo) {
                                 return (
                                     <tr key={`title-${r.codigo}`} className="bg-slate-800 text-white font-bold border-b border-slate-700">
-                                        <td className="w-[85px] min-w-[85px] px-2 py-1 text-center font-mono text-[9px] text-slate-400"></td>
+                                        <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1 text-center font-mono text-[9px] text-slate-400 overflow-hidden"></td>
                                         <td className="w-[80px] min-w-[80px] px-2 py-1 font-mono text-[10px] tracking-wider text-left">
                                             {r.codigo}
                                         </td>
@@ -263,7 +354,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
                                             {r.descripcion}
                                         </td>
-                                    </tr >
+                                    </tr>
                                 );
                             }
 
@@ -271,7 +362,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             if (r.is_template && r.is_elemento_virtual) {
                                 return (
                                     <tr key={r.id} className="bg-slate-50/50 border-b border-slate-100 group">
-                                        <td className="w-[85px] min-w-[85px] px-2 py-1.5 text-center"></td>
+                                        <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1.5 text-center overflow-hidden"></td>
                                         <td className="w-[80px] min-w-[80px] px-2 py-1.5 text-left"></td>
                                         <td className="px-2 py-1.5" colSpan={10} style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.5 + 0.75}rem` }}>
                                             <div className="flex items-center gap-2">
@@ -296,7 +387,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
                                 return (
                                     <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors`}>
-                                        <td className="w-[85px] min-w-[85px] px-2 py-1 text-center"></td>
+                                        <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1 text-center overflow-hidden"></td>
                                         <td className="w-[80px] min-w-[80px] px-2 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
                                             <span className="font-mono text-[10px] text-blue-600 bg-blue-100/50 px-1 py-0.5 rounded">
                                                 {r.codigo}
@@ -331,14 +422,14 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
                             return (
                                 <tr key={`rec-${r.id}`} className="hover:bg-blue-50/20 border-b border-slate-100 group transition-all duration-200">
-                                    <td className="px-1 py-1.5 text-center">
+                                    <td className="w-[85px] min-w-[85px] max-w-[85px] px-1 py-1.5 text-center overflow-hidden">
                                         <input type="date" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-400 font-bold text-[9px] uppercase tracking-tighter"
                                             value={r.fecha} onChange={(e) => onUpdate?.(r.id, 'fecha', e.target.value)}
                                             onFocus={(e) => e.target.select()}
                                             title={r.fecha} />
                                     </td>
                                     <td className="w-[80px] min-w-[80px] px-0.5 py-1.5">
-                                        <div className="flex items-center gap-0.5" style={{ marginLeft: `${getIndentLevel(r.codigo_partida) * 0.5 + 0.15}rem` }}>
+                                        <div className="flex items-center justify-center gap-0.5">
                                             <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
                                             <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
                                                 title="Frente" value={r.frente} onChange={(e) => onUpdate?.(r.id, 'frente', e.target.value)}
@@ -351,11 +442,11 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                                 onFocus={(e) => e.target.select()} />
                                         </div>
                                     </td>
-                                    <td className="px-2 py-1.5" style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.5 + 0.75}rem` }}>
+                                    <td className="px-2 py-1.5">
                                         <div className="flex items-center gap-1.5 w-full">
                                             <input
                                                 type="text"
-                                                className="metrado-input w-[28px] bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded text-slate-500 text-[9px] font-black uppercase shrink-0 text-center shadow-inner cursor-not-allowed opacity-80"
+                                                className="metrado-input w-14 bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded text-slate-500 text-[9px] font-black uppercase shrink-0 text-center shadow-inner cursor-not-allowed opacity-80"
                                                 value={r.cuadrilla || ''}
                                                 placeholder="CDLLA"
                                                 title={`Personal asignado: ${r.obrero_nombre || "Ninguno"}. La edición se hace desde el panel de ingreso.`}
@@ -438,12 +529,12 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 </tr>
                             );
                         })}
-                    </tbody >
-                </table >
-            </div >
+                    </tbody>
+                </table>
+            </div>
 
             {/* Footer de Resumen */}
-            < div className="p-3 border-t border-slate-200 bg-white flex justify-between items-center text-[11px] font-bold text-slate-500 uppercase tracking-tighter" >
+            <div className="mt-auto p-3 border-t border-slate-200 bg-white flex justify-between items-center text-[11px] font-bold text-slate-500 uppercase tracking-tighter">
                 <div className="flex gap-4">
                     <span>Partidas con metrado (vista): {cantPartidasRegistradas}</span>
                     <span>Total de registros (vista): {filteredMetrados.length}</span>
@@ -451,7 +542,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 <div className="bg-slate-800 text-white px-3 py-1 rounded-md">
                     Control de Planilla Web v3.0
                 </div>
-            </div >
-        </div >
+            </div>
+        </div>
     );
 };

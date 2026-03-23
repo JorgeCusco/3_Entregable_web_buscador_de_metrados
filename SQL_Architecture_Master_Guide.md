@@ -15,7 +15,16 @@ erDiagram
     PARTIDAS_PERSONALIZADAS ||--o{ METRADOS : "es referenciado por"
     PERSONAL ||--o{ METRADOS_PERSONAL : "participa en"
     METRADOS ||--o{ METRADOS_PERSONAL : "tiene"
+    ECOSISTEMA_USUARIOS ||--o{ METRADOS : "autoriza"
     
+    ECOSISTEMA_USUARIOS {
+        uuid id PK
+        text dni_username UK
+        text nombre_completo
+        text especialidad
+        jsonb roles_apps
+    }
+
     PROYECTO {
         uuid id PK
         text codigo
@@ -120,6 +129,15 @@ UPDATE metrados
 SET total = parcial * nro_veces 
 WHERE total IS NULL OR total = 0;
 ```
+
+---
+
+## Parte 8: Seguridad y Ecosistema de Usuarios
+
+### 8.1 Autenticación Centralizada (`ecosistema_usuarios`)
+Utilizamos una tabla centralizada para manejar el acceso a múltiples aplicaciones (Metrados, Almacén, etc.).
+- **`roles_apps` (JSONB)**: Permite definir permisos específicos por aplicación. Ej: `{"metrados": "admin"}`.
+- **Filtro por Especialidad**: El campo `especialidad` en esta tabla se utiliza para bloquear la vista de metrados a solo los de la especialidad asignada al usuario, a menos que su rol sea `TODAS`.
 
 ---
 > [!IMPORTANT]

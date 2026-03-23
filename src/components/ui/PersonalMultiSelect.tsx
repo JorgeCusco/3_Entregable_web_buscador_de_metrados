@@ -34,14 +34,20 @@ export const PersonalMultiSelect: React.FC<PersonalMultiSelectProps> = ({ especi
         // Filtro por especialidad
         if (especialidad && especialidad !== 'TODAS') {
             const oficiosPermitidos = getOficiosPorEspecialidad(especialidad);
-            if (oficiosPermitidos.length > 0) {
-                options = options.filter(p => {
-                    if (!p.oficio) return false;
+            options = options.filter(p => {
+                // 1. Prioridad: Coincidencia directa de la columna 'especialidad' en la BD
+                if (p.especialidad && p.especialidad.toUpperCase() === especialidad.toUpperCase()) {
+                    return true;
+                }
+                
+                // 2. Fallback: Búsqueda por Oficios Clásicos
+                if (oficiosPermitidos.length > 0 && p.oficio) {
                     const of = p.oficio.toUpperCase();
-                    // Buscar si algun oficio permitido está incluido en el oficio del trabajador
                     return oficiosPermitidos.some(op => of.includes(op)) || of.includes('VOLANTE');
-                });
-            }
+                }
+                
+                return false;
+            });
         }
 
         // Filtro por nombre (búsqueda)

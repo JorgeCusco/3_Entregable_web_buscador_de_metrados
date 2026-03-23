@@ -10,7 +10,6 @@ import { ESPECIALIDADES_PARTIDA, getEspecialidadPorCodigo } from '../constants/e
 import { Save, Eraser } from 'lucide-react';
 import { HVAC_DATA } from '../data/hvacData';
 import { usePersonalStore } from '../store/usePersonalStore';
-import { useAuthStore } from '../store/useAuthStore';
 
 interface MetradosFormProps {
     state: any;
@@ -53,17 +52,6 @@ import { PersonalMultiSelect } from './ui/PersonalMultiSelect';
 
 export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, proyecto }) => {
     const { personal } = usePersonalStore();
-    const { user } = useAuthStore();
-
-    // Bloqueo de especialidad según rol de usuario
-    const isEspecialidadDisabled = !!(user?.especialidad && user.especialidad !== 'TODOS');
-
-    // Efecto para auto-seleccionar la especialidad del usuario si está restringido
-    React.useEffect(() => {
-        if (isEspecialidadDisabled && user?.especialidad) {
-            actions.setEspecialidadSeleccionada(user.especialidad);
-        }
-    }, [isEspecialidadDisabled, user?.especialidad, actions]);
     
     const uniqueCuadrillas = useMemo(() => {
         const cuadrillas = personal.map(p => p.cuadrilla).filter(c => c && c.trim() !== '' && c !== 'nan');
@@ -232,7 +220,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                 actions.setPartidaSeleccionada(null);
                             }}
                             options={ESPECIALIDADES_PARTIDA.map(esp => esp.nombre)}
-                            disabled={isEspecialidadDisabled}
+                            disabled={state.isSpecialtyLocked}
                             className="bg-white/50"
                         />
                     </div>
@@ -241,14 +229,15 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Partida (Buscador)</label>
                         <SearchCombobox
                             partidas={[
-                                ...(proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia),
-                                ...state.customPartidas
-                            ].filter(p => {
-                                if (state.especialidadSeleccionada === 'TODAS') return true;
-                                const mapping = ESPECIALIDADES_PARTIDA.find(e => e.nombre === state.especialidadSeleccionada);
-                                if (!mapping) return true;
-                                return mapping.prefijos.some(pref => p.codigo.startsWith(pref));
-                            })}
+                            ...(proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia),
+                            ...state.customPartidas
+                        ].filter(p => {
+                            if (p.es_titulo) return false; // Evitar seleccionar títulos como partidas de metrado
+                            if (state.especialidadSeleccionada === 'TODAS') return true;
+                            const mapping = ESPECIALIDADES_PARTIDA.find(e => e.nombre === state.especialidadSeleccionada);
+                            if (!mapping) return true;
+                            return mapping.prefijos.some(pref => p.codigo.trim().startsWith(pref));
+                        })}
                             value={state.partidaSeleccionada ? state.partidaSeleccionada.descripcion : ''}
                             onSelect={(p: Partida) => {
                                 actions.setPartidaSeleccionada(p);
