@@ -16,7 +16,7 @@ erDiagram
     PERSONAL ||--o{ METRADOS_PERSONAL : "participa en"
     METRADOS ||--o{ METRADOS_PERSONAL : "tiene"
     ECOSISTEMA_USUARIOS ||--o{ METRADOS : "autoriza"
-    
+  
     ECOSISTEMA_USUARIOS {
         uuid id PK
         text dni_username UK
@@ -30,7 +30,7 @@ erDiagram
         text codigo
         text nombre
     }
-    
+  
     CATALOGO_PARTIDAS {
         uuid id PK
         text codigo
@@ -39,7 +39,7 @@ erDiagram
         uuid parent_id FK
         uuid proyecto_id FK
     }
-    
+  
     METRADOS {
         uuid id PK
         date fecha
@@ -50,7 +50,7 @@ erDiagram
         numeric total
         numeric hvac_factor
     }
-    
+  
     PERSONAL {
         uuid id PK
         text dni
@@ -64,6 +64,7 @@ erDiagram
 ## Parte 2: Estructura y Organización (Catálogos)
 
 ### 2.1 Tipificado de Datos Críticos
+
 - **`NUMERIC` vs `FLOAT/REAL`**: En ingeniería, usamos `NUMERIC` para `cantidad`, `parcial` y `total`. Esto evita errores de redondeo de punto flotante que podrían causar discrepancias de céntimos en presupuestos de millones.
 - **`TEXT[]` (Jerarquía)**: El uso de arrays de texto permite búsquedas "ancestrales" instantáneas sin necesidad de múltiples JOINs recursivos (CTE).
 
@@ -72,7 +73,9 @@ erDiagram
 ## Parte 3: El Núcleo de Transacción (Metrados)
 
 ### 3.1 Denormalización Estratégica
-Guardamos el `codigo_partida` y `descripcion_partida` **como texto** dentro de la tabla `metrados`. 
+
+Guardamos el `codigo_partida` y `descripcion_partida` **como texto** dentro de la tabla `metrados`.
+
 - **Razón**: Si en 2 años se borra una partida del catálogo, el registro de producción histórica debe seguir siendo legible y auditable.
 
 ---
@@ -86,7 +89,9 @@ Guardamos el `codigo_partida` y `descripcion_partida` **como texto** dentro de l
 ## Parte 5: Consultas Avanzadas para el Futuro
 
 ### 5.1 Reporte de Productividad por Cuadrilla
+
 Si a futuro quieres ver cuánto ha avanzado una cuadrilla:
+
 ```sql
 SELECT 
     m.cuadrilla,
@@ -98,6 +103,7 @@ GROUP BY m.cuadrilla;
 ```
 
 ### 5.2 Consultar Metrado con Nombres de Obreros
+
 ```sql
 SELECT 
     m.*, 
@@ -113,17 +119,22 @@ GROUP BY m.id;
 ## Parte 7: Integridad y Mantenimiento Avanzado
 
 ### 7.1 Restricciones de Integridad (XOR)
+
 Para evitar errores en el registro, la base de datos tiene una restricción que impide que un metrado sea simultáneamente de una partida del catálogo Y de una partida personalizada. Solo una puede ser `NOT NULL`.
 
 ### 7.2 Índices para Analytics
+
 Si planeas crear dashboards de PowerBI o Grafana sobre esta base de datos, aplica estos índices:
+
 ```sql
 CREATE INDEX idx_metrados_fecha_frente ON metrados(fecha, frente);
 CREATE INDEX idx_metrados_autor ON metrados(autor_usuario);
 ```
 
 ### 7.3 Script de Limpieza y Recálculo
+
 En caso de que se detecten errores manuales en los totales, este script fuerza el recálculo (simplificado):
+
 ```sql
 UPDATE metrados 
 SET total = parcial * nro_veces 
@@ -135,10 +146,13 @@ WHERE total IS NULL OR total = 0;
 ## Parte 8: Seguridad y Ecosistema de Usuarios
 
 ### 8.1 Autenticación Centralizada (`ecosistema_usuarios`)
+
 Utilizamos una tabla centralizada para manejar el acceso a múltiples aplicaciones (Metrados, Almacén, etc.).
+
 - **`roles_apps` (JSONB)**: Permite definir permisos específicos por aplicación. Ej: `{"metrados": "admin"}`.
 - **Filtro por Especialidad**: El campo `especialidad` en esta tabla se utiliza para bloquear la vista de metrados a solo los de la especialidad asignada al usuario, a menos que su rol sea `TODAS`.
 
 ---
+
 > [!IMPORTANT]
 > Esta estructura garantiza que la exportación a Excel (Columna Z) sea siempre consistente con lo guardado en la nube.
