@@ -190,7 +190,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             
             let apiUrl = import.meta.env.VITE_API_URL || '';
             if (!apiUrl) {
-                apiUrl = `http://${window.location.hostname}:3001`;
+                apiUrl = `http://${window.location.hostname}:3002`;
             }
             if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1);
 
