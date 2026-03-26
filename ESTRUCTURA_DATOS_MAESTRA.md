@@ -62,6 +62,26 @@ Lo que el usuario registra en la app. Al migrar data histórica de Excel a la We
 
 ---
 
+### 3. El Registro de Personal (Obreros)
+
+Este módulo gestiona la fuerza laboral y su vinculación con los metrados ejecutados. La data se origina en Excel y se sincroniza con Supabase.
+
+| Campo               | Tipo    | Ejemplo                | Descripción                                                |
+| :------------------ | :------ | :--------------------- | :---------------------------------------------------------- |
+| `dni`              | String  | "44556677"             | Identificador único (UK).                                |
+| `nombre_original`   | String  | "CALLE, JUAN"          | Nombre tal cual viene del Excel.                           |
+| `nombre_formateado` | String  | "Juan Calle"           | Nombre procesado para visualización amigable.              |
+| `especialidad`      | String  | "HOSPITAL"             | Proyecto o área asignada.                                  |
+| `cuadrilla`         | String  | "C-01"                 | Código de brigada de trabajo.                              |
+| `oficio`            | String  | "OPERARIO"             | Rol técnico del trabajador.                               |
+
+#### Reglas de Sincronización de Personal
+1. **Normalización de Nombres**: El sistema convierte automáticamente `APELLIDOS, NOMBRES` a `Nombre Apellido` usando el script `convertir_personal.py`.
+2. **Vinculación N:N**: Un solo registro de metrado puede estar asociado a múltiples personales mediante la tabla bridge `metrados_personal`.
+3. **Persistencia**: El archivo `src/data/personal.json` sirve como caché de alta velocidad para el buscador frontend.
+
+---
+
 ## Reglas de Limpieza para Nuevos Datos (ETL)
 
 1. **Unificación de Códigos**: Los códigos `OE.X.X` en el archivo de Metrados deben existir idénticos en el archivo de Catálogo. Si el código no coincide, el sistema no podrá sumar (Roll-up) los totales.

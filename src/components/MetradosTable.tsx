@@ -33,28 +33,37 @@ const getIndentLevel = (codigo: string): number => {
  * @param partidasCatalogo Catálogo maestro de partidas del proyecto activo.
  */
 const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partida[]): any[] => {
-    // 1. Normalizar códigos activos (Trim y Uppercase) para evitar fallos por espacios
-    const activePartidaCodes = new Set(activeMetrados.map(m => m.codigo_partida.trim().toUpperCase()));
+    // 1. Identificar IDs activos de los metrados (UUID de catalogo, UUID custom, o fallback a código)
+    const getMetradoTargetId = (m: Metrado) => m.custom_partida_id || m.partida_id || m.codigo_partida.trim().toUpperCase();
+    
+    const activeNodeIds = new Set(activeMetrados.map(getMetradoTargetId));
     const activeIds = new Set<string>();
 
-    // Optimización O(1) Lookup:
+    // Optimización O(1) Lookup por ID y por parent_id
     const catalogoMap = new Map<string, Partida>();
-    partidasCatalogo.forEach(p => catalogoMap.set(p.codigo.trim().toUpperCase(), p));
+    partidasCatalogo.forEach(p => {
+        // Registrar por UUID
+        if (p.id) catalogoMap.set(p.id, p);
+        // Fallback para legacy: Registrar también por código si no colisiona
+        catalogoMap.set(p.codigo.trim().toUpperCase(), p);
+    });
 
     // 2. Algoritmo de Rescate de Rama (Bottom-Up):
     // Activamos un nodo si tiene metrados directos O si es ancestro de uno con metrados.
     partidasCatalogo.forEach((node: Partida) => {
-        const nodeCodigo = node.codigo.trim().toUpperCase();
-        if (activePartidaCodes.has(nodeCodigo)) {
-            activeIds.add(nodeCodigo);
+        const nodeId = node.id || node.codigo.trim().toUpperCase();
+        const legacyCode = node.codigo.trim().toUpperCase();
+
+        if (activeNodeIds.has(nodeId) || activeNodeIds.has(legacyCode)) {
+            activeIds.add(nodeId);
             
             // Subir por la jerarquía para marcar ancestros como activos
-            let parentId = node.parent_id?.trim().toUpperCase();
+            let parentId = node.parent_id || catalogoMap.get(legacyCode)?.parent_id;
             while (parentId) {
                 if (activeIds.has(parentId)) break;
                 activeIds.add(parentId);
                 const parent = catalogoMap.get(parentId);
-                parentId = parent?.parent_id?.trim().toUpperCase();
+                parentId = parent?.parent_id;
             }
         }
     });
@@ -63,15 +72,26 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 
     // 3. Segunda pasada para construir el array lineal final
     partidasCatalogo.forEach((node: Partida) => {
-        const nodeCodigo = node.codigo.trim().toUpperCase();
-        if (!activeIds.has(nodeCodigo)) return;
+        const nodeId = node.id || node.codigo.trim().toUpperCase();
+        if (!activeIds.has(nodeId)) return;
 
         // Agregar fila de plantilla (Cabecera de Jerarquía o de Partida)
         finalRows.push({ ...node, is_template: true });
 
-        // Si el nodo tiene metrados asociados, agregarlos debajo
+        // Filtrar metrados que pertenecen exactamente a este nodo
         const relatedMetrados = activeMetrados
-            .filter(m => m.codigo_partida.trim().toUpperCase() === nodeCodigo)
+            .filter(m => {
+                const targetId = getMetradoTargetId(m);
+                // Matches exact UUID
+                if (targetId === node.id) return true;
+                // Matches exact Custom UUID
+                if (m.custom_partida_id && m.custom_partida_id === node.id) return true;
+                // Fallback a código SI el metrado no tiene UUIDs asignados (legacy data)
+                if (!m.custom_partida_id && !m.partida_id) {
+                    return m.codigo_partida.trim().toUpperCase() === node.codigo.trim().toUpperCase();
+                }
+                return false;
+            })
             .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
 
         if (relatedMetrados.length > 0) {
@@ -118,20 +138,29 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     const [filterAuthor, setFilterAuthor] = React.useState('TODOS');
     const [filterDate, setFilterDate] = React.useState('');
 
+    // Lógica compartida para saber si un metrado pertenece a una especialidad
+    const isMetradoOfSpecialty = (m: Metrado, specialtyId: string, rule: any) => {
+        if (m.custom_partida_id) {
+            const customP = catalogoActivo.find(p => p.id === m.custom_partida_id);
+            if (customP && customP.especialidad && customP.especialidad !== 'TODAS') {
+                return customP.especialidad === specialtyId;
+            }
+        }
+        return rule.ranges.some((prefix: string) => m.codigo_partida.startsWith(prefix));
+    };
+
     // Extraer todos los autores únicos presentes en la vista actual (filtrados por especialidad)
     const availableAuthors = useMemo(() => {
         let result = metrados;
         if (especialidadSeleccionada !== 'TODAS') {
             const rule = SPECIALTY_RULES.find(r => r.id === especialidadSeleccionada);
             if (rule) {
-                result = result.filter(m =>
-                    rule.ranges.some(prefix => m.codigo_partida.startsWith(prefix))
-                );
+                result = result.filter(m => isMetradoOfSpecialty(m, especialidadSeleccionada, rule));
             }
         }
         const authors = new Set(result.map(m => m.autor_usuario).filter(Boolean));
         return Array.from(authors).sort();
-    }, [metrados, especialidadSeleccionada]);
+    }, [metrados, especialidadSeleccionada, catalogoActivo]);
 
     // Filtrar metrados por especialidad dinámica, autor y fecha
     const filteredMetrados = useMemo(() => {
@@ -140,9 +169,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         if (especialidadSeleccionada !== 'TODAS') {
             const rule = SPECIALTY_RULES.find(r => r.id === especialidadSeleccionada);
             if (rule) {
-                result = result.filter(m =>
-                    rule.ranges.some(prefix => m.codigo_partida.startsWith(prefix))
-                );
+                result = result.filter(m => isMetradoOfSpecialty(m, especialidadSeleccionada, rule));
             }
         }
         
@@ -155,7 +182,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         }
 
         return result;
-    }, [metrados, especialidadSeleccionada, filterAuthor, filterDate]);
+    }, [metrados, especialidadSeleccionada, filterAuthor, filterDate, catalogoActivo]);
 
     const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo), [filteredMetrados, catalogoActivo]);
     const [isExporting, setIsExporting] = React.useState(false);
@@ -190,7 +217,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             
             let apiUrl = import.meta.env.VITE_API_URL || '';
             if (!apiUrl) {
-                apiUrl = `http://${window.location.hostname}:3002`;
+                apiUrl = `http://${window.location.hostname}:3001`;
             }
             if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1);
 

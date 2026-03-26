@@ -53,9 +53,17 @@ erDiagram
   
     PERSONAL {
         uuid id PK
-        text dni
+        text dni UK
+        text nombre_original
         text nombre_formateado
+        text especialidad
         text cuadrilla
+        text categoria
+        text sexo
+        text telefono
+        text condicion
+        text oficio
+        text fecha_ingreso
     }
 ```
 
@@ -155,4 +163,4 @@ Utilizamos una tabla centralizada para manejar el acceso a múltiples aplicacion
 ---
 
 > [!IMPORTANT]
-> Esta estructura garantiza que la exportación a Excel (Columna Z) sea siempre consistente con lo guardado en la nube.
+> Esta estructura garantiza que la exportación a Excel (Columnas Z y AA) sea siempre consistente con lo guardado en el ecosistema Supabase/Personal.

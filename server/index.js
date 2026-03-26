@@ -33,6 +33,42 @@ const validacionesPesoAcero = {
     "1 3/8": 7.907
 };
 
+// Reglas de especialidad para detección automática
+const SPECIALTY_RULES = [
+    { id: 'TODAS', label: 'TODAS', ranges: ['OE'] },
+    { id: 'OBRAS PROVISIONALES', label: 'OBRAS PROVISIONALES', ranges: ['OE.1.1'] },
+    { id: 'SEGURIDAD', label: 'SEGURIDAD', ranges: ['OE.1.2'] },
+    { id: 'ARQUEOLOGÍA', label: 'ARQUEOLOGÍA', ranges: ['OE.1.3', 'OE.1.4', 'OE.1.5', 'OE.1.6'] },
+    { id: 'ESTRUCTURAS', label: 'ESTRUCTURAS', ranges: ['OE.2'] },
+    { id: 'ARQUITECTURA', label: 'ARQUITECTURA', ranges: ['OE.3'] },
+    { id: 'INSTALACIONES SANITARIAS', label: 'INSTALACIONES SANITARIAS', ranges: ['OE.4'] },
+    { id: 'ELÉCTRICAS', label: 'ELÉCTRICAS', ranges: ['OE.5', 'OE.5.1', 'OE.5.2', 'OE.5.3', 'OE.5.4', 'OE.5.5'] },
+    { id: 'ELECTROMECÁNICAS', label: 'ELECTROMECÁNICAS', ranges: ['OE.5.6', 'OE.5.7', 'OE.7'] },
+    { id: 'COMUNICACIONES', label: 'COMUNICACIONES', ranges: ['OE.6'] },
+    { id: 'PLAN DE MANEJO AMBIENTAL', label: 'PLAN DE MANEJO AMBIENTAL', ranges: ['OE.8'] },
+    { id: 'EQUIPAMIENTO BIOMÉDICO', label: 'EQUIPAMIENTO BIOMÉDICO', ranges: ['OE.9'] },
+];
+
+const obtenerEspecialidad = (codigo) => {
+    if (!codigo) return "";
+    const cleanCodigo = codigo.trim();
+    // Buscar la regla más específica primero (rango más largo)
+    const sortedRules = [...SPECIALTY_RULES]
+        .filter(r => r.id !== 'TODAS')
+        .sort((a, b) => {
+            const maxA = Math.max(...a.ranges.map(r => r.length));
+            const maxB = Math.max(...b.ranges.map(r => r.length));
+            return maxB - maxA;
+        });
+
+    for (const rule of sortedRules) {
+        if (rule.ranges.some(range => cleanCodigo.startsWith(range))) {
+            return rule.id;
+        }
+    }
+    return "";
+};
+
 // Helper para determinar si una partida es de acero
 const esPartidaAcero = (m) =>
     m.unidad && m.unidad.toLowerCase() === 'kg' &&
@@ -128,7 +164,7 @@ app.post('/api/export/metrados', async (req, res) => {
             const total2 = partidaTotals[codigoActual] || 0;
             const unidadActual = (m.unidad) || (codigosMap.get(codigoActual)?.unidad) || "";
 
-            rowData = new Array(26).fill("");
+            rowData = new Array(27).fill("");
 
             if (isSumatoria) {
                 const hasMetrados = codesWithMetrados.has(codigoActual);
@@ -141,7 +177,8 @@ app.post('/api/export/metrados', async (req, res) => {
                 rowData[22] = hasMetrados ? total2 : ""; // W: Total 2
                 rowData[23] = unidadActual; // X: Unidad
                 rowData[24] = m.modificacion || "SM"; // Y
-                rowData[25] = ""; // Z: Personal (Vacío en jerarquías)
+                rowData[25] = ""; // Z: Personal
+                rowData[26] = ""; // AA: Autor
             }
             // CASO B: Registro Real
             else if (!m.is_template) {
@@ -167,7 +204,7 @@ app.post('/api/export/metrados', async (req, res) => {
 
                 rowData[1] = m.nivelJerarquia != null ? String(m.nivelJerarquia) : ""; // B
                 rowData[2] = m.fecha || ""; // C
-                rowData[3] = m.especialidad || ""; // D
+                rowData[3] = obtenerEspecialidad(codigoActual) || m.especialidad || ""; // D: Especialidad detectada
                 rowData[4] = m.frente || ""; // E
                 rowData[5] = m.bloque || ""; // F
                 rowData[6] = m.nivel || ""; // G
@@ -193,8 +230,11 @@ app.post('/api/export/metrados', async (req, res) => {
                 rowData[23] = unidadActual; // X: Unidad
                 rowData[24] = m.modificacion || "SM"; // Y: modificacion
                 
-                // Z: Personal (Cuadrilla Consolidada)
+                // Z: Personal (Cuadrilla Consolidada / Nombre Formateado)
                 rowData[25] = m.obrero_nombre || "";
+
+                // AA: Autor
+                rowData[26] = m.autor_usuario || "";
             }
 
             if (rowData) {

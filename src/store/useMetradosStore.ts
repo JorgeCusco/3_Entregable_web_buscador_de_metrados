@@ -31,7 +31,7 @@ interface MetradosState {
     updateMetrado: (id: string, payload: Partial<Metrado>) => Promise<void>;
     deleteMetrado: (id: string) => Promise<void>;
     updateGroup: (codigo_partida: string, old_elemento: string, new_elemento: string) => Promise<void>;
-    addCustomPartida: (partida: Partida) => Promise<boolean>;
+    addCustomPartida: (partida: Partida) => Promise<Partida | null>;
     fetchCustomPartidas: () => Promise<void>;
     clearAll: () => void;
 }
@@ -256,14 +256,15 @@ export const useMetradosStore = create<MetradosState>()(
                             codigo: partida.codigo,
                             descripcion: partida.descripcion,
                             unidad: partida.unidad,
-                            modificacion: partida.modificacion || 'PC'
+                            modificacion: partida.modificacion || 'PC',
+                            especialidad: partida.especialidad
                         } as any])
                         .select()
                         .single() as any;
 
                     if (error) {
                         console.error('Error insertando partida personalizada en Supabase:', error);
-                        return false; // Indicamos falla al UI
+                        return null; // Indicamos falla al UI
                     }
 
                     // 2. Transforrmarlo al modelo `Partida` del frontend
@@ -274,6 +275,7 @@ export const useMetradosStore = create<MetradosState>()(
                         descripcion: data.descripcion,
                         unidad: data.unidad,
                         modificacion: data.modificacion || 'PC',
+                        especialidad: data.especialidad,
                         is_template: true,
                         es_titulo: false,
                         jerarquia: [],
@@ -285,10 +287,10 @@ export const useMetradosStore = create<MetradosState>()(
                         customPartidas: [...state.customPartidas, dbPartida]
                     }));
 
-                    return true;
+                    return dbPartida;
                 } catch (err) {
                     console.error('Error innesperado al guardar partida personalizada', err);
-                    return false;
+                    return null;
                 }
             },
 
@@ -311,6 +313,7 @@ export const useMetradosStore = create<MetradosState>()(
                             descripcion: dbRow.descripcion,
                             unidad: dbRow.unidad,
                             modificacion: dbRow.modificacion || 'PC',
+                            especialidad: dbRow.especialidad,
                             is_template: true,
                             es_titulo: false,
                             jerarquia: [],

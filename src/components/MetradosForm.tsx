@@ -10,6 +10,8 @@ import { ESPECIALIDADES_PARTIDA, getEspecialidadPorCodigo } from '../constants/e
 import { Save, Eraser } from 'lucide-react';
 import { HVAC_DATA } from '../data/hvacData';
 import { usePersonalStore } from '../store/usePersonalStore';
+import { SimpleSearchInput } from './ui/SimpleSearchInput';
+import { PersonalMultiSelect } from './ui/PersonalMultiSelect';
 
 interface MetradosFormProps {
     state: any;
@@ -47,11 +49,9 @@ export const RenderModificacionBadge = (modificacionStr?: string) => {
 // @ts-ignore
 window.RenderModificacionBadge = RenderModificacionBadge;
 
-import { SimpleSearchInput } from './ui/SimpleSearchInput';
-import { PersonalMultiSelect } from './ui/PersonalMultiSelect';
-
 export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, proyecto }) => {
     const { personal } = usePersonalStore();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     
     const uniqueCuadrillas = useMemo(() => {
         const cuadrillas = personal.map(p => p.cuadrilla).filter(c => c && c.trim() !== '' && c !== 'nan');
@@ -65,7 +65,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 const isAceroFlag = isAcero(state.partidaSeleccionada);
                 const isAceroValido = isAceroFlag && state.cantidad !== "" && state.cantidad > 0;
                 const isGuardable = state.partidaSeleccionada && (state.total > 0 || isAceroValido);
-                if (isGuardable) onGuardar();
+                if (isGuardable) handleOnGuardar();
             } else {
                 const nextEl = document.getElementById(nextId) as HTMLInputElement;
                 if (nextEl) {
@@ -78,6 +78,13 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
     const [showNuevaPartidaModal, setShowNuevaPartidaModal] = useState(false);
     const [nuevaPartidaData, setNuevaPartidaData] = useState({ codigo: '', descripcion: '', unidad: 'm' });
+    const [modalEspecialidad, setModalEspecialidad] = useState<string>('TODAS');
+
+    React.useEffect(() => {
+        if (showNuevaPartidaModal) {
+            setModalEspecialidad(state.especialidadSeleccionada || 'TODAS');
+        }
+    }, [showNuevaPartidaModal, state.especialidadSeleccionada]);
 
     const catalogoSugerencias = useMemo(() => {
         return [
@@ -85,6 +92,19 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
             ...state.customPartidas
         ];
     }, [proyecto, state.customPartidas]);
+
+    const modalCatalogoSugerencias = useMemo(() => {
+        return catalogoSugerencias.filter(p => {
+            if (p.es_titulo) return false;
+            if (modalEspecialidad === 'TODAS') return true;
+            
+            const mapping = ESPECIALIDADES_PARTIDA.find(e => e.nombre === modalEspecialidad);
+            const coincidePrefijo = mapping ? mapping.prefijos.some(pref => p.codigo.trim().startsWith(pref)) : true;
+            const coincideEspecialidad = p.especialidad === modalEspecialidad;
+
+            return coincidePrefijo || coincideEspecialidad;
+        });
+    }, [catalogoSugerencias, modalEspecialidad]);
 
     const handleCrearPartida = async () => {
         if (!nuevaPartidaData.codigo || !nuevaPartidaData.descripcion) return;
@@ -96,16 +116,29 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
             unidad: nuevaPartidaData.unidad,
             jerarquia: [],
             nivel_jerarquia: 1,
-            modificacion: 'PC' 
+            modificacion: 'PC',
+            especialidad: modalEspecialidad === 'TODAS' ? getEspecialidadPorCodigo(nuevaPartidaData.codigo) : modalEspecialidad 
         };
 
-        const success = await actions.addCustomPartida(nuevaP);
-        if (success) {
-            actions.setPartidaSeleccionada(nuevaP);
+        const successPartida = await actions.addCustomPartida(nuevaP); 
+        if (successPartida) {
+            // successPartida ahora es el objeto Partida con su ID real (UUID)
+            actions.setPartidaSeleccionada(successPartida);
             setShowNuevaPartidaModal(false);
             setNuevaPartidaData({ codigo: '', descripcion: '', unidad: 'm' });
         } else {
             alert('Error al guardar en Supabase.');
+        }
+    };
+
+    const handleOnGuardar = async () => {
+        if (isSubmitting) return;
+        setIsSubmitting(true);
+        try {
+            await onGuardar();
+        } finally {
+            // Un pequeño delay para evitar clics fantasma
+            setTimeout(() => setIsSubmitting(false), 1000);
         }
     };
 
@@ -116,18 +149,28 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 <div className="absolute inset-0 z-[200] bg-white/90 backdrop-blur-sm p-4 flex flex-col justify-center animate-in fade-in zoom-in-95 duration-200">
                     <div className="glass-panel p-5 rounded-2xl shadow-xl border border-blue-100 flex flex-col gap-4">
                         <div className="flex items-center justify-between">
-                            <h3 className="text-xs font-black text-blue-900 uppercase tracking-widest">Crear Nueva Partida</h3>
+                            <h3 className="text-xs font-black text-blue-900 uppercase tracking-widest">Crear Nueva Partida o actividad</h3>
                             <button onClick={() => setShowNuevaPartidaModal(false)} className="text-slate-400 hover:text-red-500 font-bold text-xs px-2 cursor-pointer">X</button>
                         </div>
                         
                         <div className="space-y-3">
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Filtrar por Especialidad</label>
+                                <Select
+                                    value={modalEspecialidad}
+                                    onSelect={val => setModalEspecialidad(val)}
+                                    options={ESPECIALIDADES_PARTIDA.map(esp => esp.nombre)}
+                                    className="bg-white"
+                                />
+                            </div>
+
                             <SimpleSearchInput 
                                 label="Código (OE.x.x.x)"
                                 placeholder="OE.1.1.2.3.99"
                                 value={nuevaPartidaData.codigo}
                                 onChange={val => setNuevaPartidaData({...nuevaPartidaData, codigo: val.toUpperCase()})}
                                 onSelect={p => setNuevaPartidaData({ ...nuevaPartidaData, codigo: p.codigo, descripcion: p.descripcion })}
-                                suggestions={catalogoSugerencias}
+                                suggestions={modalCatalogoSugerencias}
                                 searchField="codigo"
                                 renderItem={(p) => (
                                     <>
@@ -147,7 +190,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                 value={nuevaPartidaData.descripcion}
                                 onChange={val => setNuevaPartidaData({...nuevaPartidaData, descripcion: val})}
                                 onSelect={p => setNuevaPartidaData({ ...nuevaPartidaData, codigo: p.codigo, descripcion: p.descripcion })}
-                                suggestions={catalogoSugerencias}
+                                suggestions={modalCatalogoSugerencias}
                                 searchField="descripcion"
                                 renderItem={(p) => (
                                     <>
@@ -234,9 +277,12 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         ].filter(p => {
                             if (p.es_titulo) return false; // Evitar seleccionar títulos como partidas de metrado
                             if (state.especialidadSeleccionada === 'TODAS') return true;
+
                             const mapping = ESPECIALIDADES_PARTIDA.find(e => e.nombre === state.especialidadSeleccionada);
-                            if (!mapping) return true;
-                            return mapping.prefijos.some(pref => p.codigo.trim().startsWith(pref));
+                            const coincidePrefijo = mapping ? mapping.prefijos.some(pref => p.codigo.trim().startsWith(pref)) : true;
+                            const coincideEspecialidad = p.especialidad === state.especialidadSeleccionada;
+
+                            return coincidePrefijo || coincideEspecialidad;
                         })}
                             value={state.partidaSeleccionada ? state.partidaSeleccionada.descripcion : ''}
                             onSelect={(p: Partida) => {
@@ -518,15 +564,15 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
             <button
                 id="submit"
-                onClick={onGuardar}
-                disabled={!state.partidaSeleccionada || (state.total === 0 && !(isAcero(state.partidaSeleccionada) && state.cantidad !== "" && state.cantidad > 0))}
-                className={`w-full py-3 rounded-xl font-black text-[11px] tracking-[0.2em] uppercase flex items-center justify-center gap-2 transition-all shadow-md ${(!state.partidaSeleccionada || (state.total === 0 && !(isAcero(state.partidaSeleccionada) && state.cantidad !== "" && state.cantidad > 0)))
+                onClick={handleOnGuardar}
+                disabled={isSubmitting || !state.partidaSeleccionada || (state.total === 0 && !(isAcero(state.partidaSeleccionada) && state.cantidad !== "" && state.cantidad > 0))}
+                className={`w-full py-3 rounded-xl font-black text-[11px] tracking-[0.2em] uppercase flex items-center justify-center gap-2 transition-all shadow-md ${(isSubmitting || !state.partidaSeleccionada || (state.total === 0 && !(isAcero(state.partidaSeleccionada) && state.cantidad !== "" && state.cantidad > 0)))
                     ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
                     : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-lg active:scale-[0.98]'
                     }`}
             >
                 <Save className="w-4 h-4" />
-                REGISTRAR METRADO
+                {isSubmitting ? 'GUARDANDO...' : 'REGISTRAR METRADO'}
             </button>
         </div>
     );
