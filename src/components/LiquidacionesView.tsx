@@ -47,11 +47,9 @@ export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }
         fetchPersonal();
         fetchCatalogoMaestro();
         fetchCustomPartidas();
-        // Cargar metrados de liquidaciones del usuario
-        if (user?.nombre_completo) {
-            fetchLiquidaciones(user.nombre_completo);
-        }
-    }, [fetchPersonal, fetchCatalogoMaestro, fetchCustomPartidas, fetchLiquidaciones, user?.nombre_completo]);
+        // Cargar todos los metrados de liquidaciones (Modo Colaborativo)
+        fetchLiquidaciones();
+    }, [fetchPersonal, fetchCatalogoMaestro, fetchCustomPartidas, fetchLiquidaciones]);
 
     const handleGuardar = async () => {
         try {
@@ -67,9 +65,7 @@ export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }
                     setToast(`Liquidación guardada: ${nuevo.codigo_partida}`);
                     alert(`¡Liquidación Registrada!\n\nSe guardó correctamente la Partida: ${nuevo.codigo_partida}`);
                     setTimeout(() => setToast(null), 3000);
-                    if (user?.nombre_completo) {
-                        fetchLiquidaciones(user.nombre_completo);
-                    }
+                    fetchLiquidaciones();
                 } else {
                     alert("Error de guardado:\n\n" + result.error);
                 }
@@ -151,6 +147,10 @@ export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }
                         <div className="flex items-center gap-2 text-xs text-green-600 font-bold uppercase tracking-wider">
                             <UserIcon className="w-3 h-3" />
                             <span>{user?.nombre_completo} ({user?.cargo})</span>
+                        </div>
+                        <div className="mt-1 flex items-center gap-1.5">
+                            <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tight">Ecosistema Colaborativo Activo</span>
                         </div>
                     </div>
                 </div>
