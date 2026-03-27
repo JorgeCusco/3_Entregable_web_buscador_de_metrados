@@ -71,6 +71,7 @@ export interface Metrado {
     especialidad?: string;
     hvac_factor?: number | null;
     hvac_item_type?: string | null;
+    tipo_metrado?: 'ESTANDAR' | 'ACERO' | 'HVAC_DUCTO' | 'HVAC_ACCESORIO' | string;
 }
 
 export interface User {

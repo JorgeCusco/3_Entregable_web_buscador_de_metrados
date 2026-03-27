@@ -12,6 +12,26 @@
 
 import { normalizeAuthorName, normalizeSpecialty, isValidSpecialty } from '../utils/normalization';
 import type { Metrado, Partida } from '../types';
+import { SPECIALTY_RULES } from '../data/specialtyConfig';
+
+/**
+ * Deduce la especialidad a partir del código de partida (OE.2... -> ESTRUCTURAS)
+ */
+export const getEspecialidadPorCodigo = (codigo: string): string => {
+    if (!codigo) return '';
+    const cleanCode = codigo.trim().toUpperCase();
+    
+    // Buscar la regla que tenga un rango que sea prefijo del código
+    for (const rule of SPECIALTY_RULES) {
+        if (rule.id === 'TODAS') continue;
+        for (const range of rule.ranges) {
+            if (cleanCode.startsWith(range.toUpperCase())) {
+                return rule.id;
+            }
+        }
+    }
+    return '';
+};
 
 // ============================================================================
 // ✅ SOLUCIÓN 1: Filtro de Autor Mejorado
@@ -30,14 +50,15 @@ import type { Metrado, Partida } from '../types';
 export const getAvailableAuthorsImproved = (
     metrados: Metrado[],
     especialidad?: string,
-    catalogoActivo?: Partida[]
+    catalogoActivo?: Partida[],
+    getEspecialidadPorCodigoFn: (codigo: string) => string = getEspecialidadPorCodigo
 ): string[] => {
     let filtered = metrados;
     
-    // Aplicar filtro de especialidad si existe
+    // Aplicar filtro de especialidad si existe y NO es TODAS
     if (especialidad && especialidad !== 'TODAS') {
         filtered = filtered.filter(m => 
-            isMetradoOfSpecialtyImproved(m, especialidad, catalogoActivo || [])
+            isMetradoOfSpecialtyImproved(m, especialidad, catalogoActivo || [], getEspecialidadPorCodigoFn)
         );
     }
 
@@ -103,10 +124,12 @@ export const filterMetradosByAuthor = (
 export const isMetradoOfSpecialtyImproved = (
     metrado: Metrado,
     specialtyId: string,
-    catalogoActivo: Partida[] = []
+    catalogoActivo: Partida[] = [],
+    getEspecialidadPorCodigoFn?: (codigo: string) => string
 ): boolean => {
     const targetSpecialty = normalizeSpecialty(specialtyId);
     
+    // Si selecciona TODAS, mostrar TODO (incluso registros sin especialidad clara)
     if (targetSpecialty === 'TODAS') {
         return true;
     }
@@ -135,17 +158,17 @@ export const isMetradoOfSpecialtyImproved = (
     }
 
     // NIVEL 3: Fallback mediante deducción de código (MENOS confiable)
-    // Nota: Esta línea requiere que getEspecialidadPorCodigo esté disponible en el contexto
-    // Descomentar si la función está disponible:
-    // import { getEspecialidadPorCodigo } from '../constants/especialidades';
-    // const deducedSpec = getEspecialidadPorCodigo?.(metrado.codigo_partida);
-    // if (deducedSpec && isValidSpecialty(deducedSpec)) {
-    //     const deducedNormalized = normalizeSpecialty(deducedSpec);
-    //     return deducedNormalized === targetSpecialty;
-    // }
+    // Rescata metrados huérfanos cuya partida fue eliminada pero el código sugiere especialidad
+    if (getEspecialidadPorCodigoFn) {
+        const deducedSpec = getEspecialidadPorCodigoFn(metrado.codigo_partida);
+        if (deducedSpec && isValidSpecialty(deducedSpec)) {
+            const deducedNormalized = normalizeSpecialty(deducedSpec);
+            return deducedNormalized === targetSpecialty;
+        }
+    }
 
-    // Si nada coincide, retornar false (registro sin clasificación válida)
-    // Alternativa: comentar esta línea para mostrar registros sin especialidad
+    // Si nada coincide y estamos filtrando por especialidad específica:
+    // Retornar false para excluir registros ambiguos
     return false;
 };
 
@@ -155,14 +178,15 @@ export const isMetradoOfSpecialtyImproved = (
 export const filterMetradosBySpecialty = (
     metrados: Metrado[],
     specialty: string,
-    catalogoActivo: Partida[] = []
+    catalogoActivo: Partida[] = [],
+    getEspecialidadPorCodigoFn?: (codigo: string) => string
 ): Metrado[] => {
     if (specialty === 'TODAS') {
         return metrados;
     }
 
     return metrados.filter(m => 
-        isMetradoOfSpecialtyImproved(m, specialty, catalogoActivo)
+        isMetradoOfSpecialtyImproved(m, specialty, catalogoActivo, getEspecialidadPorCodigoFn)
     );
 };
 
@@ -227,20 +251,17 @@ export const filterMetradosByDate = (
 };
 
 // ============================================================================
-// ✅ SOLUCIÓN 5: Filtro Combinado
+// ✅ SOLUCIÓN 5: Filtro Combinado Mejorado
 // ============================================================================
 
 /**
- * Combina TODOS los filtros en uno
- * Esta es la lógica que debe reemplazar el useMemo() de filteredMetrados
+ * Combina TODOS los filtros en uno con lógica corregida
  * 
- * Ubicación original: MetradosTable.tsx líneas 222-240
- * 
- * VENTAJAS:
- * - Orden de filtros optimizado (especialidad primero = menos registros para autor)
- * - Reutiliza funciones individuales
- * - Fácil de debuggear (ver logs)
- * - Pronto para agregar más filtros
+ * CORRECCIONES CRÍTICAS:
+ * 1. Proyecto: Excluye explícitamente registros sin proyecto (return false si !m.proyecto)
+ * 2. Especialidad: Soporta 'TODAS' para mostrar ambiguos, fallback por código
+ * 3. Autor: Soporta 'TODOS' para mostrar todos
+ * 4. Debug: Logging opcional para diagnosticar discrepancias local/servidor
  */
 export const applyAllFilters = (
     metrados: Metrado[],
@@ -252,41 +273,83 @@ export const applyAllFilters = (
         dateTo?: string;
         date?: string;
     },
-    catalogoActivo: Partida[] = []
+    catalogoActivo: Partida[] = [],
+    debug: boolean = false,
+    getEspecialidadPorCodigoFn: (codigo: string) => string = getEspecialidadPorCodigo
 ): Metrado[] => {
     let result = metrados;
+    const startCount = metrados.length;
+    const results: Record<string, number> = {};
+    
+    if (debug) {
+        console.group('🔍 DEBUG: applyAllFilters');
+        console.log(`📊 Input: ${startCount} metrados`);
+        console.log(`🎯 Filters:`, filters);
+        console.log(`📚 Catálogo: ${catalogoActivo.length} partidas`);
+    }
 
     // 1️⃣ PRIMERO: Filtro de proyecto (generalmente reduce más)
+    // CORRECCIÓN CRÍTICA: Excluir explícitamente registros sin proyecto
     if (filters.proyecto) {
+        const before = result.length;
         result = result.filter(m => {
-            if (!m.proyecto) return true;
+            // Si no tiene proyecto, EXCLUIR (lógica correcta)
+            // NO usar: if (!m.proyecto) return true;  ← ESTO ERA EL ERROR
+            if (!m.proyecto) return false;
             return m.proyecto.toLowerCase() === filters.proyecto!.toLowerCase();
         });
+        results['proyecto'] = result.length;
+        if (debug) console.log(`   📋 Proyecto (${filters.proyecto}): ${before} → ${result.length}`);
     }
 
     // 2️⃣ SEGUNDO: Filtro de especialidad (reduce significativamente)
-    if (filters.especialidad) {
+    if (filters.especialidad && filters.especialidad !== 'TODAS') {
+        const before = result.length;
         result = filterMetradosBySpecialty(
             result,
             filters.especialidad,
-            catalogoActivo
+            catalogoActivo,
+            getEspecialidadPorCodigoFn
         );
+        results['especialidad'] = result.length;
+        if (debug) {
+            console.log(`   🏗️  Especialidad (${filters.especialidad}): ${before} → ${result.length}`);
+            if (before > result.length) {
+                console.log(`   ⚠️  Removidos: ${before - result.length}`);
+            }
+        }
     }
 
     // 3️⃣ TERCERO: Filtro de autor (después de especialidad, generalmente menos registros)
-    if (filters.autor) {
+    if (filters.autor && filters.autor !== 'TODOS') {
+        const before = result.length;
         result = filterMetradosByAuthor(result, filters.autor);
+        results['autor'] = result.length;
+        if (debug) console.log(`   👤 Autor (${filters.autor}): ${before} → ${result.length}`);
     }
 
     // 4️⃣ CUARTO: Filtro de fecha (simple comparación)
     if (filters.dateFrom || filters.dateTo) {
+        const before = result.length;
         result = filterMetradosByDateRange(
             result,
             filters.dateFrom,
             filters.dateTo
         );
+        results['fecha'] = result.length;
+        if (debug) console.log(`   📅 Fecha (${filters.dateFrom} a ${filters.dateTo}): ${before} → ${result.length}`);
     } else if (filters.date) {
+        const before = result.length;
         result = filterMetradosByDate(result, filters.date);
+        results['fecha'] = result.length;
+        if (debug) console.log(`   📅 Fecha (${filters.date}): ${before} → ${result.length}`);
+    }
+
+    if (debug) {
+        console.log(`\n✅ Resultado Final: ${result.length} metrados`);
+        console.log(`📉 Removidos en total: ${startCount - result.length}`);
+        console.log(`📋 Detalles:`, results);
+        console.groupEnd();
     }
 
     return result;

@@ -21,10 +21,12 @@
 export const normalizeAuthorName = (name: string): string => {
     return (name || '')
         .toString()
-        .replace(/\u00a0/g, ' ')      // NBSP → espacio regular
-        .replace(/\s+/g, ' ')          // Múltiples espacios → 1 espacio
-        .trim()                        // Eliminar espacios inicio/fin
-        .toUpperCase();                // Convertir a UPPERCASE
+        .normalize("NFD")               // Descomponer caracteres combinados (acentos)
+        .replace(/[\u0300-\u036f]/g, "") // Eliminar los acentos
+        .replace(/\u00a0/g, ' ')         // NBSP → espacio regular
+        .replace(/\s+/g, ' ')             // Múltiples espacios → 1 espacio
+        .trim()                           // Eliminar espacios inicio/fin
+        .toUpperCase();                   // Convertir a UPPERCASE
 };
 
 /**

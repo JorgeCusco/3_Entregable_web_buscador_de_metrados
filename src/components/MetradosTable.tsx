@@ -139,13 +139,13 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
             const sample = metradosDeOrfano[0];
             finalRows.push({
                 id: `virt-header-${code}`,
-                codigo: code,
-                descripcion: (sample.descripcion_partida || '(Partida Histórica No Encontrada)').toString().replace(/NaN/g, ''),
+                codigo: code === 'SIN_CODIGO' ? 'S/C' : code,
+                descripcion: (sample.descripcion_partida || '(Entrada Manual / Sin Item)').toString().replace(/NaN/g, ''),
                 unidad: (sample.unidad || 'und').toString().replace(/NaN/g, ''),
                 modificacion: 'ET',
                 is_template: true,
                 es_titulo: false,
-                tipo_metrado: 'ESTANDAR'
+                tipo_metrado: sample.tipo_metrado || 'ESTANDAR'
             });
 
             metradosDeOrfano.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
@@ -160,15 +160,6 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital', especialidadSeleccionada = 'TODAS', onEspecialidadChange, isSpecialtyLocked }) => {
     const { customPartidas, catalogoHospital, catalogoContingencia } = useMetradosStore();
 
-    // Filtrar metrados por proyecto (Case-Insensitive V8.1)
-    const metradosDelProyecto = useMemo(() => {
-        const projActual = proyecto.toLowerCase();
-        return metrados.filter(m => {
-            if (!m.proyecto) return true; // Si no tiene proyecto, mostrarlo
-            return m.proyecto.toLowerCase() === projActual;
-        });
-    }, [metrados, proyecto]);
-
     // Seleccionar el catálogo de partidas correcto según el proyecto y sumarle las personalizadas
     const catalogoActivo = useMemo(() => {
         const base = proyecto === 'hospital' ? catalogoHospital : catalogoContingencia;
@@ -178,22 +169,26 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     const [filterAuthor, setFilterAuthor] = React.useState('TODOS');
     const [filterDateFrom, setFilterDateFrom] = React.useState('');
     const [filterDateTo, setFilterDateTo] = React.useState('');
+    const [debugMode] = React.useState(false); // Cambiar a true para ver logs de filtrado
 
     // Extraer todos los autores únicos presentes en la vista actual (filtrados por especialidad)
     const availableAuthors = useMemo(() => {
-        return getAvailableAuthorsImproved(metradosDelProyecto, especialidadSeleccionada, catalogoActivo);
-    }, [metradosDelProyecto, especialidadSeleccionada, catalogoActivo]);
+        return getAvailableAuthorsImproved(metrados, especialidadSeleccionada, catalogoActivo);
+    }, [metrados, especialidadSeleccionada, catalogoActivo]);
 
-    // Filtrar metrados por especialidad dinámica, autor y fecha (OPTIMIZADO)
+    // Filtrar metrados por proyecto, especialidad, autor y fecha (OPTIMIZADO)
+    // CORRECCIÓN: 
+    // - Proyecto ahora se aplica en applyAllFilters (no en useMemo separado)
+    // - Agregar parámetro debug para diagnosticar discrepancias local/servidor
     const filteredMetrados = useMemo(() => {
-        return applyAllFilters(metradosDelProyecto, {
+        return applyAllFilters(metrados, {
             proyecto,
             especialidad: especialidadSeleccionada,
             autor: filterAuthor,
             dateFrom: filterDateFrom,
             dateTo: filterDateTo,
-        }, catalogoActivo);
-    }, [metradosDelProyecto, especialidadSeleccionada, filterAuthor, filterDateFrom, filterDateTo, proyecto, catalogoActivo]);
+        }, catalogoActivo, debugMode);
+    }, [metrados, proyecto, especialidadSeleccionada, filterAuthor, filterDateFrom, filterDateTo, catalogoActivo, debugMode]);
 
     const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo), [filteredMetrados, catalogoActivo]);
     const [isExporting, setIsExporting] = React.useState(false);
@@ -586,8 +581,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
                                     <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1 text-center border-l border-slate-100/50">
                                         <div className="flex flex-col items-center leading-none">
-                                            <span className="text-[9px] font-black text-slate-800 uppercase truncate w-full" title={r.autor_usuario}>
-                                                {r.autor_usuario?.split(' ')[0] || 'User'}
+                                            <span className="text-[9px] font-black text-slate-800 uppercase truncate w-full" title={r.autor_usuario || 'User'}>
+                                                {(r.autor_usuario || 'User').split(' ')[0]}
                                             </span>
                                             <span className="text-[7px] text-slate-400 font-bold">AUTOR</span>
                                         </div>
