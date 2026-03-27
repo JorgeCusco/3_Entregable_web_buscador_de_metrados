@@ -1,0 +1,6 @@
+FILAS CON DATOS (Col 3 != 0):
+    0        1                  2         3              4      5       6         7     8                              9      10   11   12   13      14      15   16   17
+4  NaN  PARTIDA        DESCRIPCION  CANTIDAD  LONGITUD/AREA  ANCHO  ALTURA  N° VECES     Φ  DIAMETRO DE REFUERZO DE ACERO    NaN  NaN  NaN  NaN     NaN     NaN  NaN  NaN
+9  NaN      NaN  ACERO LONGUTDINAL         4            4.5    NaN     NaN        20    1"                              0      0    0    0    0  1429.2  1429.2  NaN  NaN
+10 NaN      NaN            EMPALME         2            1.8    NaN     NaN         4    1"                              0      0    0    0    0  57.168  57.168  NaN  NaN
+11 NaN      NaN                NaN        20            1.1    NaN     NaN         1  3/8"                              0  12.32    0    0    0       0   12.32  NaN  NaN

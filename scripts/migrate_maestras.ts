@@ -86,7 +86,9 @@ function prepareRecords(mockArray: any[], proyectoId: string) {
       nivel_jerarquia: p.nivel_jerarquia || 1, // Por si acaso algún nivel viene vacío
       is_title: p.es_titulo || false,
       proyecto_id: proyectoId,
-      parent_id: null as null | string
+      parent_id: null as null | string,
+      modificacion: p.modificacion || 'SM', // Incluye el campo modificacion (MM5, ET, etc)
+      tipo_metrado: p.tipo_metrado || 'ESTANDAR' // Incluye tipo_metrado si existe
     };
   });
 

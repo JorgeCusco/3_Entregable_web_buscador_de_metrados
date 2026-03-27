@@ -1,15 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { SearchCombobox } from './ui/SearchCombobox';
 import { Select } from './ui/Select';
 import type { Partida } from '../types';
 import type { TipoProyecto } from '../App';
-import { isAcero } from '../hooks/useMetradosForm';
-import { mockPartidas } from '../data/mockDB_1';
-import { mockPartidasContingencia } from '../data/mockDB_contingencia';
+import { isAcero, isInstalacion } from '../hooks/useMetradosForm';
 import { ESPECIALIDADES_PARTIDA, getEspecialidadPorCodigo } from '../constants/especialidades';
 import { Save, Eraser } from 'lucide-react';
 import { HVAC_DATA } from '../data/hvacData';
 import { usePersonalStore } from '../store/usePersonalStore';
+import { useMetradosStore } from '../store/useMetradosStore';
 import { SimpleSearchInput } from './ui/SimpleSearchInput';
 import { PersonalMultiSelect } from './ui/PersonalMultiSelect';
 
@@ -51,6 +50,7 @@ window.RenderModificacionBadge = RenderModificacionBadge;
 
 export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, proyecto }) => {
     const { personal } = usePersonalStore();
+    const { catalogoHospital, catalogoContingencia } = useMetradosStore();
     const [isSubmitting, setIsSubmitting] = useState(false);
     
     const uniqueCuadrillas = useMemo(() => {
@@ -77,7 +77,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
     };
 
     const [showNuevaPartidaModal, setShowNuevaPartidaModal] = useState(false);
-    const [nuevaPartidaData, setNuevaPartidaData] = useState({ codigo: '', descripcion: '', unidad: 'm' });
+    const [nuevaPartidaData, setNuevaPartidaData] = useState({ codigo: '', descripcion: '', unidad: 'm', tipo_metrado: 'ESTANDAR' });
     const [modalEspecialidad, setModalEspecialidad] = useState<string>('TODAS');
 
     React.useEffect(() => {
@@ -88,10 +88,10 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
     const catalogoSugerencias = useMemo(() => {
         return [
-            ...(proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia),
+            ...(proyecto === 'hospital' ? catalogoHospital : catalogoContingencia),
             ...state.customPartidas
         ];
-    }, [proyecto, state.customPartidas]);
+    }, [proyecto, catalogoHospital, catalogoContingencia, state.customPartidas]);
 
     const modalCatalogoSugerencias = useMemo(() => {
         return catalogoSugerencias.filter(p => {
@@ -117,7 +117,8 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
             jerarquia: [],
             nivel_jerarquia: 1,
             modificacion: 'PC',
-            especialidad: modalEspecialidad === 'TODAS' ? getEspecialidadPorCodigo(nuevaPartidaData.codigo) : modalEspecialidad 
+            especialidad: modalEspecialidad === 'TODAS' ? getEspecialidadPorCodigo(nuevaPartidaData.codigo) : modalEspecialidad,
+            tipo_metrado: nuevaPartidaData.tipo_metrado || 'ESTANDAR'
         };
 
         const successPartida = await actions.addCustomPartida(nuevaP); 
@@ -125,7 +126,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
             // successPartida ahora es el objeto Partida con su ID real (UUID)
             actions.setPartidaSeleccionada(successPartida);
             setShowNuevaPartidaModal(false);
-            setNuevaPartidaData({ codigo: '', descripcion: '', unidad: 'm' });
+            setNuevaPartidaData({ codigo: '', descripcion: '', unidad: 'm', tipo_metrado: 'ESTANDAR' });
         } else {
             alert('Error al guardar en Supabase.');
         }
@@ -141,6 +142,12 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
             setTimeout(() => setIsSubmitting(false), 1000);
         }
     };
+
+    // Diagnóstico de filtrado (V7.2)
+    useEffect(() => {
+        const filtered = catalogoSugerencias.filter(p => !p.es_titulo && (state.especialidadSeleccionada === 'TODAS' || getEspecialidadPorCodigo(p.codigo) === state.especialidadSeleccionada || p.especialidad === state.especialidadSeleccionada));
+        console.log(`[V7.2 Searcher] Especialidad: ${state.especialidadSeleccionada} | Total: ${catalogoSugerencias.length} | Filtrados: ${filtered.length}`);
+    }, [catalogoSugerencias, state.especialidadSeleccionada]);
 
     return (
         <div className="glass-panel rounded-2xl p-4 h-full flex flex-col gap-3 relative">
@@ -204,13 +211,23 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                 )}
                             />
 
-                            <div className="space-y-1">
-                                <label className="text-[9px] font-bold text-slate-500 uppercase">Unidad</label>
-                                <Select 
-                                    value={nuevaPartidaData.unidad}
-                                    options={['m', 'm2', 'm3', 'kg', 'und', 'glb', 'pto', 'est']}
-                                    onSelect={val => setNuevaPartidaData({...nuevaPartidaData, unidad: val})}
-                                />
+                            <div className="grid grid-cols-2 gap-2">
+                                <div className="space-y-1">
+                                    <label className="text-[9px] font-bold text-slate-500 uppercase">Unidad</label>
+                                    <Select 
+                                        value={nuevaPartidaData.unidad}
+                                        options={['m', 'm2', 'm3', 'kg', 'und', 'glb', 'pto', 'est']}
+                                        onSelect={val => setNuevaPartidaData({...nuevaPartidaData, unidad: val})}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[9px] font-bold text-slate-500 uppercase" title="Lógica matemática que aplicará la app para esta partida">Tipo de Lógica</label>
+                                    <Select 
+                                        value={nuevaPartidaData.tipo_metrado}
+                                        options={['ESTANDAR', 'ACERO', 'HVAC_DUCTO', 'HVAC_ACCESORIO']}
+                                        onSelect={val => setNuevaPartidaData({...nuevaPartidaData, tipo_metrado: val})}
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -271,18 +288,18 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     <div className="space-y-1">
                         <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Partida (Buscador)</label>
                         <SearchCombobox
-                            partidas={[
-                            ...(proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia),
-                            ...state.customPartidas
-                        ].filter(p => {
-                            if (p.es_titulo) return false; // Evitar seleccionar títulos como partidas de metrado
+                            partidas={catalogoSugerencias.filter(p => {
+                            if (p.es_titulo) return false;
                             if (state.especialidadSeleccionada === 'TODAS') return true;
 
-                            const mapping = ESPECIALIDADES_PARTIDA.find(e => e.nombre === state.especialidadSeleccionada);
-                            const coincidePrefijo = mapping ? mapping.prefijos.some(pref => p.codigo.trim().startsWith(pref)) : true;
-                            const coincideEspecialidad = p.especialidad === state.especialidadSeleccionada;
+                            let espP = p.especialidad;
+                            // Normalizar / Recalcular si es nulo o genérico
+                            if (!espP || espP === 'hospital' || espP === 'contingencia' || espP === 'TODAS') {
+                                espP = getEspecialidadPorCodigo(p.codigo);
+                            }
 
-                            return coincidePrefijo || coincideEspecialidad;
+                            // Comparación estricta por nombre de especialidad
+                            return espP.trim().toUpperCase() === state.especialidadSeleccionada.trim().toUpperCase();
                         })}
                             value={state.partidaSeleccionada ? state.partidaSeleccionada.descripcion : ''}
                             onSelect={(p: Partida) => {
@@ -437,6 +454,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 <div className="grid grid-cols-5 gap-1.5 bg-white/50 p-2 rounded-xl border border-slate-100 shadow-sm">
                     {(() => {
                         const flagAcero = isAcero(state.partidaSeleccionada);
+                        const flagInstalacion = isInstalacion(state.partidaSeleccionada);
                         let config = [
                             { key: 'cantidad', label: flagAcero ? 'N°' : 'CANTIDAD', nextId: 'input-longitud' },
                             { key: 'longitud', label: flagAcero ? 'LONG' : 'LONGITUD/AREA', nextId: flagAcero ? 'input-altura' : 'input-ancho' },
@@ -517,18 +535,26 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                             </div>
                         );
 
-                        if (flagAcero) {
+                        if (flagAcero || flagInstalacion) {
+                            const diametros = flagAcero 
+                                ? ['1/4"', '3/8"', '1/2"', '5/8"', '3/4"', '1"']
+                                : ['1/2"', '3/4"', '1"', '1 1/4"', '1 1/2"', '2"', '2 1/2"', '3"', '4"', '6"'];
+                            
                             const diametroField = (
                                 <div key="diametro" className="space-y-1">
-                                    <label className="text-[9px] font-black text-orange-400 uppercase tracking-tighter text-center block">DIÁM</label>
+                                    <label className={`text-[9px] font-black uppercase tracking-tighter text-center block ${flagAcero ? 'text-orange-400' : 'text-blue-400'}`}>DIÁM</label>
                                     <select
                                         id="input-diametro"
                                         value={state.diametro}
                                         onChange={e => actions.setDiametro(e.target.value)}
                                         onKeyDown={e => handleKeyDown(e as any, 'input-cantidad')}
-                                        className="w-full border border-orange-100 bg-orange-50 rounded text-[10px] font-black text-orange-700 h-[26px] text-center outline-none"
+                                        className={`w-full border rounded text-[10px] font-black h-[26px] text-center outline-none ${
+                                            flagAcero 
+                                            ? 'border-orange-100 bg-orange-50 text-orange-700' 
+                                            : 'border-blue-100 bg-blue-50 text-blue-700'
+                                        }`}
                                     >
-                                        {['1/4"', '3/8"', '1/2"', '5/8"', '3/4"', '1"'].map(opt => (
+                                        {diametros.map(opt => (
                                             <option key={opt} value={opt}>{opt}</option>
                                         ))}
                                     </select>

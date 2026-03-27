@@ -4,14 +4,21 @@ import { getEspecialidadPorCodigo } from '../constants/especialidades';
 import { usePersonalStore } from '../store/usePersonalStore';
 import { useMetradosStore } from '../store/useMetradosStore';
 import { useAuthStore } from '../store/useAuthStore';
-import { calcularParcial, calcularTotal, isAcero as isAceroUtil } from '../utils/metradosCalculations';
+import { calcularParcial, calcularTotal, isAcero as isAceroUtil, isInstalacion as isInstalacionUtil } from '../utils/metradosCalculations';
 
 export const isAcero = isAceroUtil;
+export const isInstalacion = isInstalacionUtil;
 
 export const getHvacCategory = (partida: Partida | null): string | null => {
     if (!partida) return null;
+    
+    // V6: Validación sistemática por tipo_metrado
+    if (partida.tipo_metrado === 'HVAC_DUCTO') return 'DUCTO';
+    if (partida.tipo_metrado === 'HVAC_ACCESORIO') return 'ACCESORIO';
+
     const codigo = partida.codigo;
 
+    // V5: Fallback legacy exact codes
     // Partidas que requieren TODO (Ductos + Accesorios)
     if (['OE.5.6.16.5.11.5', 'OE.5.6.16.5.12.1'].includes(codigo)) {
         return 'TODO';
@@ -147,7 +154,7 @@ export const useMetradosForm = () => {
             descripcion_partida: partidaSeleccionada.descripcion,
             elemento,
             detalle,
-            diametro: isAcero(partidaSeleccionada) ? diametro : undefined,
+            diametro: (isAcero(partidaSeleccionada) || isInstalacion(partidaSeleccionada)) ? diametro : undefined,
             cantidad,
             longitud_area: longitud,
             ancho_empalme: ancho,
@@ -159,9 +166,11 @@ export const useMetradosForm = () => {
             jerarquia: partidaSeleccionada.jerarquia,
             nivelJerarquia: partidaSeleccionada.nivel_jerarquia,
             modificacion: partidaSeleccionada.modificacion,
-            especialidad: getEspecialidadPorCodigo(partidaSeleccionada.codigo),
-            autor_usuario: "UserWeb",
-            created_at: Date.now(),
+            especialidad: (especialidadSeleccionada && especialidadSeleccionada !== 'TODAS') 
+                ? especialidadSeleccionada 
+                : getEspecialidadPorCodigo(partidaSeleccionada.codigo),
+            autor_usuario: user?.nombre_completo || "UserWeb",
+            created_at: new Date().toISOString(),
         };
 
         limpiarCampos();
@@ -190,11 +199,12 @@ export const useMetradosForm = () => {
                         if (p.cuadrilla?.toUpperCase() !== cuadrillaUpper) return false;
                         
                         if (especialidadSeleccionada && especialidadSeleccionada !== 'TODAS') {
-                            if (p.especialidad && p.especialidad.toUpperCase() === especialidadSeleccionada.toUpperCase()) {
+                            const pEsp = (p.especialidad || '').toUpperCase();
+                            const sEsp = especialidadSeleccionada.toUpperCase();
+                            // Match flexible (ej: 'SANITARIAS' entra en 'INSTALACIONES SANITARIAS')
+                            if (pEsp.includes(sEsp) || sEsp.includes(pEsp) || pEsp === 'OBRERO' || pEsp === 'GENERICO') {
                                 return true;
                             }
-                            // Solo traemos a los que coinciden estrictamente con la especialidad o no tienen,
-                            // pero el usuario prefiere que respete la selección.
                             return false;
                         }
                         

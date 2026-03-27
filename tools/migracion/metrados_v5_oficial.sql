@@ -1,0 +1,5 @@
+-- SQL Generado para Plantilla V5 (Jerárquica)
+-- Autor: RUBEN DARIO BRAVO TUNQUI
+
+INSERT INTO metrados (fecha, frente, bloque, nivel, cuadrilla, codigo_partida, descripcion_partida, unidad, elemento, detalle, cantidad, longitud_area, ancho_empalme, altura_gancho, nro_veces, diametro, total, proyecto, autor_usuario, especialidad, created_at) VALUES ('2026-03-27', 'F1', 'B1', 'N1', 'GENERAL - V5', '', '', 'und', '', 'EMPALME', 2.0, 1.8, 0, 0, 4.0, '1"', 57.168000000000006, 'hospital', 'RUBEN DARIO BRAVO TUNQUI', 'GENERAL', '2026-03-27T10:07:17.120777');
+INSERT INTO metrados (fecha, frente, bloque, nivel, cuadrilla, codigo_partida, descripcion_partida, unidad, elemento, detalle, cantidad, longitud_area, ancho_empalme, altura_gancho, nro_veces, diametro, total, proyecto, autor_usuario, especialidad, created_at) VALUES ('2026-03-27', 'F1', 'B1', 'N1', 'GENERAL - V5', '', '', 'und', '', 'Registro Importado', 20.0, 1.1, 0, 0, 1.0, '3/8"', 12.32, 'hospital', 'RUBEN DARIO BRAVO TUNQUI', 'GENERAL', '2026-03-27T10:07:17.120979');

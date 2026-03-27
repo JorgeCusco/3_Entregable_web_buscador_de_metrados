@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { MetradosForm } from './components/MetradosForm';
 import { MetradosTable } from './components/MetradosTable';
+import { LiquidacionesView } from './components/LiquidacionesView';
 import { useMetradosForm } from './hooks/useMetradosForm';
 import type { Metrado, Partida } from './types';
-import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon } from 'lucide-react';
+import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon, DollarSign } from 'lucide-react';
 import { useMetradosStore } from './store/useMetradosStore';
 import { usePersonalStore } from './store/usePersonalStore';
 import { useAuthStore } from './store/useAuthStore';
@@ -16,26 +17,35 @@ export type TipoProyecto = 'hospital' | 'contingencia';
 
 function App() {
   const { state, actions } = useMetradosForm();
-  const { metrados, context, setContext, addMetrado, updateMetrado, deleteMetrado, updateGroup, fetchCustomPartidas, fetchMetrados } = useMetradosStore();
+  const { metrados, context, setContext, addMetrado, updateMetrado, deleteMetrado, updateGroup, fetchCustomPartidas, fetchMetrados, fetchCatalogoMaestro } = useMetradosStore();
   const { fetchPersonal } = usePersonalStore();
-  const { isAuthenticated, user, logout, checkAuth } = useAuthStore();
+  const { isAuthenticated, user, logout, checkAuth, isLiquidaciones } = useAuthStore();
   
   const [toast, setToast] = useState<string | null>(null);
   const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
+  const [activeTab, setActiveTab] = useState<'general' | 'liquidaciones'>('general');
 
   // Verificar autenticación al montar
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
+  // Si es usuario de liquidaciones, mostrar automáticamente ese tab
+  useEffect(() => {
+    if (isAuthenticated && isLiquidaciones()) {
+      setActiveTab('liquidaciones');
+    }
+  }, [isAuthenticated, isLiquidaciones]);
+
   // Cargar datos iniciales solo si está autenticado
   useEffect(() => {
     if (isAuthenticated) {
       fetchPersonal();
+      fetchCatalogoMaestro();
       fetchCustomPartidas();
       fetchMetrados();
     }
-  }, [isAuthenticated, fetchCustomPartidas, fetchMetrados, fetchPersonal]);
+  }, [isAuthenticated, fetchCustomPartidas, fetchMetrados, fetchPersonal, fetchCatalogoMaestro]);
 
   const handleGuardar = async () => {
     try {
@@ -108,8 +118,16 @@ function App() {
     return <Login />;
   }
 
-  // Filtra los metrados mostrados según el proyecto activo
-  const metradosFiltrados = metrados.filter(m => !m.proyecto || m.proyecto === context.proyecto);
+  // Si es usuario de liquidaciones y está en ese tab, mostrar vista privada de liquidaciones
+  if (isLiquidaciones() && activeTab === 'liquidaciones') {
+    return <LiquidacionesView onLogout={() => logout()} />;
+  }
+
+  // Filtra los metrados mostrados según el proyecto activo (Case-insensitive V30.1)
+  const metradosFiltrados = metrados.filter(m => {
+    if (!m.proyecto) return true;
+    return m.proyecto.trim().toLowerCase() === context.proyecto.toLowerCase();
+  });
 
   return (
     <div className="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col gap-6 relative max-w-[1450px] mx-auto">
@@ -154,6 +172,21 @@ function App() {
             Contingencia
           </button>
         </div>
+
+        {/* ─── Botón Liquidaciones (Solo para usuarios de Liquidaciones) ─── */}
+        {isLiquidaciones() && (
+          <button
+            onClick={() => setActiveTab(activeTab === 'liquidaciones' ? 'general' : 'liquidaciones')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+              activeTab === 'liquidaciones'
+                ? 'bg-green-600 text-white shadow-lg shadow-green-600/30'
+                : 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100'
+            }`}
+          >
+            <DollarSign className="w-4 h-4" />
+            <span className="hidden sm:inline">Liquidaciones</span>
+          </button>
+        )}
 
         <div className="flex items-center gap-2">
           <button 

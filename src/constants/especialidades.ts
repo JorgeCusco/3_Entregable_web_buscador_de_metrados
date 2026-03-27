@@ -1,6 +1,6 @@
 export const ESPECIALIDADES_PARTIDA = [
     { nombre: 'TODAS', prefijos: ['OE'] },
-    { nombre: 'OBRAS PROVISIONALES', prefijos: ['OE.1.1'] },
+    { nombre: 'OBRAS PROVISIONALES', prefijos: ['OE.1', 'OE.1.1'] },
     { nombre: 'SEGURIDAD', prefijos: ['OE.1.2'] },
     { nombre: 'ARQUEOLOGÍA', prefijos: ['OE.1.3', 'OE.1.4', 'OE.1.5', 'OE.1.6'] },
     { nombre: 'ESTRUCTURAS', prefijos: ['OE.2'] },
@@ -19,14 +19,23 @@ export const getEspecialidadPorCodigo = (codigo: string): string => {
     // Normalizar el código para asegurar coincidencia
     const cod = codigo.trim().toUpperCase();
 
+    let bestMatch = { nombre: 'GENERAL', length: 0 };
+
     for (const esp of ESPECIALIDADES_PARTIDA) {
         if (esp.nombre === 'TODAS') continue;
         for (const prefijo of esp.prefijos) {
-            if (cod.startsWith(prefijo)) return esp.nombre;
+            // Un match es válido si el código es IDÉNTICO al prefijo, 
+            // o si el código COMIENZA con el prefijo seguido de un punto (hijo).
+            // O si el prefijo es muy corto (menos de 4 char) y coincide al inicio.
+            if (cod === prefijo || cod.startsWith(prefijo + '.') || (prefijo.length <= 4 && cod.startsWith(prefijo))) {
+                if (prefijo.length > bestMatch.length) {
+                    bestMatch = { nombre: esp.nombre, length: prefijo.length };
+                }
+            }
         }
     }
 
-    return 'GENERAL';
+    return bestMatch.nombre;
 };
 
 export const getOficiosPorEspecialidad = (especialidad: string): string[] => {

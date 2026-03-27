@@ -24,11 +24,12 @@ export interface Partida {
     unidad: string;
     jerarquia?: string[];
     es_titulo?: boolean;
-    parent_id?: string;
+    parent_id?: string | null;
     nivel_jerarquia?: number;
     modificacion?: string;
     proyecto?: 'hospital' | 'contingencia' | string;
     especialidad?: string;
+    tipo_metrado?: 'ESTANDAR' | 'ACERO' | 'HVAC_DUCTO' | 'HVAC_ACCESORIO' | string;
     apu?: APU | null;
     is_template?: boolean;
     is_elemento_virtual?: boolean;

@@ -1,0 +1,26 @@
+FILE: METRADO_PLANTILLA_5.xlsx
+SHEET: Metrado Estructuras
+
+FIRST 50 ROWS (NO HEADERS):
+0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
+,,,,,,,HOJA DE METRADOS DIARIOS DE PARTIDAS PROGRAMADAS SEGÚN EXPEDIENTE TECNICO,,,,,,,,,,
+,OBRA,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,2025-06-01 00:00:00,,,,,,,,,,,,,,,,
+,PARTIDA,DESCRIPCION,CANTIDAD,LONGITUD/AREA,ANCHO,ALTURA,N° VECES,Φ,DIAMETRO DE REFUERZO DE ACERO,,,,,,,,
+,,,,,,,,,"1/4""","3/8""","1/2""",|,"3/4""","1""",SUB-TOTAL,TOTAL,UND
+,OE.2.3.7.3,Columnas - acero f'y=4200 Kg/cm2,,,,,,,,,,,,CANTIDAD,LONGITUD/AREA,ANCHO/EMPAME,ALTURA/GANCHO
+,,bloque 5 2DO NIVEL,,,,,,,,,,,,,,,
+,,COLUMNA,,,,,,,,,,,,,,1498.6879999999999,
+,,ACERO LONGUTDINAL,4,4.5,,,20,"1""",0,0,0,0,0,1429.2,1429.2,,
+,,EMPALME,2,1.8,,,4,"1""",0,0,0,0,0,57.168000000000006,57.168000000000006,,
+,,,20,1.1,,,1,"3/8""",0,12.32,0,0,0,0,12.32,,
+,,,,,,,,,0,0,0,0,0,0,,,
+,,,,,,,,,0,0,0,0,0,0,,,
+,,,,,,,,,0,0,0,0,0,0,,,
+,,,,,,,,,0,0,0,0,0,0,,,
+,,,,,,,,,0,0,0,0,0,0,,,
+,,,,,,,,,0,0,0,0,0,0,,,
+,,,,,,,,,0,0,0,0,0,0,,,
+,,,,,,,,,0,0,0,0,0,0,,,
+,,,,,,,,,0,0,0,0,0,0,,,

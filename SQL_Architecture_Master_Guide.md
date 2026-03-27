@@ -10,10 +10,20 @@ Visualización de cómo se conectan los datos entre el presupuesto, la ejecució
 
 ```mermaid
 erDiagram
-    PROYECTO ||--o{ CATALOGO_PARTIDAS : "define"
     CATALOGO_PARTIDAS ||--o{ METRADOS : "es referenciado por"
     PARTIDAS_PERSONALIZADAS ||--o{ METRADOS : "es referenciado por"
     PERSONAL ||--o{ METRADOS_PERSONAL : "participa en"
+    
+    PARTIDAS_PERSONALIZADAS {
+        uuid id PK
+        text codigo
+        text descripcion
+        text unidad
+        text modificacion
+        text especialidad
+        text tipo_metrado
+    }
+
     METRADOS ||--o{ METRADOS_PERSONAL : "tiene"
     ECOSISTEMA_USUARIOS ||--o{ METRADOS : "autoriza"
   
@@ -38,17 +48,33 @@ erDiagram
         text unidad
         uuid parent_id FK
         uuid proyecto_id FK
+        text tipo_metrado "ESTANDAR | ACERO | HVAC*"
     }
   
     METRADOS {
         uuid id PK
         date fecha
+        uuid partida_id FK
+        uuid custom_partida_id FK
         text codigo_partida
         text descripcion_partida
+        text unidad
+        text proyecto
+        text frente
+        text bloque
+        text nivel
+        text cuadrilla
         numeric cantidad
+        numeric longitud_area
+        numeric ancho_empalme
+        numeric altura_gancho
+        numeric nro_veces
         numeric parcial
         numeric total
         numeric hvac_factor
+        text hvac_item_type
+        text autor_usuario
+        timestamp created_at
     }
   
     PERSONAL {
@@ -162,5 +188,28 @@ Utilizamos una tabla centralizada para manejar el acceso a múltiples aplicacion
 
 ---
 
+---
+
+## Parte 9: Escalabilidad y Rendimiento (Frontend / API)
+
+### 9.1 Motor de Carga Masiva V16 (Recursive Fetching)
+
+Supabase impone un límite de seguridad de **1,000 registros por petición** en el servidor. Para manejar proyectos de gran envergadura (como los actuales de 5,789 partidas y 2,810 metrados), el sistema implementa una **Paginación Automática Recursiva**.
+
+- **Lógica**: El `useMetradosStore` realiza peticiones sucesivas usando `.range(from, to)` en bloques de 1,000 hasta que el servidor devuelve menos de 1,000 registros (indicando el fin de la tabla).
+- **Alcance**: Aplicado a `catalogo_partidas` y `metrados`. Esto garantiza que el 100% de la base de datos sea visible siempre.
+
+### 9.2 Resiliencia de Datos: Recuperación de Huérfanos
+
+Debido a que los catálogos son dinámicos y pueden ser limpiados o modificados por colaboradores, el sistema de visualización (`MetradosTable.tsx`) implementa un **Algoritmo de Rescate de Huérfanos**.
+
+- **Funcionamiento**: Si un metrado histórico referencia un `codigo_partida` que ya no existe en el catálogo maestro, el sistema crea dinámicamente una **Cabecera Virtual de Partida**.
+- **Resultado**: Ningún dato se pierde de la vista del usuario, permitiendo auditar registros antiguos incluso si la estructura del presupuesto cambió drásticamente.
+
+---
+
 > [!IMPORTANT]
-> Esta estructura garantiza que la exportación a Excel (Columnas Z y AA) sea siempre consistente con lo guardado en el ecosistema Supabase/Personal.
+> Esta estructura garantiza que la exportación a Excel sea siempre consistente con lo guardado en el ecosistema Supabase, protegiendo la trazabilidad histórica de los 2,810+ registros actuales.
+
+---
+*Última Actualización: V16.2 - Marzo 2026 (Estabilización de Carga Masiva)*

@@ -10,6 +10,8 @@ interface AuthState {
     login: (username: string, password: string) => Promise<{ success: boolean; error?: string }>;
     logout: () => void;
     checkAuth: () => void;
+    isLiquidaciones: () => boolean;
+    hasLiquidacionesAccess: () => boolean;
 }
 
 const COOKIE_NAME = 'gore_cusco_session';
@@ -67,6 +69,20 @@ export const useAuthStore = create<AuthState>()(
                     // Si el estado dice que está autenticado pero no hay cookie, cerramos sesión
                     get().logout();
                 }
+            },
+
+            isLiquidaciones: () => {
+                const user = get().user;
+                if (!user) return false;
+                return user.area?.toUpperCase().includes('LIQUIDACIONES') || 
+                       user.roles_apps?.liquidaciones === 'editor';
+            },
+
+            hasLiquidacionesAccess: () => {
+                const user = get().user;
+                if (!user) return false;
+                return user.roles_apps?.liquidaciones === 'editor' || 
+                       user.roles_apps?.liquidaciones === 'lector';
             }
         }),
         {

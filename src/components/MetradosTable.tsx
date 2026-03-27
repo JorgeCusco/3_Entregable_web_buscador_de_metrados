@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react';
 import type { Metrado, Partida } from '../types';
 import { Download, Trash2, Loader2, Eraser } from 'lucide-react';
-import { mockPartidas } from '../data/mockDB_1';
-import { mockPartidasContingencia } from '../data/mockDB_contingencia';
 import { RenderModificacionBadge } from './MetradosForm';
 import { useMetradosStore } from '../store/useMetradosStore';
 import { SPECIALTY_RULES } from '../data/specialtyConfig';
+import { applyAllFilters, getAvailableAuthorsImproved } from '../utils/filteringLogic';
 
 interface MetradosTableProps {
     metrados: Metrado[];
@@ -25,6 +24,15 @@ const getIndentLevel = (codigo: string): number => {
     if (!codigo) return 0;
     const parts = codigo.split('.');
     return Math.max(0, parts.length - 1);
+};
+
+const getAuthorInitials = (name: string): string => {
+    if (!name || name === 'TODOS' || name === 'TODAS') return 'TODOS';
+    return name
+        .split(' ')
+        .filter(word => word.length > 0)
+        .map(word => word[0].toUpperCase())
+        .join('');
 };
 
 /**
@@ -69,30 +77,24 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
     });
 
     const finalRows: any[] = [];
+    const metradosRendered = new Set<string>();
 
-    // 3. Segunda pasada para construir el array lineal final
+    // 3. Segunda pasada: Construir el array lineal para registros con partida conocida
     partidasCatalogo.forEach((node: Partida) => {
         const nodeId = node.id || node.codigo.trim().toUpperCase();
         if (!activeIds.has(nodeId)) return;
 
-        // Agregar fila de plantilla (Cabecera de Jerarquía o de Partida)
+        // Fila de plantilla (Cabecera)
         finalRows.push({ ...node, is_template: true });
 
-        // Filtrar metrados que pertenecen exactamente a este nodo
-        const relatedMetrados = activeMetrados
-            .filter(m => {
-                const targetId = getMetradoTargetId(m);
-                // Matches exact UUID
-                if (targetId === node.id) return true;
-                // Matches exact Custom UUID
-                if (m.custom_partida_id && m.custom_partida_id === node.id) return true;
-                // Fallback a código SI el metrado no tiene UUIDs asignados (legacy data)
-                if (!m.custom_partida_id && !m.partida_id) {
-                    return m.codigo_partida.trim().toUpperCase() === node.codigo.trim().toUpperCase();
-                }
-                return false;
-            })
-            .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+        // Filtrar metrados que corresponden a este nodo
+        const relatedMetrados = activeMetrados.filter(m => {
+            const targetId = getMetradoTargetId(m);
+            const matches = targetId === node.id || 
+                          (m.custom_partida_id && m.custom_partida_id === node.id) ||
+                          (!m.partida_id && !m.custom_partida_id && m.codigo_partida.trim().toUpperCase() === node.codigo.trim().toUpperCase());
+            return matches;
+        }).sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
 
         if (relatedMetrados.length > 0) {
             let lastElemento: string | null | undefined = null;
@@ -105,7 +107,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
                         es_titulo: false,
                         is_elemento_virtual: true,
                         codigo: '',
-                        descripcion: m.elemento,
+                        descripcion: (m.elemento || '').toString().replace(/NaN/g, ''),
                         codigo_partida: node.codigo,
                         id: `virtual-${m.id}-${m.elemento}`,
                         parcial: 0,
@@ -116,73 +118,82 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
                     lastElemento = null;
                 }
                 
-                // Agregar el registro real
-                finalRows.push({ ...m, is_template: false });
+                finalRows.push({ ...m, is_template: false, tipo_metrado: node.tipo_metrado });
+                metradosRendered.add(m.id);
             });
         }
     });
+
+    // 4. RESCATE DE HUÉRFANOS (V13.5): Para los registros que ya no están en el catálogo
+    const orphans = activeMetrados.filter(m => !metradosRendered.has(m.id));
+    if (orphans.length > 0) {
+        // Agrupar por código para no repetir títulos
+        const orphansByCode = new Map<string, Metrado[]>();
+        orphans.forEach(m => {
+            const code = m.codigo_partida?.trim().toUpperCase() || 'SIN_CODIGO';
+            if (!orphansByCode.has(code)) orphansByCode.set(code, []);
+            orphansByCode.get(code)!.push(m);
+        });
+
+        orphansByCode.forEach((metradosDeOrfano, code) => {
+            const sample = metradosDeOrfano[0];
+            finalRows.push({
+                id: `virt-header-${code}`,
+                codigo: code,
+                descripcion: (sample.descripcion_partida || '(Partida Histórica No Encontrada)').toString().replace(/NaN/g, ''),
+                unidad: (sample.unidad || 'und').toString().replace(/NaN/g, ''),
+                modificacion: 'ET',
+                is_template: true,
+                es_titulo: false,
+                tipo_metrado: 'ESTANDAR'
+            });
+
+            metradosDeOrfano.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+            metradosDeOrfano.forEach(m => finalRows.push({ ...m, is_template: false }));
+        });
+    }
 
     return finalRows;
 };
 
 
 export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital', especialidadSeleccionada = 'TODAS', onEspecialidadChange, isSpecialtyLocked }) => {
-    const { customPartidas } = useMetradosStore();
+    const { customPartidas, catalogoHospital, catalogoContingencia } = useMetradosStore();
+
+    // Filtrar metrados por proyecto (Case-Insensitive V8.1)
+    const metradosDelProyecto = useMemo(() => {
+        const projActual = proyecto.toLowerCase();
+        return metrados.filter(m => {
+            if (!m.proyecto) return true; // Si no tiene proyecto, mostrarlo
+            return m.proyecto.toLowerCase() === projActual;
+        });
+    }, [metrados, proyecto]);
 
     // Seleccionar el catálogo de partidas correcto según el proyecto y sumarle las personalizadas
     const catalogoActivo = useMemo(() => {
-        const base = proyecto === 'hospital' ? mockPartidas : mockPartidasContingencia;
+        const base = proyecto === 'hospital' ? catalogoHospital : catalogoContingencia;
         return [...base, ...customPartidas];
-    }, [proyecto, customPartidas]);
+    }, [proyecto, customPartidas, catalogoHospital, catalogoContingencia]);
 
     const [filterAuthor, setFilterAuthor] = React.useState('TODOS');
-    const [filterDate, setFilterDate] = React.useState('');
-
-    // Lógica compartida para saber si un metrado pertenece a una especialidad
-    const isMetradoOfSpecialty = (m: Metrado, specialtyId: string, rule: any) => {
-        if (m.custom_partida_id) {
-            const customP = catalogoActivo.find(p => p.id === m.custom_partida_id);
-            if (customP && customP.especialidad && customP.especialidad !== 'TODAS') {
-                return customP.especialidad === specialtyId;
-            }
-        }
-        return rule.ranges.some((prefix: string) => m.codigo_partida.startsWith(prefix));
-    };
+    const [filterDateFrom, setFilterDateFrom] = React.useState('');
+    const [filterDateTo, setFilterDateTo] = React.useState('');
 
     // Extraer todos los autores únicos presentes en la vista actual (filtrados por especialidad)
     const availableAuthors = useMemo(() => {
-        let result = metrados;
-        if (especialidadSeleccionada !== 'TODAS') {
-            const rule = SPECIALTY_RULES.find(r => r.id === especialidadSeleccionada);
-            if (rule) {
-                result = result.filter(m => isMetradoOfSpecialty(m, especialidadSeleccionada, rule));
-            }
-        }
-        const authors = new Set(result.map(m => m.autor_usuario).filter(Boolean));
-        return Array.from(authors).sort();
-    }, [metrados, especialidadSeleccionada, catalogoActivo]);
+        return getAvailableAuthorsImproved(metradosDelProyecto, especialidadSeleccionada, catalogoActivo);
+    }, [metradosDelProyecto, especialidadSeleccionada, catalogoActivo]);
 
-    // Filtrar metrados por especialidad dinámica, autor y fecha
+    // Filtrar metrados por especialidad dinámica, autor y fecha (OPTIMIZADO)
     const filteredMetrados = useMemo(() => {
-        let result = metrados;
-
-        if (especialidadSeleccionada !== 'TODAS') {
-            const rule = SPECIALTY_RULES.find(r => r.id === especialidadSeleccionada);
-            if (rule) {
-                result = result.filter(m => isMetradoOfSpecialty(m, especialidadSeleccionada, rule));
-            }
-        }
-        
-        if (filterAuthor !== 'TODOS') {
-            result = result.filter(m => m.autor_usuario === filterAuthor);
-        }
-
-        if (filterDate) {
-            result = result.filter(m => m.fecha === filterDate);
-        }
-
-        return result;
-    }, [metrados, especialidadSeleccionada, filterAuthor, filterDate, catalogoActivo]);
+        return applyAllFilters(metradosDelProyecto, {
+            proyecto,
+            especialidad: especialidadSeleccionada,
+            autor: filterAuthor,
+            dateFrom: filterDateFrom,
+            dateTo: filterDateTo,
+        }, catalogoActivo);
+    }, [metradosDelProyecto, especialidadSeleccionada, filterAuthor, filterDateFrom, filterDateTo, proyecto, catalogoActivo]);
 
     const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo), [filteredMetrados, catalogoActivo]);
     const [isExporting, setIsExporting] = React.useState(false);
@@ -213,13 +224,18 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         }
 
         try {
-            setIsExporting(true);
-            
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             let apiUrl = import.meta.env.VITE_API_URL || '';
+            
             if (!apiUrl) {
-                apiUrl = `http://${window.location.hostname}:3001`;
+                apiUrl = isLocal 
+                    ? `http://${window.location.hostname}:3001` 
+                    : 'https://inkaia-backend.onrender.com';
             }
+            
             if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1);
+            
+            console.log(`[V31 Deploy] Using API URL: ${apiUrl} (Mode: ${import.meta.env.MODE})`);
 
             let response: Response;
             try {
@@ -243,8 +259,11 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            const ds = new Date().toISOString().split('T')[0];
-            a.download = `Metrados_V5_NUBE_${ds}.xlsx`;
+            
+            const fileNameEspecialidad = especialidadSeleccionada.replace(/\s+/g, '_');
+            const fileNameAutor = getAuthorInitials(filterAuthor);
+            a.download = `reporte_metrados_${fileNameEspecialidad}_${fileNameAutor}.xlsx`.toLowerCase();
+
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -266,18 +285,18 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     <div className="flex flex-wrap items-center gap-4 mt-1">
                         {/* Filtro Especialidad */}
                         <div className="flex items-center gap-2">
-                            <span className="text-[10px] text-slate-500 font-medium uppercase tracking-widest">Especialidad:</span>
+                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Especialidad</span>
                             <select
                                 value={especialidadSeleccionada}
                                 onChange={(e) => {
                                     onEspecialidadChange?.(e.target.value);
-                                    setFilterAuthor('TODOS'); // Reiniciar filtro de autor al cambiar especialidad
+                                    setFilterAuthor('TODOS');
                                 }}
                                 disabled={isSpecialtyLocked}
-                                className={`text-[9px] font-bold uppercase border border-slate-200 rounded px-1.5 py-0.5 focus:ring-1 outline-none transition-colors ${
+                                className={`text-[11px] font-bold border border-slate-200 rounded-lg px-2 py-1 outline-none transition-all ${
                                     isSpecialtyLocked 
-                                    ? 'bg-slate-50 text-slate-400 cursor-not-allowed opacity-80' 
-                                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer focus:ring-blue-500/30'
+                                    ? 'bg-slate-50 text-slate-400 cursor-not-allowed' 
+                                    : 'bg-white text-slate-700 hover:border-blue-400 cursor-pointer shadow-sm'
                                 }`}
                             >
                                 {SPECIALTY_RULES.map(rule => (
@@ -287,12 +306,12 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         </div>
 
                         {/* Filtro Autor */}
-                        <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
-                            <span className="text-[10px] text-slate-500 font-medium uppercase tracking-widest">Autor:</span>
+                        <div className="flex items-center gap-2 pl-2">
+                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Autor</span>
                             <select
                                 value={filterAuthor}
                                 onChange={(e) => setFilterAuthor(e.target.value)}
-                                className="text-[9px] font-bold uppercase bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 focus:ring-1 focus:ring-blue-500/30 text-slate-700 outline-none cursor-pointer hover:bg-slate-200 transition-colors"
+                                className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                             >
                                 <option value="TODOS">TODOS</option>
                                 {availableAuthors.map(author => (
@@ -301,21 +320,31 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             </select>
                         </div>
 
-                        {/* Filtro Fecha */}
-                        <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
-                            <span className="text-[10px] text-slate-500 font-medium uppercase tracking-widest">Fecha:</span>
-                            <div className="relative flex items-center">
+                        {/* Filtro Fecha (Rango) */}
+                        <div className="flex items-center gap-2 pl-2">
+                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Fecha</span>
+                            <div className="relative flex items-center gap-1">
+                                <label className="text-[9px] text-slate-500 font-medium">Desde:</label>
                                 <input
                                     type="date"
-                                    value={filterDate}
-                                    onChange={(e) => setFilterDate(e.target.value)}
-                                    className="text-[9px] font-bold uppercase bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 focus:ring-1 focus:ring-blue-500/30 text-slate-700 outline-none cursor-pointer hover:bg-slate-200 transition-colors"
+                                    value={filterDateFrom}
+                                    onChange={(e) => setFilterDateFrom(e.target.value)}
+                                    className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                                 />
-                                {filterDate && (
+                                <label className="text-[9px] text-slate-500 font-medium">Hasta:</label>
+                                <input
+                                    type="date"
+                                    value={filterDateTo}
+                                    onChange={(e) => setFilterDateTo(e.target.value)}
+                                    className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                />
+                                {(filterDateFrom || filterDateTo) && (
                                     <button 
-                                        onClick={() => setFilterDate('')}
-                                        className="absolute -right-5 w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-500 hover:text-white transition-colors text-[8px]"
-                                        title="Limpiar fecha"
+                                        onClick={() => {
+                                            setFilterDateFrom('');
+                                            setFilterDateTo('');
+                                        }}
+                                        className="absolute -right-8 w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-500 hover:text-white transition-colors text-[8px] cursor-pointer"
                                     >✕</button>
                                 )}
                             </div>
@@ -372,12 +401,12 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             // CASO 1: Es un Título WBS (Nodo Padre)
                             if (r.is_template && r.es_titulo) {
                                 return (
-                                    <tr key={`title-${r.codigo}`} className="bg-slate-800 text-white font-bold border-b border-slate-700">
+                                    <tr key={`title-${r.codigo}`} className="bg-slate-100 border-b border-slate-200">
                                         <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1 text-center font-mono text-[9px] text-slate-400 overflow-hidden"></td>
-                                        <td className="w-[80px] min-w-[80px] px-2 py-1 font-mono text-[10px] tracking-wider text-left">
+                                        <td className="w-[80px] min-w-[80px] px-2 py-1 font-mono text-[10px] tracking-wider text-left text-slate-500">
                                             {r.codigo}
                                         </td>
-                                        <td colSpan={10} className="px-3 py-1 uppercase text-[10px] tracking-widest bg-slate-800/50"
+                                        <td colSpan={10} className="px-3 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
                                             {r.descripcion}
                                         </td>
@@ -413,21 +442,23 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 const hasMetrados = total > 0;
 
                                 return (
-                                    <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/80' : 'bg-slate-50/30'} border-b border-slate-200 font-semibold group transition-colors`}>
+                                    <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/50' : 'bg-white'} border-b border-slate-100 font-semibold group transition-colors`}>
                                         <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1 text-center overflow-hidden"></td>
                                         <td className="w-[80px] min-w-[80px] px-2 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
-                                            <span className="font-mono text-[10px] text-blue-600 bg-blue-100/50 px-1 py-0.5 rounded">
+                                            <span className="font-mono text-[10px] text-blue-500 bg-blue-50 px-1 py-0.5 rounded border border-blue-100">
                                                 {r.codigo}
                                             </span>
                                         </td>
-                                        <td className="px-2 py-1 flex items-center gap-2"
+                                        <td className="px-2 py-1"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
-                                            {RenderModificacionBadge(r.modificacion)}
-                                            <span className="text-slate-800 text-[11px] leading-tight">{r.descripcion}</span>
+                                            <div className="flex items-center gap-2">
+                                                {RenderModificacionBadge(r.modificacion)}
+                                                <span className="text-slate-700 text-[11px] leading-snug">{r.descripcion}</span>
+                                            </div>
                                         </td>
-                                        <td className="w-[45px] min-w-[45px] px-2 py-1 text-center text-slate-500 font-bold text-[10px]">{r.unidad}</td>
-                                        <td colSpan={7} className="px-1 py-1 border-l border-slate-200/60"></td>
-                                        <td className="w-[85px] min-w-[85px] px-2 py-1 text-right text-blue-700 font-black text-[12px] border-l border-slate-200/60">
+                                        <td className="w-[45px] min-w-[45px] px-2 py-1 text-center text-slate-400 font-bold text-[10px]">{r.unidad}</td>
+                                        <td colSpan={7} className="px-1 py-1 border-l border-slate-100/50"></td>
+                                        <td className="w-[85px] min-w-[85px] px-2 py-1 text-right text-blue-600 font-black text-[12px] border-l border-slate-100/50">
                                             {hasMetrados ? formatNumber(total) : '-'}
                                         </td>
                                     </tr>
@@ -509,35 +540,56 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             onKeyDown={(e) => handleKeyDown(e)} />
                                     </td>
                                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                            value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)}
-                                            onFocus={(e) => e.target.select()}
-                                            onKeyDown={(e) => handleKeyDown(e)} />
+                                        {r.tipo_metrado === 'HVAC_ACCESORIO' && r.hvac_item_type !== 'CODO' ? (
+                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                        ) : (
+                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)}
+                                                onFocus={(e) => e.target.select()}
+                                                onKeyDown={(e) => handleKeyDown(e)} />
+                                        )}
                                     </td>
                                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                            value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)}
-                                            onFocus={(e) => e.target.select()}
-                                            onKeyDown={(e) => handleKeyDown(e)} />
+                                        {r.tipo_metrado === 'ACERO' || r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
+                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                        ) : (
+                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)}
+                                                onFocus={(e) => e.target.select()}
+                                                onKeyDown={(e) => handleKeyDown(e)} />
+                                        )}
                                     </td>
                                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                            value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)}
-                                            onFocus={(e) => e.target.select()}
-                                            onKeyDown={(e) => handleKeyDown(e)} />
+                                        {r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
+                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                        ) : (
+                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)}
+                                                onFocus={(e) => e.target.select()}
+                                                onKeyDown={(e) => handleKeyDown(e)} />
+                                        )}
                                     </td>
 
                                     <td className="px-2 py-1.5 text-right font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
 
                                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
-                                            value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
-                                            onFocus={(e) => e.target.select()}
-                                            onKeyDown={(e) => handleKeyDown(e)} />
+                                        {r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
+                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none bg-slate-50/50 block w-full rounded">1</span>
+                                        ) : (
+                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
+                                                value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
+                                                onFocus={(e) => e.target.select()}
+                                                onKeyDown={(e) => handleKeyDown(e)} />
+                                        )}
                                     </td>
 
-                                    <td className="px-1 py-1.5 text-center text-[9px] font-bold text-slate-400 truncate max-w-[70px] border-l border-slate-200/60" title={r.autor_usuario}>
-                                        {r.autor_usuario ? r.autor_usuario.split(' ')[0] : '-'}
+                                    <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1 text-center border-l border-slate-100/50">
+                                        <div className="flex flex-col items-center leading-none">
+                                            <span className="text-[9px] font-black text-slate-800 uppercase truncate w-full" title={r.autor_usuario}>
+                                                {r.autor_usuario?.split(' ')[0] || 'User'}
+                                            </span>
+                                            <span className="text-[7px] text-slate-400 font-bold">AUTOR</span>
+                                        </div>
                                     </td>
 
                                     {/* Total + Acciones */}

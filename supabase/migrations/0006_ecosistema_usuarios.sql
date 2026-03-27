@@ -24,3 +24,7 @@ CREATE POLICY "Permitir lectura publica ecosistema_usuarios" ON ecosistema_usuar
 COMMENT ON TABLE ecosistema_usuarios IS 'Tabla maestra para autenticación Cross-App en el dominio copgorecusco.com';
 COMMENT ON COLUMN ecosistema_usuarios.dni_username IS 'DNI o usuario principal usado para iniciar sesión.';
 COMMENT ON COLUMN ecosistema_usuarios.roles_apps IS 'Privilegios dinámicos. Ej: {"metrados": "admin", "almacen": "lector"}';
+
+
+-- ACTIVAR APRA PARTIDAS PERSONALIZADAS LA ESPECIALIDAD COMO CLASIFICADOR
+ALTER TABLE partidas_personalizadas ADD COLUMN especialidad TEXT;

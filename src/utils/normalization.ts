@@ -1,0 +1,100 @@
+/**
+ * Funciones de normalización para datos inconsistentes
+ * Usadas para filtrado y comparación de valores en toda la aplicación
+ */
+
+/**
+ * Normaliza nombres de autores/usuarios a un formato consistente
+ * - Reemplaza NBSP (U+00A0) con espacios
+ * - Colapsa espacios múltiples a uno solo
+ * - Trimea inicio/final
+ * - Convierte a UPPERCASE para comparaciones
+ * 
+ * @param name Nombre a normalizar
+ * @returns Nombre normalizado en UPPERCASE
+ * 
+ * @example
+ * normalizeAuthorName("juan garcia") → "JUAN GARCIA"
+ * normalizeAuthorName(" JUAN\u00a0GARCIA ") → "JUAN GARCIA"
+ * normalizeAuthorName("juan  garcia") → "JUAN GARCIA"
+ */
+export const normalizeAuthorName = (name: string): string => {
+    return (name || '')
+        .toString()
+        .replace(/\u00a0/g, ' ')      // NBSP → espacio regular
+        .replace(/\s+/g, ' ')          // Múltiples espacios → 1 espacio
+        .trim()                        // Eliminar espacios inicio/fin
+        .toUpperCase();                // Convertir a UPPERCASE
+};
+
+/**
+ * Normaliza valores de especialidad para comparación
+ * @param specialty Especialidad a normalizar
+ * @returns Especialidad normalizada
+ */
+export const normalizeSpecialty = (specialty: string): string => {
+    if (!specialty) return '';
+    return specialty
+        .toString()
+        .trim()
+        .toUpperCase();
+};
+
+/**
+ * Normaliza códigos de partida
+ * @param codigo Código a normalizar
+ * @returns Código normalizado
+ */
+export const normalizePartidaCode = (codigo: string): string => {
+    if (!codigo) return '';
+    return codigo
+        .toString()
+        .trim()
+        .toUpperCase();
+};
+
+/**
+ * Valida si una especialidad es válida para filtrado
+ * Excluye valores genéricos como "TODAS", "GENERAL", "HOSPITAL", "CONTINGENCIA"
+ * 
+ * @param specialty Especialidad a validar
+ * @returns true si es una especialidad válida/específica
+ */
+export const isValidSpecialty = (specialty: string): boolean => {
+    if (!specialty) return false;
+    
+    const normalized = normalizeSpecialty(specialty);
+    const invalidSpecialties = ['TODAS', 'GENERAL', 'HOSPITAL', 'CONTINGENCIA', ''];
+    
+    return !invalidSpecialties.includes(normalized);
+};
+
+/**
+ * Compara dos nombres para igualdad después de normalización
+ * @param name1 Primer nombre
+ * @param name2 Segundo nombre
+ * @returns true si son iguales después de normalización
+ */
+export const autorNamesAreEqual = (name1: string, name2: string): boolean => {
+    return normalizeAuthorName(name1) === normalizeAuthorName(name2);
+};
+
+/**
+ * Compara dos especialidades para igualdad después de normalización
+ * @param specialty1 Primera especialidad
+ * @param specialty2 Segunda especialidad
+ * @returns true si son iguales después de normalización
+ */
+export const specialtiesAreEqual = (specialty1: string, specialty2: string): boolean => {
+    return normalizeSpecialty(specialty1) === normalizeSpecialty(specialty2);
+};
+
+/**
+ * Compara dos códigos de partida para igualdad
+ * @param code1 Primer código
+ * @param code2 Segundo código
+ * @returns true si son iguales después de normalización
+ */
+export const partidaCodesAreEqual = (code1: string, code2: string): boolean => {
+    return normalizePartidaCode(code1) === normalizePartidaCode(code2);
+};
