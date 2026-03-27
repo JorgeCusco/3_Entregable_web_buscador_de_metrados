@@ -468,6 +468,9 @@ export const useMetradosStore = create<MetradosState>()(
         {
             name: 'inkaia-metrados-storage',
             storage: createJSONStorage(() => localStorage),
+            partialize: (state) => ({ 
+                context: state.context 
+            }),
         }
     )
 );
