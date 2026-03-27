@@ -4,7 +4,7 @@ import { MetradosTable } from './MetradosTable';
 import { DashboardPersonal } from './DashboardPersonal';
 import { useMetradosForm } from '../hooks/useMetradosForm';
 import type { Metrado, Partida } from '../types';
-import { LogOut, DollarSign, Users, UserIcon } from 'lucide-react';
+import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon, DollarSign } from 'lucide-react';
 import { useMetradosStore } from '../store/useMetradosStore';
 import { useLiquidacionesStore } from '../store/useLiquidacionesStore';
 import { usePersonalStore } from '../store/usePersonalStore';
@@ -22,7 +22,7 @@ export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }
     const { metrados: metradosLiquidaciones, addMetrado: addLiquidacion, updateMetrado: updateLiquidacion, deleteMetrado: deleteLiquidacion, fetchMetrados: fetchLiquidaciones } = useLiquidacionesStore();
     
     // Store de Metrados (para acceder a catálogos disponibles)
-    const { fetchCatalogoMaestro, fetchCustomPartidas } = useMetradosStore();
+    const { fetchCatalogoMaestro, fetchCustomPartidas, context, setContext } = useMetradosStore();
     
     // Stores de contexto
     const { fetchPersonal } = usePersonalStore();
@@ -59,13 +59,13 @@ export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }
             if (nuevo) {
                 const nuevoConMetadata = { 
                     ...nuevo, 
-                    proyecto: 'hospital',
+                    proyecto: context.proyecto,
                     autor_usuario: user?.nombre_completo || 'Usuario Desconocido'
                 };
                 const result = await addLiquidacion(nuevoConMetadata);
                 if (result.success) {
-                    setToast(`Metrado guardado: ${nuevo.codigo_partida}`);
-                    alert(`¡Registro Exitoso!\n\nSe guardó correctamente la Partida: ${nuevo.codigo_partida}`);
+                    setToast(`Liquidación guardada: ${nuevo.codigo_partida}`);
+                    alert(`¡Liquidación Registrada!\n\nSe guardó correctamente la Partida: ${nuevo.codigo_partida}`);
                     setTimeout(() => setToast(null), 3000);
                     if (user?.nombre_completo) {
                         fetchLiquidaciones(user.nombre_completo);
@@ -142,7 +142,7 @@ export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }
             <header className="flex flex-col md:flex-row items-center justify-between px-2 gap-4">
                 <div className="flex items-center gap-3 w-full md:w-auto">
                     <div className="bg-green-600 text-white p-2.5 rounded-xl shadow-lg shadow-green-600/30">
-                        <DollarSign className="w-6 h-6" />
+                        <Building2 className="w-6 h-6" />
                     </div>
                     <div>
                         <h1 className="text-2xl font-bold bg-gradient-to-r from-green-900 to-green-600 bg-clip-text text-transparent leading-tight">
@@ -155,9 +155,28 @@ export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }
                     </div>
                 </div>
 
-                {/* Proyecto fijo */}
-                <div className="text-sm font-semibold px-4 py-2 bg-blue-50 text-blue-700 rounded-lg border border-blue-200">
-                    📋 Hospital
+                {/* ─── Selector de Especialidad (Proyecto) ─── */}
+                <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner">
+                <button
+                    onClick={() => { setContext({ proyecto: 'hospital' }); actions.setPartidaSeleccionada(null); }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${context.proyecto === 'hospital'
+                    ? 'bg-white text-blue-700 shadow-md border border-blue-100'
+                    : 'text-slate-500 hover:text-slate-700'
+                    }`}
+                >
+                    <Stethoscope className="w-4 h-4" />
+                    Hospital
+                </button>
+                <button
+                    onClick={() => { setContext({ proyecto: 'contingencia' }); actions.setPartidaSeleccionada(null); }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${context.proyecto === 'contingencia'
+                    ? 'bg-white text-amber-600 shadow-md border border-amber-100'
+                    : 'text-slate-500 hover:text-slate-700'
+                    }`}
+                >
+                    <AlertTriangle className="w-4 h-4" />
+                    Contingencia
+                </button>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -242,7 +261,7 @@ export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }
                         state={state}
                         actions={actions}
                         onGuardar={handleGuardar}
-                        proyecto="hospital"
+                        proyecto={context.proyecto}
                     />
                 </div>
 
@@ -253,7 +272,7 @@ export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }
                         onUpdate={handleUpdateMetrado}
                         onGroupUpdate={handleUpdateGroup}
                         onDelete={handleDeleteMetrado}
-                        proyecto="hospital"
+                        proyecto={context.proyecto}
                         especialidadSeleccionada={state.especialidadSeleccionada}
                         onEspecialidadChange={actions.setEspecialidadSeleccionada}
                         isSpecialtyLocked={state.isSpecialtyLocked}
