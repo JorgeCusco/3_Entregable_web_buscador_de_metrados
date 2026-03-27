@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { MetradosForm } from './MetradosForm';
 import { MetradosTable } from './MetradosTable';
 import { DashboardPersonal } from './DashboardPersonal';
@@ -30,6 +30,17 @@ export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }
     
     const [toast, setToast] = useState<string | null>(null);
     const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
+
+    // Cálculos de resumen
+    const stats = useMemo(() => {
+        const total = metradosLiquidaciones.reduce((acc, m) => acc + (Number(m.total) || 0), 0);
+        const uniquePartidas = new Set(metradosLiquidaciones.map(m => m.codigo_partida)).size;
+        const lastUpdate = metradosLiquidaciones.length > 0 
+            ? new Date(Math.max(...metradosLiquidaciones.map(m => new Date(m.created_at || m.fecha).getTime())))
+            : null;
+        
+        return { total, uniquePartidas, lastUpdate };
+    }, [metradosLiquidaciones]);
 
     // Cargar datos iniciales
     useEffect(() => {
@@ -167,6 +178,53 @@ export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }
                     </button>
                 </div>
             </header>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-2">
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                    <div className="bg-green-100 text-green-600 p-3 rounded-xl">
+                        <DollarSign className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Total Liquidado</p>
+                        <p className="text-xl font-black text-slate-800">
+                            S/ {new Intl.NumberFormat('es-PE', { minimumFractionDigits: 2 }).format(stats.total)}
+                        </p>
+                    </div>
+                </div>
+
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                    <div className="bg-blue-100 text-blue-600 p-3 rounded-xl">
+                        <Users className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Partidas Alcanzadas</p>
+                        <p className="text-xl font-black text-slate-800">{stats.uniquePartidas}</p>
+                    </div>
+                </div>
+
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                    <div className="bg-purple-100 text-purple-600 p-3 rounded-xl">
+                        <LogOut className="w-6 h-6 rotate-90" />
+                    </div>
+                    <div>
+                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Avance Items</p>
+                        <p className="text-xl font-black text-slate-800">{metradosLiquidaciones.length}</p>
+                    </div>
+                </div>
+
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                    <div className="bg-orange-100 text-orange-600 p-3 rounded-xl cursor-help" title="Fecha del último registro guardado">
+                        <Users className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Último Reporte</p>
+                        <p className="text-sm font-bold text-slate-800">
+                            {stats.lastUpdate ? stats.lastUpdate.toLocaleDateString() : 'Sin registros'}
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             {/* Toast Notification */}
             {toast && (

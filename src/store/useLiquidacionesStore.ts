@@ -158,6 +158,7 @@ export const useLiquidacionesStore = create<LiquidacionesState>()(
         }),
         {
             name: 'liquidaciones-storage',
+            partialize: () => ({}), // No persistir los datos masivos, solo el estado vacío o preferencias futuras
         }
     )
 );
