@@ -51,14 +51,15 @@ export const getAvailableAuthorsImproved = (
     metrados: Metrado[],
     especialidad?: string,
     catalogoActivo?: Partida[],
-    getEspecialidadPorCodigoFn: (codigo: string) => string = getEspecialidadPorCodigo
+    getEspecialidadPorCodigoFn: (codigo: string) => string = getEspecialidadPorCodigo,
+    debug: boolean = false
 ): string[] => {
     let filtered = metrados;
     
     // Aplicar filtro de especialidad si existe y NO es TODAS
     if (especialidad && especialidad !== 'TODAS') {
         filtered = filtered.filter(m => 
-            isMetradoOfSpecialtyImproved(m, especialidad, catalogoActivo || [], getEspecialidadPorCodigoFn)
+            isMetradoOfSpecialtyImproved(m, especialidad, catalogoActivo || [], getEspecialidadPorCodigoFn, debug)
         );
     }
 
@@ -125,7 +126,8 @@ export const isMetradoOfSpecialtyImproved = (
     metrado: Metrado,
     specialtyId: string,
     catalogoActivo: Partida[] = [],
-    getEspecialidadPorCodigoFn?: (codigo: string) => string
+    getEspecialidadPorCodigoFn?: (codigo: string) => string,
+    debug: boolean = false
 ): boolean => {
     const targetSpecialty = normalizeSpecialty(specialtyId);
     
@@ -134,41 +136,44 @@ export const isMetradoOfSpecialtyImproved = (
         return true;
     }
 
-    // NIVEL 1: Verificar especialidad grabada directamente en metrado (más confiable)
-    if (metrado.especialidad && isValidSpecialty(metrado.especialidad)) {
-        const metradoSpec = normalizeSpecialty(metrado.especialidad);
-        return metradoSpec === targetSpecialty;
+    // NIVEL 1: Verificar especialidad grabada directamente en metrado
+    const metradoSpecValue = (metrado.especialidad || '').toString().trim();
+    if (metradoSpecValue && isValidSpecialty(metradoSpecValue)) {
+        const metradoSpec = normalizeSpecialty(metradoSpecValue);
+        const matches = metradoSpec === targetSpecialty;
+        if (debug && matches) console.log(`      ✅ Match Nivel 1 (Directo): ${metradoSpec} === ${targetSpecialty}`);
+        return matches;
     }
 
     // NIVEL 2: Buscar especialidad en partida del catálogo
-    // Prioridad: partida_id > custom_partida_id
-    const linkedPartida = catalogoActivo.find(p => {
-        if (metrado.partida_id && p.id === metrado.partida_id) {
-            return true;
-        }
-        if (metrado.custom_partida_id && p.id === metrado.custom_partida_id) {
-            return true;
-        }
-        return false;
-    });
+    // Solo si el metrado tiene algún ID de vinculación válido
+    if (metrado.partida_id || metrado.custom_partida_id) {
+        const linkedPartida = catalogoActivo.find(p => {
+            if (metrado.partida_id && p.id === metrado.partida_id) return true;
+            if (metrado.custom_partida_id && p.id === metrado.custom_partida_id) return true;
+            return false;
+        });
 
-    if (linkedPartida?.especialidad && isValidSpecialty(linkedPartida.especialidad)) {
-        const partidaSpec = normalizeSpecialty(linkedPartida.especialidad);
-        return partidaSpec === targetSpecialty;
+        if (linkedPartida?.especialidad && isValidSpecialty(linkedPartida.especialidad)) {
+            const partidaSpec = normalizeSpecialty(linkedPartida.especialidad);
+            const matches = partidaSpec === targetSpecialty;
+            if (debug && matches) console.log(`      ✅ Match Nivel 2 (Partida ${linkedPartida.codigo}): ${partidaSpec} === ${targetSpecialty}`);
+            return matches;
+        }
     }
 
-    // NIVEL 3: Fallback mediante deducción de código (MENOS confiable)
-    // Rescata metrados huérfanos cuya partida fue eliminada pero el código sugiere especialidad
+    // NIVEL 3: Fallback mediante deducción de código
     if (getEspecialidadPorCodigoFn) {
         const deducedSpec = getEspecialidadPorCodigoFn(metrado.codigo_partida);
         if (deducedSpec && isValidSpecialty(deducedSpec)) {
             const deducedNormalized = normalizeSpecialty(deducedSpec);
-            return deducedNormalized === targetSpecialty;
+            const matches = deducedNormalized === targetSpecialty;
+            if (debug && matches) console.log(`      ✅ Match Nivel 3 (Código ${metrado.codigo_partida} -> ${deducedNormalized})`);
+            return matches;
         }
     }
 
-    // Si nada coincide y estamos filtrando por especialidad específica:
-    // Retornar false para excluir registros ambiguos
+    if (debug) console.log(`      ❌ No match para ${metrado.id} en ${targetSpecialty}`);
     return false;
 };
 
@@ -305,11 +310,14 @@ export const applyAllFilters = (
     // 2️⃣ SEGUNDO: Filtro de especialidad (reduce significativamente)
     if (filters.especialidad && filters.especialidad !== 'TODAS') {
         const before = result.length;
-        result = filterMetradosBySpecialty(
-            result,
-            filters.especialidad,
-            catalogoActivo,
-            getEspecialidadPorCodigoFn
+        result = result.filter(m => 
+            isMetradoOfSpecialtyImproved(
+                m, 
+                filters.especialidad!, 
+                catalogoActivo, 
+                getEspecialidadPorCodigoFn,
+                debug
+            )
         );
         results['especialidad'] = result.length;
         if (debug) {

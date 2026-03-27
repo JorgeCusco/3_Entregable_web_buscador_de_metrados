@@ -4,7 +4,7 @@ import { Download, Trash2, Loader2, Eraser } from 'lucide-react';
 import { RenderModificacionBadge } from './MetradosForm';
 import { useMetradosStore } from '../store/useMetradosStore';
 import { SPECIALTY_RULES } from '../data/specialtyConfig';
-import { applyAllFilters, getAvailableAuthorsImproved } from '../utils/filteringLogic';
+import { applyAllFilters, getAvailableAuthorsImproved, getEspecialidadPorCodigo } from '../utils/filteringLogic';
 
 interface MetradosTableProps {
     metrados: Metrado[];
@@ -169,12 +169,12 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     const [filterAuthor, setFilterAuthor] = React.useState('TODOS');
     const [filterDateFrom, setFilterDateFrom] = React.useState('');
     const [filterDateTo, setFilterDateTo] = React.useState('');
-    const [debugMode] = React.useState(false); // Cambiar a true para ver logs de filtrado
+    const [debugMode] = React.useState(true); // Habilitado para diagnosticar infiltración
 
     // Extraer todos los autores únicos presentes en la vista actual (filtrados por especialidad)
     const availableAuthors = useMemo(() => {
-        return getAvailableAuthorsImproved(metrados, especialidadSeleccionada, catalogoActivo);
-    }, [metrados, especialidadSeleccionada, catalogoActivo]);
+        return getAvailableAuthorsImproved(metrados, especialidadSeleccionada, catalogoActivo, getEspecialidadPorCodigo, debugMode);
+    }, [metrados, especialidadSeleccionada, catalogoActivo, debugMode]);
 
     // Filtrar metrados por proyecto, especialidad, autor y fecha (OPTIMIZADO)
     // CORRECCIÓN: 

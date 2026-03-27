@@ -38,6 +38,8 @@ export const normalizeSpecialty = (specialty: string): string => {
     if (!specialty) return '';
     return specialty
         .toString()
+        .normalize("NFD")               // Descomponer caracteres combinados (acentos)
+        .replace(/[\u0300-\u036f]/g, "") // Eliminar los acentos
         .trim()
         .toUpperCase();
 };
