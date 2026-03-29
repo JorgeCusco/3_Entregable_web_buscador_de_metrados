@@ -442,7 +442,9 @@ export const useMetradosStore = create<MetradosState>()(
                         is_template: true,
                         es_titulo: r.is_title || false,
                         jerarquia: r.jerarquia || [],
-                        nivel_jerarquia: r.nivel_jerarquia || 1
+                        nivel_jerarquia: r.nivel_jerarquia || 1,
+                        precio_unitario: r.precio_unitario || 0,
+                        cantidad_presupuesto: r.cantidad_presupuesto || 0
                     }));
 
                     let hosp = mapPartidas(allCatalogo.filter((c: any) => c.proyecto_id === hospId));

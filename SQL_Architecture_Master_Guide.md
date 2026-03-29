@@ -49,6 +49,8 @@ erDiagram
         uuid parent_id FK
         uuid proyecto_id FK
         text tipo_metrado "ESTANDAR | ACERO | HVAC*"
+        numeric precio_unitario "Precio estático de DB/presupuesto"
+        numeric cantidad_presupuesto "Si = 0 -> Deductivo (DD)"
     }
   
     METRADOS {
@@ -99,8 +101,15 @@ erDiagram
 
 ### 2.1 Tipificado de Datos Críticos
 
-- **`NUMERIC` vs `FLOAT/REAL`**: En ingeniería, usamos `NUMERIC` para `cantidad`, `parcial` y `total`. Esto evita errores de redondeo de punto flotante que podrían causar discrepancias de céntimos en presupuestos de millones.
+- **`NUMERIC` vs `FLOAT/REAL`**: En ingeniería, usamos `NUMERIC` para `cantidad`, `parcial` y `total`. Esto evita errores de redondeo de punto flotante que podrían causar discrepancias de céntimos en presupuestos de millones. Lo mismo aplica para cantidades presupuestadas (`cantidad_presupuesto`) y precios (`precio_unitario`).
 - **`TEXT[]` (Jerarquía)**: El uso de arrays de texto permite búsquedas "ancestrales" instantáneas sin necesidad de múltiples JOINs recursivos (CTE).
+
+### 2.2 Gestión de Precios y Deductivos (Partidas DD)
+
+Para la integración con el Control de Costos y presupuestos originales:
+- **`precio_unitario`**: Se obtiene del software base (S10, Excel) y es inyectado directo al Catálogo.
+- **`cantidad_presupuesto`**: Representa el metrado original.
+- **Deductivos (DD)**: Cualquier partida importada con valor de `cantidad_presupuesto` igual a `0` es considerada visual/físicamente un Deductivo y es marcado dinámicamente ("DD") en toda la Interfaz de Usuario para diferenciarse.
 
 ---
 

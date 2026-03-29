@@ -33,6 +33,8 @@ export interface Partida {
     apu?: APU | null;
     is_template?: boolean;
     is_elemento_virtual?: boolean;
+    precio_unitario?: number;
+    cantidad_presupuesto?: number;
 }
 
 export interface Metrado {

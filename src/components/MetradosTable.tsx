@@ -450,6 +450,12 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             <div className="flex items-center gap-2">
                                                 {RenderModificacionBadge(r.modificacion)}
                                                 <span className="text-slate-700 text-[11px] leading-snug">{r.descripcion}</span>
+                                                {r.cantidad_presupuesto === 0 && (
+                                                    <span className="bg-red-100 text-red-600 font-bold px-1.5 py-0.5 rounded text-[9px] border border-red-200" title="Partida Deductiva (Cantidad 0 original)">DD</span>
+                                                )}
+                                                {r.precio_unitario > 0 && (
+                                                    <span className="bg-emerald-50 text-emerald-600 font-bold px-1.5 py-0.5 rounded text-[9px] border border-emerald-200" title={`Precio: S/ ${r.precio_unitario}`}>S/ {r.precio_unitario.toFixed(2)}</span>
+                                                )}
                                             </div>
                                         </td>
                                         <td className="w-[45px] min-w-[45px] px-2 py-1 text-center text-slate-400 font-bold text-[10px]">{r.unidad}</td>
