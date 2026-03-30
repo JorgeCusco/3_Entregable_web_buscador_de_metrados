@@ -249,8 +249,22 @@ Debido a que los catálogos son dinámicos y pueden ser limpiados o modificados 
 
 ---
 
+## Parte 10: Importación de Datos Iniciales y Saldos (V18)
+
+### 10.1 Lógica de Sincronización de Acumulados
+
+Para la puesta en marcha del sistema con un proyecto en curso, se ha implementado un proceso de inyección de "Saldos Anteriores" mediante el script `0018_import_base_data.sql`.
+
+- **Cálculo de Precio Unitario (PU)**: Debido a discrepancias en los reportes de origen, el PU se recalcula dinámicamente como `Presupuesto Acumulado / Metrado Acumulado`.
+- **Campos Afectados**:
+    - `acumulado_anterior_qty`: Almacena el metrado ejecutado antes de la implementación del sistema.
+    - `precio_unitario`: Define el valor base para el cálculo de valorizaciones en la `vista_analisis_presupuesto`.
+- **Resiliencia de Importación**: El generador (`generate_accumulation_updates.py`) utiliza una lógica de búsqueda flexible (multicolumna y escalonada) para extraer datos de Excels con estructuras heterogéneas entre especialidades.
+
+---
+
 > [!IMPORTANT]
 > Esta estructura garantiza que la exportación a Excel sea siempre consistente con lo guardado en el ecosistema Supabase, protegiendo la trazabilidad histórica de los 2,810+ registros actuales.
 
 ---
-*Última Actualización: V16.2 - Marzo 2026 (Estabilización de Carga Masiva)*
+*Última Actualización: V18 - Marzo 2026 (Corrección de Mapeo de Saldos Iniciales)*
