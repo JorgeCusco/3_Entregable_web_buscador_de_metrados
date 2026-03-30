@@ -490,17 +490,18 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                                 {r.cantidad_presupuesto === 0 && (
                                                     <span className="bg-red-100 text-red-600 font-bold px-1.5 py-0.5 rounded text-[9px] border border-red-200" title="Partida Deductiva (Cantidad 0 original)">DD</span>
                                                 )}
-                                                {!showCostView && r.precio_unitario > 0 && (
-                                                    <span className="bg-emerald-50 text-emerald-600 font-bold px-1.5 py-0.5 rounded text-[9px] border border-emerald-200" title={`Precio: S/ ${r.precio_unitario}`}>S/ {r.precio_unitario.toFixed(2)}</span>
-                                                )}
                                             </div>
                                         </td>
                                         <td className="w-[45px] min-w-[45px] px-2 py-1 text-center text-slate-400 font-bold text-[10px]">{r.unidad}</td>
                                         
                                         {!showCostView ? (
-                                            <>
-                                                <td colSpan={6} className="px-1 py-1 border-l border-slate-100/50"></td>
-                                            </>
+                                            <td colSpan={7} className="px-1 py-1 border-l border-slate-100/50">
+                                                {!showCostView && r.precio_unitario > 0 && (
+                                                    <div className="w-full h-full flex justify-end items-center pr-3">
+                                                        <span className="bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded text-[10px] border border-emerald-200 shadow-sm" title={`Precio Base: S/ ${r.precio_unitario}`}>S/ {r.precio_unitario.toFixed(2)}</span>
+                                                    </div>
+                                                )}
+                                            </td>
                                         ) : (
                                             <>
                                                 <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-slate-100 text-slate-500 font-mono">S/ {precio.toFixed(2)}</td>
@@ -509,6 +510,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                                 <td className={`w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-slate-100 font-bold ${saldoFisico < 0 ? 'text-red-500' : 'text-slate-500'}`}>{formatNumber(saldoFisico)}</td>
                                                 <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-slate-100 text-slate-500">S/ {formatNumber(saldoMonetario)}</td>
                                                 <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[12px] border-l border-slate-100 text-emerald-700 font-black">S/ {formatNumber(costoEjecutado)}</td>
+                                                <td className="w-[70px] min-w-[70px] border-l border-slate-100/50"></td>
                                             </>
                                         )}
 
