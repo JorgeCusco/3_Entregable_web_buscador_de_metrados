@@ -192,6 +192,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
     const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo), [filteredMetrados, catalogoActivo]);
     const [isExporting, setIsExporting] = React.useState(false);
+    const [showCostView, setShowCostView] = React.useState(false);
 
     // Calcular totales por partida para las filas de cabecera
     const partidaTotals = useMemo(() => {
@@ -348,6 +349,20 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
+                    {/* Botón Toggle Vista Valorizada */}
+                    <button
+                        onClick={() => setShowCostView(!showCostView)}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm cursor-pointer border ${
+                            showCostView 
+                            ? 'bg-blue-600 text-white border-blue-700 shadow-blue-200' 
+                            : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                        }`}
+                        title={showCostView ? "Volver a vista técnica" : "Ver costos y saldos"}
+                    >
+                        <span className="text-[14px]">{showCostView ? '👷' : '💰'}</span>
+                        {showCostView ? 'Vista Técnica' : 'Vista Valorizada'}
+                    </button>
+
                     <button
                         onClick={() => {
                             if (window.confirm('¿Estás seguro de que deseas limpiar todos los datos registrados? Esta acción no se puede deshacer.')) {
@@ -382,12 +397,27 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             <th className="w-[80px] min-w-[80px] px-1.5 py-3 text-left">Item / Código</th>
                             <th className="px-2 py-3">Descripción / Partida / Metrado</th>
                             <th className="w-[45px] min-w-[45px] px-1 py-3 text-center">Und</th>
-                            <th className="w-[60px] min-w-[60px] px-1 py-3 text-right text-[10px] border-l border-slate-200">CANT.</th>
-                            <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px] border-l border-slate-200">LONG./AREA</th>
-                            <th className="w-[70px] min-w-[70px] px-1 py-3 text-right text-[10px] border-l border-slate-200">ANCHO</th>
-                            <th className="w-[70px] min-w-[70px] px-1 py-3 text-right text-[10px] border-l border-slate-200">ALT./GAN.</th>
-                            <th className="w-[80px] min-w-[80px] px-2 py-3 text-right text-[10px] border-l border-slate-200">Parcial</th>
-                            <th className="w-[50px] min-w-[50px] px-1 py-3 text-center text-[10px] border-l border-slate-200">Veces</th>
+                            
+                            {!showCostView ? (
+                                <>
+                                    <th className="w-[60px] min-w-[60px] px-1 py-3 text-right text-[10px] border-l border-slate-200">CANT.</th>
+                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px] border-l border-slate-200">LONG./AREA</th>
+                                    <th className="w-[70px] min-w-[70px] px-1 py-3 text-right text-[10px] border-l border-slate-200">ANCHO</th>
+                                    <th className="w-[70px] min-w-[70px] px-1 py-3 text-right text-[10px] border-l border-slate-200">ALT./GAN.</th>
+                                    <th className="w-[80px] min-w-[80px] px-2 py-3 text-right text-[10px] border-l border-slate-200">Parcial</th>
+                                    <th className="w-[50px] min-w-[50px] px-1 py-3 text-center text-[10px] border-l border-slate-200">Veces</th>
+                                </>
+                            ) : (
+                                <>
+                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Precio S/</th>
+                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Metrado Acum.</th>
+                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Presupuesto</th>
+                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Saldo Fis.</th>
+                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Sald. Mon S/</th>
+                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Costo Ejec.</th>
+                                </>
+                            )}
+                            
                             <th className="w-[70px] min-w-[70px] px-1 py-3 text-center text-[10px] border-l border-slate-200">AUTOR</th>
                             <th className="w-[85px] min-w-[85px] px-2 py-3 text-right text-[10px] border-l border-slate-200">Total</th>
                         </tr>
@@ -402,7 +432,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                         <td className="w-[80px] min-w-[80px] px-2 py-1 font-mono text-[10px] tracking-wider text-left text-slate-500">
                                             {r.codigo}
                                         </td>
-                                        <td colSpan={10} className="px-3 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600"
+                                        <td colSpan={showCostView ? 10 : 10} className="px-3 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
                                             {r.descripcion}
                                         </td>
@@ -416,7 +446,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     <tr key={r.id} className="bg-slate-50/50 border-b border-slate-100 group">
                                         <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1.5 text-center overflow-hidden"></td>
                                         <td className="w-[80px] min-w-[80px] px-2 py-1.5 text-left"></td>
-                                        <td className="px-2 py-1.5" colSpan={10} style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.5 + 0.75}rem` }}>
+                                        <td className="px-2 py-1.5" colSpan={showCostView ? 10 : 10} style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.5 + 0.75}rem` }}>
                                             <div className="flex items-center gap-2">
                                                 <span className="text-blue-300 font-black text-[10px]">▼</span>
                                                 <input
@@ -437,6 +467,13 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 const total = partidaTotals[r.codigo] || 0;
                                 const hasMetrados = total > 0;
 
+                                // Cálculos Vista Valorizada
+                                const precio = r.precio_unitario || 0;
+                                const presupuesto = r.cantidad_presupuesto || 0;
+                                const saldoFisico = presupuesto - total;
+                                const costoEjecutado = total * precio;
+                                const saldoMonetario = saldoFisico * precio;
+
                                 return (
                                     <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/50' : 'bg-white'} border-b border-slate-100 font-semibold group transition-colors`}>
                                         <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1 text-center overflow-hidden"></td>
@@ -453,15 +490,30 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                                 {r.cantidad_presupuesto === 0 && (
                                                     <span className="bg-red-100 text-red-600 font-bold px-1.5 py-0.5 rounded text-[9px] border border-red-200" title="Partida Deductiva (Cantidad 0 original)">DD</span>
                                                 )}
-                                                {r.precio_unitario > 0 && (
+                                                {!showCostView && r.precio_unitario > 0 && (
                                                     <span className="bg-emerald-50 text-emerald-600 font-bold px-1.5 py-0.5 rounded text-[9px] border border-emerald-200" title={`Precio: S/ ${r.precio_unitario}`}>S/ {r.precio_unitario.toFixed(2)}</span>
                                                 )}
                                             </div>
                                         </td>
                                         <td className="w-[45px] min-w-[45px] px-2 py-1 text-center text-slate-400 font-bold text-[10px]">{r.unidad}</td>
-                                        <td colSpan={7} className="px-1 py-1 border-l border-slate-100/50"></td>
+                                        
+                                        {!showCostView ? (
+                                            <>
+                                                <td colSpan={6} className="px-1 py-1 border-l border-slate-100/50"></td>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-slate-100 text-slate-500 font-mono">S/ {precio.toFixed(2)}</td>
+                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-slate-100 text-blue-700 font-bold">{formatNumber(total)}</td>
+                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-slate-100 text-slate-500">{formatNumber(presupuesto)}</td>
+                                                <td className={`w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-slate-100 font-bold ${saldoFisico < 0 ? 'text-red-500' : 'text-slate-500'}`}>{formatNumber(saldoFisico)}</td>
+                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-slate-100 text-slate-500">S/ {formatNumber(saldoMonetario)}</td>
+                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[12px] border-l border-slate-100 text-emerald-700 font-black">S/ {formatNumber(costoEjecutado)}</td>
+                                            </>
+                                        )}
+
                                         <td className="w-[85px] min-w-[85px] px-2 py-1 text-right text-blue-600 font-black text-[12px] border-l border-slate-100/50">
-                                            {hasMetrados ? formatNumber(total) : '-'}
+                                            {hasMetrados && !showCostView ? formatNumber(total) : '-'}
                                         </td>
                                     </tr>
                                 );
@@ -534,63 +586,70 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     </td>
                                     <td className="px-2 py-1.5 text-center text-slate-300">-</td>
 
-                                    {/* Dimensiones Editables */}
-                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                        <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                            value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)}
-                                            onFocus={(e) => e.target.select()}
-                                            onKeyDown={(e) => handleKeyDown(e)} />
-                                    </td>
-                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                        {r.tipo_metrado === 'HVAC_ACCESORIO' && r.hvac_item_type !== 'CODO' ? (
-                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
-                                        ) : (
-                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                                value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)}
-                                                onFocus={(e) => e.target.select()}
-                                                onKeyDown={(e) => handleKeyDown(e)} />
-                                        )}
-                                    </td>
-                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                        {r.tipo_metrado === 'ACERO' || r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
-                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
-                                        ) : (
-                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                                value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)}
-                                                onFocus={(e) => e.target.select()}
-                                                onKeyDown={(e) => handleKeyDown(e)} />
-                                        )}
-                                    </td>
-                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                        {r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
-                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
-                                        ) : (
-                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                                value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)}
-                                                onFocus={(e) => e.target.select()}
-                                                onKeyDown={(e) => handleKeyDown(e)} />
-                                        )}
-                                    </td>
+                                    {!showCostView ? (
+                                        <>
+                                            {/* Dimensiones Editables */}
+                                            <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                    value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)}
+                                                    onFocus={(e) => e.target.select()}
+                                                    onKeyDown={(e) => handleKeyDown(e)} />
+                                            </td>
+                                            <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                {r.tipo_metrado === 'HVAC_ACCESORIO' && r.hvac_item_type !== 'CODO' ? (
+                                                    <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                                ) : (
+                                                    <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                        value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)}
+                                                        onFocus={(e) => e.target.select()}
+                                                        onKeyDown={(e) => handleKeyDown(e)} />
+                                                )}
+                                            </td>
+                                            <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                {r.tipo_metrado === 'ACERO' || r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
+                                                    <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                                ) : (
+                                                    <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                        value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)}
+                                                        onFocus={(e) => e.target.select()}
+                                                        onKeyDown={(e) => handleKeyDown(e)} />
+                                                )}
+                                            </td>
+                                            <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                {r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
+                                                    <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                                ) : (
+                                                    <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                        value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)}
+                                                        onFocus={(e) => e.target.select()}
+                                                        onKeyDown={(e) => handleKeyDown(e)} />
+                                                )}
+                                            </td>
 
-                                    <td className="px-2 py-1.5 text-right font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
+                                            <td className="px-2 py-1.5 text-right font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
 
-                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                        {r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
-                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none bg-slate-50/50 block w-full rounded">1</span>
-                                        ) : (
-                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
-                                                value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
-                                                onFocus={(e) => e.target.select()}
-                                                onKeyDown={(e) => handleKeyDown(e)} />
-                                        )}
-                                    </td>
+                                            <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                {r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
+                                                    <span className="text-[9px] font-bold text-slate-300 pointer-events-none bg-slate-50/50 block w-full rounded">1</span>
+                                                ) : (
+                                                    <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
+                                                        value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
+                                                        onFocus={(e) => e.target.select()}
+                                                        onKeyDown={(e) => handleKeyDown(e)} />
+                                                )}
+                                            </td>
+                                        </>
+                                    ) : (
+                                        <td colSpan={6} className="px-1 py-1.5 text-center border-l border-slate-200/60 text-slate-300 italic text-[10px]">
+                                            Modo valorización activado - Desactivar para editar medidas
+                                        </td>
+                                    )}
 
-                                    <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1 text-center border-l border-slate-100/50">
+                                    <td className="w-[70px] min-w-[70px] px-1 py-1 text-center border-l border-slate-100/50">
                                         <div className="flex flex-col items-center leading-none">
                                             <span className="text-[9px] font-black text-slate-800 uppercase truncate w-full" title={r.autor_usuario || 'User'}>
                                                 {(r.autor_usuario || 'User').split(' ')[0]}
                                             </span>
-                                            <span className="text-[7px] text-slate-400 font-bold">AUTOR</span>
                                         </div>
                                     </td>
 

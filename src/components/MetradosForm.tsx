@@ -5,7 +5,7 @@ import type { Partida } from '../types';
 import type { TipoProyecto } from '../App';
 import { isAcero, isInstalacion } from '../hooks/useMetradosForm';
 import { ESPECIALIDADES_PARTIDA, getEspecialidadPorCodigo } from '../constants/especialidades';
-import { Save, Eraser } from 'lucide-react';
+import { Save, Eraser, ChevronDown, ChevronUp } from 'lucide-react';
 import { HVAC_DATA } from '../data/hvacData';
 import { usePersonalStore } from '../store/usePersonalStore';
 import { useMetradosStore } from '../store/useMetradosStore';
@@ -50,8 +50,9 @@ window.RenderModificacionBadge = RenderModificacionBadge;
 
 export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, proyecto }) => {
     const { personal } = usePersonalStore();
-    const { catalogoHospital, catalogoContingencia } = useMetradosStore();
+    const { catalogoHospital, catalogoContingencia, metrados } = useMetradosStore();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showCostDetail, setShowCostDetail] = useState(false);
     
     const uniqueCuadrillas = useMemo(() => {
         const cuadrillas = personal.map(p => p.cuadrilla).filter(c => c && c.trim() !== '' && c !== 'nan');
@@ -314,13 +315,84 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     </div>
 
                     {state.partidaSeleccionada && (
-                        <div className="bg-blue-50/50 px-3 py-2 rounded-xl border border-blue-100 flex items-center justify-between shadow-sm animate-in fade-in slide-in-from-top-1">
-                            <span className="text-[10px] text-blue-700 font-mono tracking-wider font-black">
-                                <span className="text-blue-400 opacity-50 mr-1">ID:</span> {state.partidaSeleccionada.codigo}
-                                <span className="mx-3 opacity-20">|</span>
-                                <span className="text-blue-400 opacity-50 mr-1">UNIDAD:</span> {state.partidaSeleccionada.unidad}
-                            </span>
-                            {RenderModificacionBadge(state.partidaSeleccionada.modificacion)}
+                        <div className="flex flex-col gap-2 animate-in fade-in slide-in-from-top-1">
+                            {/* Card de ID y Unidad (Base) */}
+                            <div className="bg-blue-50/50 px-3 py-2 rounded-xl border border-blue-100 flex items-center justify-between shadow-sm">
+                                <span className="text-[10px] text-blue-700 font-mono tracking-wider font-black">
+                                    <span className="text-blue-400 opacity-50 mr-1">ID:</span> {state.partidaSeleccionada.codigo}
+                                    <span className="mx-3 opacity-20">|</span>
+                                    <span className="text-blue-400 opacity-50 mr-1">UNIDAD:</span> {state.partidaSeleccionada.unidad}
+                                </span>
+                                <div className="flex items-center gap-2">
+                                    <button 
+                                        onClick={() => setShowCostDetail(!showCostDetail)}
+                                        className="text-[9px] font-bold text-blue-600 hover:text-blue-800 bg-blue-100 px-1.5 py-0.5 rounded flex items-center gap-1 transition-colors"
+                                    >
+                                        {showCostDetail ? <ChevronUp size={10} /> : <ChevronDown size={10} />}
+                                        {showCostDetail ? 'Ocultar Saldo' : 'Ver Saldo'}
+                                    </button>
+                                    {RenderModificacionBadge(state.partidaSeleccionada.modificacion)}
+                                </div>
+                            </div>
+
+                            {/* Detalle de Acumulados (Desplegable) */}
+                            {showCostDetail && (
+                                <div className="bg-white border border-blue-100 rounded-xl p-3 shadow-md space-y-3 animate-in zoom-in-95 duration-200">
+                                    {(() => {
+                                        const presupuesto = state.partidaSeleccionada.cantidad_presupuesto || 0;
+                                        // Sumar solo los metrados que coincidan con la partida actual
+                                        const acumulado = metrados
+                                            .filter(m => m.codigo_partida === state.partidaSeleccionada.codigo)
+                                            .reduce((sum, m) => sum + (m.total || 0), 0);
+                                        
+                                        const saldo = presupuesto - acumulado;
+                                        const porcentaje = presupuesto > 0 ? Math.min((acumulado / presupuesto) * 100, 100) : 0;
+                                        const isExceeded = acumulado > presupuesto && presupuesto > 0;
+
+                                        return (
+                                            <>
+                                                {/* Barra de Progreso */}
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-[9px] font-bold uppercase tracking-tight">
+                                                        <span className="text-slate-500">Progreso de Ejecución</span>
+                                                        <span className={isExceeded ? 'text-red-600' : 'text-blue-600'}>
+                                                            {porcentaje.toFixed(1)}%
+                                                        </span>
+                                                    </div>
+                                                    <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner">
+                                                        <div 
+                                                            className={`h-full transition-all duration-500 ${isExceeded ? 'bg-red-500' : 'bg-blue-500'}`}
+                                                            style={{ width: `${porcentaje}%` }}
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                {/* Datos Numéricos */}
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
+                                                        <span className="text-[8px] font-bold text-slate-400 block uppercase">Presupuesto Base</span>
+                                                        <span className="text-xs font-black text-slate-700">{presupuesto.toFixed(2)} {state.partidaSeleccionada.unidad}</span>
+                                                    </div>
+                                                    <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
+                                                        <span className="text-[8px] font-bold text-slate-400 block uppercase">Acumulado Total</span>
+                                                        <span className="text-xs font-black text-blue-700">{acumulado.toFixed(2)} {state.partidaSeleccionada.unidad}</span>
+                                                    </div>
+                                                    <div className={`col-span-2 p-2 rounded-lg border ${isExceeded ? 'bg-red-50 border-red-100' : 'bg-emerald-50 border-emerald-100'}`}>
+                                                        <div className="flex justify-between items-center">
+                                                            <span className={`text-[9px] font-bold uppercase ${isExceeded ? 'text-red-700' : 'text-emerald-700'}`}>
+                                                                {isExceeded ? '⚠️ Mayor Metrado por' : '✅ Saldo Disponible'}
+                                                            </span>
+                                                            <span className={`text-xs font-black ${isExceeded ? 'text-red-700' : 'text-emerald-700'}`}>
+                                                                {Math.abs(saldo).toFixed(2)} {state.partidaSeleccionada.unidad}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        );
+                                    })()}
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
