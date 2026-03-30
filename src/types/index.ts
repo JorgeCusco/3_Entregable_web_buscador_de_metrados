@@ -35,6 +35,7 @@ export interface Partida {
     is_elemento_virtual?: boolean;
     precio_unitario?: number;
     cantidad_presupuesto?: number;
+    acumulado_anterior_qty?: number;
 }
 
 export interface Metrado {

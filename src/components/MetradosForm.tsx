@@ -327,22 +327,32 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                             </div>
 
                             {showCostDetail && (
-                                <div className="bg-white border border-blue-100 rounded-xl p-3 shadow-md space-y-3 animate-in zoom-in-95 duration-200">
+                                <div className="bg-white border border-blue-100 rounded-xl p-3 shadow-md space-y-4 animate-in zoom-in-95 duration-200">
                                     {(() => {
-                                        const presupuesto = state.partidaSeleccionada.cantidad_presupuesto || 0;
-                                        const acumulado = metrados
-                                            .filter((m: any) => m.codigo_partida === state.partidaSeleccionada.codigo)
+                                        const p = state.partidaSeleccionada;
+                                        const precio = p.precio_unitario || 0;
+                                        const qtyPresupuesto = p.cantidad_presupuesto || 0;
+                                        const qtyAnterior = p.acumulado_anterior_qty || 0;
+                                        
+                                        const qtyActual = metrados
+                                            .filter((m: any) => m.codigo_partida === p.codigo)
                                             .reduce((sum: number, m: any) => sum + (m.total || 0), 0);
                                         
-                                        const saldo = presupuesto - acumulado;
-                                        const porcentaje = presupuesto > 0 ? Math.min((acumulado / presupuesto) * 100, 100) : 0;
-                                        const isExceeded = acumulado > presupuesto && presupuesto > 0;
+                                        const qtyAcumuladaTotal = qtyAnterior + qtyActual;
+                                        const porcentaje = qtyPresupuesto > 0 ? Math.min((qtyAcumuladaTotal / qtyPresupuesto) * 100, 100) : 0;
+                                        const isExceeded = qtyAcumuladaTotal > qtyPresupuesto && qtyPresupuesto > 0;
+
+                                        const solesPresupuestos = qtyPresupuesto * precio;
+                                        const solesEjecutados = qtyAcumuladaTotal * precio;
+                                        const solesSaldo = solesPresupuestos - solesEjecutados;
+
+                                        const format = (n: number) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
                                         return (
                                             <>
                                                 <div className="space-y-1">
                                                     <div className="flex justify-between text-[9px] font-bold uppercase tracking-tight">
-                                                        <span className="text-slate-500">Progreso de Ejecución</span>
+                                                        <span className="text-slate-500">Progreso Total (Anterior + Actual)</span>
                                                         <span className={isExceeded ? 'text-red-600' : 'text-blue-600'}>
                                                             {porcentaje.toFixed(1)}%
                                                         </span>
@@ -355,24 +365,51 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                                     </div>
                                                 </div>
 
-                                                <div className="grid grid-cols-2 gap-2">
-                                                    <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
-                                                        <span className="text-[8px] font-bold text-slate-400 block uppercase">Presupuesto Base</span>
-                                                        <span className="text-xs font-black text-slate-700">{presupuesto.toFixed(2)} {state.partidaSeleccionada.unidad}</span>
-                                                    </div>
-                                                    <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
-                                                        <span className="text-[8px] font-bold text-slate-400 block uppercase">Acumulado Total</span>
-                                                        <span className="text-xs font-black text-blue-700">{acumulado.toFixed(2)} {state.partidaSeleccionada.unidad}</span>
-                                                    </div>
-                                                    <div className={`col-span-2 p-2 rounded-lg border ${isExceeded ? 'bg-red-50 border-red-100' : 'bg-emerald-50 border-emerald-100'}`}>
-                                                        <div className="flex justify-between items-center">
-                                                            <span className={`text-[9px] font-bold uppercase ${isExceeded ? 'text-red-700' : 'text-emerald-700'}`}>
-                                                                {isExceeded ? '⚠️ Mayor Metrado por' : '✅ Saldo Disponible'}
-                                                            </span>
-                                                            <span className={`text-xs font-black ${isExceeded ? 'text-red-700' : 'text-emerald-700'}`}>
-                                                                {Math.abs(saldo).toFixed(2)} {state.partidaSeleccionada.unidad}
-                                                            </span>
+                                                <div className="space-y-1.5">
+                                                    <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest pl-1">Control Físico ({p.unidad})</span>
+                                                    <div className="grid grid-cols-4 gap-2">
+                                                        <div className="bg-slate-50 p-1.5 rounded-lg border border-slate-100 text-center">
+                                                            <span className="text-[7px] font-bold text-slate-400 block uppercase">Anterior</span>
+                                                            <span className="text-[10px] font-black text-slate-600">{format(qtyAnterior)}</span>
                                                         </div>
+                                                        <div className="bg-blue-50/50 p-1.5 rounded-lg border border-blue-100 text-center">
+                                                            <span className="text-[7px] font-bold text-blue-400 block uppercase">Actual</span>
+                                                            <span className="text-[10px] font-black text-blue-700">{format(qtyActual)}</span>
+                                                        </div>
+                                                        <div className="bg-slate-900 p-1.5 rounded-lg text-center">
+                                                            <span className="text-[7px] font-bold text-slate-500 block uppercase">Acumulado</span>
+                                                            <span className="text-[10px] font-black text-white">{format(qtyAcumuladaTotal)}</span>
+                                                        </div>
+                                                        <div className="bg-slate-50 p-1.5 rounded-lg border border-slate-100 text-center">
+                                                            <span className="text-[7px] font-bold text-slate-400 block uppercase">Presupuesto</span>
+                                                            <span className="text-[10px] font-black text-slate-700">{format(qtyPresupuesto)}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-1.5">
+                                                    <div className="flex items-center justify-between pl-1">
+                                                        <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Control Financiero (Soles)</span>
+                                                        <span className="text-[8px] font-mono font-bold text-blue-500 bg-blue-50 px-1 rounded">P.U: S/ {format(precio)}</span>
+                                                    </div>
+                                                    <div className="grid grid-cols-2 gap-2">
+                                                        <div className="bg-slate-50 p-2 rounded-lg border border-slate-100 flex justify-between items-center">
+                                                            <span className="text-[8px] font-bold text-slate-400 uppercase">Val. Presup.</span>
+                                                            <span className="text-[11px] font-black text-slate-700">S/ {format(solesPresupuestos)}</span>
+                                                        </div>
+                                                        <div className="bg-blue-50 p-2 rounded-lg border border-blue-100 flex justify-between items-center">
+                                                            <span className="text-[8px] font-bold text-blue-400 uppercase">Val. Ejec.</span>
+                                                            <span className="text-[11px] font-black text-blue-700">S/ {format(solesEjecutados)}</span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div className={`p-2 rounded-lg border text-center ${isExceeded ? 'bg-red-50 border-red-100' : 'bg-emerald-50 border-emerald-100'}`}>
+                                                        <span className={`text-[8px] font-bold uppercase block -mb-0.5 ${isExceeded ? 'text-red-700' : 'text-emerald-700'}`}>
+                                                            {isExceeded ? 'PÉRDIDA / MAYOR COSTO' : 'SALDO DISPONIBLE EN SOLES'}
+                                                        </span>
+                                                        <span className={`text-sm font-black ${isExceeded ? 'text-red-700' : 'text-emerald-700'}`}>
+                                                            S/ {format(Math.abs(solesSaldo))}
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </>
@@ -500,7 +537,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                             const isLocked = strategy.isFieldLocked(internalKey as any, meta);
                             const label = strategy.getFieldLabel(internalKey as any);
 
-                            const nextIds = {
+                            const nextIds: any = {
                                 cantidad: 'input-longitud',
                                 longitud: strategy.isFieldLocked('ancho_empalme', meta) ? 'input-altura' : 'input-ancho',
                                 ancho: 'input-altura',
@@ -519,7 +556,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                         value={state[key]}
                                         disabled={isLocked}
                                         onChange={e => actions[`set${key.charAt(0).toUpperCase() + key.slice(1)}`](e.target.value === "" ? "" : Number(e.target.value))}
-                                        onKeyDown={e => handleKeyDown(e, nextIds[key as keyof typeof nextIds])}
+                                        onKeyDown={e => handleKeyDown(e, nextIds[key])}
                                         onFocus={e => e.target.select()}
                                         className={`w-full px-1 py-1 border rounded text-xs text-right font-mono font-bold outline-none transition-colors ${
                                             isLocked 

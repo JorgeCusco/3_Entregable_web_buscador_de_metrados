@@ -465,7 +465,9 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
                             // CASO 2: Es una Cabecera de Partida (Nodo Hoja del Presupuesto)
                             if (r.is_template && !r.es_titulo) {
-                                const total = partidaTotals[r.codigo] || 0;
+                                const qtySistema = partidaTotals[r.codigo] || 0;
+                                const qtyAnterior = r.acumulado_anterior_qty || 0;
+                                const total = qtySistema + qtyAnterior;
                                 const hasMetrados = total > 0;
 
                                 // Cálculos Vista Valorizada

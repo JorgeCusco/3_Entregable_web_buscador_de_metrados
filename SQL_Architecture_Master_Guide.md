@@ -59,6 +59,7 @@ erDiagram
         text tipo_metrado "ESTANDAR | ACERO | HVAC*"
         numeric precio_unitario "Precio estático de DB/presupuesto"
         numeric cantidad_presupuesto "Si = 0 -> Deductivo (DD)"
+        numeric acumulado_anterior_qty "Metrado de meses previos al sistema"
     }
   
     METRADOS {
@@ -191,6 +192,29 @@ UPDATE metrados
 SET total = parcial * nro_veces 
 WHERE total IS NULL OR total = 0;
 ```
+
+---
+
+## Parte 8: Vistas de Análisis de Negocio (Server-Side)
+
+### 8.1 Vista de Seguimiento Presupuestal (`vista_analisis_presupuesto`)
+
+Para evitar procesar miles de registros en el navegador, delegamos el cálculo de valorizaciones al servidor:
+
+- **Cáculo de Cantidades**: Suma el `acumulado_anterior_qty` (histórico manual) + `qty_sistema` (metrados reales en DB).
+- **Cálculo Monetario**: Multiplica el metrado total acumulado por el `precio_unitario`.
+- **Propósito**: Reportes estáticos, exportaciones pesadas y PowerBI.
+
+```sql
+SELECT 
+    codigo, 
+    qty_presupuestada, 
+    qty_acumulada_total, 
+    soles_ejecutados_total 
+FROM vista_analisis_presupuesto;
+```
+
+---
 
 ---
 
