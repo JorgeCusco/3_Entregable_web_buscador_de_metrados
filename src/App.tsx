@@ -90,7 +90,8 @@ function App() {
         partida: { 
           codigo: final.codigo_partida,
           descripcion: final.descripcion_partida,
-          unidad: final.unidad 
+          unidad: final.unidad,
+          tipo_metrado: final.tipo_metrado 
         } as Partida,
         cantidad: final.cantidad,
         longitud: final.longitud_area,

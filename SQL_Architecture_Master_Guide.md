@@ -13,7 +13,15 @@ erDiagram
     CATALOGO_PARTIDAS ||--o{ METRADOS : "es referenciado por"
     PARTIDAS_PERSONALIZADAS ||--o{ METRADOS : "es referenciado por"
     PERSONAL ||--o{ METRADOS_PERSONAL : "participa en"
+    HVAC_CATALOGO_ACCESORIOS ||--o{ METRADOS : "aplica factor a"
     
+    HVAC_CATALOGO_ACCESORIOS {
+        uuid id PK
+        text categoria "DUCTO | TEE | REDUCCION | CODO"
+        text label
+        numeric factor
+    }
+
     PARTIDAS_PERSONALIZADAS {
         uuid id PK
         text codigo

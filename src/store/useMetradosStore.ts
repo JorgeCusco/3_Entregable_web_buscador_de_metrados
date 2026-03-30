@@ -30,6 +30,7 @@ interface MetradosState {
     // D) Catálogos vivos (Supabase)
     catalogoHospital: Partida[];
     catalogoContingencia: Partida[];
+    hvacCatalog: { id: string; categoria: string; label: string; factor: number }[];
 
     // Acciones
     setContext: (context: Partial<MetradosContext>) => void;
@@ -40,6 +41,7 @@ interface MetradosState {
     updateGroup: (codigo_partida: string, old_elemento: string, new_elemento: string) => Promise<void>;
     addCustomPartida: (partida: Partida) => Promise<Partida | null>;
     fetchCustomPartidas: () => Promise<void>;
+    fetchHvacCatalog: () => Promise<void>;
     fetchCatalogoMaestro: () => Promise<void>;
     clearAll: () => void;
 }
@@ -60,6 +62,7 @@ export const useMetradosStore = create<MetradosState>()(
             customPartidas: [],
             catalogoHospital: [],
             catalogoContingencia: [],
+            hvacCatalog: [],
 
             setContext: (newContext) =>
                 set((state) => ({
@@ -389,6 +392,21 @@ export const useMetradosStore = create<MetradosState>()(
                     }
                 } catch (e) {
                     console.error('Error cargando inicial de partidas:', e);
+                }
+            },
+
+            fetchHvacCatalog: async () => {
+                try {
+                    const { data, error } = await supabase
+                        .from('hvac_catalogo_accesorios')
+                        .select('*')
+                        .order('categoria', { ascending: true })
+                        .order('label', { ascending: true });
+                    
+                    if (error) throw error;
+                    set({ hvacCatalog: data || [] });
+                } catch (e) {
+                    console.error('Error cargando catalogo HVAC:', e);
                 }
             },
 

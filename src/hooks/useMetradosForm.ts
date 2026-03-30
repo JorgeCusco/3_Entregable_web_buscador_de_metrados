@@ -5,6 +5,7 @@ import { usePersonalStore } from '../store/usePersonalStore';
 import { useMetradosStore } from '../store/useMetradosStore';
 import { useAuthStore } from '../store/useAuthStore';
 import { calcularParcial, calcularTotal, isAcero as isAceroUtil, isInstalacion as isInstalacionUtil } from '../utils/metradosCalculations';
+import { formulaRegistry } from '../utils/formulas/registry';
 
 export const isAcero = isAceroUtil;
 export const isInstalacion = isInstalacionUtil;
@@ -12,27 +13,9 @@ export const isInstalacion = isInstalacionUtil;
 export const getHvacCategory = (partida: Partida | null): string | null => {
     if (!partida) return null;
     
-    // V6: Validación sistemática por tipo_metrado
+    // Ahora basado puramente en tipo_metrado de Supabase
     if (partida.tipo_metrado === 'HVAC_DUCTO') return 'DUCTO';
     if (partida.tipo_metrado === 'HVAC_ACCESORIO') return 'ACCESORIO';
-
-    const codigo = partida.codigo;
-
-    // V5: Fallback legacy exact codes
-    // Partidas que requieren TODO (Ductos + Accesorios)
-    if (['OE.5.6.16.5.11.5', 'OE.5.6.16.5.12.1'].includes(codigo)) {
-        return 'TODO';
-    }
-
-    // Categoría TEE, REDUCCIONES, CODOS
-    if (['OE.5.6.16.5.8', 'OE.5.6.16.5.11.2'].includes(codigo)) {
-        return 'ACCESORIO';
-    }
-
-    // Categoría DUCTO
-    if (['OE.5.6.16.5.7', 'OE.5.6.16.5.11.1'].includes(codigo)) {
-        return 'DUCTO';
-    }
 
     return null;
 };
@@ -111,6 +94,10 @@ export const useMetradosForm = () => {
         return calcularTotal(parcial, nroVeces);
     }, [parcial, nroVeces]);
 
+    const formulaStrategy = useMemo(() => {
+        return formulaRegistry.get(partidaSeleccionada?.tipo_metrado);
+    }, [partidaSeleccionada]);
+
     const limpiarCampos = () => {
         setElemento('');
         setDetalle('');
@@ -166,6 +153,9 @@ export const useMetradosForm = () => {
             jerarquia: partidaSeleccionada.jerarquia,
             nivelJerarquia: partidaSeleccionada.nivel_jerarquia,
             modificacion: partidaSeleccionada.modificacion,
+            tipo_metrado: partidaSeleccionada.tipo_metrado,
+            hvac_factor: hvacFactor,
+            hvac_item_type: hvacItemType,
             especialidad: (especialidadSeleccionada && especialidadSeleccionada !== 'TODAS') 
                 ? especialidadSeleccionada 
                 : getEspecialidadPorCodigo(partidaSeleccionada.codigo),
@@ -183,7 +173,8 @@ export const useMetradosForm = () => {
             partidaSeleccionada, elemento, detalle, diametro,
             cantidad, longitud, ancho, altura, nroVeces,
             parcial, total, especialidadSeleccionada, isSpecialtyLocked,
-            customPartidas, hvacFactor, hvacConfig, hvacItemType
+            customPartidas, hvacFactor, hvacConfig, hvacItemType,
+            formulaStrategy
         },
         actions: {
             setFecha,

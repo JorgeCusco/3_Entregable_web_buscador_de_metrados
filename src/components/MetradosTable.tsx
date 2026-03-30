@@ -3,6 +3,7 @@ import type { Metrado, Partida } from '../types';
 import { Download, Trash2, Loader2, Eraser } from 'lucide-react';
 import { RenderModificacionBadge } from './MetradosForm';
 import { useMetradosStore } from '../store/useMetradosStore';
+import { formulaRegistry } from '../utils/formulas/registry';
 import { SPECIALTY_RULES } from '../data/specialtyConfig';
 import { applyAllFilters, getAvailableAuthorsImproved, getEspecialidadPorCodigo } from '../utils/filteringLogic';
 
@@ -589,58 +590,69 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     <td className="px-2 py-1.5 text-center text-slate-300">-</td>
 
                                     {!showCostView ? (
-                                        <>
-                                            {/* Dimensiones Editables */}
-                                            <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                                <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                                    value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)}
-                                                    onFocus={(e) => e.target.select()}
-                                                    onKeyDown={(e) => handleKeyDown(e)} />
-                                            </td>
-                                            <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                                {r.tipo_metrado === 'HVAC_ACCESORIO' && r.hvac_item_type !== 'CODO' ? (
-                                                    <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
-                                                ) : (
-                                                    <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                                        value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)}
-                                                        onFocus={(e) => e.target.select()}
-                                                        onKeyDown={(e) => handleKeyDown(e)} />
-                                                )}
-                                            </td>
-                                            <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                                {r.tipo_metrado === 'ACERO' || r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
-                                                    <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
-                                                ) : (
-                                                    <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                                        value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)}
-                                                        onFocus={(e) => e.target.select()}
-                                                        onKeyDown={(e) => handleKeyDown(e)} />
-                                                )}
-                                            </td>
-                                            <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                                {r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
-                                                    <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
-                                                ) : (
-                                                    <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                                        value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)}
-                                                        onFocus={(e) => e.target.select()}
-                                                        onKeyDown={(e) => handleKeyDown(e)} />
-                                                )}
-                                            </td>
+                                        (() => {
+                                            const strategy = formulaRegistry.get(r.tipo_metrado);
+                                            const meta = { hvacItemType: r.hvac_item_type };
+                                            
+                                            return (
+                                                <>
+                                                    {/* Dimensiones Editables */}
+                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                        {strategy.isFieldLocked('cantidad', meta) ? (
+                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                                        ) : (
+                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                                value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)}
+                                                                onFocus={(e) => e.target.select()}
+                                                                onKeyDown={(e) => handleKeyDown(e)} />
+                                                        )}
+                                                    </td>
+                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                        {strategy.isFieldLocked('longitud_area', meta) ? (
+                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                                        ) : (
+                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                                value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)}
+                                                                onFocus={(e) => e.target.select()}
+                                                                onKeyDown={(e) => handleKeyDown(e)} />
+                                                        )}
+                                                    </td>
+                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                        {strategy.isFieldLocked('ancho_empalme', meta) ? (
+                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                                        ) : (
+                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                                value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)}
+                                                                onFocus={(e) => e.target.select()}
+                                                                onKeyDown={(e) => handleKeyDown(e)} />
+                                                        )}
+                                                    </td>
+                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                        {strategy.isFieldLocked('altura_gancho', meta) ? (
+                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                                        ) : (
+                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                                value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)}
+                                                                onFocus={(e) => e.target.select()}
+                                                                onKeyDown={(e) => handleKeyDown(e)} />
+                                                        )}
+                                                    </td>
 
-                                            <td className="px-2 py-1.5 text-right font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
+                                                    <td className="px-2 py-1.5 text-right font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
 
-                                            <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                                {r.tipo_metrado === 'HVAC_DUCTO' || r.tipo_metrado === 'HVAC_ACCESORIO' ? (
-                                                    <span className="text-[9px] font-bold text-slate-300 pointer-events-none bg-slate-50/50 block w-full rounded">1</span>
-                                                ) : (
-                                                    <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
-                                                        value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
-                                                        onFocus={(e) => e.target.select()}
-                                                        onKeyDown={(e) => handleKeyDown(e)} />
-                                                )}
-                                            </td>
-                                        </>
+                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                        {strategy.isFieldLocked('nro_veces', meta) ? (
+                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none bg-slate-50/50 block w-full rounded">1</span>
+                                                        ) : (
+                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
+                                                                value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
+                                                                onFocus={(e) => e.target.select()}
+                                                                onKeyDown={(e) => handleKeyDown(e)} />
+                                                        )}
+                                                    </td>
+                                                </>
+                                            );
+                                        })()
                                     ) : (
                                         <td colSpan={6} className="px-1 py-1.5 text-center border-l border-slate-200/60 text-slate-300 italic text-[10px]">
                                             Modo valorización activado - Desactivar para editar medidas
