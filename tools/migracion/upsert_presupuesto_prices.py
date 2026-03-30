@@ -45,6 +45,7 @@ def generate_update_sql(excel_path: str, output_sql: str, proyecto_codigo="HOSP"
         if c0.startswith('OE.'):
             codigo = c0
             desc = str(row[1]).strip() if len(row) > 1 and pd.notnull(row[1]) else ""
+            desc = desc.replace('\n', ' ').replace('\r', '')
             unidad = str(row[10]).strip() if len(row) > 10 and pd.notnull(row[10]) else ""
             
             # Cantidad y Precio

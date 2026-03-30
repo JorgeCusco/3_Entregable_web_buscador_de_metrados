@@ -1,6 +1,6 @@
 -- SQL Generado para actualizar precios y cantidad presupuesto
 -- Archivo Origen: presupuesto_ultim.xls
--- Generado el: 2026-03-29 16:27:37
+-- Generado el: 2026-03-29 17:24:02
 
 BEGIN;
 DO $$
@@ -7946,8 +7946,7 @@ BEGIN
   UPDATE catalogo_partidas SET precio_unitario=78374.59, cantidad_presupuesto=16.0 WHERE codigo='OE.9.1.68' AND proyecto_id=v_proyecto_id;
   -- OE.9.1.69 - CUNA DE CALOR RADIANTE
   UPDATE catalogo_partidas SET precio_unitario=86891.46, cantidad_presupuesto=12.0 WHERE codigo='OE.9.1.69' AND proyecto_id=v_proyecto_id;
-  -- OE.9.1.70 - ESTERILIZADOR CON GENERADOR ELECTRICO DE VAPOR VERTICAL DE
-30 LITROS
+  -- OE.9.1.70 - ESTERILIZADOR CON GENERADOR ELECTRICO DE VAPOR VERTICAL DE 30 LITROS
   UPDATE catalogo_partidas SET precio_unitario=63882.0, cantidad_presupuesto=1.0 WHERE codigo='OE.9.1.70' AND proyecto_id=v_proyecto_id;
   -- OE.9.1.71 - MICROSCOPIO BINOCULAR CON CONTRASTE DE FASE
   UPDATE catalogo_partidas SET precio_unitario=60048.87, cantidad_presupuesto=1.0 WHERE codigo='OE.9.1.71' AND proyecto_id=v_proyecto_id;
@@ -8325,8 +8324,7 @@ BEGIN
   UPDATE catalogo_partidas SET precio_unitario=1750.02, cantidad_presupuesto=103.0 WHERE codigo='OE.9.3.4' AND proyecto_id=v_proyecto_id;
   -- OE.9.3.5 - UNIDAD DE TRATAMIENTO DE RESIDUOS HOSPITALARIOS
   UPDATE catalogo_partidas SET precio_unitario=1114473.6, cantidad_presupuesto=1.0 WHERE codigo='OE.9.3.5' AND proyecto_id=v_proyecto_id;
-  -- OE.9.3.6 - ESTERILIZADOR CON GENERADOR ELECTRICO DE VAPOR (DUAL)DE
-100/150 LITROS CON DOBLE PUERTA
+  -- OE.9.3.6 - ESTERILIZADOR CON GENERADOR ELECTRICO DE VAPOR (DUAL)DE 100/150 LITROS CON DOBLE PUERTA
   UPDATE catalogo_partidas SET precio_unitario=414487.5, cantidad_presupuesto=0.0 WHERE codigo='OE.9.3.6' AND proyecto_id=v_proyecto_id;
   -- OE.9.3.7 - LAVADORA AUTOMATICA DE CHATAS
   UPDATE catalogo_partidas SET precio_unitario=146230.0, cantidad_presupuesto=4.0 WHERE codigo='OE.9.3.7' AND proyecto_id=v_proyecto_id;
@@ -9010,8 +9008,7 @@ BEGIN
   UPDATE catalogo_partidas SET precio_unitario=2362.5, cantidad_presupuesto=1.0 WHERE codigo='OE.9.9.51' AND proyecto_id=v_proyecto_id;
   -- OE.9.9.52 - P.A. UNIDAD DE TRATAMIENTO DE RESIDUOS HOSPITALARIOS
   UPDATE catalogo_partidas SET precio_unitario=55723.68, cantidad_presupuesto=1.0 WHERE codigo='OE.9.9.52' AND proyecto_id=v_proyecto_id;
-  -- OE.9.9.53 - P.A. ESTERILIZADOR CON GENERADOR ELECTRICO DE VAPOR (DUAL)DE
-100/150 LITROS CON DOBLE PUERTA
+  -- OE.9.9.53 - P.A. ESTERILIZADOR CON GENERADOR ELECTRICO DE VAPOR (DUAL)DE 100/150 LITROS CON DOBLE PUERTA
   UPDATE catalogo_partidas SET precio_unitario=20724.38, cantidad_presupuesto=0.0 WHERE codigo='OE.9.9.53' AND proyecto_id=v_proyecto_id;
   -- OE.9.9.54 - P.A. EQUIPO COMPACTADOR DE RESIDUOS SOLIDOS
   UPDATE catalogo_partidas SET precio_unitario=8997.5, cantidad_presupuesto=1.0 WHERE codigo='OE.9.9.54' AND proyecto_id=v_proyecto_id;
