@@ -267,4 +267,4 @@ Para la puesta en marcha del sistema con un proyecto en curso, se ha implementad
 > Esta estructura garantiza que la exportación a Excel sea siempre consistente con lo guardado en el ecosistema Supabase, protegiendo la trazabilidad histórica de los 2,810+ registros actuales.
 
 ---
-*Última Actualización: V18 - Marzo 2026 (Corrección de Mapeo de Saldos Iniciales)*
+*Última Actualización: V19 - Marzo 2026 (Corrección final de Mapeo Relativo A-E-F)*

@@ -24,36 +24,34 @@ def generate_update_sql(file_path, output_sql_path):
             df = pd.read_excel(file_path, sheet_name=sheet_name, header=None)
             print(f"Loaded {len(df)} rows and {len(df.columns)} cols.")
             
+            # Localizar columna ITEM
+            base_col = -1
+            for idx, col in enumerate(df.columns):
+                if df[col].astype(str).str.contains('ITEM', case=False).any():
+                    base_col = idx
+                    break
+            
+            if base_col == -1:
+                print(f"Warning: 'ITEM' column not found in {sheet_name}. Assuming index 0.")
+                base_col = 0
+            else:
+                print(f"Found 'ITEM' column at index {base_col}")
+
             sql_statements.append(f"-- SECCIÓN: {project_label}")
             
             count = 0
             for index, row in df.iterrows():
-                # Búsqueda de código en cualquier columna para depurar
-                full_row_str = " ".join([str(v) for v in row.values if pd.notnull(v)])
-                if 'OE.' in full_row_str.upper():
-                    print(f"Row {index} found OE.: {list(row)}")
-
-                val_0 = row[0]
-                val_2 = row[2]
-                raw_code_0 = str(val_0).strip() if pd.notnull(val_0) else ""
-                raw_code_2 = str(val_2).strip() if pd.notnull(val_2) else ""
+                # Item (A) relativo a base_col
+                raw_code = str(row[base_col]).strip() if pd.notnull(row[base_col]) else ""
                 
-                code = ""
-                # Prioridad al código que contenga 'OE.'
-                if 'OE.' in raw_code_0.upper():
-                    code = raw_code_0.rstrip('.')
-                elif 'OE.' in raw_code_2.upper():
-                    code = raw_code_2.rstrip('.')
-                # Prioridad al código que contenga 'OE.'
-                if 'OE.' in raw_code_0.upper():
-                    code = raw_code_0.rstrip('.')
-                elif 'OE.' in raw_code_2.upper():
-                    code = raw_code_2.rstrip('.')
-
-                if code:
+                # Buscamos 'OE.' en el código
+                if 'OE.' in raw_code.upper():
+                    code = raw_code.rstrip('.')
                     try:
-                        # Buscamos valores de forma inteligente en varias columnas posibles
-                        # El usuario menciona C y D (index 2 y 3), pero en algunas hojas están en F/G o H/I
+                        # Mapeo solicitado: E (Base+4) = Metrado, F (Base+5) = Presupuesto
+                        # Metrado Acumulado (E)
+                        qty_idx = base_col + 4
+                        total_idx = base_col + 5
                         
                         def safe_float(val):
                             try:
@@ -64,33 +62,17 @@ def generate_update_sql(file_path, output_sql_path):
                                 pass
                             return 0
 
-                        # Candidatos: (Qty, Total)
-                        pairs = [
-                            (safe_float(row[2]), safe_float(row[3])),   # C, D (basado en reporte de usuario)
-                            (safe_float(row[5]), safe_float(row[6])),   # F, G (basado en inspección Hospital)
-                            (safe_float(row[6]), safe_float(row[7])),   # G, H (basado en inspección Contingencia)
-                            (safe_float(row[7]), safe_float(row[8])),   # H, I
-                        ]
+                        qty = safe_float(row[qty_idx]) if qty_idx < len(row) else 0
+                        total = safe_float(row[total_idx]) if total_idx < len(row) else 0
                         
-                        # Si OE. estaba en la fila de abajo (escalonado), también miramos la fila de arriba
-                        if index > 0:
+                        # Si están en 0 en la misma fila, intentamos la fila de arriba (escalonado detectado antes)
+                        if qty == 0 and total == 0 and index > 0:
                             prev_row = df.iloc[index-1]
-                            pairs.extend([
-                                (safe_float(prev_row[2]), safe_float(prev_row[3])),
-                                (safe_float(prev_row[0]), safe_float(prev_row[1])),
-                                (safe_float(prev_row[5]), safe_float(prev_row[6])),
-                                (safe_float(prev_row[6]), safe_float(prev_row[7])),
-                                (safe_float(prev_row[7]), safe_float(prev_row[8])),
-                            ])
-
-                        qty, total = 0, 0
-                        for q, t in pairs:
-                            if q > 0:
-                                qty, total = q, t
-                                break
+                            qty = safe_float(prev_row[qty_idx]) if qty_idx < len(prev_row) else 0
+                            total = safe_float(prev_row[total_idx]) if total_idx < len(prev_row) else 0
 
                         if qty > 0 or total > 0:
-                            # Cálculo solicitado: D / C
+                            # Cálculo: PU = Presupuesto / Metrado
                             pu = total / qty if qty > 0 else 0
                             sql = f"UPDATE catalogo_partidas SET acumulado_anterior_qty = {qty:.4f}, precio_unitario = {pu:.4f} WHERE codigo = '{code}';"
                             sql_statements.append(sql)
