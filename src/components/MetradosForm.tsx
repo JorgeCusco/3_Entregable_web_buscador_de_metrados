@@ -146,7 +146,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
     };
 
     return (
-        <div className="glass-panel rounded-2xl p-4 h-full flex flex-col gap-3 relative">
+        <div className="glass-panel rounded-xl p-2.5 h-full flex flex-col gap-2 relative">
             {/* Modal para Nueva Partida */}
             {showNuevaPartidaModal && (
                 <div className="absolute inset-0 z-[200] bg-white/90 backdrop-blur-sm p-4 flex flex-col justify-center animate-in fade-in zoom-in-95 duration-200">
@@ -239,9 +239,9 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
             )}
 
             {/* Cabecera Compacta */}
-            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-                <h2 className="text-sm font-bold text-gray-800 tracking-tight uppercase flex items-center gap-2">
-                    <div className="w-1.5 h-4 bg-blue-600 rounded-full" /> Registro de Metrados
+            <div className="flex items-center justify-between border-b border-gray-100 pb-1.5">
+                <h2 className="text-[11px] font-bold text-gray-800 tracking-tight uppercase flex items-center gap-1.5">
+                    <div className="w-1 h-3 bg-blue-600 rounded-full" /> Registro
                 </h2>
                 <div className="flex items-center gap-3">
                     <input
@@ -266,9 +266,9 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
             <div className="space-y-3 flex-grow">
                 {/* ─── PASO 1: ESPECIALIDAD Y BÚSQUEDA ─── */}
-                <div className="space-y-3">
-                    <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Especialidad (Filtro OE)</label>
+                <div className="space-y-2">
+                    <div className="space-y-0.5">
+                        <label className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter pl-1">Espec.</label>
                         <Select
                             value={state.especialidadSeleccionada}
                             onSelect={val => {
@@ -277,12 +277,12 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                             }}
                             options={ESPECIALIDADES_PARTIDA.map(esp => esp.nombre)}
                             disabled={state.isSpecialtyLocked}
-                            className="bg-white/50"
+                            className="bg-white/50 h-7"
                         />
                     </div>
 
-                    <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Partida (Buscador)</label>
+                    <div className="space-y-0.5">
+                        <label className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter pl-1">Partida</label>
                         <SearchCombobox
                             partidas={catalogoSugerencias.filter(p => {
                                 if (p.es_titulo) return false;
@@ -469,51 +469,51 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 <div className="h-px bg-slate-100 mx-2" />
 
                 {/* ─── PASO 2: UBICACIÓN Y ELEMENTO ─── */}
-                <div className="space-y-3">
-                    <div className="grid grid-cols-3 gap-1.5 p-2 bg-slate-50/50 rounded-2xl border border-slate-100">
+                <div className="space-y-2">
+                    <div className="grid grid-cols-3 gap-1 p-1 bg-slate-50/50 rounded-lg border border-slate-100">
                         <Select
-                            label="Frente"
+                            label="F"
                             value={state.frente}
                             options={['F1', 'F2', 'F3', 'F4', 'F5']}
                             onSelect={(val) => actions.setFrente(val)}
                         />
                         <Select
-                            label="Bloque"
+                            label="B"
                             value={state.bloque}
                             options={['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'EXT']}
                             onSelect={(val) => actions.setBloque(val)}
                         />
                         <Select
-                            label="Nivel"
+                            label="N"
                             value={state.nivel}
                             options={['ZZ', 'N1', 'N2', 'N3', 'N4', 'AZ']}
                             onSelect={(val) => actions.setNivel(val)}
                         />
                     </div>
 
-                    <div className="space-y-2 p-3 bg-blue-50/30 rounded-2xl border border-blue-100/50">
-                        <label className="text-[10px] font-bold text-blue-800 uppercase tracking-widest pl-1 mb-1 flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block"/> Cuadrilla / Personal
+                    <div className="space-y-1.5 p-2 bg-blue-50/30 rounded-lg border border-blue-100/50">
+                        <label className="text-[8px] font-bold text-blue-800 uppercase tracking-tighter pl-1 flex items-center gap-1">
+                            <span className="w-1 h-1 rounded-full bg-blue-500 inline-block"/> Personal
                         </label>
                         
-                        <div className="flex flex-col gap-2 bg-white/60 p-2 rounded-xl border border-blue-50">
-                            <div className="flex items-center gap-2">
-                                <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wider w-14 shrink-0 text-right">Código:</label>
+                        <div className="flex flex-col gap-1.5 bg-white/60 p-1.5 rounded border border-blue-50">
+                            <div className="flex items-center gap-1.5">
+                                <label className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter w-10 shrink-0 text-right">Cdlla:</label>
                                 <input
                                     type="text"
                                     list="cdlla-form-list"
-                                    className="flex-1 bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase"
+                                    className="flex-1 bg-white border border-slate-200 rounded px-2 py-1 text-[10px] font-bold text-slate-700 outline-none transition-all uppercase"
                                     value={state.cuadrilla === 'VARIOS' ? '' : state.cuadrilla}
                                     onChange={(e) => actions.setCuadrilla(e.target.value.toUpperCase())}
-                                    placeholder="Nombre de cuadrilla (Ej: C1)"
+                                    placeholder="C1, C2..."
                                 />
                                 <datalist id="cdlla-form-list">
                                     {uniqueCuadrillas.map(c => <option key={c} value={c} />)}
                                 </datalist>
                             </div>
                             
-                            <div className="flex items-start gap-2">
-                                <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wider w-14 shrink-0 text-right pt-2.5">Obreros:</label>
+                            <div className="flex items-start gap-1.5">
+                                <label className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter w-10 shrink-0 text-right pt-2">Nom:</label>
                                 <div className="flex-1">
                                     <PersonalMultiSelect 
                                         especialidad={state.especialidadSeleccionada}
@@ -525,25 +525,25 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         </div>
                     </div>
 
-                    <div className="space-y-2 p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
-                        <div className="space-y-1">
-                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Elemento / Agrupador</label>
+                    <div className="space-y-1.5 p-2 bg-slate-50/50 rounded-lg border border-slate-100">
+                        <div className="space-y-0.5">
+                            <label className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter pl-1">Elemento / AGR.</label>
                             <input
                                 type="text"
                                 value={state.elemento}
                                 onChange={e => actions.setElemento(e.target.value)}
-                                className="w-full px-4 py-2 border border-slate-200 rounded-xl shadow-sm text-xs font-bold text-slate-700 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition-all h-9"
-                                placeholder="Ej. Viga BV-206 Ejes 1-4..."
+                                className="w-full px-2 py-1 border border-slate-200 rounded text-[10px] font-bold text-slate-700 bg-white outline-none h-7"
+                                placeholder="Ej. Viga BV-206..."
                             />
                         </div>
 
-                        <div className="space-y-1">
-                            <label className="text-[9px] font-bold text-blue-600 flex items-center gap-1 uppercase tracking-wider pl-1">
-                                <span className="text-blue-400 font-black">↳</span> Detalle {state.hvacConfig ? `Especifico (${state.hvacConfig.category})` : 'Específico'}
+                        <div className="space-y-0.5">
+                            <label className="text-[8px] font-bold text-blue-600 flex items-center gap-0.5 uppercase tracking-tighter pl-1">
+                                <span className="text-blue-400 font-black">↳</span> Detalle
                             </label>
                             {state.hvacConfig ? (
                                 <SimpleSearchInput 
-                                    placeholder={state.hvacConfig.category === 'TODO' ? "Buscar ducto o accesorio..." : `Buscar ${state.hvacConfig.category.toLowerCase()}...`}
+                                    placeholder="Buscar..."
                                     value={state.detalle}
                                     onChange={val => actions.setDetalle(val)}
                                     onSelect={(item: any) => {
@@ -553,15 +553,15 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                     }}
                                     suggestions={hvacCatalog}
                                     searchField="label"
-                                    className="h-8 shadow-none"
+                                    className="h-7 shadow-none"
                                 />
                             ) : (
                                 <input
                                     type="text"
                                     value={state.detalle}
                                     onChange={e => actions.setDetalle(e.target.value)}
-                                    className="w-full px-4 py-1.5 border border-blue-100 rounded-xl shadow-sm text-xs border-l-4 border-l-blue-500 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none h-8"
-                                    placeholder="Mat. / Esp. / Actividad..."
+                                    className="w-full px-2 py-1 border border-blue-100 rounded text-[10px] border-l-2 border-l-blue-500 bg-white outline-none h-7"
+                                    placeholder="Ej. Acero 3/4''..."
                                 />
                             )}
                         </div>
