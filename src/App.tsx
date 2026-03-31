@@ -60,7 +60,6 @@ function App() {
         const result = await addMetrado(nuevoConMetadata);
         if (result.success) {
           setToast(`Metrado guardado: ${nuevo.codigo_partida}`);
-          alert(`¡Registro Exitoso!\n\nSe guardó correctamente la Partida: ${nuevo.codigo_partida}`);
           setTimeout(() => setToast(null), 3000);
         } else {
           alert("Error de guardado en la nube (Supabase):\n\n" + result.error);

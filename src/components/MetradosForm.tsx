@@ -252,7 +252,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     />
                     <div className="flex items-center gap-2">
                         <button 
-                            onClick={() => actions.limpiarCampos()}
+                            onClick={() => actions.limpiarCampos(true)}
                             className="text-[9px] font-bold text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1 cursor-pointer px-1.5 py-0.5 rounded hover:bg-red-50"
                             title="Limpiar medidas y detalle"
                         >

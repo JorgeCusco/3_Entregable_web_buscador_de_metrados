@@ -98,8 +98,10 @@ export const useMetradosForm = () => {
         return formulaRegistry.get(partidaSeleccionada?.tipo_metrado);
     }, [partidaSeleccionada]);
 
-    const limpiarCampos = () => {
-        setElemento('');
+    const limpiarCampos = (totalReset: boolean = false) => {
+        if (totalReset) {
+            setElemento('');
+        }
         setDetalle('');
         setHvacFactor(null);
         setHvacItemType(null);
