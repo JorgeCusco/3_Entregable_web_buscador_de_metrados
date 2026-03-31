@@ -277,13 +277,13 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     return (
         <div className="glass-panel overflow-hidden rounded-2xl flex flex-col h-full border border-slate-200 shadow-sm bg-white">
             {/* Header de la Tabla */}
-            <div className="p-3 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
+            <div className="p-1.5 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
                 <div className="flex flex-col">
-                    <h3 className="font-bold text-slate-800 text-base tracking-tight">Planilla de Metrados Dinámica</h3>
-                    <div className="flex flex-wrap items-center gap-3 mt-0.5">
+                    <h3 className="font-bold text-slate-800 text-sm tracking-tight">Planilla de Metrados Dinámica</h3>
+                    <div className="flex flex-wrap items-center gap-2 mt-0">
                         {/* Filtro Especialidad */}
-                        <div className="flex items-center gap-1.5">
-                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Especialidad</span>
+                        <div className="flex items-center gap-1">
+                            <span className="text-[8px] text-slate-400 font-bold uppercase tracking-tight">Espec.</span>
                             <select
                                 value={especialidadSeleccionada}
                                 onChange={(e) => {
@@ -304,8 +304,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         </div>
 
                         {/* Filtro Autor */}
-                        <div className="flex items-center gap-1.5 pl-1.5 border-l border-slate-200">
-                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Autor</span>
+                        <div className="flex items-center gap-1 pl-1 border-l border-slate-200">
+                            <span className="text-[8px] text-slate-400 font-bold uppercase tracking-tight">Autor</span>
                             <select
                                 value={filterAuthor}
                                 onChange={(e) => setFilterAuthor(e.target.value)}
@@ -319,22 +319,22 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         </div>
 
                         {/* Filtro Fecha (Rango) */}
-                        <div className="flex items-center gap-1.5 pl-1.5 border-l border-slate-200">
-                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Fecha</span>
+                        <div className="flex items-center gap-1 pl-1 border-l border-slate-200">
+                            <span className="text-[8px] text-slate-400 font-bold uppercase tracking-tight">Fecha</span>
                             <div className="relative flex items-center gap-1">
-                                <label className="text-[9px] text-slate-500 font-medium">Desde:</label>
+                                <label className="text-[8px] text-slate-500 font-medium">De:</label>
                                 <input
                                     type="date"
                                     value={filterDateFrom}
                                     onChange={(e) => setFilterDateFrom(e.target.value)}
-                                    className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                    className="text-[10px] font-bold bg-white border border-slate-200 rounded px-1.5 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 transition-all"
                                 />
-                                <label className="text-[9px] text-slate-500 font-medium">Hasta:</label>
+                                <label className="text-[8px] text-slate-500 font-medium">A:</label>
                                 <input
                                     type="date"
                                     value={filterDateTo}
                                     onChange={(e) => setFilterDateTo(e.target.value)}
-                                    className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                    className="text-[10px] font-bold bg-white border border-slate-200 rounded px-1.5 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 transition-all"
                                 />
                                 {(filterDateFrom || filterDateTo) && (
                                     <button 
@@ -350,18 +350,17 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    {/* Botón Toggle Vista Valorizada */}
                     <button
                         onClick={() => setShowCostView(!showCostView)}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm cursor-pointer border ${
+                        className={`flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-bold transition-all shadow-sm cursor-pointer border ${
                             showCostView 
                             ? 'bg-blue-600 text-white border-blue-700 shadow-blue-200' 
                             : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                         }`}
                         title={showCostView ? "Volver a vista técnica" : "Ver costos y saldos"}
                     >
-                        <span className="text-[14px]">{showCostView ? '👷' : '💰'}</span>
-                        {showCostView ? 'Vista Técnica' : 'Vista Valorizada'}
+                        <span className="text-[12px]">{showCostView ? '👷' : '💰'}</span>
+                        {showCostView ? 'Técnica' : 'Valorizada'}
                     </button>
 
                     <button
@@ -370,44 +369,44 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 useMetradosStore.getState().clearAll();
                             }
                         }}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-all shadow-sm cursor-pointer"
+                        className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-all cursor-pointer"
                     >
-                        <Eraser size={14} />
-                        Limpiar datos
+                        <Eraser size={12} />
+                        Limpiar
                     </button>
                     <button
                         onClick={exportToExcel}
                         disabled={isExporting}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-sm cursor-pointer ${isExporting
+                        className={`flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold transition-all shadow-sm cursor-pointer ${isExporting
                             ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
                             : 'bg-green-600 hover:bg-green-700 text-white'
                             }`}
                     >
-                        {isExporting ? <Loader2 className="animate-spin" size={14} /> : <Download size={14} />}
-                        {isExporting ? 'Exportando Nube...' : 'Exportar Oficial'}
+                        {isExporting ? <Loader2 className="animate-spin" size={12} /> : <Download size={12} />}
+                        {isExporting ? 'Exportando...' : 'Exportar'}
                     </button>
                 </div>
             </div>
 
             {/* Contenedor con Scroll */}
             <div className="overflow-auto flex-grow max-h-[calc(100vh-250px)] scrollbar-thin scrollbar-thumb-slate-200">
-                <table className="w-full text-[13px] text-left align-middle border-collapse table-auto">
-                    <thead className="text-[11px] text-slate-400 bg-white uppercase whitespace-nowrap sticky top-0 shadow-[0_1px_0_0_rgba(0,0,0,0.05)] z-10 font-bold">
+                <table className="w-full text-[11px] text-left align-middle border-collapse table-auto">
+                    <thead className="text-[9px] text-slate-400 bg-white uppercase whitespace-nowrap sticky top-0 shadow-[0_1px_0_0_rgba(0,0,0,0.05)] z-10 font-black">
                         <tr className="border-b border-slate-100">
-                            <th className="w-[75px] min-w-[75px] px-1 py-3 text-center overflow-hidden">Fecha</th>
-                            <th className="w-[70px] min-w-[70px] px-1 py-3 text-left">Item / Código</th>
-                            <th className="px-1.5 py-3 min-w-[250px]">Descripción / Partida / Metrado</th>
-                            <th className="w-[35px] min-w-[35px] px-0.5 py-3 text-center">Und</th>
+                            <th className="w-[65px] min-w-[65px] px-0.5 py-2 text-center overflow-hidden">FECHA</th>
+                            <th className="w-[60px] min-w-[60px] px-0.5 py-2 text-left">EST/NV</th>
+                            <th className="px-1 py-2 min-w-[150px]">DESCRIPCIÓN / PARTIDA</th>
+                            <th className="w-[30px] min-w-[30px] px-0.5 py-2 text-center">UND</th>
                             
                             {!showCostView ? (
                                 <>
-                                    <th className="w-[50px] min-w-[50px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">CANT.</th>
-                                    <th className="w-[70px] min-w-[70px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">LONG./AREA</th>
-                                    <th className="w-[60px] min-w-[60px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">ANCHO</th>
-                                    <th className="w-[60px] min-w-[60px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">ALT./GAN.</th>
-                                    <th className="w-[75px] min-w-[75px] px-1 py-3 text-right text-[10px] border-l border-slate-200">Parcial</th>
-                                    <th className="w-[45px] min-w-[45px] px-0.5 py-3 text-center text-[10px] border-l border-slate-200">Veces</th>
-                                    <th className="w-[10px] min-w-[10px] px-1 py-3 text-center text-[10px] border-l border-slate-200"></th>
+                                    <th className="w-[45px] min-w-[45px] px-0.5 py-2 text-right text-[9px] border-l border-slate-200">CANT.</th>
+                                    <th className="w-[60px] min-w-[60px] px-0.5 py-2 text-right text-[9px] border-l border-slate-200">L/AREA</th>
+                                    <th className="w-[50px] min-w-[50px] px-0.5 py-2 text-right text-[9px] border-l border-slate-200">ANCHO</th>
+                                    <th className="w-[50px] min-w-[50px] px-0.5 py-2 text-right text-[9px] border-l border-slate-200">ALT/GAN</th>
+                                    <th className="w-[65px] min-w-[65px] px-0.5 py-2 text-right text-[9px] border-l border-slate-200">PARCIAL</th>
+                                    <th className="w-[40px] min-w-[40px] px-0.5 py-2 text-center text-[9px] border-l border-slate-200">VECES</th>
+                                    <th className="w-[10px] min-w-[10px] px-0.5 py-2 text-center text-[9px] border-l border-slate-200"></th>
                                 </>
                             ) : (
                                 <>
@@ -431,11 +430,11 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             if (r.is_template && r.es_titulo) {
                                 return (
                                     <tr key={`title-${r.codigo}`} className="bg-slate-100 border-b border-slate-200">
-                                        <td className="w-[75px] min-w-[75px] max-w-[75px] px-1 py-1 text-center font-mono text-[9px] text-slate-400 overflow-hidden"></td>
-                                        <td className="w-[70px] min-w-[70px] px-1 py-1 font-mono text-[10px] tracking-wider text-left text-slate-500">
+                                        <td className="w-[65px] min-w-[65px] max-w-[65px] px-0.5 py-0.5 text-center font-mono text-[8.5px] text-slate-400 overflow-hidden"></td>
+                                        <td className="w-[60px] min-w-[60px] px-1 py-0.5 font-mono text-[9px] tracking-tight text-left text-blue-600/80 font-black">
                                             {r.codigo}
                                         </td>
-                                        <td colSpan={11} className="px-2 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600"
+                                        <td colSpan={11} className="px-1 py-0.5 uppercase text-[9px] font-black tracking-tight text-slate-600"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
                                             {r.descripcion}
                                         </td>
@@ -446,15 +445,15 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             // CASO 2.5: Fila Virtual de Elemento (Agrupador) - EDITABLE
                             if (r.is_template && r.is_elemento_virtual) {
                                 return (
-                                    <tr key={r.id} className="bg-slate-50/50 border-b border-slate-100 group">
-                                        <td className="w-[75px] min-w-[75px] max-w-[75px] px-1 py-1.5 text-center overflow-hidden"></td>
-                                        <td className="w-[70px] min-w-[70px] px-1 py-1.5 text-left"></td>
-                                        <td className="px-1.5 py-1.5" colSpan={11} style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.5 + 0.75}rem` }}>
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-blue-300 font-black text-[10px]">▼</span>
+                                    <tr key={r.id} className="bg-slate-50/20 border-b border-slate-100 group">
+                                        <td className="w-[65px] min-w-[65px] max-w-[65px] px-0.5 py-0.5 text-center overflow-hidden"></td>
+                                        <td className="w-[60px] min-w-[60px] px-1 py-0.5 text-left"></td>
+                                        <td className="px-1 py-0.5" colSpan={11} style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.4 + 0.5}rem` }}>
+                                            <div className="flex items-center gap-1">
+                                                <span className="text-blue-200 font-black text-[9px]">▼</span>
                                                 <input
                                                     type="text"
-                                                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] font-bold uppercase tracking-wider placeholder:text-slate-300"
+                                                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-slate-500 text-[10px] font-bold uppercase tracking-tight placeholder:text-slate-200"
                                                     value={r.descripcion}
                                                     onChange={(e) => onGroupUpdate?.(r.codigo_partida, r.descripcion, e.target.value.toUpperCase())}
                                                     onFocus={(e) => e.target.select()}
@@ -485,24 +484,24 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 const saldoMonetario = saldoFisico * precio;
 
                                 return (
-                                    <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/50' : 'bg-white'} border-b border-slate-100 font-semibold group transition-colors`}>
-                                        <td className="w-[75px] min-w-[75px] max-w-[75px] px-1 py-1 text-center overflow-hidden"></td>
-                                        <td className="w-[70px] min-w-[70px] px-1 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
-                                            <span className="font-mono text-[10px] text-blue-500 bg-blue-50 px-1 py-0.5 rounded border border-blue-100">
+                                    <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/30' : 'bg-white'} border-b border-slate-100 font-semibold group transition-colors h-7`}>
+                                        <td className="w-[65px] min-w-[65px] max-w-[65px] px-0.5 py-0.5 text-center overflow-hidden"></td>
+                                        <td className="w-[60px] min-w-[60px] px-1 py-0.5 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.4 + 0.25}rem` }}>
+                                            <span className="font-mono text-[9px] text-blue-500 bg-blue-50/50 px-0.5 py-0 rounded border border-blue-100/50">
                                                 {r.codigo}
                                             </span>
                                         </td>
-                                        <td className="px-1.5 py-1"
-                                            style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
-                                            <div className="flex items-center gap-2">
+                                        <td className="px-1 py-0.5"
+                                            style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.4 + 0.25}rem` }}>
+                                            <div className="flex items-center gap-1">
                                                 {RenderModificacionBadge(r.modificacion)}
-                                                <span className="text-slate-700 text-[11px] leading-snug">{r.descripcion}</span>
+                                                <span className="text-slate-700 text-[10px] leading-tight line-clamp-1">{r.descripcion}</span>
                                                 {r.cantidad_presupuesto === 0 && (
-                                                    <span className="bg-red-100 text-red-600 font-bold px-1.5 py-0.5 rounded text-[9px] border border-red-200" title="Partida Deductiva (Cantidad 0 original)">DD</span>
+                                                    <span className="bg-red-50 text-red-500 font-bold px-1 py-0 rounded text-[8px] border border-red-100" title="Deductivo">DD</span>
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="w-[35px] min-w-[35px] px-1 py-1 text-center text-slate-400 font-bold text-[10px]">{r.unidad}</td>
+                                        <td className="w-[30px] min-w-[30px] px-0.5 py-0.5 text-center text-slate-300 font-bold text-[9px]">{r.unidad}</td>
                                         
                                         {!showCostView ? (
                                             <td colSpan={8} className="px-1 py-1 border-l border-slate-100/50">
@@ -546,52 +545,49 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             };
 
                             return (
-                                <tr key={`rec-${r.id}`} className="hover:bg-blue-50/20 border-b border-slate-100 group transition-all duration-200">
-                                    <td className="w-[75px] min-w-[75px] max-w-[75px] px-1 py-1.5 text-center overflow-hidden">
-                                        <input type="date" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-400 font-bold text-[9px] uppercase tracking-tighter"
+                                <tr key={`rec-${r.id}`} className="hover:bg-blue-50/20 border-b border-slate-50 group transition-all duration-200 h-7">
+                                    <td className="w-[65px] min-w-[65px] max-w-[65px] px-0.5 py-0.5 text-center overflow-hidden">
+                                        <input type="date" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-400 font-bold text-[8.5px] uppercase tracking-tighter"
                                             value={r.fecha} onChange={(e) => onUpdate?.(r.id, 'fecha', e.target.value)}
                                             onFocus={(e) => e.target.select()}
                                             title={r.fecha} />
                                     </td>
-                                    <td className="w-[70px] min-w-[70px] px-0.5 py-1.5">
+                                    <td className="w-[60px] min-w-[60px] px-0.5 py-0.5">
                                         <div className="flex items-center justify-center gap-0.5">
-                                            <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
-                                            <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
+                                            <input type="text" className="metrado-input text-[8px] text-slate-500 font-bold uppercase bg-slate-50 border border-slate-200 px-0.5 py-0 rounded shrink-0 w-[16px] text-center"
                                                 title="Frente" value={r.frente} onChange={(e) => onUpdate?.(r.id, 'frente', e.target.value)}
                                                 onFocus={(e) => e.target.select()} />
-                                            <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
+                                            <input type="text" className="metrado-input text-[8px] text-slate-500 font-bold uppercase bg-slate-50 border border-slate-200 px-0.5 py-0 rounded shrink-0 w-[16px] text-center"
                                                 title="Bloque" value={r.bloque} onChange={(e) => onUpdate?.(r.id, 'bloque', e.target.value)}
                                                 onFocus={(e) => e.target.select()} />
-                                            <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
+                                            <input type="text" className="metrado-input text-[8px] text-slate-500 font-bold uppercase bg-slate-50 border border-slate-200 px-0.5 py-0 rounded shrink-0 w-[16px] text-center"
                                                 title="Nivel" value={r.nivel} onChange={(e) => onUpdate?.(r.id, 'nivel', e.target.value)}
                                                 onFocus={(e) => e.target.select()} />
                                         </div>
                                     </td>
-                                    <td className="px-1.5 py-1.5">
-                                        <div className="flex items-center gap-1.5 w-full">
+                                    <td className="px-1 py-0.5">
+                                        <div className="flex items-center gap-1 w-full">
                                             <input
                                                 type="text"
-                                                className="metrado-input w-12 bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded text-slate-500 text-[9px] font-black uppercase shrink-0 text-center shadow-inner cursor-not-allowed opacity-80"
+                                                className="metrado-input w-10 bg-slate-100 border border-slate-200 px-1 py-0 rounded text-slate-400 text-[8.5px] font-bold uppercase shrink-0 text-center"
                                                 value={r.cuadrilla || ''}
                                                 placeholder="CDLLA"
-                                                title={`Personal asignado: ${r.obrero_nombre || "Ninguno"}. La edición se hace desde el panel de ingreso.`}
                                                 readOnly
                                             />
-                                            {r.elemento && <span className="text-blue-400 font-black text-[12px] shrink-0">↳</span>}
+                                            {r.elemento && <span className="text-blue-300 font-black text-[10px] shrink-0">↳</span>}
                                             <input
                                                 type="text"
-                                                className="metrado-input w-20 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0"
+                                                className="metrado-input w-16 bg-blue-50/30 border border-blue-50 px-1 py-0 rounded text-blue-700 text-[9px] font-bold uppercase shrink-0"
                                                 value={r.elemento || ''}
-                                                placeholder="AGRUPADOR..."
+                                                placeholder="AGR.."
                                                 onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())}
                                                 onFocus={(e) => e.target.select()}
                                             />
-                                            {r.diametro && <span className="text-orange-600 font-bold tracking-wider text-[10px] bg-orange-100/80 px-1.5 py-0.5 rounded shadow-sm border border-orange-200 shrink-0">Φ {r.diametro}</span>}
                                             <input
                                                 type="text"
-                                                className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[11px] font-medium placeholder:text-slate-300 italic"
+                                                className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[10px] font-medium placeholder:text-slate-200 italic"
                                                 value={r.detalle || ''}
-                                                placeholder="Ej. Acero longitudinal 3/4''..."
+                                                placeholder="Ej. Acero..."
                                                 onChange={(e) => onUpdate?.(r.id, 'detalle', e.target.value)}
                                                 onKeyDown={(e) => handleKeyDown(e)}
                                             />
@@ -607,54 +603,54 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             return (
                                                 <>
                                                     {/* Dimensiones Editables */}
-                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                    <td className="px-0.5 py-0.5 text-center border-l border-slate-100/50">
                                                         {strategy.isFieldLocked('cantidad', meta) ? (
-                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                                            <span className="text-[8px] font-bold text-slate-200 pointer-events-none">N/A</span>
                                                         ) : (
-                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[10px]"
                                                                 value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)}
                                                                 onFocus={(e) => e.target.select()}
                                                                 onKeyDown={(e) => handleKeyDown(e)} />
                                                         )}
                                                     </td>
-                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                    <td className="px-0.5 py-0.5 text-center border-l border-slate-100/50">
                                                         {strategy.isFieldLocked('longitud_area', meta) ? (
-                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                                            <span className="text-[8px] font-bold text-slate-200 pointer-events-none">N/A</span>
                                                         ) : (
-                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[10px]"
                                                                 value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)}
                                                                 onFocus={(e) => e.target.select()}
                                                                 onKeyDown={(e) => handleKeyDown(e)} />
                                                         )}
                                                     </td>
-                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                    <td className="px-0.5 py-0.5 text-center border-l border-slate-100/50">
                                                         {strategy.isFieldLocked('ancho_empalme', meta) ? (
-                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                                            <span className="text-[8px] font-bold text-slate-200 pointer-events-none">N/A</span>
                                                         ) : (
-                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[10px]"
                                                                 value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)}
                                                                 onFocus={(e) => e.target.select()}
                                                                 onKeyDown={(e) => handleKeyDown(e)} />
                                                         )}
                                                     </td>
-                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                    <td className="px-0.5 py-0.5 text-center border-l border-slate-100/50">
                                                         {strategy.isFieldLocked('altura_gancho', meta) ? (
-                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
+                                                            <span className="text-[8px] font-bold text-slate-200 pointer-events-none">N/A</span>
                                                         ) : (
-                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[10px]"
                                                                 value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)}
                                                                 onFocus={(e) => e.target.select()}
                                                                 onKeyDown={(e) => handleKeyDown(e)} />
                                                         )}
                                                     </td>
 
-                                                    <td className="px-2 py-1.5 text-right font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
+                                                    <td className="px-1 py-0.5 text-right font-semibold text-slate-400 text-[10px] border-l border-slate-100/50">{formatNumber(r.parcial)}</td>
 
-                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                                                    <td className="px-0.5 py-0.5 text-center border-l border-slate-100/50">
                                                         {strategy.isFieldLocked('nro_veces', meta) ? (
-                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none bg-slate-50/50 block w-full rounded">1</span>
+                                                            <span className="text-[8px] font-bold text-slate-200 pointer-events-none bg-slate-50/20 block w-full rounded">1</span>
                                                         ) : (
-                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
+                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[10px]"
                                                                 value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
                                                                 onFocus={(e) => e.target.select()}
                                                                 onKeyDown={(e) => handleKeyDown(e)} />
@@ -664,29 +660,29 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             );
                                         })()
                                     ) : (
-                                        <td colSpan={6} className="px-1 py-1.5 text-center border-l border-slate-200/60 text-slate-300 italic text-[10px]">
+                                        <td colSpan={6} className="px-1 py-0.5 text-center border-l border-slate-100/50 text-slate-300 italic text-[9px]">
                                             Modo valorización activado - Desactivar para editar medidas
                                         </td>
                                     )}
 
-                                    <td className="w-[60px] min-w-[60px] px-1 py-1 text-center border-l border-slate-100/50">
+                                    <td className="w-[50px] min-w-[50px] px-0.5 py-0.5 text-center border-l border-slate-100/30">
                                         <div className="flex flex-col items-center leading-none">
-                                            <span className="text-[9px] font-black text-slate-800 uppercase truncate w-full" title={r.autor_usuario || 'User'}>
+                                            <span className="text-[8px] font-black text-slate-600 uppercase truncate w-full" title={r.autor_usuario || 'User'}>
                                                 {(r.autor_usuario || 'User').split(' ')[0]}
                                             </span>
                                         </div>
                                     </td>
 
                                     {/* Total + Acciones */}
-                                    <td className="w-[75px] min-w-[75px] px-1.5 py-1.5 text-right font-bold text-slate-800 relative text-[11px] border-l border-slate-200/60">
-                                        <div className="flex items-center justify-end gap-1.5">
+                                    <td className="w-[65px] min-w-[65px] px-1 py-0.5 text-right font-black text-slate-800 relative text-[10px] border-l border-slate-100/50">
+                                        <div className="flex items-center justify-end gap-1">
                                             <span>{r.total.toFixed(2)}</span>
                                             <button
                                                 onClick={() => onDelete?.(r.id)}
-                                                className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all p-1 hover:bg-red-50 rounded-md"
+                                                className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all p-0.5 hover:bg-red-50 rounded"
                                                 title="Eliminar Registro"
                                             >
-                                                <Trash2 size={12} />
+                                                <Trash2 size={11} />
                                             </button>
                                         </div>
                                     </td>
