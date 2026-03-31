@@ -3,6 +3,7 @@ import type { Metrado, Partida } from '../types';
 import { Download, Trash2, Loader2, Eraser } from 'lucide-react';
 import { RenderModificacionBadge } from './MetradosForm';
 import { useMetradosStore } from '../store/useMetradosStore';
+import { useAuthStore } from '../store/useAuthStore';
 import { formulaRegistry } from '../utils/formulas/registry';
 import { SPECIALTY_RULES } from '../data/specialtyConfig';
 import { applyAllFilters, getAvailableAuthorsImproved, getEspecialidadPorCodigo, getAvailableFrentes, getAvailableBloques, getAvailableNiveles } from '../utils/filteringLogic';
@@ -158,6 +159,18 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 };
 
 
+const getCurrentWeekRange = () => {
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const monday = new Date(now);
+    monday.setDate(now.getDate() + diffToMonday);
+    const saturday = new Date(monday);
+    saturday.setDate(monday.getDate() + 5);
+    const format = (d: Date) => d.toISOString().split('T')[0];
+    return { from: format(monday), to: format(saturday) };
+};
+
 export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital', especialidadSeleccionada = 'TODAS', onEspecialidadChange, isSpecialtyLocked }) => {
     const { customPartidas, catalogoHospital, catalogoContingencia } = useMetradosStore();
 
@@ -168,12 +181,18 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     }, [proyecto, customPartidas, catalogoHospital, catalogoContingencia]);
 
     const [filterAuthor, setFilterAuthor] = React.useState('TODOS');
+    const { user } = useAuthStore();
     const [filterFrente, setFilterFrente] = React.useState('TODOS');
     const [filterBloque, setFilterBloque] = React.useState('TODOS');
     const [filterNivel, setFilterNivel] = React.useState('TODOS');
-    const [filterDateFrom, setFilterDateFrom] = React.useState('');
-    const [filterDateTo, setFilterDateTo] = React.useState('');
+    
+    // Rango de fechas por defecto: la semana actual (Lunes a Sábado)
+    const initialDateRange = useMemo(() => getCurrentWeekRange(), []);
+    const [filterDateFrom, setFilterDateFrom] = React.useState(initialDateRange.from);
+    const [filterDateTo, setFilterDateTo] = React.useState(initialDateRange.to);
+    
     const [debugMode] = React.useState(true); // Habilitado para diagnosticar infiltración
+    const [hasAutoSelectedAuthor, setHasAutoSelectedAuthor] = React.useState(false);
 
     // Muestra base de metrados filtrada SÓLO por proyecto y especialidad para extraer listas consistentes
     const especialidadMetrados = useMemo(() => {
@@ -184,6 +203,20 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     const availableAuthors = useMemo(() => {
         return getAvailableAuthorsImproved(metrados, especialidadSeleccionada, catalogoActivo, getEspecialidadPorCodigo, debugMode);
     }, [metrados, especialidadSeleccionada, catalogoActivo, debugMode]);
+
+    // Aplicar Filtro Autor Inteligente ("Si el usuario activo forma parte de la tabla actual y no se ha autoseleccionado aún, selecciónalo")
+    React.useEffect(() => {
+        if (!hasAutoSelectedAuthor && metrados.length > 0 && user?.nombre_completo) {
+            // Evaluamos si el nombre existe dentro de los autores válidos / disponibles
+            if (availableAuthors.includes(user.nombre_completo)) {
+                setFilterAuthor(user.nombre_completo);
+                setHasAutoSelectedAuthor(true);
+            } else if (availableAuthors.length > 0) {
+                // Si ya cargaron los autores y no estamos (por ejemplo: no tiene registros esta semana), no hacemos force a un nombre vacío, pero deshabilitamos autoTrigger
+                setHasAutoSelectedAuthor(true);
+            }
+        }
+    }, [user, availableAuthors, metrados.length, hasAutoSelectedAuthor]);
 
     const availableFrentes = useMemo(() => getAvailableFrentes(especialidadMetrados), [especialidadMetrados]);
     const availableBloques = useMemo(() => getAvailableBloques(especialidadMetrados), [especialidadMetrados]);
