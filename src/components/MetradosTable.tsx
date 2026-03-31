@@ -44,7 +44,7 @@ const getAuthorInitials = (name: string): string => {
 const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partida[]): any[] => {
     // 1. Identificar IDs activos de los metrados (UUID de catalogo, UUID custom, o fallback a código)
     const getMetradoTargetId = (m: Metrado) => m.custom_partida_id || m.partida_id || m.codigo_partida.trim().toUpperCase();
-    
+
     const activeNodeIds = new Set(activeMetrados.map(getMetradoTargetId));
     const activeIds = new Set<string>();
 
@@ -65,7 +65,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 
         if (activeNodeIds.has(nodeId) || activeNodeIds.has(legacyCode)) {
             activeIds.add(nodeId);
-            
+
             // Subir por la jerarquía para marcar ancestros como activos
             let parentId = node.parent_id || catalogoMap.get(legacyCode)?.parent_id;
             while (parentId) {
@@ -91,9 +91,9 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
         // Filtrar metrados que corresponden a este nodo
         const relatedMetrados = activeMetrados.filter(m => {
             const targetId = getMetradoTargetId(m);
-            const matches = targetId === node.id || 
-                          (m.custom_partida_id && m.custom_partida_id === node.id) ||
-                          (!m.partida_id && !m.custom_partida_id && m.codigo_partida.trim().toUpperCase() === node.codigo.trim().toUpperCase());
+            const matches = targetId === node.id ||
+                (m.custom_partida_id && m.custom_partida_id === node.id) ||
+                (!m.partida_id && !m.custom_partida_id && m.codigo_partida.trim().toUpperCase() === node.codigo.trim().toUpperCase());
             return matches;
         }).sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
 
@@ -118,7 +118,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
                 } else if (!m.elemento && lastElemento !== null) {
                     lastElemento = null;
                 }
-                
+
                 finalRows.push({ ...m, is_template: false, tipo_metrado: node.tipo_metrado });
                 metradosRendered.add(m.id);
             });
@@ -224,15 +224,15 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             setIsExporting(true);
             const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             let apiUrl = import.meta.env.VITE_API_URL || '';
-            
+
             if (!apiUrl) {
-                apiUrl = isLocal 
-                    ? `http://${window.location.hostname}:3001` 
+                apiUrl = isLocal
+                    ? `http://${window.location.hostname}:3001`
                     : 'https://inkaia-backend.onrender.com';
             }
-            
+
             if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1);
-            
+
             console.log(`[V31 Deploy] Using API URL: ${apiUrl} (Mode: ${import.meta.env.MODE})`);
 
             let response: Response;
@@ -257,7 +257,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            
+
             const fileNameEspecialidad = especialidadSeleccionada.replace(/\s+/g, '_');
             const fileNameAutor = getAuthorInitials(filterAuthor);
             a.download = `reporte_metrados_${fileNameEspecialidad}_${fileNameAutor}.xlsx`.toLowerCase();
@@ -291,11 +291,10 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     setFilterAuthor('TODOS');
                                 }}
                                 disabled={isSpecialtyLocked}
-                                className={`text-[11px] font-bold border border-slate-200 rounded-lg px-2 py-1 outline-none transition-all ${
-                                    isSpecialtyLocked 
-                                    ? 'bg-slate-50 text-slate-400 cursor-not-allowed' 
+                                className={`text-[11px] font-bold border border-slate-200 rounded-lg px-2 py-1 outline-none transition-all ${isSpecialtyLocked
+                                    ? 'bg-slate-50 text-slate-400 cursor-not-allowed'
                                     : 'bg-white text-slate-700 hover:border-blue-400 cursor-pointer shadow-sm'
-                                }`}
+                                    }`}
                             >
                                 {SPECIALTY_RULES.map(rule => (
                                     <option key={rule.id} value={rule.id}>{rule.label}</option>
@@ -337,7 +336,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                                 />
                                 {(filterDateFrom || filterDateTo) && (
-                                    <button 
+                                    <button
                                         onClick={() => {
                                             setFilterDateFrom('');
                                             setFilterDateTo('');
@@ -353,11 +352,10 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     {/* Botón Toggle Vista Valorizada */}
                     <button
                         onClick={() => setShowCostView(!showCostView)}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm cursor-pointer border ${
-                            showCostView 
-                            ? 'bg-blue-600 text-white border-blue-700 shadow-blue-200' 
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm cursor-pointer border ${showCostView
+                            ? 'bg-blue-600 text-white border-blue-700 shadow-blue-200'
                             : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-                        }`}
+                            }`}
                         title={showCostView ? "Volver a vista técnica" : "Ver costos y saldos"}
                     >
                         <span className="text-[14px]">{showCostView ? '👷' : '💰'}</span>
@@ -398,7 +396,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             <th className="w-[85px] min-w-[85px] px-1 py-3 text-left">Item / Código</th>
                             <th className="px-1 py-3 min-w-[200px]">Descripción / Partida / Metrado</th>
                             <th className="w-[30px] min-w-[30px] px-0.5 py-3 text-center">Und</th>
-                            
+
                             {!showCostView ? (
                                 <>
                                     <th className="w-[50px] min-w-[50px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">CANT.</th>
@@ -420,7 +418,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     <th className="w-[85px] min-w-[85px] px-1 py-3 text-right text-[10px] border-l bg-emerald-200 bg-financial-value font-black text-emerald-800">Costo Ejec.</th>
                                 </>
                             )}
-                            
+
                             <th className="w-[70px] min-w-[70px] px-1 py-3 text-center text-[10px] border-l border-slate-200">AUTOR</th>
                             <th className="w-[85px] min-w-[85px] px-2 py-3 text-right text-[10px] border-l border-slate-200">Total</th>
                         </tr>
@@ -469,10 +467,10 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             if (r.is_template && !r.es_titulo) {
                                 const qtySistema = partidaTotals[r.codigo] || 0;
                                 const qtyAnterior = r.metrado_anterior_acumulado || r.acumulado_anterior_qty || 0;
-                                
+
                                 // TOTAL DEL PERIODO (Solo lo ingresado en el sistema)
-                                const totalPeriodo = qtySistema; 
-                                
+                                const totalPeriodo = qtySistema;
+
                                 // TOTAL ACUMULADO (Histórico + Sistema) para cálculos de presupuesto
                                 const totalAcumulado = qtySistema + qtyAnterior;
                                 const hasMetrados = totalAcumulado > 0;
@@ -503,7 +501,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             </div>
                                         </td>
                                         <td className="w-[30px] min-w-[30px] px-1 py-1 text-center text-slate-400 font-bold text-[10px]">{r.unidad}</td>
-                                        
+
                                         {!showCostView ? (
                                             <td colSpan={8} className="px-1 py-1 border-l border-slate-100/50">
                                                 {!showCostView && r.precio_unitario > 0 && (
@@ -603,7 +601,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                         (() => {
                                             const strategy = formulaRegistry.get(r.tipo_metrado);
                                             const meta = { hvacItemType: r.hvac_item_type };
-                                            
+
                                             return (
                                                 <>
                                                     {/* Dimensiones Editables */}
@@ -660,11 +658,14 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                                                 onKeyDown={(e) => handleKeyDown(e)} />
                                                         )}
                                                     </td>
+
+                                                    {/* Espaciador para la columna vacía del Header */}
+                                                    <td className="w-[10px] min-w-[10px] border-l border-slate-200/60"></td>
                                                 </>
                                             );
                                         })()
                                     ) : (
-                                        <td colSpan={6} className="px-1 py-1.5 text-center border-l border-slate-200/60 text-slate-300 italic text-[10px]">
+                                        <td colSpan={7} className="px-1 py-1.5 text-center border-l border-slate-200/60 text-slate-300 italic text-[10px]">
                                             Modo valorización activado - Desactivar para editar medidas
                                         </td>
                                     )}
