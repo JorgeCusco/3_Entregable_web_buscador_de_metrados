@@ -330,85 +330,130 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                 <div className="bg-white border border-blue-100 rounded-xl p-3 shadow-md space-y-4 animate-in zoom-in-95 duration-200">
                                     {(() => {
                                         const p = state.partidaSeleccionada;
-                                        const precio = p.precio_unitario || 0;
-                                        const qtyPresupuesto = p.cantidad_presupuesto || 0;
-                                        const qtyAnterior = p.acumulado_anterior_qty || 0;
                                         
-                                        const qtyActual = metrados
+                                        // ─── PARÁMETROS BASE ───
+                                        const puActual = p.pu_actual || p.precio_unitario || 0;
+                                        // La Meta Total es estrictamente el metrado_programado de la tabla catalogo_partidas
+                                        const mProgramado = p.metrado_programado || 0;
+                                        const mAnteriorAcumulado = p.metrado_anterior_acumulado || p.acumulado_anterior_qty || 0;
+                                        const valAnteriorAcumulada = p.valorizacion_anterior || 0;
+                                        const valProgramada = p.valorizacion_programada || (mProgramado * puActual);
+
+                                        // ─── CONTROL FÍSICO ───
+                                        // Sumamos lo ya guardado + lo que el usuario está escribiendo ahora (Tiempo Real)
+                                        const mActualGuardado = metrados
                                             .filter((m: any) => m.codigo_partida === p.codigo)
                                             .reduce((sum: number, m: any) => sum + (m.total || 0), 0);
                                         
-                                        const qtyAcumuladaTotal = qtyAnterior + qtyActual;
-                                        const porcentaje = qtyPresupuesto > 0 ? Math.min((qtyAcumuladaTotal / qtyPresupuesto) * 100, 100) : 0;
-                                        const isExceeded = qtyAcumuladaTotal > qtyPresupuesto && qtyPresupuesto > 0;
+                                        const mActualEnForm = state.totalCalculado || 0;
+                                        const mActual = mActualGuardado + mActualEnForm;
+                                        
+                                        const mAnterior = mAnteriorAcumulado;
+                                        const mAcumulado = mAnterior + mActual;
+                                        const mSaldo = mProgramado - mAcumulado;
+                                        
+                                        // Cálculo de porcentaje sobre el total contractual
+                                        const porcentajeTotal = mProgramado > 0 ? (mAcumulado / mProgramado) * 100 : 0;
+                                        
+                                        // Cálculo de avance sobre el saldo inicial del periodo (lo que faltaba)
+                                        const mMetaPendiente = mProgramado - mAnterior;
+                                        const porcentajeRelativo = mMetaPendiente > 0 ? (mActual / mMetaPendiente) * 100 : (mActual > 0 ? 100 : 0);
 
-                                        const solesPresupuestos = qtyPresupuesto * precio;
-                                        const solesEjecutados = qtyAcumuladaTotal * precio;
-                                        const solesSaldo = solesPresupuestos - solesEjecutados;
+                                        const isExceeded = mAcumulado > mProgramado && mProgramado > 0;
+
+                                        // ─── CONTROL FINANCIERO ───
+                                        const valEjecActual = mActual * puActual;
+                                        const valEjecTotal = valAnteriorAcumulada + valEjecActual;
+                                        const valSaldo = valProgramada - valEjecTotal;
 
                                         const format = (n: number) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
                                         return (
                                             <>
                                                 <div className="space-y-1">
-                                                    <div className="flex justify-between text-[9px] font-bold uppercase tracking-tight">
-                                                        <span className="text-slate-500">Progreso Total (Anterior + Actual)</span>
-                                                        <span className={isExceeded ? 'text-red-600' : 'text-blue-600'}>
-                                                            {porcentaje.toFixed(1)}%
-                                                        </span>
+                                                    <div className="flex justify-between items-end text-[9px] font-bold uppercase tracking-tight">
+                                                        <div className="flex flex-col">
+                                                            <span className="text-slate-400 text-[7px] uppercase tracking-wider">Avance del Proyecto</span>
+                                                            <span className="text-slate-700 font-black">META TOTAL: {format(mProgramado)} {p.unidad}</span>
+                                                        </div>
+                                                        <div className="flex flex-col items-end">
+                                                            <span className={`text-base font-black ${isExceeded ? 'text-red-600' : 'text-blue-600'}`}>
+                                                                {porcentajeTotal.toFixed(1)}%
+                                                            </span>
+                                                            <span className="text-[7px] text-slate-400 font-bold uppercase underline">Porcentaje de Avance</span>
+                                                        </div>
                                                     </div>
-                                                    <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner">
+                                                    <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner relative">
                                                         <div 
-                                                            className={`h-full transition-all duration-500 ${isExceeded ? 'bg-red-500' : 'bg-blue-500'}`}
-                                                            style={{ width: `${porcentaje}%` }}
+                                                            className={`h-full transition-all duration-700 ease-out ${isExceeded ? 'bg-red-500' : 'bg-gradient-to-r from-blue-400 to-blue-600'}`}
+                                                            style={{ width: `${Math.min(porcentajeTotal, 100)}%` }}
                                                         />
+                                                        {isExceeded && (
+                                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                                <span className="text-[7px] font-black text-white drop-shadow-sm uppercase">¡Límite Superado!</span>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
 
                                                 <div className="space-y-1.5">
-                                                    <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest pl-1">Control Físico ({p.unidad})</span>
-                                                    <div className="grid grid-cols-4 gap-2">
-                                                        <div className="bg-slate-50 p-1.5 rounded-lg border border-slate-100 text-center">
-                                                            <span className="text-[7px] font-bold text-slate-400 block uppercase">Anterior</span>
-                                                            <span className="text-[10px] font-black text-slate-600">{format(qtyAnterior)}</span>
+                                                    <div className="flex items-center gap-2 pl-1">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-slate-300 animate-pulse" />
+                                                        <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Control Físico ({p.unidad})</span>
+                                                    </div>
+                                                    <div className="grid grid-cols-4 gap-1.5">
+                                                        <div className="bg-slate-50 p-2 rounded-xl border border-slate-100 text-center transition-all hover:bg-white hover:shadow-sm">
+                                                            <span className="text-[7px] font-bold text-slate-400 block uppercase mb-0.5">Anterior</span>
+                                                            <span className="text-[10px] font-black text-slate-600">{format(mAnterior)}</span>
                                                         </div>
-                                                        <div className="bg-blue-50/50 p-1.5 rounded-lg border border-blue-100 text-center">
-                                                            <span className="text-[7px] font-bold text-blue-400 block uppercase">Actual</span>
-                                                            <span className="text-[10px] font-black text-blue-700">{format(qtyActual)}</span>
+                                                        <div className="bg-blue-50/50 p-2 rounded-xl border border-blue-100 text-center transition-all hover:bg-white hover:shadow-sm">
+                                                            <span className="text-[7px] font-bold text-blue-400 block uppercase mb-0.5">Actual</span>
+                                                            <span className="text-[10px] font-black text-blue-700">{format(mActual)}</span>
                                                         </div>
-                                                        <div className="bg-slate-900 p-1.5 rounded-lg text-center">
-                                                            <span className="text-[7px] font-bold text-slate-500 block uppercase">Acumulado</span>
-                                                            <span className="text-[10px] font-black text-white">{format(qtyAcumuladaTotal)}</span>
+                                                        <div className="bg-slate-900 p-2 rounded-xl text-center shadow-lg transform scale-105 z-10 ring-2 ring-slate-800">
+                                                            <span className="text-[7px] font-bold text-slate-400 block uppercase mb-0.5">Acumulado</span>
+                                                            <span className="text-[10px] font-black text-white">{format(mAcumulado)}</span>
                                                         </div>
-                                                        <div className="bg-slate-50 p-1.5 rounded-lg border border-slate-100 text-center">
-                                                            <span className="text-[7px] font-bold text-slate-400 block uppercase">Presupuesto</span>
-                                                            <span className="text-[10px] font-black text-slate-700">{format(qtyPresupuesto)}</span>
+                                                        <div className={`p-2 rounded-xl border text-center transition-all hover:bg-white hover:shadow-sm ${isExceeded ? 'bg-red-50 border-red-100' : 'bg-slate-50 border-slate-200'}`}>
+                                                            <span className={`text-[7px] font-bold block uppercase mb-0.5 ${isExceeded ? 'text-red-500' : 'text-slate-500'}`}>Saldo (Falta)</span>
+                                                            <span className={`text-[10px] font-black ${isExceeded ? 'text-red-600' : 'text-slate-700'}`}>{format(Math.max(0, mSaldo))}</span>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div className="space-y-1.5">
+                                                {/* Indicador de Avance del Periodo (Opcional pero útil para claridad) */}
+                                                {mMetaPendiente > 0 && mActual > 0 && (
+                                                    <div className="flex items-center justify-between px-2 py-1 bg-blue-50/30 rounded-lg border border-blue-100/50">
+                                                        <span className="text-[7px] font-bold text-blue-400 uppercase">Avance sobre lo pendiente:</span>
+                                                        <span className="text-[9px] font-black text-blue-600">{porcentajeRelativo.toFixed(1)}%</span>
+                                                    </div>
+                                                )}
+
+                                                <div className="space-y-1.5 pt-1">
                                                     <div className="flex items-center justify-between pl-1">
-                                                        <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Control Financiero (Soles)</span>
-                                                        <span className="text-[8px] font-mono font-bold text-blue-500 bg-blue-50 px-1 rounded">P.U: S/ {format(precio)}</span>
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-300" />
+                                                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Control Financiero (Soles)</span>
+                                                        </div>
+                                                        <span className="text-[8px] font-mono font-bold text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded-md border border-blue-100">APU: S/ {format(puActual)}</span>
                                                     </div>
                                                     <div className="grid grid-cols-2 gap-2">
                                                         <div className="bg-slate-50 p-2 rounded-lg border border-slate-100 flex justify-between items-center">
                                                             <span className="text-[8px] font-bold text-slate-400 uppercase">Val. Presup.</span>
-                                                            <span className="text-[11px] font-black text-slate-700">S/ {format(solesPresupuestos)}</span>
+                                                            <span className="text-[11px] font-black text-slate-700">S/ {format(valProgramada)}</span>
                                                         </div>
                                                         <div className="bg-blue-50 p-2 rounded-lg border border-blue-100 flex justify-between items-center">
                                                             <span className="text-[8px] font-bold text-blue-400 uppercase">Val. Ejec.</span>
-                                                            <span className="text-[11px] font-black text-blue-700">S/ {format(solesEjecutados)}</span>
+                                                            <span className="text-[11px] font-black text-blue-700">S/ {format(valEjecTotal)}</span>
                                                         </div>
                                                     </div>
                                                     
-                                                    <div className={`p-2 rounded-lg border text-center ${isExceeded ? 'bg-red-50 border-red-100' : 'bg-emerald-50 border-emerald-100'}`}>
-                                                        <span className={`text-[8px] font-bold uppercase block -mb-0.5 ${isExceeded ? 'text-red-700' : 'text-emerald-700'}`}>
-                                                            {isExceeded ? 'PÉRDIDA / MAYOR COSTO' : 'SALDO DISPONIBLE EN SOLES'}
+                                                    <div className={`p-2 rounded-lg border text-center ${valSaldo < 0 ? 'bg-red-50 border-red-100' : 'bg-emerald-50 border-emerald-100'}`}>
+                                                        <span className={`text-[8px] font-bold uppercase block -mb-0.5 ${valSaldo < 0 ? 'text-red-700' : 'text-emerald-700'}`}>
+                                                            {valSaldo < 0 ? 'PÉRDIDA / MAYOR COSTO' : 'SALDO DISPONIBLE EN SOLES'}
                                                         </span>
-                                                        <span className={`text-sm font-black ${isExceeded ? 'text-red-700' : 'text-emerald-700'}`}>
-                                                            S/ {format(Math.abs(solesSaldo))}
+                                                        <span className={`text-sm font-black ${valSaldo < 0 ? 'text-red-700' : 'text-emerald-700'}`}>
+                                                            S/ {format(Math.abs(valSaldo))}
                                                         </span>
                                                     </div>
                                                 </div>

@@ -57,9 +57,14 @@ erDiagram
         uuid parent_id FK
         uuid proyecto_id FK
         text tipo_metrado "ESTANDAR | ACERO | HVAC*"
-        numeric precio_unitario "Precio estático de DB/presupuesto"
-        numeric cantidad_presupuesto "Si = 0 -> Deductivo (DD)"
-        numeric acumulado_anterior_qty "Metrado de meses previos al sistema"
+        numeric metrado_programado "Meta contractual (100%)"
+        numeric valorizacion_programada "Monto contractual (100%)"
+        numeric metrado_anterior_acumulado "Metrado ejecutado precierre"
+        numeric valorizacion_anterior "Monto ejecutado precierre"
+        numeric pu_actual "Precio unitario vigente"
+        numeric precio_unitario "DEPRECATED: Usar pu_actual"
+        numeric cantidad_presupuesto "DEPRECATED: Usar metrado_programado"
+        numeric acumulado_anterior_qty "DEPRECATED: Usar metrado_anterior_acumulado"
     }
   
     METRADOS {
@@ -214,6 +219,36 @@ SELECT
 FROM vista_analisis_presupuesto;
 ```
 
+### 8.2 Vista de Valorización Mensual (`vista_metrados_mensuales_valorizados`) (V22)
+
+Nueva vista diseñada para el cierre mensual y auditoría de producción:
+- **`metrado_sistema`**: Suma de metrados registrados exclusivamente a través de la aplicación.
+- **`valorizado_actual_metrado_mes`**: Producto de `metrado_sistema * pu_actual`. Representa la facturación bruta del periodo seleccionado.
+- **`metrado_acumulado_total`**: Suma del histórico (`metrado_anterior_acumulado`) + lo registrado en el sistema.
+- **`valorizado_acumulado_total`**: Valor monetario del avance total acumulado.
+
+```sql
+SELECT 
+    codigo, 
+    metrado_sistema, 
+    valorizado_actual_metrado_mes,
+    metrado_acumulado_total
+FROM vista_metrados_mensuales_valorizados;
+```
+
+### 8.3 Sistema de Diseño de Reportes (CSS) (V22)
+
+Para garantizar que la **Planilla de Metrados Dinámica** sea "presentable", se ha implementado un sistema de grupos de color mapeados a la lógica SQL:
+
+| Grupo Lógico | Clave CSS | Propósito | Color |
+| :--- | :--- | :--- | :--- |
+| **Control Físico** | `.bg-financial-progress` | Metrado Acum, Presupuesto | Blue-50 |
+| **Control de Metas** | `.bg-financial-pending` | Saldo Fis, Saldo Mon | Amber-50 |
+| **Valorización** | `.bg-financial-value` | Precio, Costo Ejecutado | Emerald-50 |
+| **Actual** | `.bg-current-month` | **Valorizado Mes S/** | Emerald-100 |
+
+---
+
 ---
 
 ---
@@ -249,22 +284,30 @@ Debido a que los catálogos son dinámicos y pueden ser limpiados o modificados 
 
 ---
 
-## Parte 10: Importación de Datos Iniciales y Saldos (V18)
+---
 
-### 10.1 Lógica de Sincronización de Acumulados
+## Parte 11: Control Presupuestal y Seguimiento (V21 - Actual)
 
-Para la puesta en marcha del sistema con un proyecto en curso, se ha implementado un proceso de inyección de "Saldos Anteriores" mediante el script `0018_import_base_data.sql`.
+### 11.1 Lógica de Control Físico y Financiero
 
-- **Cálculo de Precio Unitario (PU)**: Debido a discrepancias en los reportes de origen, el PU se recalcula dinámicamente como `Presupuesto Acumulado / Metrado Acumulado`.
-- **Campos Afectados**:
-    - `acumulado_anterior_qty`: Almacena el metrado ejecutado antes de la implementación del sistema.
-    - `precio_unitario`: Define el valor base para el cálculo de valorizaciones en la `vista_analisis_presupuesto`.
-- **Resiliencia de Importación**: El generador (`generate_accumulation_updates.py`) utiliza una lógica de búsqueda flexible (multicolumna y escalonada) para extraer datos de Excels con estructuras heterogéneas entre especialidades.
+Para permitir un seguimiento preciso del avance respecto a la línea base contractual, el catálogo se ha expandido con las siguientes columnas de control:
+
+- **Línea Base (`metrado_programado`)**: El 100% de la meta física pactada.
+- **Historial (`metrado_anterior_acumulado`)**: El avance acumulado antes del periodo actual (importado de Excels de liquidación).
+- **Ejecución (`metrados.total`)**: Los registros diarios ingresados en la aplicación.
+- **Cálculo de Avance**: 
+  - `Acumulado Actual = metrado_anterior_acumulado + sum(metrados.total)`
+  - `Saldo (Falta) = metrado_programado - Acumulado Actual`
+  - `% Progreso = (Acumulado Actual / metrado_programado) * 100`
+
+### 11.2 Soporte para Migraciones Universales
+
+Se ha desarrollado el script `tools/migracion/budget_migrator.py` que permite inyectar datos desde cualquier estructura de Excel hacia estas nuevas columnas, permitiendo la actualización de precios unitarios (`pu_actual`) y metas programadas de forma dinámica.
 
 ---
 
 > [!IMPORTANT]
-> Esta estructura garantiza que la exportación a Excel sea siempre consistente con lo guardado en el ecosistema Supabase, protegiendo la trazabilidad histórica de los 2,810+ registros actuales.
+> El sistema de visualización de la UI (`MetradosForm.tsx`) está sincronizado con esta arquitectura para mostrar el avance físico y financiero en tiempo real, incluyendo los metrados en curso antes de ser guardados.
 
 ---
-*Última Actualización: V19 - Marzo 2026 (Corrección final de Mapeo Relativo A-E-F)*
+*Última Actualización: V21 - Marzo 2026 (Restructuración de Control Físico y Financiero con Meta Programada)*

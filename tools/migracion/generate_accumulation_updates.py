@@ -48,10 +48,11 @@ def generate_update_sql(file_path, output_sql_path):
                 if 'OE.' in raw_code.upper():
                     code = raw_code.rstrip('.')
                     try:
-                        # Mapeo solicitado: E (Base+4) = Metrado, F (Base+5) = Presupuesto
-                        # Metrado Acumulado (E)
-                        qty_idx = base_col + 4
-                        total_idx = base_col + 5
+                        # Mapeo solicitado: E (Base+4) = Metrado, F (Base+3) = Presupuesto Total
+                        # El usuario dice que E es metrado y F es presupuesto.
+                        # En el Excel (con ITEM en Col 2): Col 5 es Presupuesto y Col 6 es Metrado.
+                        qty_idx = base_col + 4 # Col 6
+                        total_idx = base_col + 3 # Col 5
                         
                         def safe_float(val):
                             try:
@@ -62,22 +63,38 @@ def generate_update_sql(file_path, output_sql_path):
                                 pass
                             return 0
 
-                        qty = safe_float(row[qty_idx]) if qty_idx < len(row) else 0
-                        total = safe_float(row[total_idx]) if total_idx < len(row) else 0
+                        def get_row_values(r_idx):
+                            if r_idx < 0 or r_idx >= len(df): return 0, 0
+                            r = df.iloc[r_idx]
+                            q = safe_float(r[qty_idx]) if qty_idx < len(r) else 0
+                            t = safe_float(r[total_idx]) if total_idx < len(r) else 0
+                            return q, t
+
+                        qty, total = get_row_values(index)
                         
-                        # Si están en 0 en la misma fila, intentamos la fila de arriba (escalonado detectado antes)
-                        if qty == 0 and total == 0 and index > 0:
-                            prev_row = df.iloc[index-1]
-                            qty = safe_float(prev_row[qty_idx]) if qty_idx < len(prev_row) else 0
-                            total = safe_float(prev_row[total_idx]) if total_idx < len(prev_row) else 0
+                        # Si están en 0, buscamos en la fila de arriba (común)
+                        if qty == 0 and total == 0:
+                            qty, total = get_row_values(index - 1)
+                        
+                        # Si siguen en 0, buscamos en la fila de abajo (posible)
+                        if qty == 0 and total == 0:
+                            qty, total = get_row_values(index + 1)
 
                         if qty > 0 or total > 0:
                             # Cálculo: PU = Presupuesto / Metrado
                             pu = total / qty if qty > 0 else 0
-                            sql = f"UPDATE catalogo_partidas SET acumulado_anterior_qty = {qty:.4f}, precio_unitario = {pu:.4f} WHERE codigo = '{code}';"
+                            # El usuario quiere:
+                            # metrado_anterior_acumulado = qty de Excel
+                            # valorizacion_anterior = total de Excel
+                            # pu_actual = total / qty
+                            sql = f"UPDATE catalogo_partidas SET metrado_anterior_acumulado = {qty:.4f}, valorizacion_anterior = {total:.4f}, pu_actual = {pu:.4f} WHERE codigo = '{code}';"
                             sql_statements.append(sql)
                             count += 1
                             total_processed += 1
+                        else:
+                            # Log para debug de ítems con 0
+                            if 'OE.' in code:
+                                print(f"Partida {code} sin data (qty=0, total=0) en filas {index-1, index, index+1}")
                     except Exception as e:
                         print(f"Error row {index}: {e}")
                         continue

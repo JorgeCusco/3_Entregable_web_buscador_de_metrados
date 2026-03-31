@@ -461,8 +461,17 @@ export const useMetradosStore = create<MetradosState>()(
                         es_titulo: r.is_title || false,
                         jerarquia: r.jerarquia || [],
                         nivel_jerarquia: r.nivel_jerarquia || 1,
-                        precio_unitario: r.precio_unitario || 0,
-                        cantidad_presupuesto: r.cantidad_presupuesto || 0
+                        precio_unitario: r.pu_actual || r.precio_unitario || 0,
+                        cantidad_presupuesto: r.metrado_programado || r.cantidad_presupuesto || 0,
+                        acumulado_anterior_qty: r.metrado_anterior_acumulado || r.acumulado_anterior_qty || 0,
+                        // Mapeo explícito de los nuevos campos
+                        metrado_anterior_acumulado: r.metrado_anterior_acumulado || 0,
+                        valorizacion_anterior: r.valorizacion_anterior || 0,
+                        pu_actual: r.pu_actual || 0,
+                        metrado_programado: r.metrado_programado || 0,
+                        valorizacion_programada: r.valorizacion_programada || 0,
+                        metrado_anterior: r.metrado_anterior || 0,
+                        presupuesto_anterior: r.presupuesto_anterior || 0
                     }));
 
                     let hosp = mapPartidas(allCatalogo.filter((c: any) => c.proyecto_id === hospId));

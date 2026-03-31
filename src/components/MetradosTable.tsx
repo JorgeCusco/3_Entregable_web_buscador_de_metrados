@@ -410,12 +410,13 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 </>
                             ) : (
                                 <>
-                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Precio S/</th>
-                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Metrado Acum.</th>
-                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Presupuesto</th>
-                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Saldo Fis.</th>
-                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Sald. Mon S/</th>
-                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l border-blue-100 bg-blue-50/30 text-blue-600">Costo Ejec.</th>
+                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px] border-l bg-emerald-100 bg-financial-value transition-all">Precio S/</th>
+                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-blue-100 bg-financial-progress font-black">Metrado Acum.</th>
+                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-blue-100 bg-financial-progress">Presupuesto</th>
+                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-amber-100 bg-financial-pending font-black">Saldo Fis.</th>
+                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-amber-100 bg-financial-pending">Sald. Mon S/</th>
+                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-emerald-200 bg-current-month font-black shadow-inner">Val. Mes S/</th>
+                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-emerald-200 bg-financial-value font-black text-emerald-800">Costo Ejec.</th>
                                 </>
                             )}
                             
@@ -466,15 +467,20 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             // CASO 2: Es una Cabecera de Partida (Nodo Hoja del Presupuesto)
                             if (r.is_template && !r.es_titulo) {
                                 const qtySistema = partidaTotals[r.codigo] || 0;
-                                const qtyAnterior = r.acumulado_anterior_qty || 0;
-                                const total = qtySistema + qtyAnterior;
-                                const hasMetrados = total > 0;
+                                const qtyAnterior = r.metrado_anterior_acumulado || r.acumulado_anterior_qty || 0;
+                                
+                                // TOTAL DEL PERIODO (Solo lo ingresado en el sistema)
+                                const totalPeriodo = qtySistema; 
+                                
+                                // TOTAL ACUMULADO (Histórico + Sistema) para cálculos de presupuesto
+                                const totalAcumulado = qtySistema + qtyAnterior;
+                                const hasMetrados = totalAcumulado > 0;
 
                                 // Cálculos Vista Valorizada
-                                const precio = r.precio_unitario || 0;
-                                const presupuesto = r.cantidad_presupuesto || 0;
-                                const saldoFisico = presupuesto - total;
-                                const costoEjecutado = total * precio;
+                                const precio = r.pu_actual || r.precio_unitario || 0;
+                                const presupuesto = r.metrado_programado || r.cantidad_presupuesto || 0;
+                                const saldoFisico = presupuesto - totalAcumulado;
+                                const costoEjecutado = totalAcumulado * precio;
                                 const saldoMonetario = saldoFisico * precio;
 
                                 return (
@@ -507,18 +513,19 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             </td>
                                         ) : (
                                             <>
-                                                <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-slate-100 text-slate-500 font-mono">S/ {precio.toFixed(2)}</td>
-                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-slate-100 text-blue-700 font-bold">{formatNumber(total)}</td>
-                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-slate-100 text-slate-500">{formatNumber(presupuesto)}</td>
-                                                <td className={`w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-slate-100 font-bold ${saldoFisico < 0 ? 'text-red-500' : 'text-slate-500'}`}>{formatNumber(saldoFisico)}</td>
-                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-slate-100 text-slate-500">S/ {formatNumber(saldoMonetario)}</td>
-                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[12px] border-l border-slate-100 text-emerald-700 font-black">S/ {formatNumber(costoEjecutado)}</td>
+                                                <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-slate-100 bg-financial-value font-mono">S/ {precio.toFixed(2)}</td>
+                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-blue-100 bg-financial-progress font-mono font-bold">{formatNumber(totalAcumulado)}</td>
+                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-blue-100 bg-financial-progress font-mono text-slate-500/70">{formatNumber(presupuesto)}</td>
+                                                <td className={`w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-amber-100 bg-financial-pending font-mono font-bold ${saldoFisico < 0 ? 'text-red-500' : 'text-amber-800'}`}>{formatNumber(saldoFisico)}</td>
+                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-amber-100 bg-financial-pending font-mono italic text-amber-700/80">S/ {formatNumber(saldoMonetario)}</td>
+                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[11px] border-l border-emerald-200 bg-current-month font-mono font-black text-emerald-800 shadow-sm">S/ {formatNumber(totalPeriodo * precio)}</td>
+                                                <td className="w-[100px] min-w-[100px] px-1 py-1 text-right text-[12px] border-l border-emerald-200 bg-financial-value font-mono font-black text-emerald-700">S/ {formatNumber(costoEjecutado)}</td>
                                                 <td className="w-[70px] min-w-[70px] border-l border-slate-100/50"></td>
                                             </>
                                         )}
 
-                                        <td className="w-[85px] min-w-[85px] px-2 py-1 text-right text-blue-600 font-black text-[12px] border-l border-slate-100/50">
-                                            {hasMetrados && !showCostView ? formatNumber(total) : '-'}
+                                        <td className={`w-[85px] min-w-[85px] px-2 py-1 text-right font-black text-[12px] border-l border-slate-100/50 ${showCostView ? 'text-emerald-700 bg-emerald-50/50' : 'text-blue-600'}`}>
+                                            {hasMetrados ? (showCostView ? `S/ ${formatNumber(totalPeriodo * precio)}` : formatNumber(totalPeriodo)) : '-'}
                                         </td>
                                     </tr>
                                 );

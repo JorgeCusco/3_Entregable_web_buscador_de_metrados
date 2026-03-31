@@ -36,6 +36,14 @@ export interface Partida {
     precio_unitario?: number;
     cantidad_presupuesto?: number;
     acumulado_anterior_qty?: number;
+    // Nuevos campos de seguimiento
+    metrado_anterior_acumulado?: number;
+    valorizacion_anterior?: number;
+    pu_actual?: number;
+    metrado_programado?: number;
+    valorizacion_programada?: number;
+    metrado_anterior?: number;
+    presupuesto_anterior?: number;
 }
 
 export interface Metrado {

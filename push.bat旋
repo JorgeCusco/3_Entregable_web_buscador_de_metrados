@@ -1,0 +1,9 @@
+@echo off
+echo Agregando archivos a Git...
+git add .
+echo Comiteando cambios...
+git commit -m "feat: implementacion de valorizado mensual y rediseño premium de vista valorizada (V22)"
+echo Subiendo a GitHub...
+git push origin main
+echo Proceso finalizado.
+pause
