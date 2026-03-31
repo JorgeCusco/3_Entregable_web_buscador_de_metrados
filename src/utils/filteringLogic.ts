@@ -79,6 +79,34 @@ export const getAvailableAuthorsImproved = (
 };
 
 // ============================================================================
+// ✅ SOLUCIÓN 1.5: Filtros de Ubicación (Frente, Bloque, Nivel)
+// ============================================================================
+
+export const getAvailableFrentes = (metrados: Metrado[]): string[] => {
+    const set = new Set<string>();
+    metrados.forEach(m => {
+        if (m.frente) set.add(m.frente.trim().toUpperCase());
+    });
+    return Array.from(set).sort();
+};
+
+export const getAvailableBloques = (metrados: Metrado[]): string[] => {
+    const set = new Set<string>();
+    metrados.forEach(m => {
+        if (m.bloque) set.add(m.bloque.trim().toUpperCase());
+    });
+    return Array.from(set).sort();
+};
+
+export const getAvailableNiveles = (metrados: Metrado[]): string[] => {
+    const set = new Set<string>();
+    metrados.forEach(m => {
+        if (m.nivel) set.add(m.nivel.trim().toUpperCase());
+    });
+    return Array.from(set).sort();
+};
+
+// ============================================================================
 // ✅ SOLUCIÓN 2: Filtrado de Autor Mejorado
 // ============================================================================
 
@@ -277,6 +305,9 @@ export const applyAllFilters = (
         dateFrom?: string;
         dateTo?: string;
         date?: string;
+        frente?: string;
+        bloque?: string;
+        nivel?: string;
     },
     catalogoActivo: Partida[] = [],
     debug: boolean = false,
@@ -351,6 +382,28 @@ export const applyAllFilters = (
         result = filterMetradosByDate(result, filters.date);
         results['fecha'] = result.length;
         if (debug) console.log(`   📅 Fecha (${filters.date}): ${before} → ${result.length}`);
+    }
+
+    // 5️⃣ QUINTO: Filtros de ubicación (Frente, Bloque, Nivel)
+    if (filters.frente && filters.frente !== 'TODOS') {
+        const before = result.length;
+        result = result.filter(m => m.frente?.trim().toUpperCase() === filters.frente!.trim().toUpperCase());
+        results['frente'] = result.length;
+        if (debug) console.log(`   🏗️  Frente (${filters.frente}): ${before} → ${result.length}`);
+    }
+
+    if (filters.bloque && filters.bloque !== 'TODOS') {
+        const before = result.length;
+        result = result.filter(m => m.bloque?.trim().toUpperCase() === filters.bloque!.trim().toUpperCase());
+        results['bloque'] = result.length;
+        if (debug) console.log(`   🏢 Bloque (${filters.bloque}): ${before} → ${result.length}`);
+    }
+
+    if (filters.nivel && filters.nivel !== 'TODOS') {
+        const before = result.length;
+        result = result.filter(m => m.nivel?.trim().toUpperCase() === filters.nivel!.trim().toUpperCase());
+        results['nivel'] = result.length;
+        if (debug) console.log(`   🪜 Nivel (${filters.nivel}): ${before} → ${result.length}`);
     }
 
     if (debug) {

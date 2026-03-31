@@ -5,7 +5,7 @@ import { RenderModificacionBadge } from './MetradosForm';
 import { useMetradosStore } from '../store/useMetradosStore';
 import { formulaRegistry } from '../utils/formulas/registry';
 import { SPECIALTY_RULES } from '../data/specialtyConfig';
-import { applyAllFilters, getAvailableAuthorsImproved, getEspecialidadPorCodigo } from '../utils/filteringLogic';
+import { applyAllFilters, getAvailableAuthorsImproved, getEspecialidadPorCodigo, getAvailableFrentes, getAvailableBloques, getAvailableNiveles } from '../utils/filteringLogic';
 
 interface MetradosTableProps {
     metrados: Metrado[];
@@ -168,14 +168,26 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     }, [proyecto, customPartidas, catalogoHospital, catalogoContingencia]);
 
     const [filterAuthor, setFilterAuthor] = React.useState('TODOS');
+    const [filterFrente, setFilterFrente] = React.useState('TODOS');
+    const [filterBloque, setFilterBloque] = React.useState('TODOS');
+    const [filterNivel, setFilterNivel] = React.useState('TODOS');
     const [filterDateFrom, setFilterDateFrom] = React.useState('');
     const [filterDateTo, setFilterDateTo] = React.useState('');
     const [debugMode] = React.useState(true); // Habilitado para diagnosticar infiltración
+
+    // Muestra base de metrados filtrada SÓLO por proyecto y especialidad para extraer listas consistentes
+    const especialidadMetrados = useMemo(() => {
+        return applyAllFilters(metrados, { proyecto, especialidad: especialidadSeleccionada }, catalogoActivo, false, getEspecialidadPorCodigo);
+    }, [metrados, proyecto, especialidadSeleccionada, catalogoActivo]);
 
     // Extraer todos los autores únicos presentes en la vista actual (filtrados por especialidad)
     const availableAuthors = useMemo(() => {
         return getAvailableAuthorsImproved(metrados, especialidadSeleccionada, catalogoActivo, getEspecialidadPorCodigo, debugMode);
     }, [metrados, especialidadSeleccionada, catalogoActivo, debugMode]);
+
+    const availableFrentes = useMemo(() => getAvailableFrentes(especialidadMetrados), [especialidadMetrados]);
+    const availableBloques = useMemo(() => getAvailableBloques(especialidadMetrados), [especialidadMetrados]);
+    const availableNiveles = useMemo(() => getAvailableNiveles(especialidadMetrados), [especialidadMetrados]);
 
     // Filtrar metrados por proyecto, especialidad, autor y fecha (OPTIMIZADO)
     // CORRECCIÓN: 
@@ -188,8 +200,11 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             autor: filterAuthor,
             dateFrom: filterDateFrom,
             dateTo: filterDateTo,
+            frente: filterFrente,
+            bloque: filterBloque,
+            nivel: filterNivel,
         }, catalogoActivo, debugMode);
-    }, [metrados, proyecto, especialidadSeleccionada, filterAuthor, filterDateFrom, filterDateTo, catalogoActivo, debugMode]);
+    }, [metrados, proyecto, especialidadSeleccionada, filterAuthor, filterDateFrom, filterDateTo, filterFrente, filterBloque, filterNivel, catalogoActivo, debugMode]);
 
     const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo), [filteredMetrados, catalogoActivo]);
     const [isExporting, setIsExporting] = React.useState(false);
@@ -213,6 +228,18 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     };
 
     const cantPartidasRegistradas = new Set(filteredMetrados.map(m => m.codigo_partida)).size;
+
+    // Cálculo del Valorizado Total en Pantalla
+    const totalValorizadoOnScreen = useMemo(() => {
+        let sum = 0;
+        Object.keys(partidaTotals).forEach(codigo => {
+            const partida = catalogoActivo.find(p => p.codigo === codigo || p.id === codigo);
+            const precio = partida?.pu_actual || partida?.precio_unitario || 0;
+            const qtySistema = partidaTotals[codigo] || 0;
+            sum += (qtySistema * precio);
+        });
+        return sum;
+    }, [partidaTotals, catalogoActivo]);
 
     const exportToExcel = async () => {
         if (filteredMetrados.length === 0) {
@@ -345,6 +372,47 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     >✕</button>
                                 )}
                             </div>
+                        </div>
+
+                        {/* Filtros de Ubicación (Frente, Bloque, Nivel) */}
+                        <div className="flex items-center gap-1 pl-1.5 border-l border-slate-200">
+                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight mr-1">Locación</span>
+                            
+                            <select
+                                value={filterFrente}
+                                onChange={(e) => setFilterFrente(e.target.value)}
+                                className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                title="Frente"
+                            >
+                                <option value="TODOS">F. TODOS</option>
+                                {availableFrentes.map(frente => (
+                                    <option key={frente} value={frente}>{frente.substring(0, 10)}{frente.length > 10 ? '...' : ''}</option>
+                                ))}
+                            </select>
+
+                            <select
+                                value={filterBloque}
+                                onChange={(e) => setFilterBloque(e.target.value)}
+                                className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                title="Bloque"
+                            >
+                                <option value="TODOS">B. TODOS</option>
+                                {availableBloques.map(bloque => (
+                                    <option key={bloque} value={bloque}>{bloque.substring(0, 10)}{bloque.length > 10 ? '...' : ''}</option>
+                                ))}
+                            </select>
+
+                            <select
+                                value={filterNivel}
+                                onChange={(e) => setFilterNivel(e.target.value)}
+                                className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                title="Nivel"
+                            >
+                                <option value="TODOS">N. TODOS</option>
+                                {availableNiveles.map(nivel => (
+                                    <option key={nivel} value={nivel}>{nivel.substring(0, 10)}{nivel.length > 10 ? '...' : ''}</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -702,13 +770,20 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             </div>
 
             {/* Footer de Resumen */}
-            <div className="mt-auto p-3 border-t border-slate-200 bg-white flex justify-between items-center text-[11px] font-bold text-slate-500 uppercase tracking-tighter">
-                <div className="flex gap-4">
-                    <span>Partidas con metrado (vista): {cantPartidasRegistradas}</span>
-                    <span>Total de registros (vista): {filteredMetrados.length}</span>
+            <div className="mt-auto p-3 border-t border-slate-200 bg-white flex justify-between items-center z-10">
+                <div className="flex items-center gap-5">
+                    <div className="flex gap-4 text-[11px] font-bold text-slate-500 uppercase tracking-tight">
+                        <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-400 block"></span> Partidas: {cantPartidasRegistradas}</span>
+                        <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-slate-400 block"></span> Registros: {filteredMetrados.length}</span>
+                    </div>
+                    <div className="h-4 w-px bg-slate-200 mx-1"></div>
+                    <div className="flex items-center justify-center gap-2 bg-emerald-50 text-emerald-800 px-3 py-1.5 rounded border border-emerald-200 shadow-inner group transition-all hover:bg-emerald-100/50">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600/80">Valorizado en Vista</span>
+                        <span className="text-[14px] font-black tracking-tighter">S/ {formatNumber(totalValorizadoOnScreen)}</span>
+                    </div>
                 </div>
-                <div className="bg-slate-800 text-white px-3 py-1 rounded-md">
-                    Control de Planilla Web v3.0
+                <div className="bg-slate-800 text-white px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                    Control de Planilla Web v3.1
                 </div>
             </div>
         </div>
