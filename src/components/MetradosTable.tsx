@@ -277,13 +277,13 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     return (
         <div className="glass-panel overflow-hidden rounded-2xl flex flex-col h-full border border-slate-200 shadow-sm bg-white">
             {/* Header de la Tabla */}
-            <div className="p-4 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
+            <div className="p-3 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
                 <div className="flex flex-col">
-                    <h3 className="font-bold text-slate-800 text-lg tracking-tight">Planilla de Metrados Dinámica</h3>
-                    <div className="flex flex-wrap items-center gap-4 mt-1">
+                    <h3 className="font-bold text-slate-800 text-base tracking-tight">Planilla de Metrados Dinámica</h3>
+                    <div className="flex flex-wrap items-center gap-3 mt-0.5">
                         {/* Filtro Especialidad */}
-                        <div className="flex items-center gap-2">
-                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Especialidad</span>
+                        <div className="flex items-center gap-1.5">
+                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Especialidad</span>
                             <select
                                 value={especialidadSeleccionada}
                                 onChange={(e) => {
@@ -304,8 +304,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         </div>
 
                         {/* Filtro Autor */}
-                        <div className="flex items-center gap-2 pl-2">
-                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Autor</span>
+                        <div className="flex items-center gap-1.5 pl-1.5 border-l border-slate-200">
+                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Autor</span>
                             <select
                                 value={filterAuthor}
                                 onChange={(e) => setFilterAuthor(e.target.value)}
@@ -319,8 +319,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         </div>
 
                         {/* Filtro Fecha (Rango) */}
-                        <div className="flex items-center gap-2 pl-2">
-                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Fecha</span>
+                        <div className="flex items-center gap-1.5 pl-1.5 border-l border-slate-200">
+                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Fecha</span>
                             <div className="relative flex items-center gap-1">
                                 <label className="text-[9px] text-slate-500 font-medium">Desde:</label>
                                 <input
@@ -391,30 +391,31 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
             {/* Contenedor con Scroll */}
             <div className="overflow-auto flex-grow max-h-[calc(100vh-250px)] scrollbar-thin scrollbar-thumb-slate-200">
-                <table className="w-full text-[13px] text-left align-middle border-collapse table-fixed">
+                <table className="w-full text-[13px] text-left align-middle border-collapse table-auto">
                     <thead className="text-[11px] text-slate-400 bg-white uppercase whitespace-nowrap sticky top-0 shadow-[0_1px_0_0_rgba(0,0,0,0.05)] z-10 font-bold">
                         <tr className="border-b border-slate-100">
-                            <th className="w-[85px] min-w-[85px] max-w-[85px] px-1.5 py-3 text-center overflow-hidden">Fecha</th>
-                            <th className="w-[80px] min-w-[80px] px-1.5 py-3 text-left">Item / Código</th>
-                            <th className="px-2 py-3">Descripción / Partida / Metrado</th>
-                            <th className="w-[45px] min-w-[45px] px-1 py-3 text-center">Und</th>
+                            <th className="w-[75px] min-w-[75px] px-1 py-3 text-center overflow-hidden">Fecha</th>
+                            <th className="w-[70px] min-w-[70px] px-1 py-3 text-left">Item / Código</th>
+                            <th className="px-1.5 py-3 min-w-[250px]">Descripción / Partida / Metrado</th>
+                            <th className="w-[35px] min-w-[35px] px-0.5 py-3 text-center">Und</th>
                             
                             {!showCostView ? (
                                 <>
-                                    <th className="w-[60px] min-w-[60px] px-1 py-3 text-right text-[10px] border-l border-slate-200">CANT.</th>
-                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px] border-l border-slate-200">LONG./AREA</th>
-                                    <th className="w-[70px] min-w-[70px] px-1 py-3 text-right text-[10px] border-l border-slate-200">ANCHO</th>
-                                    <th className="w-[70px] min-w-[70px] px-1 py-3 text-right text-[10px] border-l border-slate-200">ALT./GAN.</th>
-                                    <th className="w-[80px] min-w-[80px] px-2 py-3 text-right text-[10px] border-l border-slate-200">Parcial</th>
-                                    <th className="w-[50px] min-w-[50px] px-1 py-3 text-center text-[10px] border-l border-slate-200">Veces</th>
+                                    <th className="w-[50px] min-w-[50px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">CANT.</th>
+                                    <th className="w-[70px] min-w-[70px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">LONG./AREA</th>
+                                    <th className="w-[60px] min-w-[60px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">ANCHO</th>
+                                    <th className="w-[60px] min-w-[60px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">ALT./GAN.</th>
+                                    <th className="w-[75px] min-w-[75px] px-1 py-3 text-right text-[10px] border-l border-slate-200">Parcial</th>
+                                    <th className="w-[45px] min-w-[45px] px-0.5 py-3 text-center text-[10px] border-l border-slate-200">Veces</th>
+                                    <th className="w-[10px] min-w-[10px] px-1 py-3 text-center text-[10px] border-l border-slate-200"></th>
                                 </>
                             ) : (
                                 <>
                                     <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px] border-l bg-emerald-100 bg-financial-value transition-all">Precio S/</th>
-                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-blue-100 bg-financial-progress font-black">Metrado Acum.</th>
-                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-blue-100 bg-financial-progress">Presupuesto</th>
-                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-amber-100 bg-financial-pending font-black">Saldo Fis.</th>
-                                    <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-amber-100 bg-financial-pending">Sald. Mon S/</th>
+                                    <th className="w-[90px] min-w-[90px] px-1 py-3 text-right text-[10px] border-l bg-blue-100 bg-financial-progress font-black">Metrado Acum.</th>
+                                    <th className="w-[90px] min-w-[90px] px-1 py-3 text-right text-[10px] border-l bg-blue-100 bg-financial-progress">Presupuesto</th>
+                                    <th className="w-[90px] min-w-[90px] px-1 py-3 text-right text-[10px] border-l bg-amber-100 bg-financial-pending font-black">Saldo Fis.</th>
+                                    <th className="w-[90px] min-w-[90px] px-1 py-3 text-right text-[10px] border-l bg-amber-100 bg-financial-pending">Sald. Mon S/</th>
                                     <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-emerald-200 bg-current-month font-black shadow-inner">Val. Mes S/</th>
                                     <th className="w-[100px] min-w-[100px] px-1 py-3 text-right text-[10px] border-l bg-emerald-200 bg-financial-value font-black text-emerald-800">Costo Ejec.</th>
                                 </>
@@ -430,11 +431,11 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             if (r.is_template && r.es_titulo) {
                                 return (
                                     <tr key={`title-${r.codigo}`} className="bg-slate-100 border-b border-slate-200">
-                                        <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1 text-center font-mono text-[9px] text-slate-400 overflow-hidden"></td>
-                                        <td className="w-[80px] min-w-[80px] px-2 py-1 font-mono text-[10px] tracking-wider text-left text-slate-500">
+                                        <td className="w-[75px] min-w-[75px] max-w-[75px] px-1 py-1 text-center font-mono text-[9px] text-slate-400 overflow-hidden"></td>
+                                        <td className="w-[70px] min-w-[70px] px-1 py-1 font-mono text-[10px] tracking-wider text-left text-slate-500">
                                             {r.codigo}
                                         </td>
-                                        <td colSpan={showCostView ? 10 : 10} className="px-3 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600"
+                                        <td colSpan={11} className="px-2 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
                                             {r.descripcion}
                                         </td>
@@ -446,9 +447,9 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             if (r.is_template && r.is_elemento_virtual) {
                                 return (
                                     <tr key={r.id} className="bg-slate-50/50 border-b border-slate-100 group">
-                                        <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1.5 text-center overflow-hidden"></td>
-                                        <td className="w-[80px] min-w-[80px] px-2 py-1.5 text-left"></td>
-                                        <td className="px-2 py-1.5" colSpan={showCostView ? 10 : 10} style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.5 + 0.75}rem` }}>
+                                        <td className="w-[75px] min-w-[75px] max-w-[75px] px-1 py-1.5 text-center overflow-hidden"></td>
+                                        <td className="w-[70px] min-w-[70px] px-1 py-1.5 text-left"></td>
+                                        <td className="px-1.5 py-1.5" colSpan={11} style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.5 + 0.75}rem` }}>
                                             <div className="flex items-center gap-2">
                                                 <span className="text-blue-300 font-black text-[10px]">▼</span>
                                                 <input
@@ -485,13 +486,13 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
                                 return (
                                     <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/50' : 'bg-white'} border-b border-slate-100 font-semibold group transition-colors`}>
-                                        <td className="w-[85px] min-w-[85px] max-w-[85px] px-2 py-1 text-center overflow-hidden"></td>
-                                        <td className="w-[80px] min-w-[80px] px-2 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
+                                        <td className="w-[75px] min-w-[75px] max-w-[75px] px-1 py-1 text-center overflow-hidden"></td>
+                                        <td className="w-[70px] min-w-[70px] px-1 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
                                             <span className="font-mono text-[10px] text-blue-500 bg-blue-50 px-1 py-0.5 rounded border border-blue-100">
                                                 {r.codigo}
                                             </span>
                                         </td>
-                                        <td className="px-2 py-1"
+                                        <td className="px-1.5 py-1"
                                             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.5 + 0.25}rem` }}>
                                             <div className="flex items-center gap-2">
                                                 {RenderModificacionBadge(r.modificacion)}
@@ -501,10 +502,10 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="w-[45px] min-w-[45px] px-2 py-1 text-center text-slate-400 font-bold text-[10px]">{r.unidad}</td>
+                                        <td className="w-[35px] min-w-[35px] px-1 py-1 text-center text-slate-400 font-bold text-[10px]">{r.unidad}</td>
                                         
                                         {!showCostView ? (
-                                            <td colSpan={7} className="px-1 py-1 border-l border-slate-100/50">
+                                            <td colSpan={8} className="px-1 py-1 border-l border-slate-100/50">
                                                 {!showCostView && r.precio_unitario > 0 && (
                                                     <div className="w-full h-full flex justify-end items-center pr-3">
                                                         <span className="bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded text-[10px] border border-emerald-200 shadow-sm" title={`Precio Base: S/ ${r.precio_unitario}`}>S/ {r.precio_unitario.toFixed(2)}</span>
@@ -546,13 +547,13 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
                             return (
                                 <tr key={`rec-${r.id}`} className="hover:bg-blue-50/20 border-b border-slate-100 group transition-all duration-200">
-                                    <td className="w-[85px] min-w-[85px] max-w-[85px] px-1 py-1.5 text-center overflow-hidden">
+                                    <td className="w-[75px] min-w-[75px] max-w-[75px] px-1 py-1.5 text-center overflow-hidden">
                                         <input type="date" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-400 font-bold text-[9px] uppercase tracking-tighter"
                                             value={r.fecha} onChange={(e) => onUpdate?.(r.id, 'fecha', e.target.value)}
                                             onFocus={(e) => e.target.select()}
                                             title={r.fecha} />
                                     </td>
-                                    <td className="w-[80px] min-w-[80px] px-0.5 py-1.5">
+                                    <td className="w-[70px] min-w-[70px] px-0.5 py-1.5">
                                         <div className="flex items-center justify-center gap-0.5">
                                             <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
                                             <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
@@ -566,11 +567,11 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                                 onFocus={(e) => e.target.select()} />
                                         </div>
                                     </td>
-                                    <td className="px-2 py-1.5">
+                                    <td className="px-1.5 py-1.5">
                                         <div className="flex items-center gap-1.5 w-full">
                                             <input
                                                 type="text"
-                                                className="metrado-input w-14 bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded text-slate-500 text-[9px] font-black uppercase shrink-0 text-center shadow-inner cursor-not-allowed opacity-80"
+                                                className="metrado-input w-12 bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded text-slate-500 text-[9px] font-black uppercase shrink-0 text-center shadow-inner cursor-not-allowed opacity-80"
                                                 value={r.cuadrilla || ''}
                                                 placeholder="CDLLA"
                                                 title={`Personal asignado: ${r.obrero_nombre || "Ninguno"}. La edición se hace desde el panel de ingreso.`}
@@ -579,7 +580,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                             {r.elemento && <span className="text-blue-400 font-black text-[12px] shrink-0">↳</span>}
                                             <input
                                                 type="text"
-                                                className="metrado-input w-24 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0"
+                                                className="metrado-input w-20 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0"
                                                 value={r.elemento || ''}
                                                 placeholder="AGRUPADOR..."
                                                 onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())}
@@ -668,7 +669,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                         </td>
                                     )}
 
-                                    <td className="w-[70px] min-w-[70px] px-1 py-1 text-center border-l border-slate-100/50">
+                                    <td className="w-[60px] min-w-[60px] px-1 py-1 text-center border-l border-slate-100/50">
                                         <div className="flex flex-col items-center leading-none">
                                             <span className="text-[9px] font-black text-slate-800 uppercase truncate w-full" title={r.autor_usuario || 'User'}>
                                                 {(r.autor_usuario || 'User').split(' ')[0]}
@@ -677,7 +678,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     </td>
 
                                     {/* Total + Acciones */}
-                                    <td className="w-[85px] min-w-[85px] px-2 py-1.5 text-right font-bold text-slate-800 relative text-[11px] border-l border-slate-200/60">
+                                    <td className="w-[75px] min-w-[75px] px-1.5 py-1.5 text-right font-bold text-slate-800 relative text-[11px] border-l border-slate-200/60">
                                         <div className="flex items-center justify-end gap-1.5">
                                             <span>{r.total.toFixed(2)}</span>
                                             <button
