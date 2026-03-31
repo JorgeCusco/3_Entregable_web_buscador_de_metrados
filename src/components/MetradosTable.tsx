@@ -505,8 +505,11 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                         {!showCostView ? (
                                             <td colSpan={8} className="px-1 py-1 border-l border-slate-100/50">
                                                 {!showCostView && r.precio_unitario > 0 && (
-                                                    <div className="w-full h-full flex justify-end items-center pr-3">
+                                                    <div className="w-full h-full flex justify-end items-center pr-3 gap-2">
                                                         <span className="bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded text-[10px] border border-emerald-200 shadow-sm" title={`Precio Base: S/ ${r.precio_unitario}`}>S/ {r.precio_unitario.toFixed(2)}</span>
+                                                        <span className="bg-blue-600 text-white font-black px-2 py-0.5 rounded text-[11px] border border-blue-700 shadow-sm animate-pulse-subtle">
+                                                            S/ {formatNumber(totalPeriodo * precio)}
+                                                        </span>
                                                     </div>
                                                 )}
                                             </td>
@@ -580,7 +583,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                                 type="text"
                                                 className="metrado-input w-20 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0"
                                                 value={r.elemento || ''}
-                                                placeholder="AGRUPADOR..."
+                                                placeholder="Agrupador"
                                                 onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())}
                                                 onFocus={(e) => e.target.select()}
                                             />

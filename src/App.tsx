@@ -131,20 +131,20 @@ function App() {
   });
 
   return (
-    <div className="min-h-screen p-2 md:p-3 flex flex-col gap-3 relative max-w-[1600px] mx-auto">
+    <div className="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col gap-6 relative max-w-[1450px] mx-auto">
 
-      {/* Header Compacto */}
-      <header className="flex flex-col md:flex-row items-center justify-between px-2 gap-2">
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <div className="bg-primary text-white p-1.5 rounded-lg shadow-lg">
-            <Building2 className="w-5 h-5" />
+      {/* Header */}
+      <header className="flex flex-col md:flex-row items-center justify-between px-2 gap-4">
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="bg-primary text-white p-2.5 rounded-xl shadow-lg shadow-primary/30">
+            <Building2 className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl font-black bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent leading-none">
-              METRADOS BELEMPAMPA
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent leading-tight">
+              Metrados Belempampa
             </h1>
-            <div className="flex items-center gap-1 text-[10px] text-blue-600 font-bold uppercase tracking-tighter mt-1">
-              <UserIcon className="w-2.5 h-2.5" />
+            <div className="flex items-center gap-2 text-xs text-blue-600 font-bold uppercase tracking-wider">
+              <UserIcon className="w-3 h-3" />
               <span>{user?.nombre_completo} ({user?.cargo})</span>
             </div>
           </div>
@@ -216,11 +216,11 @@ function App() {
       )}
 
 
-      {/* Main Layout Grid Compacto */}
-      <main className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 min-h-[70vh]">
+      {/* Main Layout Grid */}
+      <main className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[70vh]">
 
-        {/* Left Column: Form (3/12 del espacio) */}
-        <div className="lg:col-span-3">
+        {/* Left Column: Form */}
+        <div className="lg:col-span-4 xl:col-span-3">
           <MetradosForm
             state={state}
             actions={actions}
@@ -229,8 +229,8 @@ function App() {
           />
         </div>
 
-        {/* Right Column: Table History (9/12 del espacio) */}
-        <div className="lg:col-span-9 flex flex-col">
+        {/* Right Column: Table History */}
+        <div className="lg:col-span-8 xl:col-span-9 flex flex-col">
           <MetradosTable
             metrados={metradosFiltrados}
             onUpdate={handleUpdateMetrado}
