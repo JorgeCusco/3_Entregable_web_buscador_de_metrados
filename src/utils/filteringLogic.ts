@@ -14,23 +14,27 @@ import { normalizeAuthorName, normalizeSpecialty, isValidSpecialty } from '../ut
 import type { Metrado, Partida } from '../types';
 import { SPECIALTY_RULES } from '../data/specialtyConfig';
 
-/**
- * Deduce la especialidad a partir del código de partida (OE.2... -> ESTRUCTURAS)
- */
 export const getEspecialidadPorCodigo = (codigo: string): string => {
     if (!codigo) return '';
     const cleanCode = codigo.trim().toUpperCase();
     
-    // Buscar la regla que tenga un rango que sea prefijo del código
+    let bestMatch = { id: '', length: 0 };
+
     for (const rule of SPECIALTY_RULES) {
         if (rule.id === 'TODAS') continue;
         for (const range of rule.ranges) {
-            if (cleanCode.startsWith(range.toUpperCase())) {
-                return rule.id;
+            const rangeUpper = range.toUpperCase();
+            // Un match es válido si el código es IDÉNTICO al prefijo, 
+            // o si el código COMIENZA con el prefijo seguido de un punto (hijo).
+            // O si el prefijo es muy corto (menos de 4 char) y coincide al inicio.
+            if (cleanCode === rangeUpper || cleanCode.startsWith(rangeUpper + '.') || (rangeUpper.length <= 4 && cleanCode.startsWith(rangeUpper))) {
+                if (rangeUpper.length > bestMatch.length) {
+                    bestMatch = { id: rule.id, length: rangeUpper.length };
+                }
             }
         }
     }
-    return '';
+    return bestMatch.id;
 };
 
 // ============================================================================
