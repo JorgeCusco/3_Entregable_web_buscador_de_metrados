@@ -19,15 +19,17 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
         setQuery(value);
     }, [value]);
 
-    const filteredPartidas = (query || "").trim() === ''
-        ? partidas
-        : partidas.filter((partida) => {
-            const searchTokens = (query || "").toLowerCase().split(' ').filter(token => token.trim() !== '');
-            const descLower = (partida.descripcion || "").toLowerCase();
-            const codLower = (partida.codigo || "").toLowerCase();
-            // Coincidencia booleana AND: todos los tokens deben aparecer
-            return searchTokens.every(token => descLower.includes(token) || codLower.includes(token));
-        });
+    const filteredPartidas = React.useMemo(() => {
+        return (query || "").trim() === ''
+            ? partidas
+            : partidas.filter((partida) => {
+                const searchTokens = (query || "").toLowerCase().split(' ').filter(token => token.trim() !== '');
+                const descLower = (partida.descripcion || "").toLowerCase();
+                const codLower = (partida.codigo || "").toLowerCase();
+                // Coincidencia booleana AND: todos los tokens deben aparecer
+                return searchTokens.every(token => descLower.includes(token) || codLower.includes(token));
+            });
+    }, [query, partidas]);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {

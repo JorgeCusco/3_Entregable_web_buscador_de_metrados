@@ -1,0 +1,20 @@
+﻿ M 00_OFI_PRESUPUESTOS/buscardormetrados
+ M METRADO_PLANTILLA_5.xlsx
+ M SQL_Architecture_Master_Guide.md
+ M src/App.tsx
+ D src/components/LiquidacionesView.tsx
+ M src/components/MetradosForm.tsx
+ M src/components/ui/SearchCombobox.tsx
+ D src/store/useLiquidacionesStore.ts
+ M src/store/useMetradosStore.ts
+?? dist_belempampa.zip
+?? git_diff.txt
+?? git_diff_utf8.txt
+?? git_porcelain.txt
+?? src_diff_utf8.txt
+?? supabase/migrations/0023_fix_rls_metrados_liquidaciones.sql
+?? test_db.mjs
+?? test_db_metrados.mjs
+?? test_liquidaciones_fetch.ts
+?? xlsx_files.txt
+?? xlsx_files_utf8.txt

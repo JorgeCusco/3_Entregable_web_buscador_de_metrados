@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { MetradosForm } from './components/MetradosForm';
 import { MetradosTable } from './components/MetradosTable';
-import { LiquidacionesView } from './components/LiquidacionesView';
 import { useMetradosForm } from './hooks/useMetradosForm';
 import type { Metrado, Partida } from './types';
-import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon, DollarSign } from 'lucide-react';
+import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon } from 'lucide-react';
 import { useMetradosStore } from './store/useMetradosStore';
 import { usePersonalStore } from './store/usePersonalStore';
 import { useAuthStore } from './store/useAuthStore';
+import { useSystemUsersStore } from './store/useSystemUsersStore';
 import Login from './components/Login';
 import { DashboardPersonal } from './components/DashboardPersonal';
 import { calcularParcial, calcularTotal } from './utils/metradosCalculations';
@@ -19,23 +19,16 @@ function App() {
   const { state, actions } = useMetradosForm();
   const { metrados, context, setContext, addMetrado, updateMetrado, deleteMetrado, updateGroup, fetchCustomPartidas, fetchMetrados, fetchCatalogoMaestro } = useMetradosStore();
   const { fetchPersonal } = usePersonalStore();
-  const { isAuthenticated, user, logout, checkAuth, isLiquidaciones } = useAuthStore();
+  const { isAuthenticated, user, logout, checkAuth } = useAuthStore();
+  const { fetchSystemUsers } = useSystemUsersStore();
   
   const [toast, setToast] = useState<string | null>(null);
   const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
-  const [activeTab, setActiveTab] = useState<'general' | 'liquidaciones'>('general');
 
   // Verificar autenticación al montar
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-
-  // Si es usuario de liquidaciones, mostrar automáticamente ese tab
-  useEffect(() => {
-    if (isAuthenticated && isLiquidaciones()) {
-      setActiveTab('liquidaciones');
-    }
-  }, [isAuthenticated, isLiquidaciones]);
 
   // Cargar datos iniciales solo si está autenticado
   useEffect(() => {
@@ -44,8 +37,9 @@ function App() {
       fetchCatalogoMaestro();
       fetchCustomPartidas();
       fetchMetrados();
+      fetchSystemUsers();
     }
-  }, [isAuthenticated, fetchCustomPartidas, fetchMetrados, fetchPersonal, fetchCatalogoMaestro]);
+  }, [isAuthenticated, fetchCustomPartidas, fetchMetrados, fetchPersonal, fetchCatalogoMaestro, fetchSystemUsers]);
 
   const handleGuardar = async () => {
     try {
@@ -118,11 +112,6 @@ function App() {
     return <Login />;
   }
 
-  // Si es usuario de liquidaciones y está en ese tab, mostrar vista privada de liquidaciones
-  if (isLiquidaciones() && activeTab === 'liquidaciones') {
-    return <LiquidacionesView onLogout={() => logout()} />;
-  }
-
   // Filtra los metrados mostrados según el proyecto activo (Case-insensitive V30.1)
   const metradosFiltrados = metrados.filter(m => {
     if (!m.proyecto) return true;
@@ -172,21 +161,6 @@ function App() {
             Contingencia
           </button>
         </div>
-
-        {/* ─── Botón Liquidaciones (Solo para usuarios de Liquidaciones) ─── */}
-        {isLiquidaciones() && (
-          <button
-            onClick={() => setActiveTab(activeTab === 'liquidaciones' ? 'general' : 'liquidaciones')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
-              activeTab === 'liquidaciones'
-                ? 'bg-green-600 text-white shadow-lg shadow-green-600/30'
-                : 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100'
-            }`}
-          >
-            <DollarSign className="w-4 h-4" />
-            <span className="hidden sm:inline">Liquidaciones</span>
-          </button>
-        )}
 
         <div className="flex items-center gap-2">
           <button 

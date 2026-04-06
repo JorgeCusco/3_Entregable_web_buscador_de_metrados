@@ -4,6 +4,7 @@ import { Download, Trash2, Loader2, Eraser } from 'lucide-react';
 import { RenderModificacionBadge } from './MetradosForm';
 import { useMetradosStore } from '../store/useMetradosStore';
 import { useAuthStore } from '../store/useAuthStore';
+import { useSystemUsersStore } from '../store/useSystemUsersStore';
 import { formulaRegistry } from '../utils/formulas/registry';
 import { SPECIALTY_RULES } from '../data/specialtyConfig';
 import { applyAllFilters, getAvailableAuthorsImproved, getEspecialidadPorCodigo, getAvailableFrentes, getAvailableBloques, getAvailableNiveles } from '../utils/filteringLogic';
@@ -194,15 +195,17 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     const [debugMode] = React.useState(true); // Habilitado para diagnosticar infiltración
     const [hasAutoSelectedAuthor, setHasAutoSelectedAuthor] = React.useState(false);
 
+    const { systemUsers } = useSystemUsersStore();
+
     // Muestra base de metrados filtrada SÓLO por proyecto y especialidad para extraer listas consistentes
     const especialidadMetrados = useMemo(() => {
         return applyAllFilters(metrados, { proyecto, especialidad: especialidadSeleccionada }, catalogoActivo, false, getEspecialidadPorCodigo);
     }, [metrados, proyecto, especialidadSeleccionada, catalogoActivo]);
 
-    // Extraer todos los autores únicos presentes en la vista actual (filtrados por especialidad)
+    // Extraer todos los autores únicos presentes en la vista actual (filtrados por especialidad) y cruzar con la tabla oficial de usuarios del sistema
     const availableAuthors = useMemo(() => {
-        return getAvailableAuthorsImproved(metrados, especialidadSeleccionada, catalogoActivo, getEspecialidadPorCodigo, debugMode);
-    }, [metrados, especialidadSeleccionada, catalogoActivo, debugMode]);
+        return getAvailableAuthorsImproved(metrados, especialidadSeleccionada, catalogoActivo, getEspecialidadPorCodigo, debugMode, systemUsers);
+    }, [metrados, especialidadSeleccionada, catalogoActivo, debugMode, systemUsers]);
 
     // Aplicar Filtro Autor Inteligente ("Si el usuario activo forma parte de la tabla actual y no se ha autoseleccionado aún, selecciónalo")
     React.useEffect(() => {

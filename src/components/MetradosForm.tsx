@@ -110,6 +110,26 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
         });
     }, [catalogoSugerencias, modalEspecialidad]);
 
+    const partidasSugeridasCombo = useMemo(() => {
+        return catalogoSugerencias.filter(p => {
+            if (p.es_titulo) return false;
+            if (state.especialidadSeleccionada === 'TODAS') return true;
+
+            let espP = p.especialidad;
+            if (!espP || espP === 'hospital' || espP === 'contingencia' || espP === 'TODAS') {
+                espP = getEspecialidadPorCodigo(p.codigo);
+            }
+            return espP.trim().toUpperCase() === state.especialidadSeleccionada.trim().toUpperCase();
+        });
+    }, [catalogoSugerencias, state.especialidadSeleccionada]);
+
+    const mActualGuardadoMemo = useMemo(() => {
+        if (!state.partidaSeleccionada || !showCostDetail) return 0;
+        return metrados
+            .filter((m: any) => m.codigo_partida === state.partidaSeleccionada.codigo)
+            .reduce((sum: number, m: any) => sum + (m.total || 0), 0);
+    }, [metrados, state.partidaSeleccionada, showCostDetail]);
+
     const handleCrearPartida = async () => {
         if (!nuevaPartidaData.codigo || !nuevaPartidaData.descripcion) return;
         
@@ -284,16 +304,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     <div className="space-y-1">
                         <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Partida (Buscador)</label>
                         <SearchCombobox
-                            partidas={catalogoSugerencias.filter(p => {
-                                if (p.es_titulo) return false;
-                                if (state.especialidadSeleccionada === 'TODAS') return true;
-
-                                let espP = p.especialidad;
-                                if (!espP || espP === 'hospital' || espP === 'contingencia' || espP === 'TODAS') {
-                                    espP = getEspecialidadPorCodigo(p.codigo);
-                                }
-                                return espP.trim().toUpperCase() === state.especialidadSeleccionada.trim().toUpperCase();
-                            })}
+                            partidas={partidasSugeridasCombo}
                             value={state.partidaSeleccionada ? state.partidaSeleccionada.descripcion : ''}
                             onSelect={(p: Partida) => {
                                 actions.setPartidaSeleccionada(p);
@@ -341,9 +352,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
                                         // ─── CONTROL FÍSICO ───
                                         // Sumamos lo ya guardado + lo que el usuario está escribiendo ahora (Tiempo Real)
-                                        const mActualGuardado = metrados
-                                            .filter((m: any) => m.codigo_partida === p.codigo)
-                                            .reduce((sum: number, m: any) => sum + (m.total || 0), 0);
+                                        const mActualGuardado = mActualGuardadoMemo;
                                         
                                         const mActualEnForm = state.totalCalculado || 0;
                                         const mActual = mActualGuardado + mActualEnForm;
@@ -569,7 +578,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 </div>
 
                 {/* FILA 4: MATEMÁTICA */}
-                <div className="grid grid-cols-5 gap-1.5 bg-white/50 p-2 rounded-xl border border-slate-100 shadow-sm">
+                <div className={`grid gap-1.5 bg-white/50 p-2 rounded-xl border border-slate-100 shadow-sm ${(state.formulaStrategy?.id === 'ACERO' || isInstalacion(state.partidaSeleccionada)) ? 'grid-cols-6' : 'grid-cols-5'}`}>
                     {(() => {
                         const strategy = state.formulaStrategy;
                         if (!strategy) return null;
@@ -617,13 +626,14 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         const flagAcero = strategy.id === 'ACERO';
                         const isInstalacionFlag = isInstalacion(state.partidaSeleccionada);
                         
-                        let extraField = null;
+                        let extraFields = [];
+
                         if (flagAcero || isInstalacionFlag) {
                             const diametros = flagAcero 
                                 ? ['1/4"', '3/8"', '1/2"', '5/8"', '3/4"', '1"']
                                 : ['1/2"', '3/4"', '1"', '1 1/4"', '1 1/2"', '2"', '2 1/2"', '3"', '4"', '6"'];
                             
-                            extraField = (
+                            extraFields.push(
                                 <div key="diametro" className="space-y-1">
                                     <label className={`text-[9px] font-black uppercase tracking-tighter text-center block ${flagAcero ? 'text-orange-400' : 'text-blue-400'}`}>DIÁM</label>
                                     <select
@@ -641,33 +651,34 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                     </select>
                                 </div>
                             );
-                        } else {
-                            const isVecesLocked = strategy.isFieldLocked('nro_veces', meta);
-                            extraField = (
-                                <div key="veces" className="space-y-1">
-                                    <label className={`text-[9px] font-black uppercase tracking-tighter text-center block ${isVecesLocked ? 'text-slate-300' : 'text-slate-400'}`}>
-                                        VECES
-                                    </label>
-                                    <input
-                                        id="input-veces"
-                                        type="number"
-                                        value={state.nroVeces}
-                                        disabled={isVecesLocked}
-                                        onChange={e => actions.setNroVeces(e.target.value === "" ? "" : Number(e.target.value))}
-                                        onKeyDown={e => handleKeyDown(e, 'submit')}
-                                        onFocus={e => e.target.select()}
-                                        className={`w-full px-1 py-1 border rounded text-xs text-right font-mono font-bold outline-none transition-colors ${
-                                            isVecesLocked
-                                            ? 'bg-slate-50 border-slate-100 text-slate-300 cursor-not-allowed'
-                                            : 'border-slate-200 text-slate-700 bg-white focus:border-blue-500'
-                                        }`}
-                                        placeholder={isVecesLocked ? "1" : "1"}
-                                    />
-                                </div>
-                            );
                         }
 
-                        return [...fields, extraField];
+                        // Siempre evaluar y mostrar la casilla de VECES
+                        const isVecesLocked = strategy.isFieldLocked('nro_veces', meta);
+                        extraFields.push(
+                            <div key="veces" className="space-y-1">
+                                <label className={`text-[9px] font-black uppercase tracking-tighter text-center block ${isVecesLocked ? 'text-slate-300' : 'text-slate-400'}`}>
+                                    VECES
+                                </label>
+                                <input
+                                    id="input-veces"
+                                    type="number"
+                                    value={state.nroVeces}
+                                    disabled={isVecesLocked}
+                                    onChange={e => actions.setNroVeces(e.target.value === "" ? "" : Number(e.target.value))}
+                                    onKeyDown={e => handleKeyDown(e, 'submit')}
+                                    onFocus={e => e.target.select()}
+                                    className={`w-full px-1 py-1 border rounded text-xs text-right font-mono font-bold outline-none transition-colors ${
+                                        isVecesLocked
+                                        ? 'bg-slate-50 border-slate-100 text-slate-300 cursor-not-allowed'
+                                        : 'border-slate-200 text-slate-700 bg-white focus:border-blue-500'
+                                    }`}
+                                    placeholder={isVecesLocked ? "1" : "1"}
+                                />
+                            </div>
+                        );
+
+                        return [...fields, ...extraFields];
                     })()}
                 </div>
 

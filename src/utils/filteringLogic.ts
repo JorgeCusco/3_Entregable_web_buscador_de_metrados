@@ -56,7 +56,8 @@ export const getAvailableAuthorsImproved = (
     especialidad?: string,
     catalogoActivo?: Partida[],
     getEspecialidadPorCodigoFn: (codigo: string) => string = getEspecialidadPorCodigo,
-    debug: boolean = false
+    debug: boolean = false,
+    systemUsers: any[] = []
 ): string[] => {
     let filtered = metrados;
     
@@ -78,7 +79,37 @@ export const getAvailableAuthorsImproved = (
         }
     });
 
-    // Retornar como array ordenado
+    // Filtro adicional rígido: si tenemos lista de usuarios del sistema oficial (ecosistema_usuarios)
+    if (systemUsers.length > 0 && especialidad && especialidad !== 'TODAS') {
+        const targetSpec = normalizeSpecialty(especialidad);
+        const validSectorAuthors = new Set<string>();
+        
+        systemUsers.forEach(u => {
+            const uSpec = normalizeSpecialty(u.especialidad || '');
+            // Identificamos quiénes pertenecen legítimamente a este sector
+            // o quiénes tienen acceso jerárquico/global
+            if (
+                uSpec === targetSpec || 
+                uSpec === 'GENERAL' || 
+                uSpec === 'SUPERVISOR' || 
+                uSpec === 'ADMIN' || 
+                uSpec === 'TODAS' || 
+                (u.roles_apps?.metrados === 'ADMIN')
+            ) {
+                if (u.nombre_completo) {
+                    validSectorAuthors.add(normalizeAuthorName(u.nombre_completo));
+                }
+            }
+        });
+
+        // Intersectamos: sólo mostramos usuarios que TIENEN registros en la tabla
+        // Y que ADEMÁS pertenecen oficialmente a este sector.
+        // Esto elimina "infiltrados" (ej. un Arquitecto que por error tiene un metrado acá)
+        const strictValidatedAuthors = Array.from(authorSet).filter(a => validSectorAuthors.has(a));
+        return strictValidatedAuthors.sort();
+    }
+
+    // Retornar como array ordenado (comportamiento legacy si no hay systemUsers)
     return Array.from(authorSet).sort();
 };
 

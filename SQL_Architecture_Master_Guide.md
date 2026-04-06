@@ -14,7 +14,13 @@ erDiagram
     PARTIDAS_PERSONALIZADAS ||--o{ METRADOS : "es referenciado por"
     PERSONAL ||--o{ METRADOS_PERSONAL : "participa en"
     HVAC_CATALOGO_ACCESORIOS ||--o{ METRADOS : "aplica factor a"
+    CATALOGO_PARTIDAS ||--o{ METRADOS_LIQUIDACIONES : "es referenciado por"
+    PARTIDAS_PERSONALIZADAS ||--o{ METRADOS_LIQUIDACIONES : "es referenciado por"
     
+    INSUMOS_MASTER ||--o{ INSUMO_MAPPING : "mapeado a"
+    INSUMOS_COMPRADO ||--o{ INSUMO_MAPPING : "mapeado con"
+    TIPOS_MOVIMIENTO ||--o{ INSUMOS_COMPRADO : "clasifica"
+
     HVAC_CATALOGO_ACCESORIOS {
         uuid id PK
         text categoria "DUCTO | TEE | REDUCCION | CODO"
@@ -57,14 +63,14 @@ erDiagram
         uuid parent_id FK
         uuid proyecto_id FK
         text tipo_metrado "ESTANDAR | ACERO | HVAC*"
-        numeric metrado_programado "Meta contractual (100%)"
-        numeric valorizacion_programada "Monto contractual (100%)"
-        numeric metrado_anterior_acumulado "Metrado ejecutado precierre"
-        numeric valorizacion_anterior "Monto ejecutado precierre"
-        numeric pu_actual "Precio unitario vigente"
-        numeric precio_unitario "DEPRECATED: Usar pu_actual"
-        numeric cantidad_presupuesto "DEPRECATED: Usar metrado_programado"
-        numeric acumulado_anterior_qty "DEPRECATED: Usar metrado_anterior_acumulado"
+        numeric metrado_programado
+        numeric valorizacion_programada
+        numeric metrado_anterior_acumulado
+        numeric valorizacion_anterior
+        numeric pu_actual
+        numeric precio_unitario
+        numeric cantidad_presupuesto
+        numeric acumulado_anterior_qty
     }
   
     METRADOS {
@@ -92,6 +98,20 @@ erDiagram
         text autor_usuario
         timestamp created_at
     }
+
+    METRADOS_LIQUIDACIONES {
+        uuid id PK
+        date fecha
+        uuid partida_id FK
+        uuid custom_partida_id FK
+        text codigo_partida
+        text descripcion_partida
+        text unidad
+        text proyecto
+        numeric total
+        text autor_usuario
+        timestamp created_at
+    }
   
     PERSONAL {
         uuid id PK
@@ -99,13 +119,41 @@ erDiagram
         text nombre_original
         text nombre_formateado
         text especialidad
-        text cuadrilla
-        text categoria
-        text sexo
-        text telefono
-        text condicion
-        text oficio
-        text fecha_ingreso
+    }
+
+    INSUMOS_MASTER {
+        bigint id PK
+        text codigo
+        text descripcion
+        numeric cantidad
+        numeric total
+    }
+
+    INSUMOS_COMPRADO {
+        bigint id PK
+        text detalle
+        text orden
+        numeric cantidad
+        numeric total
+        bigint tipo_id FK
+    }
+
+    INSUMO_MAPPING {
+        bigint id PK
+        bigint master_id FK
+        bigint comprado_id FK
+        text usuario
+    }
+
+    TIPOS_MOVIMIENTO {
+        bigint id PK
+        text nombre
+    }
+
+    ESPECIALIDAD {
+        integer id PK
+        text nombre UK
+        text[] codigo_prefijos
     }
 ```
 
@@ -310,4 +358,28 @@ Se ha desarrollado el script `tools/migracion/budget_migrator.py` que permite in
 > El sistema de visualización de la UI (`MetradosForm.tsx`) está sincronizado con esta arquitectura para mostrar el avance físico y financiero en tiempo real, incluyendo los metrados en curso antes de ser guardados.
 
 ---
-*Última Actualización: V21 - Marzo 2026 (Restructuración de Control Físico y Financiero con Meta Programada)*
+
+## Parte 12: Arquitectura Unificada (Metrados Normales vs Liquidaciones)
+
+### 12.1 Separación Lógica de Datos en Tablas Físicas Separadas
+
+Para evitar la duplicación de código en el Frontend y mantener los metrados completamente aislados por departamento, la aplicación utiliza una arquitectura de **Tabla Dinámica en Tiempo de Ejecución**:
+
+- **`metrados`**: Tabla estándar para el control diario de avance de obra.
+- **`metrados_liquidaciones`**: Tabla con la misma estructura (sin la vinculación `metrados_personal`), pero aislada para uso exclusivo del departamento de Liquidaciones.
+
+### 12.2 Multiplexación Dinámica (Frontend / Zustand)
+
+El store principal (`useMetradosStore`) determina de forma transparente hacia qué tabla dirigir todos los comandos CRUD (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) basándose en el perfil de usuario validado por `useAuthStore.isLiquidaciones()`.
+
+- Si el usuario tiene `"LIQUIDACIONES"` en su `area` de `ecosistema_usuarios`: El store redirige automáticamente todas las peticiones a `metrados_liquidaciones`.
+- Si es un usuario regular: Sus acciones se dirigen a `metrados`.
+- **Beneficio**: Las mejoras al componente visual (`PlanillaMetrados`, `MetradosTable`, filtros) se programan una sola vez y aplican a ambos grupos de trabajo, ahorrando el 50% del esfuerzo de mantenimiento de código.
+
+### 12.3 Row-Level Security (RLS) en Liquidaciones
+
+Al igual que en la tabla `metrados`, la seguridad se gestiona primariamente desde la capa de la aplicación (UI) a través del archivo `useAuthStore.ts` de forma que los usuarios con permisos de edición de Liquidación puedan realizar un CRUD completo sobre la tabla `metrados_liquidaciones` usando los clientes de tipo *anon* en el Frontend. 
+- Para evitar que supabase bloquee las inserciones a causa de activaciones RLS por defecto, se define el estado de `metrados_liquidaciones` con `ALTER TABLE ... DISABLE ROW LEVEL SECURITY` u otorgando accesos explícitos GRANT a roles como public/anon. 
+
+---
+*Última Actualización: V25 - Abril 2026 (Inclusión de Tablas de Mapeo de Insumos e Inventario)*

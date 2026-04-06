@@ -1,0 +1,687 @@
+﻿diff --git a/src/App.tsx b/src/App.tsx
+index ee4f9ce..c207bcb 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,10 +1,9 @@
+ import { useState, useEffect } from 'react';
+ import { MetradosForm } from './components/MetradosForm';
+ import { MetradosTable } from './components/MetradosTable';
+-import { LiquidacionesView } from './components/LiquidacionesView';
+ import { useMetradosForm } from './hooks/useMetradosForm';
+ import type { Metrado, Partida } from './types';
+-import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon, DollarSign } from 'lucide-react';
++import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon } from 'lucide-react';
+ import { useMetradosStore } from './store/useMetradosStore';
+ import { usePersonalStore } from './store/usePersonalStore';
+ import { useAuthStore } from './store/useAuthStore';
+@@ -19,24 +18,16 @@ function App() {
+   const { state, actions } = useMetradosForm();
+   const { metrados, context, setContext, addMetrado, updateMetrado, deleteMetrado, updateGroup, fetchCustomPartidas, fetchMetrados, fetchCatalogoMaestro } = useMetradosStore();
+   const { fetchPersonal } = usePersonalStore();
+-  const { isAuthenticated, user, logout, checkAuth, isLiquidaciones } = useAuthStore();
++  const { isAuthenticated, user, logout, checkAuth } = useAuthStore();
+   
+   const [toast, setToast] = useState<string | null>(null);
+   const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
+-  const [activeTab, setActiveTab] = useState<'general' | 'liquidaciones'>('general');
+ 
+   // Verificar autenticaci├│n al montar
+   useEffect(() => {
+     checkAuth();
+   }, [checkAuth]);
+ 
+-  // Si es usuario de liquidaciones, mostrar autom├íticamente ese tab
+-  useEffect(() => {
+-    if (isAuthenticated && isLiquidaciones()) {
+-      setActiveTab('liquidaciones');
+-    }
+-  }, [isAuthenticated, isLiquidaciones]);
+-
+   // Cargar datos iniciales solo si est├í autenticado
+   useEffect(() => {
+     if (isAuthenticated) {
+@@ -118,11 +109,6 @@ function App() {
+     return <Login />;
+   }
+ 
+-  // Si es usuario de liquidaciones y est├í en ese tab, mostrar vista privada de liquidaciones
+-  if (isLiquidaciones() && activeTab === 'liquidaciones') {
+-    return <LiquidacionesView onLogout={() => logout()} />;
+-  }
+-
+   // Filtra los metrados mostrados seg├║n el proyecto activo (Case-insensitive V30.1)
+   const metradosFiltrados = metrados.filter(m => {
+     if (!m.proyecto) return true;
+@@ -173,21 +159,6 @@ function App() {
+           </button>
+         </div>
+ 
+-        {/* ÔöÇÔöÇÔöÇ Bot├│n Liquidaciones (Solo para usuarios de Liquidaciones) ÔöÇÔöÇÔöÇ */}
+-        {isLiquidaciones() && (
+-          <button
+-            onClick={() => setActiveTab(activeTab === 'liquidaciones' ? 'general' : 'liquidaciones')}
+-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+-              activeTab === 'liquidaciones'
+-                ? 'bg-green-600 text-white shadow-lg shadow-green-600/30'
+-                : 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100'
+-            }`}
+-          >
+-            <DollarSign className="w-4 h-4" />
+-            <span className="hidden sm:inline">Liquidaciones</span>
+-          </button>
+-        )}
+-
+         <div className="flex items-center gap-2">
+           <button 
+             onClick={() => setShowPersonalDashboard(true)}
+diff --git a/src/components/LiquidacionesView.tsx b/src/components/LiquidacionesView.tsx
+deleted file mode 100644
+index 6b272ab..0000000
+--- a/src/components/LiquidacionesView.tsx
++++ /dev/null
+@@ -1,288 +0,0 @@
+-import { useState, useEffect, useMemo } from 'react';
+-import { MetradosForm } from './MetradosForm';
+-import { MetradosTable } from './MetradosTable';
+-import { DashboardPersonal } from './DashboardPersonal';
+-import { useMetradosForm } from '../hooks/useMetradosForm';
+-import type { Metrado, Partida } from '../types';
+-import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon, DollarSign } from 'lucide-react';
+-import { useMetradosStore } from '../store/useMetradosStore';
+-import { useLiquidacionesStore } from '../store/useLiquidacionesStore';
+-import { usePersonalStore } from '../store/usePersonalStore';
+-import { useAuthStore } from '../store/useAuthStore';
+-import { calcularParcial, calcularTotal } from '../utils/metradosCalculations';
+-
+-interface LiquidacionesViewProps {
+-    onLogout?: () => void;
+-}
+-
+-export const LiquidacionesView: React.FC<LiquidacionesViewProps> = ({ onLogout }) => {
+-    const { state, actions } = useMetradosForm();
+-    
+-    // Store de Liquidaciones (tabla separada: metrados_liquidaciones)
+-    const { metrados: metradosLiquidaciones, addMetrado: addLiquidacion, updateMetrado: updateLiquidacion, deleteMetrado: deleteLiquidacion, fetchMetrados: fetchLiquidaciones } = useLiquidacionesStore();
+-    
+-    // Store de Metrados (para acceder a cat├ílogos disponibles)
+-    const { fetchCatalogoMaestro, fetchCustomPartidas, context, setContext } = useMetradosStore();
+-    
+-    // Stores de contexto
+-    const { fetchPersonal } = usePersonalStore();
+-    const { user, logout } = useAuthStore();
+-    
+-    const [toast, setToast] = useState<string | null>(null);
+-    const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
+-
+-    // C├ílculos de resumen
+-    const stats = useMemo(() => {
+-        const total = metradosLiquidaciones.reduce((acc, m) => acc + (Number(m.total) || 0), 0);
+-        const uniquePartidas = new Set(metradosLiquidaciones.map(m => m.codigo_partida)).size;
+-        const lastUpdate = metradosLiquidaciones.length > 0 
+-            ? new Date(Math.max(...metradosLiquidaciones.map(m => new Date(m.created_at || m.fecha).getTime())))
+-            : null;
+-        
+-        return { total, uniquePartidas, lastUpdate };
+-    }, [metradosLiquidaciones]);
+-
+-    // Cargar datos iniciales
+-    useEffect(() => {
+-        fetchPersonal();
+-        fetchCatalogoMaestro();
+-        fetchCustomPartidas();
+-        // Cargar todos los metrados de liquidaciones (Modo Colaborativo)
+-        fetchLiquidaciones();
+-    }, [fetchPersonal, fetchCatalogoMaestro, fetchCustomPartidas, fetchLiquidaciones]);
+-
+-    const handleGuardar = async () => {
+-        try {
+-            const nuevo = actions.procesarRegistro();
+-            if (nuevo) {
+-                const nuevoConMetadata = { 
+-                    ...nuevo, 
+-                    proyecto: context.proyecto,
+-                    autor_usuario: user?.nombre_completo || 'Usuario Desconocido'
+-                };
+-                const result = await addLiquidacion(nuevoConMetadata);
+-                if (result.success) {
+-                    setToast(`Liquidaci├│n guardada: ${nuevo.codigo_partida}`);
+-                    alert(`┬íLiquidaci├│n Registrada!\n\nSe guard├│ correctamente la Partida: ${nuevo.codigo_partida}`);
+-                    setTimeout(() => setToast(null), 3000);
+-                    fetchLiquidaciones();
+-                } else {
+-                    alert("Error de guardado:\n\n" + result.error);
+-                }
+-            }
+-        } catch (err: any) {
+-            console.error("Error cr├¡tico al guardar:", err);
+-            alert("Error cr├¡tico inesperado:\n\n" + (err.message || String(err)));
+-        }
+-    };
+-
+-    const handleDeleteMetrado = (id: string) => {
+-        deleteLiquidacion(id);
+-        setToast('Registro eliminado exitosamente');
+-        setTimeout(() => setToast(null), 3000);
+-    };
+-
+-    const handleUpdateMetrado = (id: string, field: keyof Metrado, value: any) => {
+-        const metradoOriginal = metradosLiquidaciones.find(m => m.id === id);
+-        if (!metradoOriginal) return;
+-
+-        const final = { ...metradoOriginal, [field]: value };
+-        const calculusFields = ['cantidad', 'longitud_area', 'ancho_empalme', 'altura_gancho', 'nro_veces', 'diametro', 'hvac_factor'];
+-        
+-        if (calculusFields.includes(field as string)) {
+-            const p = calcularParcial({
+-                partida: { 
+-                    codigo: final.codigo_partida,
+-                    descripcion: final.descripcion_partida,
+-                    unidad: final.unidad 
+-                } as Partida,
+-                cantidad: final.cantidad,
+-                longitud: final.longitud_area,
+-                ancho: final.ancho_empalme,
+-                altura: final.altura_gancho,
+-                diametro: final.diametro,
+-                hvacFactor: final.hvac_factor,
+-                hvacItemType: final.hvac_item_type
+-            });
+-
+-            const t = calcularTotal(p, final.nro_veces);
+-
+-            updateLiquidacion(id, { [field]: value, parcial: p, total: t });
+-        } else {
+-            updateLiquidacion(id, { [field]: value });
+-        }
+-    };
+-
+-    const handleUpdateGroup = async (codigoPartida: string, oldElemento: string, newElemento: string) => {
+-        const toUpdate = metradosLiquidaciones.filter(
+-            m => m.codigo_partida === codigoPartida && m.elemento === oldElemento
+-        );
+-        
+-        for (const m of toUpdate) {
+-            await updateLiquidacion(m.id, { elemento: newElemento });
+-        }
+-        
+-        setToast(`Elemento actualizado: ${oldElemento} ÔåÆ ${newElemento}`);
+-        setTimeout(() => setToast(null), 3000);
+-    };
+-
+-    const handleLogout = () => {
+-        logout();
+-        if (onLogout) onLogout();
+-    };
+-
+-    return (
+-        <div className="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col gap-6 relative max-w-[1450px] mx-auto">
+-
+-            {/* Header */}
+-            <header className="flex flex-col md:flex-row items-center justify-between px-2 gap-4">
+-                <div className="flex items-center gap-3 w-full md:w-auto">
+-                    <div className="bg-green-600 text-white p-2.5 rounded-xl shadow-lg shadow-green-600/30">
+-                        <Building2 className="w-6 h-6" />
+-                    </div>
+-                    <div>
+-                        <h1 className="text-2xl font-bold bg-gradient-to-r from-green-900 to-green-600 bg-clip-text text-transparent leading-tight">
+-                            Liquidaciones Belempampa
+-                        </h1>
+-                        <div className="flex items-center gap-2 text-xs text-green-600 font-bold uppercase tracking-wider">
+-                            <UserIcon className="w-3 h-3" />
+-                            <span>{user?.nombre_completo} ({user?.cargo})</span>
+-                        </div>
+-                        <div className="mt-1 flex items-center gap-1.5">
+-                            <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+-                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tight">Ecosistema Colaborativo Activo</span>
+-                        </div>
+-                    </div>
+-                </div>
+-
+-                {/* ÔöÇÔöÇÔöÇ Selector de Especialidad (Proyecto) ÔöÇÔöÇÔöÇ */}
+-                <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner">
+-                <button
+-                    onClick={() => { setContext({ proyecto: 'hospital' }); actions.setPartidaSeleccionada(null); }}
+-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${context.proyecto === 'hospital'
+-                    ? 'bg-white text-blue-700 shadow-md border border-blue-100'
+-                    : 'text-slate-500 hover:text-slate-700'
+-                    }`}
+-                >
+-                    <Stethoscope className="w-4 h-4" />
+-                    Hospital
+-                </button>
+-                <button
+-                    onClick={() => { setContext({ proyecto: 'contingencia' }); actions.setPartidaSeleccionada(null); }}
+-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${context.proyecto === 'contingencia'
+-                    ? 'bg-white text-amber-600 shadow-md border border-amber-100'
+-                    : 'text-slate-500 hover:text-slate-700'
+-                    }`}
+-                >
+-                    <AlertTriangle className="w-4 h-4" />
+-                    Contingencia
+-                </button>
+-                </div>
+-
+-                <div className="flex items-center gap-2">
+-                    <button 
+-                        onClick={() => setShowPersonalDashboard(true)}
+-                        className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 flex items-center gap-2 rounded-xl text-sm font-bold shadow-md transition-all shadow-slate-900/20"
+-                    >
+-                        <Users className="w-4 h-4" />
+-                        <span className="hidden sm:inline">Personal</span>
+-                    </button>
+-                    
+-                    <button 
+-                        onClick={handleLogout}
+-                        className="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2.5 flex items-center gap-2 rounded-xl text-sm font-bold border border-red-100 transition-all active:scale-95"
+-                        title="Cerrar Sesi├│n"
+-                    >
+-                        <LogOut className="w-5 h-5" />
+-                    </button>
+-                </div>
+-            </header>
+-
+-            {/* Stats Cards */}
+-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-2">
+-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+-                    <div className="bg-green-100 text-green-600 p-3 rounded-xl">
+-                        <DollarSign className="w-6 h-6" />
+-                    </div>
+-                    <div>
+-                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Total Liquidado</p>
+-                        <p className="text-xl font-black text-slate-800">
+-                            S/ {new Intl.NumberFormat('es-PE', { minimumFractionDigits: 2 }).format(stats.total)}
+-                        </p>
+-                    </div>
+-                </div>
+-
+-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+-                    <div className="bg-blue-100 text-blue-600 p-3 rounded-xl">
+-                        <Users className="w-6 h-6" />
+-                    </div>
+-                    <div>
+-                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Partidas Alcanzadas</p>
+-                        <p className="text-xl font-black text-slate-800">{stats.uniquePartidas}</p>
+-                    </div>
+-                </div>
+-
+-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+-                    <div className="bg-purple-100 text-purple-600 p-3 rounded-xl">
+-                        <LogOut className="w-6 h-6 rotate-90" />
+-                    </div>
+-                    <div>
+-                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Avance Items</p>
+-                        <p className="text-xl font-black text-slate-800">{metradosLiquidaciones.length}</p>
+-                    </div>
+-                </div>
+-
+-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+-                    <div className="bg-orange-100 text-orange-600 p-3 rounded-xl cursor-help" title="Fecha del ├║ltimo registro guardado">
+-                        <Users className="w-6 h-6" />
+-                    </div>
+-                    <div>
+-                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">├Ültimo Reporte</p>
+-                        <p className="text-sm font-bold text-slate-800">
+-                            {stats.lastUpdate ? stats.lastUpdate.toLocaleDateString() : 'Sin registros'}
+-                        </p>
+-                    </div>
+-                </div>
+-            </div>
+-
+-            {/* Toast Notification */}
+-            {toast && (
+-                <div className="fixed top-6 right-6 z-50 animate-in slide-in-from-top-5 mt-2 bg-green-500 text-white px-4 py-3 rounded-lg shadow-xl font-medium flex items-center gap-2">
+-                    <span className="text-xl">Ô£¿</span> {toast}
+-                </div>
+-            )}
+-
+-            {/* Main Layout Grid */}
+-            <main className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[70vh]">
+-
+-                {/* Left Column: Form */}
+-                <div className="lg:col-span-4 xl:col-span-3">
+-                    <MetradosForm
+-                        state={state}
+-                        actions={actions}
+-                        onGuardar={handleGuardar}
+-                        proyecto={context.proyecto}
+-                    />
+-                </div>
+-
+-                {/* Right Column: Table History */}
+-                <div className="lg:col-span-8 xl:col-span-9 flex flex-col">
+-                    <MetradosTable
+-                        metrados={metradosLiquidaciones}
+-                        onUpdate={handleUpdateMetrado}
+-                        onGroupUpdate={handleUpdateGroup}
+-                        onDelete={handleDeleteMetrado}
+-                        proyecto={context.proyecto}
+-                        especialidadSeleccionada={state.especialidadSeleccionada}
+-                        onEspecialidadChange={actions.setEspecialidadSeleccionada}
+-                        isSpecialtyLocked={state.isSpecialtyLocked}
+-                    />
+-                </div>
+-            </main>
+-
+-            {showPersonalDashboard && (
+-                <DashboardPersonal onClose={() => setShowPersonalDashboard(false)} />
+-            )}
+-        </div>
+-    );
+-};
+diff --git a/src/store/useLiquidacionesStore.ts b/src/store/useLiquidacionesStore.ts
+deleted file mode 100644
+index f3066ee..0000000
+--- a/src/store/useLiquidacionesStore.ts
++++ /dev/null
+@@ -1,164 +0,0 @@
+-import { create } from 'zustand';
+-import { persist } from 'zustand/middleware';
+-import { Metrado } from '../types';
+-import { supabase } from '../lib/supabase';
+-
+-interface LiquidacionesState {
+-    metrados: Metrado[];
+-    
+-    // Acciones
+-    fetchMetrados: (autorUsuario?: string) => Promise<void>;
+-    addMetrado: (metrado: Omit<Metrado, 'id' | 'created_at'>) => Promise<{ success: boolean; error?: string }>;
+-    updateMetrado: (id: string, payload: Partial<Metrado>) => Promise<void>;
+-    deleteMetrado: (id: string) => Promise<void>;
+-    clearAll: () => void;
+-}
+-
+-export const useLiquidacionesStore = create<LiquidacionesState>()(
+-    persist(
+-        (set) => ({
+-            metrados: [],
+-
+-            fetchMetrados: async (autorUsuario?: string) => {
+-                try {
+-                    let query = supabase
+-                        .from('metrados_liquidaciones')
+-                        .select('*')
+-                        .order('fecha', { ascending: false });
+-
+-                    // Filtrar por usuario si se proporciona
+-                    if (autorUsuario) {
+-                        query = query.eq('autor_usuario', autorUsuario);
+-                    }
+-
+-                    const { data, error } = await query;
+-
+-                    if (error) throw error;
+-                    set({ metrados: (data as any[]) || [] });
+-                } catch (err) {
+-                    console.error('[LiquidacionesStore] Error fetching metrados:', err);
+-                    set({ metrados: [] });
+-                }
+-            },
+-
+-            addMetrado: async (metrado) => {
+-                try {
+-                    // Resolver partida_id si viene vac├¡o
+-                    let resolvedPartidaId = metrado.partida_id;
+-                    
+-                    const isUUID = (id: any) => {
+-                        if (typeof id !== 'string') return false;
+-                        return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id) ||
+-                               /^[0-9a-f]{32}$/i.test(id);
+-                    };
+-
+-                    if (resolvedPartidaId && !isUUID(resolvedPartidaId)) {
+-                        resolvedPartidaId = undefined;
+-                    }
+-
+-                    // Si no tiene ID, intentar buscar por c├│digo en cat├ílogo_partidas
+-                    if (!resolvedPartidaId && !metrado.custom_partida_id) {
+-                        const { data: catData } = await (supabase.from('catalogo_partidas') as any)
+-                            .select('id')
+-                            .eq('codigo', metrado.codigo_partida)
+-                            .maybeSingle();
+-                        
+-                        if (catData) resolvedPartidaId = catData.id;
+-                    }
+-
+-                    const payloadToInsert = {
+-                        fecha: metrado.fecha,
+-                        frente: metrado.frente,
+-                        bloque: metrado.bloque,
+-                        nivel: metrado.nivel,
+-                        cuadrilla: metrado.cuadrilla,
+-                        partida_id: resolvedPartidaId || null,
+-                        custom_partida_id: metrado.custom_partida_id || null,
+-                        codigo_partida: metrado.codigo_partida,
+-                        descripcion_partida: metrado.descripcion_partida,
+-                        unidad: metrado.unidad,
+-                        proyecto: metrado.proyecto || 'hospital',
+-                        elemento: metrado.elemento,
+-                        detalle: metrado.detalle,
+-                        diametro: metrado.diametro,
+-                        cantidad: typeof metrado.cantidad === 'number' ? metrado.cantidad : null,
+-                        longitud_area: typeof metrado.longitud_area === 'number' ? metrado.longitud_area : null,
+-                        ancho_empalme: typeof metrado.ancho_empalme === 'number' ? metrado.ancho_empalme : null,
+-                        altura_gancho: typeof metrado.altura_gancho === 'number' ? metrado.altura_gancho : null,
+-                        parcial: metrado.parcial,
+-                        nro_veces: typeof metrado.nro_veces === 'number' ? metrado.nro_veces : null,
+-                        total: metrado.total,
+-                        autor_usuario: metrado.autor_usuario,
+-                        especialidad: metrado.especialidad,
+-                        hvac_factor: metrado.hvac_factor,
+-                        hvac_item_type: metrado.hvac_item_type,
+-                    };
+-
+-                    const { data: insertData, error: insertError } = await (supabase.from('metrados_liquidaciones') as any)
+-                        .insert([payloadToInsert])
+-                        .select()
+-                        .single();
+-
+-                    if (insertError) {
+-                        console.error('[LiquidacionesStore] Insert error:', insertError);
+-                        return { success: false, error: insertError.message };
+-                    }
+-
+-                    // Actualizar estado local
+-                    set((state) => ({
+-                        metrados: [insertData, ...state.metrados]
+-                    }));
+-
+-                    return { success: true };
+-                } catch (err: any) {
+-                    console.error('[LiquidacionesStore] Error adding metrado:', err);
+-                    return { success: false, error: err.message };
+-                }
+-            },
+-
+-            updateMetrado: async (id, payload) => {
+-                try {
+-                    const { error } = await (supabase.from('metrados_liquidaciones') as any)
+-                        .update(payload)
+-                        .eq('id', id);
+-
+-                    if (error) throw error;
+-
+-                    // Actualizar estado local
+-                    set((state) => ({
+-                        metrados: state.metrados.map((m) =>
+-                            m.id === id ? { ...m, ...payload } : m
+-                        )
+-                    }));
+-                } catch (err) {
+-                    console.error('[LiquidacionesStore] Error updating metrado:', err);
+-                }
+-            },
+-
+-            deleteMetrado: async (id) => {
+-                try {
+-                    const { error } = await (supabase.from('metrados_liquidaciones') as any)
+-                        .delete()
+-                        .eq('id', id);
+-
+-                    if (error) throw error;
+-
+-                    // Actualizar estado local
+-                    set((state) => ({
+-                        metrados: state.metrados.filter((m) => m.id !== id)
+-                    }));
+-                } catch (err) {
+-                    console.error('[LiquidacionesStore] Error deleting metrado:', err);
+-                }
+-            },
+-
+-            clearAll: () => {
+-                set({ metrados: [] });
+-            }
+-        }),
+-        {
+-            name: 'liquidaciones-storage',
+-            partialize: () => ({}), // No persistir los datos masivos, solo el estado vac├¡o o preferencias futuras
+-        }
+-    )
+-);
+diff --git a/src/store/useMetradosStore.ts b/src/store/useMetradosStore.ts
+index 90cb5b1..09d6955 100644
+--- a/src/store/useMetradosStore.ts
++++ b/src/store/useMetradosStore.ts
+@@ -6,6 +6,7 @@ import { mockPartidas } from '../data/mockDB_1';
+ import { mockPartidasContingencia } from '../data/mockDB_contingencia';
+ import { usePersonalStore } from './usePersonalStore';
+ import { getEspecialidadPorCodigo } from '../constants/especialidades';
++import { useAuthStore } from './useAuthStore';
+ 
+ interface MetradosContext {
+     frente: string;
+@@ -143,7 +144,10 @@ export const useMetradosStore = create<MetradosState>()(
+                     };
+ 
+                     // 1. Insertamos el Metrado (V8.1.3: Nombres ├║nicos para evitar red├®clarations)
+-                    const { data: insertData, error: insertError } = await (supabase.from('metrados') as any).insert([payloadToInsert]).select().single();
++                    const isLiq = useAuthStore.getState().isLiquidaciones();
++                    const tableName = isLiq ? 'metrados_liquidaciones' : 'metrados';
++                    
++                    const { data: insertData, error: insertError } = await (supabase.from(tableName) as any).insert([payloadToInsert]).select().single();
+ 
+                     // V8.1: Reintento Agresivo. Si falla por FK, intentar insertar sin IDs (solo data denormalizada)
+                     if (insertError && insertError.code === '23503') {
+@@ -151,7 +155,7 @@ export const useMetradosStore = create<MetradosState>()(
+                         const fallbackPayload = { ...payloadToInsert };
+                         delete (fallbackPayload as any).partida_id;
+                         delete (fallbackPayload as any).custom_partida_id;
+-                        const { error: retryError } = await (supabase.from('metrados') as any).insert([fallbackPayload]).select().single();
++                        const { error: retryError } = await (supabase.from(tableName) as any).insert([fallbackPayload]).select().single();
+                         if (!retryError) return { success: true }; 
+                     }
+ 
+@@ -162,15 +166,18 @@ export const useMetradosStore = create<MetradosState>()(
+ 
+                     // 2. Vinculaci├│n Many-to-Many de Cuadrilla (Personal)
+                     // V7.2.3: Filtrar solo IDs que sean UUIDs v├ílidos para evitar errores de integridad con personal local (mock)
+-                    const validObrerosIds = (metrado.obreros_ids || []).filter(id => isUUID(id));
+-
+-                    if (validObrerosIds.length > 0) {
+-                        const personalLinks = validObrerosIds.map((id: string) => ({
+-                            metrado_id: (insertData as any).id,
+-                            personal_id: id
+-                        }));
+-                        const { error: errorLinks } = await (supabase.from('metrados_personal') as any).insert(personalLinks as any);
+-                        if (errorLinks) console.error('Error bindeando personal a metrado (FK Error):', errorLinks);
++                    // (Solo aplica para metrados normales, liquidaciones no usa vinculaci├│n de personal)
++                    if (!isLiq) {
++                        const validObrerosIds = (metrado.obreros_ids || []).filter(id => isUUID(id));
++
++                        if (validObrerosIds.length > 0) {
++                            const personalLinks = validObrerosIds.map((id: string) => ({
++                                metrado_id: (insertData as any).id,
++                                personal_id: id
++                            }));
++                            const { error: errorLinks } = await (supabase.from('metrados_personal') as any).insert(personalLinks as any);
++                            if (errorLinks) console.error('Error bindeando personal a metrado (FK Error):', errorLinks);
++                        }
+                     }
+ 
+                     const dbMetrado: Metrado = { 
+@@ -196,9 +203,13 @@ export const useMetradosStore = create<MetradosState>()(
+                     let hasMore = true;
+ 
+                     while (hasMore) {
++                        const isLiq = useAuthStore.getState().isLiquidaciones();
++                        const tableName = isLiq ? 'metrados_liquidaciones' : 'metrados';
++                        const selectQuery = isLiq ? '*' : '*, metrados_personal(personal(*))';
++
+                         const { data, error } = await supabase
+-                            .from('metrados')
+-                            .select('*, metrados_personal(personal(*))')
++                            .from(tableName)
++                            .select(selectQuery)
+                             .order('fecha', { ascending: false })
+                             .range(from, from + step - 1) as any;
+                         
+@@ -213,20 +224,27 @@ export const useMetradosStore = create<MetradosState>()(
+                         }
+                     }
+ 
++                    const isLiq = useAuthStore.getState().isLiquidaciones();
++
+                     const fetchedMetrados: Metrado[] = allMetrados.map((dbRow: any) => {
+-                        let personalList = (dbRow.metrados_personal || [])
+-                            .map((rel: any) => rel.personal)
+-                            .filter(Boolean);
+-                        
+-                        if (personalList.length === 0 && dbRow.cuadrilla) {
+-                            const allPersonal = usePersonalStore.getState().personal;
+-                            personalList = allPersonal.filter((p: any) => p.cuadrilla?.toUpperCase() === dbRow.cuadrilla.toUpperCase());
+-                        }
++                        let formattedCuadrilla = undefined;
++                        let obrerosIds: string[] = [];
++
++                        if (!isLiq) {
++                            let personalList = (dbRow.metrados_personal || [])
++                                .map((rel: any) => rel.personal)
++                                .filter(Boolean);
++                            
++                            if (personalList.length === 0 && dbRow.cuadrilla) {
++                                const allPersonal = usePersonalStore.getState().personal;
++                                personalList = allPersonal.filter((p: any) => p.cuadrilla?.toUpperCase() === dbRow.cuadrilla.toUpperCase());
++                            }
+ 
+-                        const obrerosIds = personalList.map((p: any) => p.id);
+-                        const formattedCuadrilla = personalList
+-                            .map((p: any) => p.categoria ? `${p.nombre_formateado} (${p.categoria})` : p.nombre_formateado)
+-                            .join(' / ');
++                            obrerosIds = personalList.map((p: any) => p.id);
++                            formattedCuadrilla = personalList
++                                .map((p: any) => p.categoria ? `${p.nombre_formateado} (${p.categoria})` : p.nombre_formateado)
++                                .join(' / ');
++                        }
+ 
+                         return {
+                             id: dbRow.id,
+@@ -285,7 +303,8 @@ export const useMetradosStore = create<MetradosState>()(
+                 if ((dbPayload as any).partida_id && !isUUID((dbPayload as any).partida_id)) delete (dbPayload as any).partida_id;
+                 if ((dbPayload as any).custom_partida_id && !isUUID((dbPayload as any).custom_partida_id)) delete (dbPayload as any).custom_partida_id;
+ 
+-                const { error } = await (supabase.from('metrados') as any).update(dbPayload as any).eq('id', id);
++                const tableName = useAuthStore.getState().isLiquidaciones() ? 'metrados_liquidaciones' : 'metrados';
++                const { error } = await (supabase.from(tableName) as any).update(dbPayload as any).eq('id', id);
+                 if (error) console.error('Error Supabase Update Metrado:', error);
+             },
+ 
+@@ -293,7 +312,8 @@ export const useMetradosStore = create<MetradosState>()(
+                 set((state) => ({
+                     metrados: state.metrados.filter((m) => m.id !== id),
+                 }));
+-                const { error } = await (supabase.from('metrados') as any).delete().eq('id', id);
++                const tableName = useAuthStore.getState().isLiquidaciones() ? 'metrados_liquidaciones' : 'metrados';
++                const { error } = await (supabase.from(tableName) as any).delete().eq('id', id);
+                 if (error) console.error('Error Supabase Delete Metrado:', error);
+             },
+ 
+@@ -305,7 +325,8 @@ export const useMetradosStore = create<MetradosState>()(
+                             : m
+                     ),
+                 }));
+-                const { error } = await (supabase.from('metrados') as any)
++                const tableName = useAuthStore.getState().isLiquidaciones() ? 'metrados_liquidaciones' : 'metrados';
++                const { error } = await (supabase.from(tableName) as any)
+                     .update({ elemento: new_elemento } as any)
+                     .eq('codigo_partida', codigo_partida)
+                     .match({ elemento: old_elemento });
