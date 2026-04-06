@@ -86,16 +86,9 @@ export const getAvailableAuthorsImproved = (
         
         systemUsers.forEach(u => {
             const uSpec = normalizeSpecialty(u.especialidad || '');
-            // Identificamos quiénes pertenecen legítimamente a este sector
-            // o quiénes tienen acceso jerárquico/global
-            if (
-                uSpec === targetSpec || 
-                uSpec === 'GENERAL' || 
-                uSpec === 'SUPERVISOR' || 
-                uSpec === 'ADMIN' || 
-                uSpec === 'TODAS' || 
-                (u.roles_apps?.metrados === 'ADMIN')
-            ) {
+            // REGLA ESTRICTA (DNI/Sector): Sólo consideramos válidos a los usuarios que EXPRESAMENTE tienen asignada la misma especialidad en su perfil de la BD. 
+            // Eliminamos todos los bypasses de ADMIN/Supervisor porque causa que se "cuelen" si alguna vez subieron algo.
+            if (uSpec === targetSpec) {
                 if (u.nombre_completo) {
                     validSectorAuthors.add(normalizeAuthorName(u.nombre_completo));
                 }
@@ -104,7 +97,6 @@ export const getAvailableAuthorsImproved = (
 
         // Intersectamos: sólo mostramos usuarios que TIENEN registros en la tabla
         // Y que ADEMÁS pertenecen oficialmente a este sector.
-        // Esto elimina "infiltrados" (ej. un Arquitecto que por error tiene un metrado acá)
         const strictValidatedAuthors = Array.from(authorSet).filter(a => validSectorAuthors.has(a));
         return strictValidatedAuthors.sort();
     }
