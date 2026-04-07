@@ -1,6 +1,6 @@
 export const ESPECIALIDADES_PARTIDA = [
     { nombre: 'TODAS', prefijos: ['OE'] },
-    { nombre: 'OBRAS PROVISIONALES', prefijos: ['OE.1', 'OE.1.1'] },
+    { nombre: 'OBRAS PROVISIONALES', prefijos: ['OE.1.1'] },        // Solo OE.1.1 - NO incluir 'OE.1' (causaría que OE.1.2 SEGURIDAD y OE.1.3+ ARQUEOLOGÍA sean Obras Provisionales)
     { nombre: 'SEGURIDAD', prefijos: ['OE.1.2'] },
     { nombre: 'ARQUEOLOGÍA', prefijos: ['OE.1.3', 'OE.1.4', 'OE.1.5', 'OE.1.6'] },
     { nombre: 'ESTRUCTURAS', prefijos: ['OE.2'] },
@@ -24,10 +24,9 @@ export const getEspecialidadPorCodigo = (codigo: string): string => {
     for (const esp of ESPECIALIDADES_PARTIDA) {
         if (esp.nombre === 'TODAS') continue;
         for (const prefijo of esp.prefijos) {
-            // Un match es válido si el código es IDÉNTICO al prefijo, 
-            // o si el código COMIENZA con el prefijo seguido de un punto (hijo).
-            // O si el prefijo es muy corto (menos de 4 char) y coincide al inicio.
-            if (cod === prefijo || cod.startsWith(prefijo + '.') || (prefijo.length <= 4 && cod.startsWith(prefijo))) {
+            // Match seguro: el código es IDÉNTICO al prefijo
+            // O empieza por el prefijo SEGUIDO DE UN PUNTO (garantiza que OE.1.1 no matchee OE.1.2)
+            if (cod === prefijo || cod.startsWith(prefijo + '.')) {
                 if (prefijo.length > bestMatch.length) {
                     bestMatch = { nombre: esp.nombre, length: prefijo.length };
                 }

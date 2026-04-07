@@ -27,7 +27,8 @@ export const getEspecialidadPorCodigo = (codigo: string): string => {
             // Un match es válido si el código es IDÉNTICO al prefijo, 
             // o si el código COMIENZA con el prefijo seguido de un punto (hijo).
             // O si el prefijo es muy corto (menos de 4 char) y coincide al inicio.
-            if (cleanCode === rangeUpper || cleanCode.startsWith(rangeUpper + '.') || (rangeUpper.length <= 4 && cleanCode.startsWith(rangeUpper))) {
+            // Match seguro: idéntico al prefijo O empieza con prefijo + '.' (evita que OE.1 matchee OE.1.2)
+            if (cleanCode === rangeUpper || cleanCode.startsWith(rangeUpper + '.')) {
                 if (rangeUpper.length > bestMatch.length) {
                     bestMatch = { id: rule.id, length: rangeUpper.length };
                 }
@@ -61,11 +62,38 @@ export const getAvailableAuthorsImproved = (
 ): string[] => {
     let filtered = metrados;
     
-    // Aplicar filtro de especialidad si existe y NO es TODAS
+    // Si hay especialidad (no TODAS) y tenemos usuarios del sistema, primero armamos el Set de validos 
+    let validSectorAuthors = new Set<string>();
+    let useStrictAuthorFiltering = false;
+
+    if (systemUsers.length > 0 && especialidad && especialidad !== 'TODAS') {
+        useStrictAuthorFiltering = true;
+        const targetSpec = normalizeSpecialty(especialidad);
+        
+        systemUsers.forEach(u => {
+            const uSpec = normalizeSpecialty(u.especialidad || '');
+            if (uSpec === targetSpec && u.nombre_completo) {
+                validSectorAuthors.add(normalizeAuthorName(u.nombre_completo));
+            }
+        });
+    }
+    
+    // Aplicar filtro de especialidad
     if (especialidad && especialidad !== 'TODAS') {
-        filtered = filtered.filter(m => 
-            isMetradoOfSpecialtyImproved(m, especialidad, catalogoActivo || [], getEspecialidadPorCodigoFn, debug)
-        );
+        filtered = filtered.filter(m => {
+            // (1) Filtro original
+            const isMatch = isMetradoOfSpecialtyImproved(m, especialidad, catalogoActivo || [], getEspecialidadPorCodigoFn, debug);
+            // (2) NUEVO BLINDAJE INQUEBRANTABLE (A pedido del usuario): 
+            // Si el metrado dice ser de la especialidad X, pero el AUTOR no es de la especialidad X en la DB oficial, LO DESCARTAMOS ABSOLUTAMENTE.
+            if (isMatch && useStrictAuthorFiltering && m.autor_usuario) {
+                const normAuthor = normalizeAuthorName(m.autor_usuario);
+                if (!validSectorAuthors.has(normAuthor)) {
+                    if (debug) console.log(`      ⛔ BLOQUEADO POR DNI/SECTOR: ${m.autor_usuario} no pertenece a ${especialidad}`);
+                    return false;
+                }
+            }
+            return isMatch;
+        });
     }
 
     // Deduplicar autores (usando Set)
@@ -79,29 +107,6 @@ export const getAvailableAuthorsImproved = (
         }
     });
 
-    // Filtro adicional rígido: si tenemos lista de usuarios del sistema oficial (ecosistema_usuarios)
-    if (systemUsers.length > 0 && especialidad && especialidad !== 'TODAS') {
-        const targetSpec = normalizeSpecialty(especialidad);
-        const validSectorAuthors = new Set<string>();
-        
-        systemUsers.forEach(u => {
-            const uSpec = normalizeSpecialty(u.especialidad || '');
-            // REGLA ESTRICTA (DNI/Sector): Sólo consideramos válidos a los usuarios que EXPRESAMENTE tienen asignada la misma especialidad en su perfil de la BD. 
-            // Eliminamos todos los bypasses de ADMIN/Supervisor porque causa que se "cuelen" si alguna vez subieron algo.
-            if (uSpec === targetSpec) {
-                if (u.nombre_completo) {
-                    validSectorAuthors.add(normalizeAuthorName(u.nombre_completo));
-                }
-            }
-        });
-
-        // Intersectamos: sólo mostramos usuarios que TIENEN registros en la tabla
-        // Y que ADEMÁS pertenecen oficialmente a este sector.
-        const strictValidatedAuthors = Array.from(authorSet).filter(a => validSectorAuthors.has(a));
-        return strictValidatedAuthors.sort();
-    }
-
-    // Retornar como array ordenado (comportamiento legacy si no hay systemUsers)
     return Array.from(authorSet).sort();
 };
 
@@ -191,17 +196,20 @@ export const isMetradoOfSpecialtyImproved = (
         return true;
     }
 
-    // NIVEL 1: Verificar especialidad grabada directamente en metrado
-    const metradoSpecValue = (metrado.especialidad || '').toString().trim();
-    if (metradoSpecValue && isValidSpecialty(metradoSpecValue)) {
-        const metradoSpec = normalizeSpecialty(metradoSpecValue);
-        const matches = metradoSpec === targetSpecialty;
-        if (debug && matches) console.log(`      ✅ Match Nivel 1 (Directo): ${metradoSpec} === ${targetSpecialty}`);
-        return matches;
+    // NIVEL 1: Deducción Inamovible por Prefijo de Código (OE.1, OE.2, etc.)
+    // Esta es la fuente de verdad matemática. Un OE.1 JAMÁS puede ser SEGURIDAD.
+    if (getEspecialidadPorCodigoFn && metrado.codigo_partida) {
+        const deducedSpec = getEspecialidadPorCodigoFn(metrado.codigo_partida);
+        if (deducedSpec && isValidSpecialty(deducedSpec)) {
+            const deducedNormalized = normalizeSpecialty(deducedSpec);
+            const matches = deducedNormalized === targetSpecialty;
+            if (debug && matches) console.log(`      ✅ Match Nivel 1 (Matemático Código ${metrado.codigo_partida} -> ${deducedNormalized})`);
+            return matches;
+        }
     }
 
-    // NIVEL 2: Buscar especialidad en partida del catálogo
-    // Solo si el metrado tiene algún ID de vinculación válido
+    // NIVEL 2: Buscar especialidad en la Partida vinculada (Catálogo o Personalizadas)
+    // El usuario indicó: "y en la columna especialidad se clasifican por especialidad"
     if (metrado.partida_id || metrado.custom_partida_id) {
         const linkedPartida = catalogoActivo.find(p => {
             if (metrado.partida_id && p.id === metrado.partida_id) return true;
@@ -217,15 +225,14 @@ export const isMetradoOfSpecialtyImproved = (
         }
     }
 
-    // NIVEL 3: Fallback mediante deducción de código
-    if (getEspecialidadPorCodigoFn) {
-        const deducedSpec = getEspecialidadPorCodigoFn(metrado.codigo_partida);
-        if (deducedSpec && isValidSpecialty(deducedSpec)) {
-            const deducedNormalized = normalizeSpecialty(deducedSpec);
-            const matches = deducedNormalized === targetSpecialty;
-            if (debug && matches) console.log(`      ✅ Match Nivel 3 (Código ${metrado.codigo_partida} -> ${deducedNormalized})`);
-            return matches;
-        }
+    // NIVEL 3: Verificar especialidad grabada en el metrado como ÚLTIMO RECURSO
+    // (Esto está al final porque registros antiguos tienen este campo corrupto/heredado)
+    const metradoSpecValue = (metrado.especialidad || '').toString().trim();
+    if (metradoSpecValue && isValidSpecialty(metradoSpecValue)) {
+        const metradoSpec = normalizeSpecialty(metradoSpecValue);
+        const matches = metradoSpec === targetSpecialty;
+        if (debug && matches) console.log(`      ✅ Match Nivel 3 (Directo de BD, posible arrastre): ${metradoSpec} === ${targetSpecialty}`);
+        return matches;
     }
 
     if (debug) console.log(`      ❌ No match para ${metrado.id} en ${targetSpecialty}`);
@@ -368,15 +375,50 @@ export const applyAllFilters = (
     // 2️⃣ SEGUNDO: Filtro de especialidad (reduce significativamente)
     if (filters.especialidad && filters.especialidad !== 'TODAS') {
         const before = result.length;
-        result = result.filter(m => 
-            isMetradoOfSpecialtyImproved(
+        
+        // Determinar usuarios oficiales de esta especialidad para bloqueo total
+        let validSectorAuthors = new Set<string>();
+        let enforceAuthorSector = false;
+        
+        // Usamos useSystemUsersStore de manera segura para extraer los usuarios del sistema aquí si es la tabla principal
+        try {
+            // Nota: importando el store dinámicamente o asumiendo que catalogoActivo es suficientemente representativo.
+            // Para blindar totalmente The applyAllFilters usamos el store directamente (lo importamos temporalmente o chequeamos estado)
+            if (window && (window as any).__systemUsersCache) {
+                const sysUsers = (window as any).__systemUsersCache;
+                if (sysUsers && sysUsers.length > 0) {
+                     enforceAuthorSector = true;
+                     const targetSpec = normalizeSpecialty(filters.especialidad);
+                     sysUsers.forEach((u: any) => {
+                         if (normalizeSpecialty(u.especialidad || '') === targetSpec && u.nombre_completo) {
+                             validSectorAuthors.add(normalizeAuthorName(u.nombre_completo));
+                         }
+                     });
+                }
+            }
+        } catch (e) {
+            // Silencioso
+        }
+
+        result = result.filter(m => {
+            const passesSpec = isMetradoOfSpecialtyImproved(
                 m, 
                 filters.especialidad!, 
                 catalogoActivo, 
                 getEspecialidadPorCodigoFn,
                 debug
-            )
-        );
+            );
+            
+            // NUEVO BLINDAJE INQUEBRANTABLE (A pedido del usuario): 
+            if (passesSpec && enforceAuthorSector && m.autor_usuario) {
+               const normAuthor = normalizeAuthorName(m.autor_usuario);
+               if (!validSectorAuthors.has(normAuthor)) {
+                   return false; // Bloqueado estrictamente porque el DNI/Sector de ecosistema_usuarios no coincide!
+               }
+            }
+            
+            return passesSpec;
+        });
         results['especialidad'] = result.length;
         if (debug) {
             console.log(`   🏗️  Especialidad (${filters.especialidad}): ${before} → ${result.length}`);

@@ -158,9 +158,7 @@ export const useMetradosForm = () => {
             tipo_metrado: partidaSeleccionada.tipo_metrado,
             hvac_factor: hvacFactor,
             hvac_item_type: hvacItemType,
-            especialidad: (especialidadSeleccionada && especialidadSeleccionada !== 'TODAS') 
-                ? especialidadSeleccionada 
-                : getEspecialidadPorCodigo(partidaSeleccionada.codigo),
+            especialidad: partidaSeleccionada.especialidad || getEspecialidadPorCodigo(partidaSeleccionada.codigo),
             autor_usuario: user?.nombre_completo || "UserWeb",
             created_at: new Date().toISOString(),
         };

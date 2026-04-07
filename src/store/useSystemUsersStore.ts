@@ -19,6 +19,10 @@ export const useSystemUsersStore = create<SystemUsersState>()((set) => ({
             
         if (!error && data) {
             set({ systemUsers: data as User[] });
+            if (typeof window !== 'undefined') {
+                (window as any).__systemUsersCache = data;
+            }
         }
     }
 }));
+

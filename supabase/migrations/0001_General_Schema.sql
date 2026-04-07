@@ -36,7 +36,7 @@ CREATE TABLE public.ecosistema_usuarios (
   id uuid NOT NULL DEFAULT uuid_generate_v4(),
   dni_username text NOT NULL UNIQUE,
   password text NOT NULL,
-  nombre_completo text NOT NULL,
+  nombre_completo text NOT NULL UNIQUE,
   correo text,
   area text,
   cargo text,
@@ -44,7 +44,8 @@ CREATE TABLE public.ecosistema_usuarios (
   roles_apps jsonb DEFAULT '{}'::jsonb,
   created_at timestamp with time zone DEFAULT now(),
   last_login timestamp with time zone,
-  CONSTRAINT ecosistema_usuarios_pkey PRIMARY KEY (id)
+  CONSTRAINT ecosistema_usuarios_pkey PRIMARY KEY (id),
+  CONSTRAINT fk_usuarios_especialidad FOREIGN KEY (especialidad) REFERENCES public.especialidad(nombre)
 );
 CREATE TABLE public.especialidad (
   id integer GENERATED ALWAYS AS IDENTITY NOT NULL,
@@ -130,7 +131,9 @@ CREATE TABLE public.metrados (
   CONSTRAINT metrados_pkey PRIMARY KEY (id),
   CONSTRAINT metrados_partida_id_fkey FOREIGN KEY (partida_id) REFERENCES public.catalogo_partidas(id),
   CONSTRAINT metrados_custom_partida_id_fkey FOREIGN KEY (custom_partida_id) REFERENCES public.partidas_personalizadas(id),
-  CONSTRAINT metrados_hvac_item_id_fkey FOREIGN KEY (hvac_item_id) REFERENCES public.catalogo_hvac(id)
+  CONSTRAINT metrados_hvac_item_id_fkey FOREIGN KEY (hvac_item_id) REFERENCES public.catalogo_hvac(id),
+  CONSTRAINT fk_metrados_especialidad FOREIGN KEY (especialidad) REFERENCES public.especialidad(nombre),
+  CONSTRAINT fk_metrados_autor_usuario FOREIGN KEY (autor_usuario) REFERENCES public.ecosistema_usuarios(nombre_completo)
 );
 CREATE TABLE public.metrados_liquidaciones (
   id uuid NOT NULL DEFAULT gen_random_uuid(),

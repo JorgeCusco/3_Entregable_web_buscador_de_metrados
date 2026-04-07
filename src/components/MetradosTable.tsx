@@ -352,6 +352,9 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 onChange={(e) => {
                                     onEspecialidadChange?.(e.target.value);
                                     setFilterAuthor('TODOS');
+                                    setFilterFrente('TODOS');
+                                    setFilterBloque('TODOS');
+                                    setFilterNivel('TODOS');
                                 }}
                                 disabled={isSpecialtyLocked}
                                 className={`text-[11px] font-bold border border-slate-200 rounded-lg px-2 py-1 outline-none transition-all ${isSpecialtyLocked
