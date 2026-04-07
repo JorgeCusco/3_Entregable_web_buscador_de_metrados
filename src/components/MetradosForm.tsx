@@ -8,6 +8,7 @@ import { ESPECIALIDADES_PARTIDA, getEspecialidadPorCodigo } from '../constants/e
 import { Save, Eraser, ChevronDown, ChevronUp } from 'lucide-react';
 import { usePersonalStore } from '../store/usePersonalStore';
 import { useMetradosStore } from '../store/useMetradosStore';
+import { useAuthStore } from '../store/useAuthStore';
 import { SimpleSearchInput } from './ui/SimpleSearchInput';
 import { PersonalMultiSelect } from './ui/PersonalMultiSelect';
 
@@ -50,8 +51,12 @@ window.RenderModificacionBadge = RenderModificacionBadge;
 export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, proyecto }) => {
     const { personal } = usePersonalStore();
     const { catalogoHospital, catalogoContingencia, metrados, hvacCatalog, fetchHvacCatalog } = useMetradosStore();
+    const { user } = useAuthStore();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showCostDetail, setShowCostDetail] = useState(false);
+
+    // Flag para habilitar campos especiales de LIQUIDACIONES
+    const isLiquidaciones = user?.area?.trim().toUpperCase() === 'LIQUIDACIONES';
 
     useEffect(() => {
         fetchHvacCatalog();
@@ -582,7 +587,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     {(() => {
                         const strategy = state.formulaStrategy;
                         if (!strategy) return null;
-                        const meta = { hvacItemType: state.hvacItemType };
+                        const meta = { hvacItemType: state.hvacItemType, isLiquidaciones };
 
                         const fieldKeys: ('cantidad' | 'longitud' | 'ancho' | 'altura')[] = ['cantidad', 'longitud', 'ancho', 'altura'];
                         
