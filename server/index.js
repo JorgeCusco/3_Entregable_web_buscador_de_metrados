@@ -192,7 +192,10 @@ app.post('/api/export/metrados', async (req, res) => {
                     const normalizedDiam = (m.diametro || "").replace('"', '');
                     const peso = validacionesPesoAcero[normalizedDiam] || 0;
                     if (peso > 0) {
-                        parcial = (parseFloat(m.cantidad) || 0) * ((parseFloat(m.longitud_area) || 0) + (parseFloat(m.altura_gancho) || 0)) * peso;
+                        const l = parseFloat(m.longitud_area) || 0;
+                        const e = parseFloat(m.ancho_empalme) || 0;
+                        const g = parseFloat(m.altura_gancho) || 0;
+                        parcial = (parseFloat(m.cantidad) || 0) * (l + e + g) * peso;
                     }
                 } else if (m.hvac_factor) {
                     const c = parseFloat(m.cantidad) || 1;
@@ -219,7 +222,7 @@ app.post('/api/export/metrados', async (req, res) => {
                 rowData[13] = concatDesc; // N
                 rowData[14] = m.cantidad || ""; // O
                 rowData[15] = m.longitud_area || ""; // P
-                rowData[16] = flagAcero ? "" : (m.ancho_empalme || ""); // Q
+                rowData[16] = m.ancho_empalme || ""; // Q
                 rowData[17] = m.altura_gancho || ""; // R
                 rowData[18] = parcial || 0; // S
                 rowData[19] = m.nro_veces || ""; // T
