@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 import { useMetradosStore } from '../store/useMetradosStore';
 import { 
     X, CheckCircle, AlertTriangle, Search, ChevronDown, ChevronUp,
-    ArrowRightCircle, DollarSign, Copy, Trash2, RefreshCcw, Info
+    ArrowRightCircle, DollarSign, Copy, Trash2, RefreshCcw, Info, Pencil
 } from 'lucide-react';
 
 interface PartidaPC {
@@ -57,6 +57,13 @@ export const GestionPartidasPC: React.FC<GestionPartidasPCProps> = ({ onClose })
 
     // Detector de duplicados
     const [duplicados, setDuplicados] = useState<{ custom: PartidaPC; enCatalogo: boolean }[]>([]);
+
+    // Estado modal Renombrar Código
+    const [modalRenombrar, setModalRenombrar] = useState<PartidaPC | null>(null);
+    const [renombreCodigo, setRenombreCodigo] = useState('');
+    const [renombreDescripcion, setRenombreDescripcion] = useState('');
+    const [renombreLoading, setRenombreLoading] = useState(false);
+    const [renombreResult, setRenombreResult] = useState<{ ok: boolean; msg: string } | null>(null);
 
     // ─── Carga de datos ─────────────────────────────────────────────────────
     const cargarPartidas = async () => {
@@ -222,6 +229,54 @@ export const GestionPartidasPC: React.FC<GestionPartidasPCProps> = ({ onClose })
         await fetchCustomPartidas();
     };
 
+    // ─── Renombrar Código + Sincronizar Metrados ──────────────────────────────
+    const handleAbrirRenombrar = (pc: PartidaPC) => {
+        setModalRenombrar(pc);
+        setRenombreCodigo(pc.codigo);
+        setRenombreDescripcion(pc.descripcion);
+        setRenombreResult(null);
+    };
+
+    const handleConfirmarRenombre = async () => {
+        if (!modalRenombrar) return;
+        const codigoNuevo = renombreCodigo.trim().toUpperCase();
+        const descNueva = renombreDescripcion.trim().toUpperCase();
+        if (!codigoNuevo) return;
+
+        setRenombreLoading(true);
+        setRenombreResult(null);
+        try {
+            // 1. Actualizar codigo + descripcion en partidas_personalizadas
+            const { error: errPc } = await (supabase.from('partidas_personalizadas') as any)
+                .update({ codigo: codigoNuevo, descripcion: descNueva })
+                .eq('id', modalRenombrar.id);
+            if (errPc) throw errPc;
+
+            // 2. Sincronizar metrados: actualizar codigo_partida y descripcion_partida
+            // para todos los registros vinculados por custom_partida_id
+            const { error: errM, count } = await (supabase.from('metrados') as any)
+                .update({
+                    codigo_partida: codigoNuevo,
+                    descripcion_partida: descNueva,
+                })
+                .eq('custom_partida_id', modalRenombrar.id);
+            if (errM) throw errM;
+
+            setRenombreResult({
+                ok: true,
+                msg: `✅ Código actualizado a "${codigoNuevo}". ${count ?? modalRenombrar.total_registros} metrados sincronizados.`
+            });
+            await cargarPartidas();
+            await fetchCustomPartidas();
+
+            setTimeout(() => { setModalRenombrar(null); setRenombreResult(null); }, 2500);
+        } catch (e: any) {
+            setRenombreResult({ ok: false, msg: `❌ Error: ${e.message}` });
+        } finally {
+            setRenombreLoading(false);
+        }
+    };
+
     const fmt = (n: number) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
     return (
@@ -336,6 +391,13 @@ export const GestionPartidasPC: React.FC<GestionPartidasPCProps> = ({ onClose })
 
                                             {/* Acciones */}
                                             <div className="flex items-center gap-1.5 shrink-0">
+                                                <button
+                                                    onClick={() => handleAbrirRenombrar(pc)}
+                                                    className="p-1.5 rounded-lg hover:bg-violet-50 text-violet-500 transition-colors"
+                                                    title="Renombrar código (sincroniza sus metrados)"
+                                                >
+                                                    <Pencil size={14} />
+                                                </button>
                                                 <button
                                                     onClick={() => { setModalPU(pc); setNuevoPU(pc.precio_unitario || 0); }}
                                                     className="p-1.5 rounded-lg hover:bg-emerald-50 text-emerald-600 transition-colors"
@@ -560,6 +622,74 @@ export const GestionPartidasPC: React.FC<GestionPartidasPCProps> = ({ onClose })
                         >
                             <ArrowRightCircle size={16} />
                             {oficLoading ? 'Oficializando...' : 'Confirmar Oficialización'}
+                        </button>
+                    </div>
+                </div>
+            )}
+            {/* ─── MODAL: RENOMBRAR CÓDIGO ──────────────────────────────────────────── */}
+            {modalRenombrar && (
+                <div className="fixed inset-0 z-[600] bg-black/50 flex items-center justify-center p-4" onClick={() => !renombreLoading && setModalRenombrar(null)}>
+                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4" onClick={e => e.stopPropagation()}>
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h3 className="text-sm font-black text-slate-800 uppercase">✏️ Renombrar Código PC</h3>
+                                <p className="text-[11px] text-slate-400 mt-0.5">Sincroniza automáticamente todos los metrados vinculados</p>
+                            </div>
+                            <button onClick={() => setModalRenombrar(null)} disabled={renombreLoading}><X size={16} className="text-slate-400" /></button>
+                        </div>
+
+                        <div className="bg-violet-50 rounded-xl px-4 py-3 border border-violet-100">
+                            <p className="text-[10px] font-black text-violet-500 uppercase">Código actual</p>
+                            <p className="text-[13px] font-black font-mono text-slate-800">{modalRenombrar.codigo}</p>
+                            <p className="text-[11px] text-slate-500 mt-0.5">{modalRenombrar.total_registros} metrados vinculados serán actualizados</p>
+                        </div>
+
+                        <div className="space-y-3">
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-bold text-slate-500 uppercase">Nuevo Código</label>
+                                <input
+                                    type="text"
+                                    value={renombreCodigo}
+                                    onChange={e => setRenombreCodigo(e.target.value.toUpperCase())}
+                                    className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-mono font-bold outline-none focus:border-violet-500 uppercase"
+                                    placeholder="Ej: OE.2.3.7.99"
+                                    autoFocus
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-bold text-slate-500 uppercase">Nueva Descripción (opcional)</label>
+                                <input
+                                    type="text"
+                                    value={renombreDescripcion}
+                                    onChange={e => setRenombreDescripcion(e.target.value)}
+                                    className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:border-violet-500"
+                                    placeholder="Descripción de la partida..."
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex items-start gap-2 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">
+                            <AlertTriangle size={12} className="text-amber-400 mt-0.5 shrink-0" />
+                            <p className="text-[10px] text-amber-700">
+                                Se actualizará el <b>código</b> y la <b>descripción</b> de la partida Y de todos sus
+                                <b> {modalRenombrar.total_registros} metrados</b> registrados (campo <code>codigo_partida</code>).
+                            </p>
+                        </div>
+
+                        {renombreResult && (
+                            <div className={`flex items-center gap-2 rounded-xl px-4 py-3 text-[12px] font-bold ${renombreResult.ok ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+                                {renombreResult.ok ? <CheckCircle size={14} /> : <AlertTriangle size={14} />}
+                                {renombreResult.msg}
+                            </div>
+                        )}
+
+                        <button
+                            onClick={handleConfirmarRenombre}
+                            disabled={renombreLoading || !renombreCodigo.trim() || renombreCodigo.trim() === modalRenombrar.codigo}
+                            className="w-full py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl text-[11px] font-black uppercase tracking-widest transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                        >
+                            <Pencil size={14} />
+                            {renombreLoading ? 'Actualizando...' : 'Confirmar Renombre y Sincronizar'}
                         </button>
                     </div>
                 </div>

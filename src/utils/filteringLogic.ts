@@ -208,9 +208,11 @@ export const isMetradoOfSpecialtyImproved = (
         }
     }
 
-    // NIVEL 2: Buscar la Partida vinculada y deducir por su CÓDIGO (matemáticamente inamovible)
-    // ⚠️ CRÍTICO: Se deduce por el CÓDIGO de la partida, NO por el campo 'especialidad'
-    // que puede estar CORRUPTO en BD (datos históricos mal clasificados en la OE.1.x incorrecta).
+    // NIVEL 2: Buscar la Partida vinculada y deducir su especialidad
+    // Estrategia dual:
+    //   A) Partidas del CATÁLOGO OFICIAL → deducir desde el código (OE.x.x.x inamovible)
+    //   B) Partidas PERSONALIZADAS (PC) → respetar el campo 'especialidad' que el usuario
+    //      eligió al crearla (puede tener códigos no estándar como OE.1.1.2.99 o PC-001)
     if (metrado.partida_id || metrado.custom_partida_id) {
         const linkedPartida = catalogoActivo.find(p => {
             if (metrado.partida_id && p.id === metrado.partida_id) return true;
@@ -219,25 +221,38 @@ export const isMetradoOfSpecialtyImproved = (
         });
 
         if (linkedPartida) {
-            // Deducción matemática desde el código de la partida vinculada → INAMOVIBLE
+            const esPartidaPersonalizada = !!metrado.custom_partida_id || linkedPartida.modificacion === 'PC';
+
+            // A) Intentar deducción matemática desde el código (para catálogo oficial OE.x.x.x)
             if (linkedPartida.codigo && getEspecialidadPorCodigoFn) {
                 const deducedFromCodigo = getEspecialidadPorCodigoFn(linkedPartida.codigo);
                 if (deducedFromCodigo && isValidSpecialty(deducedFromCodigo)) {
                     const deducedNorm = normalizeSpecialty(deducedFromCodigo);
                     const matches = deducedNorm === targetSpecialty;
-                    if (debug) console.log(`      ${matches ? '✅' : '❌'} Nivel 2 (Código Partida ${linkedPartida.codigo} -> ${deducedNorm} vs ${targetSpecialty})`);
+                    if (debug) console.log(`      ${matches ? '✅' : '❌'} Nivel 2A (Código ${linkedPartida.codigo} → ${deducedNorm} vs ${targetSpecialty})`);
                     return matches;
                 }
             }
-            // Partida encontrada pero código no deducible: bloqueamos. NO caemos al Nivel 3.
-            if (debug) console.log(`      ❌ Nivel 2: Partida ${linkedPartida.codigo} sin código deducible → bloqueado`);
+
+            // B) Si el código no es deducible (PC con nomenclatura no estándar),
+            // usar el campo 'especialidad' que el usuario asignó explícitamente.
+            // SOLO aplica a PCs para no corromper el catálogo oficial.
+            if (esPartidaPersonalizada && linkedPartida.especialidad && isValidSpecialty(linkedPartida.especialidad)) {
+                const pcSpec = normalizeSpecialty(linkedPartida.especialidad);
+                const matches = pcSpec === targetSpecialty;
+                if (debug) console.log(`      ${matches ? '✅' : '❌'} Nivel 2B (PC especialidad explícita: ${pcSpec} vs ${targetSpecialty})`);
+                return matches;
+            }
+
+            // Partida encontrada pero sin forma de deducir especialidad → bloquear
+            if (debug) console.log(`      ❌ Nivel 2: Partida ${linkedPartida.codigo} sin especialidad deducible → bloqueado`);
             return false;
         }
     }
 
     // NIVEL 3: SOLO para registros verdaderamente huérfanos (sin partida_id ni codigo_partida)
     // Metrados con codigo_partida = 'OE.x.x' nunca llegan aquí (los captura Nivel 1).
-    // Metrados con partida_id nunca llegan aquí (los captura Nivel 2).
+    // Metrados con partida_id/custom_partida_id nunca llegan aquí (los captura Nivel 2).
     if (!metrado.partida_id && !metrado.custom_partida_id && !metrado.codigo_partida) {
         const metradoSpecValue = (metrado.especialidad || '').toString().trim();
         if (metradoSpecValue && isValidSpecialty(metradoSpecValue)) {
