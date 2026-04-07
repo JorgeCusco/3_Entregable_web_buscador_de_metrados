@@ -24,5 +24,5 @@ export interface IFormulaHandler {
     /**
      * Etiqueta amigable para el campo (ej: "Largo" vs "Long. Recta")
      */
-    getFieldLabel(fieldName: FormulaFieldName): string;
+    getFieldLabel(fieldName: FormulaFieldName, metadata?: any): string;
 }

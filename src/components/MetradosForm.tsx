@@ -594,7 +594,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         const fields = fieldKeys.map((key) => {
                             const internalKey = key === 'longitud' ? 'longitud_area' : key === 'ancho' ? 'ancho_empalme' : key === 'altura' ? 'altura_gancho' : key;
                             const isLocked = strategy.isFieldLocked(internalKey as any, meta);
-                            const label = strategy.getFieldLabel(internalKey as any);
+                            const label = strategy.getFieldLabel(internalKey as any, meta);
 
                             const nextIds: any = {
                                 cantidad: 'input-longitud',
