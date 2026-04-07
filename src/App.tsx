@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { MetradosForm } from './components/MetradosForm';
 import { MetradosTable } from './components/MetradosTable';
+import { GestionPartidasPC } from './components/GestionPartidasPC';
 import { useMetradosForm } from './hooks/useMetradosForm';
 import type { Metrado, Partida } from './types';
-import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon } from 'lucide-react';
+import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon, ClipboardList } from 'lucide-react';
 import { useMetradosStore } from './store/useMetradosStore';
 import { usePersonalStore } from './store/usePersonalStore';
 import { useAuthStore } from './store/useAuthStore';
@@ -24,6 +25,7 @@ function App() {
   
   const [toast, setToast] = useState<string | null>(null);
   const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
+  const [showGestionPC, setShowGestionPC] = useState(false);
 
   // Verificar autenticación al montar
   useEffect(() => {
@@ -172,6 +174,15 @@ function App() {
           </button>
           
           <button 
+            onClick={() => setShowGestionPC(true)}
+            className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2.5 flex items-center gap-2 rounded-xl text-sm font-bold shadow-md transition-all shadow-pink-600/20"
+            title="Gestión de Partidas Creadas (PC)"
+          >
+            <ClipboardList className="w-4 h-4" />
+            <span className="hidden sm:inline">Partidas PC</span>
+          </button>
+          
+          <button 
             onClick={() => logout()}
             className="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2.5 flex items-center gap-2 rounded-xl text-sm font-bold border border-red-100 transition-all active:scale-95"
             title="Cerrar Sesión"
@@ -219,6 +230,10 @@ function App() {
 
       {showPersonalDashboard && (
         <DashboardPersonal onClose={() => setShowPersonalDashboard(false)} />
+      )}
+
+      {showGestionPC && (
+        <GestionPartidasPC onClose={() => setShowGestionPC(false)} />
       )}
     </div>
   );
