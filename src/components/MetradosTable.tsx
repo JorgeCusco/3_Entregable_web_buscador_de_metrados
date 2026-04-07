@@ -87,9 +87,6 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
         const nodeId = node.id || node.codigo.trim().toUpperCase();
         if (!activeIds.has(nodeId)) return;
 
-        // Fila de plantilla (Cabecera)
-        finalRows.push({ ...node, is_template: true });
-
         // Filtrar metrados que corresponden a este nodo
         const relatedMetrados = activeMetrados.filter(m => {
             const targetId = getMetradoTargetId(m);
@@ -98,6 +95,14 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
                 (!m.partida_id && !m.custom_partida_id && m.codigo_partida.trim().toUpperCase() === node.codigo.trim().toUpperCase());
             return matches;
         }).sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+
+        // FIX: Los nodos HOJA (!es_titulo) solo se muestran si tienen metrados reales en el periodo actual.
+        // Sin este fix, aparecen headers vacíos con solo datos históricos (metrado_anterior_acumulado)
+        // cuando se cambia de especialidad, causando el "arrastre visual" entre filtros.
+        if (!node.es_titulo && relatedMetrados.length === 0) return;
+
+        // Fila de plantilla (Cabecera)
+        finalRows.push({ ...node, is_template: true });
 
         if (relatedMetrados.length > 0) {
             let lastElemento: string | null | undefined = null;

@@ -197,19 +197,20 @@ export const isMetradoOfSpecialtyImproved = (
     }
 
     // NIVEL 1: Deducción Inamovible por Prefijo de Código (OE.1, OE.2, etc.)
-    // Esta es la fuente de verdad matemática. Un OE.1 JAMÁS puede ser SEGURIDAD.
+    // Esta es la fuente de verdad matemática. Un OE.1.1 JAMÁS puede ser ARQUEOLOGÍA.
     if (getEspecialidadPorCodigoFn && metrado.codigo_partida) {
         const deducedSpec = getEspecialidadPorCodigoFn(metrado.codigo_partida);
         if (deducedSpec && isValidSpecialty(deducedSpec)) {
             const deducedNormalized = normalizeSpecialty(deducedSpec);
             const matches = deducedNormalized === targetSpecialty;
-            if (debug && matches) console.log(`      ✅ Match Nivel 1 (Matemático Código ${metrado.codigo_partida} -> ${deducedNormalized})`);
-            return matches;
+            if (debug) console.log(`      ${matches ? '✅' : '❌'} Nivel 1 (Código ${metrado.codigo_partida} -> ${deducedNormalized} vs ${targetSpecialty})`);
+            return matches; // Definitivo: si el código lo ubica, no hay discusión posible
         }
     }
 
-    // NIVEL 2: Buscar especialidad en la Partida vinculada (Catálogo o Personalizadas)
-    // El usuario indicó: "y en la columna especialidad se clasifican por especialidad"
+    // NIVEL 2: Buscar la Partida vinculada y deducir por su CÓDIGO (matemáticamente inamovible)
+    // ⚠️ CRÍTICO: Se deduce por el CÓDIGO de la partida, NO por el campo 'especialidad'
+    // que puede estar CORRUPTO en BD (datos históricos mal clasificados en la OE.1.x incorrecta).
     if (metrado.partida_id || metrado.custom_partida_id) {
         const linkedPartida = catalogoActivo.find(p => {
             if (metrado.partida_id && p.id === metrado.partida_id) return true;
@@ -217,25 +218,37 @@ export const isMetradoOfSpecialtyImproved = (
             return false;
         });
 
-        if (linkedPartida?.especialidad && isValidSpecialty(linkedPartida.especialidad)) {
-            const partidaSpec = normalizeSpecialty(linkedPartida.especialidad);
-            const matches = partidaSpec === targetSpecialty;
-            if (debug && matches) console.log(`      ✅ Match Nivel 2 (Partida ${linkedPartida.codigo}): ${partidaSpec} === ${targetSpecialty}`);
+        if (linkedPartida) {
+            // Deducción matemática desde el código de la partida vinculada → INAMOVIBLE
+            if (linkedPartida.codigo && getEspecialidadPorCodigoFn) {
+                const deducedFromCodigo = getEspecialidadPorCodigoFn(linkedPartida.codigo);
+                if (deducedFromCodigo && isValidSpecialty(deducedFromCodigo)) {
+                    const deducedNorm = normalizeSpecialty(deducedFromCodigo);
+                    const matches = deducedNorm === targetSpecialty;
+                    if (debug) console.log(`      ${matches ? '✅' : '❌'} Nivel 2 (Código Partida ${linkedPartida.codigo} -> ${deducedNorm} vs ${targetSpecialty})`);
+                    return matches;
+                }
+            }
+            // Partida encontrada pero código no deducible: bloqueamos. NO caemos al Nivel 3.
+            if (debug) console.log(`      ❌ Nivel 2: Partida ${linkedPartida.codigo} sin código deducible → bloqueado`);
+            return false;
+        }
+    }
+
+    // NIVEL 3: SOLO para registros verdaderamente huérfanos (sin partida_id ni codigo_partida)
+    // Metrados con codigo_partida = 'OE.x.x' nunca llegan aquí (los captura Nivel 1).
+    // Metrados con partida_id nunca llegan aquí (los captura Nivel 2).
+    if (!metrado.partida_id && !metrado.custom_partida_id && !metrado.codigo_partida) {
+        const metradoSpecValue = (metrado.especialidad || '').toString().trim();
+        if (metradoSpecValue && isValidSpecialty(metradoSpecValue)) {
+            const metradoSpec = normalizeSpecialty(metradoSpecValue);
+            const matches = metradoSpec === targetSpecialty;
+            if (debug) console.log(`      ${matches ? '✅' : '❌'} Nivel 3 (Huérfano sin refs): ${metradoSpec} vs ${targetSpecialty}`);
             return matches;
         }
     }
 
-    // NIVEL 3: Verificar especialidad grabada en el metrado como ÚLTIMO RECURSO
-    // (Esto está al final porque registros antiguos tienen este campo corrupto/heredado)
-    const metradoSpecValue = (metrado.especialidad || '').toString().trim();
-    if (metradoSpecValue && isValidSpecialty(metradoSpecValue)) {
-        const metradoSpec = normalizeSpecialty(metradoSpecValue);
-        const matches = metradoSpec === targetSpecialty;
-        if (debug && matches) console.log(`      ✅ Match Nivel 3 (Directo de BD, posible arrastre): ${metradoSpec} === ${targetSpecialty}`);
-        return matches;
-    }
-
-    if (debug) console.log(`      ❌ No match para ${metrado.id} en ${targetSpecialty}`);
+    if (debug) console.log(`      ❌ Sin match definitivo para metrado ${metrado.id} en ${targetSpecialty}`);
     return false;
 };
 
