@@ -975,38 +975,15 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 </table>
             </div>
 
-            {/* Resumen de Fuerza Laboral (V27) */}
-            {personnelSummary.length > 0 && (
-                <div className="mx-3 my-2 p-2 bg-slate-50 border border-slate-200 rounded-xl flex flex-wrap gap-2 items-center">
-                    <div className="flex items-center gap-1.5 px-3 border-r border-slate-200 mr-1 shrink-0">
-                        <Users size={14} className="text-slate-400" />
-                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-tighter">Fuerza Laboral en Vista:</span>
-                    </div>
-                    {personnelSummary.map((p, idx) => (
-                        <div key={idx} className="flex items-center bg-white border border-slate-200 px-2 py-1 rounded-lg shadow-sm gap-2 transition-all hover:border-blue-200 hover:shadow-md">
-                            <span className="text-[10px] font-bold text-slate-700">{p.nombre}</span>
-                            <span className={`text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest ${
-                                p.categoria === 'OPERARIO' ? 'bg-blue-100 text-blue-600' :
-                                p.categoria === 'OFICIAL' ? 'bg-amber-100 text-amber-600' :
-                                p.categoria === 'PEON' ? 'bg-emerald-100 text-emerald-600' :
-                                'bg-slate-100 text-slate-500'
-                            }`}>
-                                {p.categoria.substring(0, 3)}
-                            </span>
-                        </div>
-                    ))}
-                    <div className="ml-auto px-3 text-[10px] font-bold text-slate-400">
-                        Total: {personnelSummary.length} personas
-                    </div>
-                </div>
-            )}
-
             {/* Footer de Resumen */}
             <div className="mt-auto p-3 border-t border-slate-200 bg-white flex justify-between items-center z-10">
                 <div className="flex items-center gap-5">
                     <div className="flex gap-4 text-[11px] font-bold text-slate-500 uppercase tracking-tight">
                         <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-400 block"></span> Partidas: {cantPartidasRegistradas}</span>
                         <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-slate-400 block"></span> Registros: {filteredMetrados.length}</span>
+                        {personnelSummary.length > 0 && (
+                            <span className="flex items-center gap-1.5"><Users size={12} className="text-blue-500" /> Personal: {personnelSummary.length}</span>
+                        )}
                     </div>
                     <div className="h-4 w-px bg-slate-200 mx-1"></div>
                     <div className="flex items-center justify-center gap-2 bg-emerald-50 text-emerald-800 px-3 py-1.5 rounded border border-emerald-200 shadow-inner group transition-all hover:bg-emerald-100/50">
