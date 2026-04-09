@@ -44,7 +44,9 @@ const getAuthorInitials = (name: string): string => {
  * @param activeMetrados Metrados registrados a mostrar.
  * @param partidasCatalogo Catálogo maestro de partidas del proyecto activo.
  */
-const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partida[]): any[] => {
+ * @param isSummaryMode Si es true, omite el detalle de registros y agrupadores.
+ */
+const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partida[], isSummaryMode: boolean = false): any[] => {
     // 1. Identificar IDs activos de los metrados (UUID de catalogo, UUID custom, o fallback a código)
     const getMetradoTargetId = (m: Metrado) => m.custom_partida_id || m.partida_id || m.codigo_partida.trim().toUpperCase();
 
@@ -105,7 +107,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
         // Fila de plantilla (Cabecera)
         finalRows.push({ ...node, is_template: true });
 
-        if (relatedMetrados.length > 0) {
+        if (!isSummaryMode && relatedMetrados.length > 0) {
             let lastElemento: string | null | undefined = null;
 
             relatedMetrados.forEach(m => {
@@ -158,7 +160,9 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
             });
 
             metradosDeOrfano.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
-            metradosDeOrfano.forEach(m => finalRows.push({ ...m, is_template: false }));
+            if (!isSummaryMode) {
+                metradosDeOrfano.forEach(m => finalRows.push({ ...m, is_template: false }));
+            }
         });
     }
 
@@ -315,7 +319,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         }, catalogoActivo, debugMode);
     }, [metrados, proyecto, especialidadSeleccionada, filterAuthor, filterDateFrom, filterDateTo, filterFrente, filterBloque, filterNivel, catalogoActivo, debugMode]);
 
-    const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo), [filteredMetrados, catalogoActivo]);
+    const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo, showCostView), [filteredMetrados, catalogoActivo, showCostView]);
     const [isExporting, setIsExporting] = React.useState(false);
     const [showCostView, setShowCostView] = React.useState(false);
 
