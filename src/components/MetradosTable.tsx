@@ -318,9 +318,9 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         }, catalogoActivo, debugMode);
     }, [metrados, proyecto, especialidadSeleccionada, filterAuthor, filterDateFrom, filterDateTo, filterFrente, filterBloque, filterNivel, catalogoActivo, debugMode]);
 
-    const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo, showCostView), [filteredMetrados, catalogoActivo, showCostView]);
     const [isExporting, setIsExporting] = React.useState(false);
     const [showCostView, setShowCostView] = React.useState(false);
+    const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo, showCostView), [filteredMetrados, catalogoActivo, showCostView]);
 
     // VIRTUALIZACIÓN: Referencia al contenedor con scroll
     const parentRef = React.useRef<HTMLDivElement>(null);
