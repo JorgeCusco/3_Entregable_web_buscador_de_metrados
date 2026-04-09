@@ -43,7 +43,6 @@ const getAuthorInitials = (name: string): string => {
  * Genera el array secuencial para el Data Grid con "Tree Pruning".
  * @param activeMetrados Metrados registrados a mostrar.
  * @param partidasCatalogo Catálogo maestro de partidas del proyecto activo.
- */
  * @param isSummaryMode Si es true, omite el detalle de registros y agrupadores.
  */
 const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partida[], isSummaryMode: boolean = false): any[] => {
