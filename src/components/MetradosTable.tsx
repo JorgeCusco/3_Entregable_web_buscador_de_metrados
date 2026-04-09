@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import type { Metrado, Partida } from '../types';
-import { Download, Trash2, Loader2, Eraser } from 'lucide-react';
+import { Download, Loader2, Eraser, Trash2, Calendar } from 'lucide-react';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { RenderModificacionBadge } from './MetradosForm';
 import { useMetradosStore } from '../store/useMetradosStore';
 import { useAuthStore } from '../store/useAuthStore';
@@ -177,6 +178,13 @@ const getCurrentWeekRange = () => {
     return { from: format(monday), to: format(saturday) };
 };
 
+const getSpecificMonthRange = (year: number, month: number) => {
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const format = (d: Date) => d.toISOString().split('T')[0];
+    return { from: format(firstDay), to: format(lastDay) };
+};
+
 export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital', especialidadSeleccionada = 'TODAS', onEspecialidadChange, isSpecialtyLocked }) => {
     const { customPartidas, catalogoHospital, catalogoContingencia } = useMetradosStore();
 
@@ -188,19 +196,79 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
     const [filterAuthor, setFilterAuthor] = React.useState('TODOS');
     const { user } = useAuthStore();
+    const { systemUsers } = useSystemUsersStore();
+    
+    // 1. ESTADOS DE FILTROS BÁSICOS
     const [filterFrente, setFilterFrente] = React.useState('TODOS');
     const [filterBloque, setFilterBloque] = React.useState('TODOS');
     const [filterNivel, setFilterNivel] = React.useState('TODOS');
     
-    // Rango de fechas por defecto: la semana actual (Lunes a Sábado)
+    // 2. ESTADOS DE FECHAS (Deben ir antes de las funciones que los usan)
     const initialDateRange = useMemo(() => getCurrentWeekRange(), []);
     const [filterDateFrom, setFilterDateFrom] = React.useState(initialDateRange.from);
     const [filterDateTo, setFilterDateTo] = React.useState(initialDateRange.to);
-    
-    const [debugMode] = React.useState(true); // Habilitado para diagnosticar infiltración
-    const [hasAutoSelectedAuthor, setHasAutoSelectedAuthor] = React.useState(false);
+    const [activeMonthTab, setActiveMonthTab] = React.useState<string>('week');
 
-    const { systemUsers } = useSystemUsersStore();
+    // 3. LÓGICA DE MESES DISPONIBLES (Data Real)
+    const availableMonths = useMemo(() => {
+        const monthsMap = new Map<string, { year: number, month: number, label: string }>();
+        const monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"];
+        
+        metrados.forEach(m => {
+            if (!m.fecha) return;
+            const d = new Date(m.fecha + 'T00:00:00');
+            const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, '0')}`;
+            if (!monthsMap.has(key)) {
+                monthsMap.set(key, { 
+                    year: d.getFullYear(), 
+                    month: d.getMonth(), 
+                    label: `${monthNames[d.getMonth()]} ${String(d.getFullYear()).slice(-2)}`
+                });
+            }
+        });
+        
+        return Array.from(monthsMap.values()).sort((a, b) => (b.year * 100 + b.month) - (a.year * 100 + a.month));
+    }, [metrados]);
+
+    // 4. HANDLERS DE CAMBIO DE PERIODO
+    const handleMonthChange = (tabId: string) => {
+        if (tabId === 'week') {
+            const range = getCurrentWeekRange();
+            setFilterDateFrom(range.from);
+            setFilterDateTo(range.to);
+        } else if (tabId === 'all') {
+            setFilterDateFrom('');
+            setFilterDateTo('');
+        } else if (tabId.includes('-')) {
+            const [year, month] = tabId.split('-').map(Number);
+            const range = getSpecificMonthRange(year, month);
+            setFilterDateFrom(range.from);
+            setFilterDateTo(range.to);
+        }
+    };
+
+    // 5. EFECTO DE SINCRONIZACIÓN BIDIRECCIONAL (Tabs <-> Inputs)
+    React.useEffect(() => {
+        const rangeWeek = getCurrentWeekRange();
+        if (filterDateFrom === rangeWeek.from && filterDateTo === rangeWeek.to) {
+            setActiveMonthTab('week');
+        } else if (filterDateFrom === '' && filterDateTo === '') {
+            setActiveMonthTab('all');
+        } else {
+            const matchedMonth = availableMonths.find(m => {
+                const range = getSpecificMonthRange(m.year, m.month);
+                return range.from === filterDateFrom && range.to === filterDateTo;
+            });
+            if (matchedMonth) {
+                setActiveMonthTab(`${matchedMonth.year}-${String(matchedMonth.month).padStart(2, '0')}`);
+            } else {
+                setActiveMonthTab('custom');
+            }
+        }
+    }, [filterDateFrom, filterDateTo, availableMonths]);
+
+    const [debugMode] = React.useState(true);
+    const [hasAutoSelectedAuthor, setHasAutoSelectedAuthor] = React.useState(false);
 
     // Muestra base de metrados filtrada SÓLO por proyecto y especialidad para extraer listas consistentes
     const especialidadMetrados = useMemo(() => {
@@ -250,6 +318,20 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo), [filteredMetrados, catalogoActivo]);
     const [isExporting, setIsExporting] = React.useState(false);
     const [showCostView, setShowCostView] = React.useState(false);
+
+    // VIRTUALIZACIÓN: Referencia al contenedor con scroll
+    const parentRef = React.useRef<HTMLDivElement>(null);
+
+    const virtualizer = useVirtualizer({
+        count: rows.length,
+        getScrollElement: () => parentRef.current,
+        estimateSize: () => 40, // Altura estimada de fila
+        overscan: 10, // Cuántas filas cargar fuera de vista
+    });
+
+    const virtualItems = virtualizer.getVirtualItems();
+    const paddingTop = virtualItems.length > 0 ? virtualItems?.[0]?.start || 0 : 0;
+    const paddingBottom = virtualItems.length > 0 ? virtualizer.getTotalSize() - (virtualItems?.[virtualItems.length - 1]?.end || 0) : 0;
 
     // Calcular totales por partida para las filas de cabecera
     const partidaTotals = useMemo(() => {
@@ -499,8 +581,58 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 </div>
             </div>
 
-            {/* Contenedor con Scroll */}
-            <div className="overflow-auto flex-grow max-h-[calc(100vh-250px)] scrollbar-thin scrollbar-thumb-slate-200">
+            {/* Clasificador por Meses (Nueva UI Premium) */}
+            <div className="flex items-center gap-2 mb-1 p-1 bg-slate-50/50 rounded-xl border border-slate-100/50 overflow-x-auto no-scrollbar">
+                <div className="flex items-center gap-1 shrink-0 px-2 border-r border-slate-200 mr-1">
+                    <Calendar size={12} className="text-slate-400" />
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Período:</span>
+                </div>
+                
+                <button
+                    onClick={() => handleMonthChange('week')}
+                    className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'week' 
+                        ? 'bg-blue-600 text-white border-blue-700 shadow-sm shadow-blue-200' 
+                        : 'bg-white text-slate-500 border-slate-200 hover:border-blue-300'}`}
+                >
+                    ESTA SEMANA
+                </button>
+                
+                <button
+                    onClick={() => handleMonthChange('all')}
+                    className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'all' 
+                        ? 'bg-indigo-600 text-white border-indigo-700 shadow-sm shadow-indigo-200' 
+                        : 'bg-white text-slate-500 border-slate-200 hover:border-indigo-300'}`}
+                >
+                    TODO EL TIEMPO
+                </button>
+
+                <div className="w-px h-4 bg-slate-200 mx-1 shrink-0" />
+
+                {availableMonths.map(m => {
+                    const tabId = `${m.year}-${String(m.month).padStart(2, '0')}`;
+                    return (
+                        <button
+                            key={tabId}
+                            onClick={() => handleMonthChange(tabId)}
+                            className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === tabId 
+                                ? 'bg-slate-800 text-white border-slate-900 shadow-sm' 
+                                : 'bg-white text-slate-500 border-slate-200 hover:border-slate-400'}`}
+                        >
+                            {m.label.toUpperCase()}
+                        </button>
+                    );
+                })}
+                
+                {availableMonths.length === 0 && (
+                    <span className="text-[9px] text-slate-400 italic px-2">No hay meses con registros aún</span>
+                )}
+            </div>
+
+            {/* Contenedor con Scroll (VIRTUALIZADO) */}
+            <div 
+                ref={parentRef}
+                className="overflow-auto flex-grow max-h-[calc(100vh-270px)] scrollbar-thin scrollbar-thumb-slate-200"
+            >
                 <table className="w-full text-[13px] text-left align-middle border-collapse table-auto">
                     <thead className="text-[11px] text-slate-400 bg-white uppercase whitespace-nowrap sticky top-0 shadow-[0_1px_0_0_rgba(0,0,0,0.05)] z-10 font-bold">
                         <tr className="border-b border-slate-100">
@@ -536,7 +668,12 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         </tr>
                     </thead>
                     <tbody className="bg-white">
-                        {rows.map((r: any) => {
+                        {paddingTop > 0 && (
+                            <tr><td colSpan={20} style={{ height: `${paddingTop}px` }}></td></tr>
+                        )}
+                        {virtualItems.map((virtualRow) => {
+                            const r = rows[virtualRow.index];
+                            
                             // CASO 1: Es un Título WBS (Nodo Padre)
                             if (r.is_template && r.es_titulo) {
                                 return (
@@ -809,6 +946,9 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 </tr>
                             );
                         })}
+                        {paddingBottom > 0 && (
+                            <tr><td colSpan={20} style={{ height: `${paddingBottom}px` }}></td></tr>
+                        )}
                     </tbody>
                 </table>
             </div>

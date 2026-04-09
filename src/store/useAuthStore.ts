@@ -12,6 +12,8 @@ interface AuthState {
     checkAuth: () => void;
     isLiquidaciones: () => boolean;
     hasLiquidacionesAccess: () => boolean;
+    isAdminPresupuesto: () => boolean;
+    isGerencia: () => boolean;
 }
 
 const COOKIE_NAME = 'gore_cusco_session';
@@ -83,6 +85,19 @@ export const useAuthStore = create<AuthState>()(
                 if (!user) return false;
                 return user.roles_apps?.liquidaciones === 'editor' || 
                        user.roles_apps?.liquidaciones === 'lector';
+            },
+            
+            isAdminPresupuesto: () => {
+                const user = get().user;
+                if (!user) return false;
+                return user.es_administrador_presupuesto === true || 
+                       user.roles_apps?.admin_presupuesto === true;
+            },
+
+            isGerencia: () => {
+                const user = get().user;
+                if (!user) return false;
+                return user.es_gerencia === true;
             }
         }),
         {

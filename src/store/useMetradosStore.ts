@@ -44,12 +44,14 @@ interface MetradosState {
     fetchCustomPartidas: () => Promise<void>;
     fetchHvacCatalog: () => Promise<void>;
     fetchCatalogoMaestro: () => Promise<void>;
+    updateCatalogoPartida: (id: string, payload: Partial<Partida>, proyecto: 'hospital' | 'contingencia') => Promise<boolean>;
+    addCatalogoPartida: (partida: Omit<Partida, 'id'>, proyecto: 'hospital' | 'contingencia') => Promise<boolean>;
     clearAll: () => void;
 }
 
 export const useMetradosStore = create<MetradosState>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             context: {
                 frente: '',
                 bloque: '',
@@ -418,7 +420,8 @@ export const useMetradosStore = create<MetradosState>()(
                             is_template: true,
                             es_titulo: false,
                             jerarquia: [],
-                            nivel_jerarquia: 1
+                            nivel_jerarquia: 1,
+                            se_valoriza: dbRow.se_valoriza ?? true
                         }));
 
                         set({ customPartidas: parsedPartidas });
@@ -504,7 +507,8 @@ export const useMetradosStore = create<MetradosState>()(
                         metrado_programado: r.metrado_programado || 0,
                         valorizacion_programada: r.valorizacion_programada || 0,
                         metrado_anterior: r.metrado_anterior || 0,
-                        presupuesto_anterior: r.presupuesto_anterior || 0
+                        presupuesto_anterior: r.presupuesto_anterior || 0,
+                        se_valoriza: r.se_valoriza ?? true
                     }));
 
                     let hosp = mapPartidas(allCatalogo.filter((c: any) => c.proyecto_id === hospId));
@@ -522,6 +526,90 @@ export const useMetradosStore = create<MetradosState>()(
                     });
                 } catch (e) {
                     console.error('Error cargando catálogo maestro (Masivo V16):', e);
+                }
+            },
+
+            updateCatalogoPartida: async (id, payload, proyecto) => {
+                const user = useAuthStore.getState().user;
+                if (!user) return false;
+
+                try {
+                    // 1. Obtener valor anterior para el log
+                    const catalogKey = proyecto === 'hospital' ? 'catalogoHospital' : 'catalogoContingencia';
+                    const oldPartida = (get() as any)[catalogKey].find((p: any) => p.id === id);
+
+                    // 2. Update en Supabase
+                    const { error } = await (supabase
+                        .from('catalogo_partidas') as any)
+                        .update(payload as any)
+                        .eq('id', id);
+
+                    if (error) throw error;
+
+                    // 3. Registrar Log de Auditoría
+                    await (supabase.from('logs_maestro_presupuesto') as any).insert([{
+                        usuario_nombre: user.nombre_completo,
+                        accion: 'EDIT',
+                        codigo_partida: oldPartida?.codigo || 'N/A',
+                        detalle: `Editó partida ${oldPartida?.codigo}. Campos: ${Object.keys(payload).join(', ')}`,
+                        valor_anterior: oldPartida,
+                        valor_nuevo: { ...oldPartida, ...payload }
+                    }]);
+
+                    // 4. Update local
+                    set((state: any) => ({
+                        [catalogKey]: state[catalogKey].map((p: any) => 
+                            p.id === id ? { ...p, ...payload } : p
+                        )
+                    }));
+
+                    return true;
+                } catch (e) {
+                    console.error('Error actualizando catálogo:', e);
+                    return false;
+                }
+            },
+
+            addCatalogoPartida: async (partida, proyecto) => {
+                const user = useAuthStore.getState().user;
+                if (!user) return false;
+
+                try {
+                    const catalogKey = proyecto === 'hospital' ? 'catalogoHospital' : 'catalogoContingencia';
+                    
+                    // Obtener proyecto_id
+                    const { data: projData } = await (supabase.from('proyectos') as any).select('id').eq('codigo', proyecto === 'hospital' ? 'HOSP' : 'CONT').single() as any;
+                    if (!projData) throw new Error('Proyecto no encontrado');
+
+                    const payload = { ...partida, proyecto_id: projData.id };
+                    delete (payload as any).is_template;
+
+                    const { data, error } = await (supabase
+                        .from('catalogo_partidas') as any)
+                        .insert([payload as any])
+                        .select()
+                        .single();
+
+                    if (error) throw error;
+
+                    // Log
+                    await (supabase.from('logs_maestro_presupuesto') as any).insert([{
+                        usuario_nombre: user.nombre_completo,
+                        accion: 'ADD',
+                        codigo_partida: partida.codigo,
+                        detalle: `Añadió nueva partida: ${partida.codigo} - ${partida.descripcion}`,
+                        valor_nuevo: data
+                    }]);
+
+                    // Update local
+                    set((state: any) => ({
+                        [catalogKey]: [...state[catalogKey], { ...partida, id: (data as any).id, is_template: true }]
+                    }));
+
+                    return true;
+                } catch (e) {
+                    console.error('Error añadiendo al catálogo:', e);
+                    return false;
                 }
             },
 

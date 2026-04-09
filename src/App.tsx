@@ -4,14 +4,16 @@ import { MetradosTable } from './components/MetradosTable';
 import { GestionPartidasPC } from './components/GestionPartidasPC';
 import { useMetradosForm } from './hooks/useMetradosForm';
 import type { Metrado, Partida } from './types';
-import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon, ClipboardList } from 'lucide-react';
+import { Building2, Stethoscope, AlertTriangle, Users, LogOut, User as UserIcon, ClipboardList, FileBarChart, ShieldCheck } from 'lucide-react';
+import Login from './components/Login';
+import { DashboardPersonal } from './components/DashboardPersonal';
+import { AdminPresupuesto } from './admin/AdminPresupuesto';
+import { ExecutiveDashboard } from './admin/ExecutiveDashboard';
+import { calcularParcial, calcularTotal } from './utils/metradosCalculations';
 import { useMetradosStore } from './store/useMetradosStore';
 import { usePersonalStore } from './store/usePersonalStore';
 import { useAuthStore } from './store/useAuthStore';
 import { useSystemUsersStore } from './store/useSystemUsersStore';
-import Login from './components/Login';
-import { DashboardPersonal } from './components/DashboardPersonal';
-import { calcularParcial, calcularTotal } from './utils/metradosCalculations';
 
 // Tipo de proyecto disponible en el sistema (Hospital o Contingencia)
 export type TipoProyecto = 'hospital' | 'contingencia';
@@ -26,6 +28,8 @@ function App() {
   const [toast, setToast] = useState<string | null>(null);
   const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
   const [showGestionPC, setShowGestionPC] = useState(false);
+  const [showAdminPresupuesto, setShowAdminPresupuesto] = useState(false);
+  const [showExecutiveDashboard, setShowExecutiveDashboard] = useState(false);
 
   // Verificar autenticación al montar
   useEffect(() => {
@@ -167,7 +171,7 @@ function App() {
         <div className="flex items-center gap-2">
           <button 
             onClick={() => setShowPersonalDashboard(true)}
-            className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 flex items-center gap-2 rounded-xl text-sm font-bold shadow-md transition-all shadow-slate-900/20"
+            className="bg-slate-800 hover:bg-slate-900 text-white px-5 py-2.5 flex items-center gap-2 rounded-md text-sm font-bold shadow-sm transition-all"
           >
             <Users className="w-4 h-4" />
             <span className="hidden sm:inline">Personal</span>
@@ -175,12 +179,36 @@ function App() {
           
           <button 
             onClick={() => setShowGestionPC(true)}
-            className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2.5 flex items-center gap-2 rounded-xl text-sm font-bold shadow-md transition-all shadow-pink-600/20"
+            className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 flex items-center gap-2 rounded-md text-sm font-bold border border-slate-200 transition-all"
             title="Gestión de Partidas Creadas (PC)"
           >
-            <ClipboardList className="w-4 h-4" />
+            <ClipboardList className="w-4 h-4 text-pink-500" />
             <span className="hidden sm:inline">Partidas PC</span>
           </button>
+
+          {/* Dashboard Gerencial */}
+          {user && (useAuthStore.getState().isGerencia()) && (
+            <button 
+              onClick={() => setShowExecutiveDashboard(true)}
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#005A9C] hover:bg-[#004A81] text-white rounded-md text-sm font-bold transition-all shadow-sm"
+              title="Panel de Control Gerencial"
+            >
+              <FileBarChart className="w-4 h-4" />
+              <span className="hidden sm:inline">Status Gerencial</span>
+            </button>
+          )}
+
+          {/* Botón Maestro (Solo para Administradores de Presupuesto) */}
+          {(useAuthStore.getState().isAdminPresupuesto()) && (
+            <button 
+              onClick={() => setShowAdminPresupuesto(true)}
+              className="bg-white hover:bg-slate-50 text-[#005A9C] px-5 py-2.5 flex items-center gap-2 rounded-md text-sm font-bold shadow-sm border border-[#005A9C]/30 transition-all"
+              title="Administración Maestra del Presupuesto"
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span className="hidden sm:inline">Admin Maestro</span>
+            </button>
+          )}
           
           <button 
             onClick={() => logout()}
@@ -234,6 +262,14 @@ function App() {
 
       {showGestionPC && (
         <GestionPartidasPC onClose={() => setShowGestionPC(false)} />
+      )}
+
+      {showAdminPresupuesto && (
+        <AdminPresupuesto onClose={() => setShowAdminPresupuesto(false)} />
+      )}
+
+      {showExecutiveDashboard && (
+        <ExecutiveDashboard onClose={() => setShowExecutiveDashboard(false)} />
       )}
     </div>
   );

@@ -36,7 +36,7 @@ export interface Partida {
     precio_unitario?: number;
     cantidad_presupuesto?: number;
     acumulado_anterior_qty?: number;
-    // Nuevos campos de seguimiento
+    // Campos de seguimiento financiero (V21)
     metrado_anterior_acumulado?: number;
     valorizacion_anterior?: number;
     pu_actual?: number;
@@ -44,6 +44,8 @@ export interface Partida {
     valorizacion_programada?: number;
     metrado_anterior?: number;
     presupuesto_anterior?: number;
+    // Control de valorización selectiva (V25)
+    se_valoriza?: boolean;
 }
 
 export interface Metrado {
@@ -95,6 +97,10 @@ export interface User {
     especialidad?: string | null;
     roles_apps: {
         metrados?: string;
-        [key: string]: string | undefined;
+        admin_presupuesto?: boolean;
+        [key: string]: any;
     };
+    es_administrador_presupuesto?: boolean;
+    es_gerencia?: boolean;
+    created_at?: string;
 }

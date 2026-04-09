@@ -12,6 +12,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.99.3",
     "@tailwindcss/vite": "^4.2.1",
+    "@tanstack/react-virtual": "^3.13.23",
     "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.576.0",
