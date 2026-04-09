@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import type { Metrado, Partida } from '../types';
-import { Download, Loader2, Eraser, Trash2, Calendar } from 'lucide-react';
+import { Download, Loader2, Eraser, Trash2, Calendar, Users } from 'lucide-react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { RenderModificacionBadge } from './MetradosForm';
 import { useMetradosStore } from '../store/useMetradosStore';
@@ -343,6 +343,25 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
             totals[m.codigo_partida] = (totals[m.codigo_partida] || 0) + m.total;
         });
         return totals;
+    }, [filteredMetrados]);
+
+    // Calcular resumen de personal (V27)
+    const personnelSummary = useMemo(() => {
+        const workersMap = new Map<string, string>();
+        filteredMetrados.forEach(m => {
+            if (m.obrero_nombre) {
+                const parts = m.obrero_nombre.split(' / ');
+                parts.forEach(p => {
+                    const match = p.match(/(.+?)\s*\((.+?)\)/);
+                    if (match) {
+                        workersMap.set(match[1].trim(), match[2].trim());
+                    } else {
+                        workersMap.set(p.trim(), 'S/C');
+                    }
+                });
+            }
+        });
+        return Array.from(workersMap.entries()).map(([nombre, categoria]) => ({ nombre, categoria }));
     }, [filteredMetrados]);
 
 
@@ -955,6 +974,32 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     </tbody>
                 </table>
             </div>
+
+            {/* Resumen de Fuerza Laboral (V27) */}
+            {personnelSummary.length > 0 && (
+                <div className="mx-3 my-2 p-2 bg-slate-50 border border-slate-200 rounded-xl flex flex-wrap gap-2 items-center">
+                    <div className="flex items-center gap-1.5 px-3 border-r border-slate-200 mr-1 shrink-0">
+                        <Users size={14} className="text-slate-400" />
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-tighter">Fuerza Laboral en Vista:</span>
+                    </div>
+                    {personnelSummary.map((p, idx) => (
+                        <div key={idx} className="flex items-center bg-white border border-slate-200 px-2 py-1 rounded-lg shadow-sm gap-2 transition-all hover:border-blue-200 hover:shadow-md">
+                            <span className="text-[10px] font-bold text-slate-700">{p.nombre}</span>
+                            <span className={`text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest ${
+                                p.categoria === 'OPERARIO' ? 'bg-blue-100 text-blue-600' :
+                                p.categoria === 'OFICIAL' ? 'bg-amber-100 text-amber-600' :
+                                p.categoria === 'PEON' ? 'bg-emerald-100 text-emerald-600' :
+                                'bg-slate-100 text-slate-500'
+                            }`}>
+                                {p.categoria.substring(0, 3)}
+                            </span>
+                        </div>
+                    ))}
+                    <div className="ml-auto px-3 text-[10px] font-bold text-slate-400">
+                        Total: {personnelSummary.length} personas
+                    </div>
+                </div>
+            )}
 
             {/* Footer de Resumen */}
             <div className="mt-auto p-3 border-t border-slate-200 bg-white flex justify-between items-center z-10">
