@@ -36,6 +36,7 @@ erDiagram
         text modificacion
         text especialidad
         text tipo_metrado
+        boolean se_valoriza "V26"
     }
 
     METRADOS ||--o{ METRADOS_PERSONAL : "tiene"
@@ -47,6 +48,18 @@ erDiagram
         text nombre_completo
         text especialidad
         jsonb roles_apps
+        boolean es_administrador_presupuesto "V26"
+    }
+
+    LOGS_MAESTRO_PRESUPUESTO {
+        uuid id PK
+        timestamp fecha
+        text usuario_nombre
+        text accion "ADD | EDIT | DELETE | MOVE"
+        text codigo_partida
+        text detalle
+        jsonb valor_anterior
+        jsonb valor_nuevo
     }
 
     PROYECTO {
@@ -71,6 +84,7 @@ erDiagram
         numeric precio_unitario
         numeric cantidad_presupuesto
         numeric acumulado_anterior_qty
+        boolean se_valoriza "V26"
     }
   
     METRADOS {
@@ -382,4 +396,25 @@ Al igual que en la tabla `metrados`, la seguridad se gestiona primariamente desd
 - Para evitar que supabase bloquee las inserciones a causa de activaciones RLS por defecto, se define el estado de `metrados_liquidaciones` con `ALTER TABLE ... DISABLE ROW LEVEL SECURITY` u otorgando accesos explícitos GRANT a roles como public/anon. 
 
 ---
-*Última Actualización: V25 - Abril 2026 (Inclusión de Tablas de Mapeo de Insumos e Inventario)*
+
+## Parte 13: Módulo de Administración de Presupuesto (V26)
+
+### 13.1 Control de Privilegios de Administrador
+
+Se ha introducido un campo booleano directo en `ecosistema_usuarios`:
+- **`es_administrador_presupuesto`**: Flag que otorga acceso a las herramientas de edición masiva, recalculación y auditoría dentro del panel `/admin/presupuesto`.
+
+### 13.2 Auditoría de Cambios (`logs_maestro_presupuesto`)
+
+Cada cambio estructural en el catálogo maestro es registrado para garantizar la trazabilidad:
+- Almacena el estado previo y posterior en `jsonb`.
+- Registra la acción (ADD, EDIT, DELETE, MOVE) y el usuario responsable.
+
+### 13.3 Valorización Selectiva (`se_valoriza`)
+
+Se ha añadido soporte para diferenciar actividades operativas de financieras:
+- **`se_valoriza = true`** (Default): La partida contribuye al monto facturado (S/).
+- **`se_valoriza = false`**: La partida se utiliza solo para control de avance físico (unidades), pero su valor monetario es ignorado en los reportes de valorización.
+
+---
+*Última Actualización: V26 - Abril 2026 (Módulo Admin y Valorización Selectiva)*
