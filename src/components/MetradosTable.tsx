@@ -44,8 +44,9 @@ const getAuthorInitials = (name: string): string => {
  * @param activeMetrados Metrados registrados a mostrar.
  * @param partidasCatalogo Catálogo maestro de partidas del proyecto activo.
  * @param isSummaryMode Si es true, omite el detalle de registros y agrupadores.
+ * @param maxLevel Nivel máximo de jerarquía a mostrar (ej. 1 para OE.1, 2 para OE.1.1). null para mostrar todo.
  */
-const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partida[], isSummaryMode: boolean = false): any[] => {
+const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partida[], isSummaryMode: boolean = false, maxLevel: number | null = null): any[] => {
     // 1. Identificar IDs activos de los metrados (UUID de catalogo, UUID custom, o fallback a código)
     const getMetradoTargetId = (m: Metrado) => m.custom_partida_id || m.partida_id || m.codigo_partida.trim().toUpperCase();
 
@@ -88,6 +89,12 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
     partidasCatalogo.forEach((node: Partida) => {
         const nodeId = node.id || node.codigo.trim().toUpperCase();
         if (!activeIds.has(nodeId)) return;
+
+        // FILTRO DE NIVEL (V28)
+        if (maxLevel !== null) {
+            const currentLevel = getIndentLevel(node.codigo);
+            if (currentLevel > maxLevel) return;
+        }
 
         // Filtrar metrados que corresponden a este nodo
         const relatedMetrados = activeMetrados.filter(m => {
@@ -147,6 +154,13 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 
         orphansByCode.forEach((metradosDeOrfano, code) => {
             const sample = metradosDeOrfano[0];
+            
+            // FILTRO DE NIVEL EN HUÉRFANOS (V28)
+            if (maxLevel !== null) {
+                const currentLevel = getIndentLevel(code);
+                if (currentLevel > maxLevel) return;
+            }
+
             finalRows.push({
                 id: `virt-header-${code}`,
                 codigo: code === 'SIN_CODIGO' ? 'S/C' : code,
@@ -320,7 +334,20 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
     const [isExporting, setIsExporting] = React.useState(false);
     const [showCostView, setShowCostView] = React.useState(false);
-    const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo, showCostView), [filteredMetrados, catalogoActivo, showCostView]);
+    const [viewMode, setViewMode] = React.useState<'DETALLE' | 'SUMMARY' | 'L1' | 'L2' | 'L3' | 'L4' | 'L5' | 'L6'>('DETALLE');
+
+    // Mapeo automático de Modo -> Summary y MaxLevel
+    const { isSummaryActual, maxLevelActual } = useMemo(() => {
+        if (viewMode === 'DETALLE') return { isSummaryActual: false, maxLevelActual: null };
+        if (viewMode === 'SUMMARY') return { isSummaryActual: true, maxLevelActual: null };
+        const levelMatch = viewMode.match(/^L(\d)$/);
+        if (levelMatch) {
+            return { isSummaryActual: true, maxLevelActual: parseInt(levelMatch[1], 10) };
+        }
+        return { isSummaryActual: false, maxLevelActual: null };
+    }, [viewMode]);
+
+    const rows = useMemo(() => getHierarchicalRows(filteredMetrados, catalogoActivo, isSummaryActual, maxLevelActual), [filteredMetrados, catalogoActivo, isSummaryActual, maxLevelActual]);
 
     // VIRTUALIZACIÓN: Referencia al contenedor con scroll
     const parentRef = React.useRef<HTMLDivElement>(null);
@@ -565,17 +592,40 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    {/* Botón Toggle Vista Valorizada */}
+                    {/* Selector de Jerarquía y Vistas (V28) */}
+                    <div className="flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-blue-300 transition-all">
+                        <span className="text-[9px] text-slate-400 font-black uppercase tracking-widest border-r border-slate-100 pr-2">Vista</span>
+                        <select
+                            value={viewMode}
+                            onChange={(e) => setViewMode(e.target.value as any)}
+                            className="text-[11px] font-black bg-transparent border-none outline-none text-blue-600 cursor-pointer focus:ring-0"
+                        >
+                            <optgroup label="Modos de Tabla">
+                                <option value="DETALLE">💎 Vista Integral (Detalle)</option>
+                                <option value="SUMMARY">📊 Resumen Ejecutivo (Partidas)</option>
+                            </optgroup>
+                            <optgroup label="Agrupar por Jerarquía (Especialidades)">
+                                <option value="L1">📍 Nivel 1: Títulos (OE.1)</option>
+                                <option value="L2">📍 Nivel 2: Sub-Títulos</option>
+                                <option value="L3">📍 Nivel 3: Partidas 1°</option>
+                                <option value="L4">📍 Nivel 4: Partidas 2°</option>
+                                <option value="L5">📍 Nivel 5: Detalle 3°</option>
+                                <option value="L6">📍 Nivel 6: Máximo</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    {/* Botón Toggle Vista Valorizada (Ahora solo controla mostrar precios o metrados en la vista actual) */}
                     <button
                         onClick={() => setShowCostView(!showCostView)}
                         className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm cursor-pointer border ${showCostView
                             ? 'bg-blue-600 text-white border-blue-700 shadow-blue-200'
                             : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                             }`}
-                        title={showCostView ? "Volver a vista técnica" : "Ver costos y saldos"}
+                        title={showCostView ? "Ver en modo Técnico (Medidas)" : "Ver en modo Económico (Soles)"}
                     >
                         <span className="text-[14px]">{showCostView ? '👷' : '💰'}</span>
-                        {showCostView ? 'Vista Técnica' : 'Vista Valorizada'}
+                        {showCostView ? 'Soles' : 'Medidas'}
                     </button>
 
                     <button
