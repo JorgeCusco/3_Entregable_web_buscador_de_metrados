@@ -670,7 +670,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                             <th className="w-[85px] min-w-[85px] px-2 py-3 text-right text-[10px] border-l border-slate-200">Total</th>
                         </tr>
                     </thead>
-                    <tbody className="bg-white">
+                    <tbody key={showCostView ? 'valorizada' : 'tecnica'} className="bg-white">
                         {paddingTop > 0 && (
                             <tr><td colSpan={20} style={{ height: `${paddingTop}px` }}></td></tr>
                         )}
