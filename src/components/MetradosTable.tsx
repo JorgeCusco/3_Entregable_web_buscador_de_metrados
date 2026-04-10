@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import type { Metrado, Partida } from '../types';
 import { Download, Trash2, Loader2, Calendar, Users } from 'lucide-react';
 import { useVirtualizer } from '@tanstack/react-virtual';
@@ -21,9 +21,7 @@ interface MetradosTableProps {
     isSpecialtyLocked?: boolean;
 }
 
-/**
- * Detecta el nivel de jerarquía basado en el código (ej. OE.1.1 = Nivel 2)
- */
+// HELPERS Y CONSTANTES
 const getIndentLevel = (codigo: string): number => {
     if (!codigo) return 0;
     const parts = codigo.split('.');
@@ -38,6 +36,192 @@ const getAuthorInitials = (name: string): string => {
         .map(word => word[0].toUpperCase())
         .join('');
 };
+
+const formatNumber = (num: number) => {
+    return new Intl.NumberFormat('es-PE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(num);
+};
+
+// --- COMPONENTES DE FILA MEMOIZADOS PARA PERFORMANCE ---
+
+const TitleRow = React.memo(({ r, getIndentLevel }: any) => (
+    <tr className="bg-slate-100 border-b border-slate-200">
+        <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1 text-center font-mono text-[9px] text-slate-400 overflow-hidden"></td>
+        <td className="w-[85px] min-w-[85px] px-1 py-1 font-mono text-[10px] tracking-wider text-left text-slate-500">
+            {r.codigo}
+        </td>
+        <td colSpan={11} className="px-1 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600"
+            style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.15}rem` }}>
+            {r.descripcion}
+        </td>
+    </tr>
+));
+
+const VirtualElementRow = React.memo(({ r, getIndentLevel, onGroupUpdate }: any) => (
+    <tr className="bg-slate-50/50 border-b border-slate-100 group">
+        <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1.5 text-center overflow-hidden"></td>
+        <td className="w-[85px] min-w-[85px] px-1 py-1.5 text-left"></td>
+        <td className="px-1 py-1.5" colSpan={11} style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.2 + 0.25}rem` }}>
+            <div className="flex items-center gap-2">
+                <span className="text-blue-300 font-black text-[10px]">▼</span>
+                <input
+                    type="text"
+                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] font-bold uppercase tracking-wider placeholder:text-slate-300"
+                    value={r.descripcion}
+                    onChange={(e) => onGroupUpdate?.(r.codigo_partida, r.descripcion, e.target.value.toUpperCase())}
+                    onFocus={(e) => e.target.select()}
+                />
+            </div>
+        </td>
+    </tr>
+));
+
+const HeaderRow = React.memo(({ r, partidaTotals, showCostView, getIndentLevel, formatNumber }: any) => {
+    const qtySistema = partidaTotals[r.codigo] || 0;
+    const qtyAnterior = r.metrado_anterior_acumulado || r.acumulado_anterior_qty || 0;
+    const totalPeriodo = qtySistema;
+    const totalAcumulado = qtySistema + qtyAnterior;
+    const hasMetrados = totalAcumulado > 0;
+
+    const precio = r.pu_actual || r.precio_unitario || 0;
+    const presupuesto = r.metrado_programado || r.cantidad_presupuesto || 0;
+    const saldoFisico = presupuesto - totalAcumulado;
+    const costoEjecutado = totalAcumulado * precio;
+    const saldoMonetario = saldoFisico * precio;
+
+    return (
+        <tr className={`${hasMetrados ? 'bg-blue-50/50' : 'bg-white'} border-b border-slate-100 font-semibold group`}>
+            <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1 text-center overflow-hidden"></td>
+            <td className="w-[85px] min-w-[85px] px-1 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.1}rem` }}>
+                <span className="font-mono text-[10px] text-blue-500 bg-blue-50 px-1 py-0.5 rounded border border-blue-100">
+                    {r.codigo}
+                </span>
+            </td>
+            <td className="px-1 py-1" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.15}rem` }}>
+                <div className="flex items-center gap-2">
+                    {RenderModificacionBadge(r.modificacion)}
+                    <span className="text-slate-700 text-[11px] leading-snug">{r.descripcion}</span>
+                    {r.cantidad_presupuesto === 0 && (
+                        <span className="bg-red-100 text-red-600 font-bold px-1 py-0.5 rounded text-[9px] border border-red-200" title="Partida Deductiva">DD</span>
+                    )}
+                </div>
+            </td>
+            <td className="w-[30px] min-w-[30px] px-1 py-1 text-center text-slate-400 font-bold text-[10px]">{r.unidad}</td>
+            {!showCostView ? (
+                <td colSpan={8} className="px-1 py-1 border-l border-slate-100/50">
+                    {r.precio_unitario > 0 && (
+                        <div className="w-full h-full flex justify-end items-center pr-3 gap-2">
+                            <span className="bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded text-[10px] border border-emerald-200 shadow-sm">S/ {r.precio_unitario.toFixed(2)}</span>
+                            <span className="bg-blue-600 text-white font-black px-2 py-0.5 rounded text-[11px] border border-blue-700 shadow-sm">
+                                S/ {formatNumber(totalPeriodo * precio)}
+                            </span>
+                        </div>
+                    )}
+                </td>
+            ) : (
+                <>
+                    <td className="w-[65px] min-w-[65px] px-1 py-1 text-right text-[11px] border-l border-slate-100 bg-financial-value font-mono">S/ {precio.toFixed(2)}</td>
+                    <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-blue-100 bg-financial-progress font-mono font-bold">{formatNumber(totalAcumulado)}</td>
+                    <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-blue-100 bg-financial-progress font-mono text-slate-500/70">{formatNumber(presupuesto)}</td>
+                    <td className={`w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-amber-100 bg-financial-pending font-mono font-bold ${saldoFisico < 0 ? 'text-red-500' : 'text-amber-800'}`}>{formatNumber(saldoFisico)}</td>
+                    <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-amber-100 bg-financial-pending font-mono italic text-amber-700/80">S/ {formatNumber(saldoMonetario)}</td>
+                    <td className="w-[85px] min-w-[85px] px-1 py-1 text-right text-[11px] border-l border-emerald-200 bg-current-month font-mono font-black text-emerald-800 shadow-sm">S/ {formatNumber(totalPeriodo * precio)}</td>
+                    <td className="w-[85px] min-w-[85px] px-1 py-1 text-right text-[12px] border-l border-emerald-200 bg-financial-value font-mono font-black text-emerald-700">S/ {formatNumber(costoEjecutado)}</td>
+                    <td className="w-[70px] min-w-[70px] border-l border-slate-100/50"></td>
+                </>
+            )}
+            <td className={`w-[85px] min-w-[85px] px-2 py-1 text-right font-black text-[12px] border-l border-slate-100/50 ${showCostView ? 'text-emerald-700 bg-emerald-50/50' : 'text-blue-600'}`}>
+                {hasMetrados ? (showCostView ? `S/ ${formatNumber(totalPeriodo * precio)}` : formatNumber(totalPeriodo)) : '-'}
+            </td>
+        </tr>
+    );
+});
+
+const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumber, handleKeyDown }: any) => {
+    const strategy = formulaRegistry.get(r.tipo_metrado);
+    const meta = { hvacItemType: r.hvac_item_type };
+
+    return (
+        <tr className="hover:bg-blue-50/20 border-b border-slate-100 group">
+            <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1.5 text-center overflow-hidden">
+                <input type="date" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-400 font-bold text-[9px] uppercase tracking-tighter"
+                    value={r.fecha} onChange={(e) => onUpdate?.(r.id, 'fecha', e.target.value)}
+                    onFocus={(e) => e.target.select()} />
+            </td>
+            <td className="w-[85px] min-w-[85px] px-0.5 py-1.5">
+                <div className="flex items-center justify-center gap-0.5">
+                    <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
+                    <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
+                        value={r.frente} onChange={(e) => onUpdate?.(r.id, 'frente', e.target.value)} onFocus={(e) => e.target.select()} />
+                    <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
+                        value={r.bloque} onChange={(e) => onUpdate?.(r.id, 'bloque', e.target.value)} onFocus={(e) => e.target.select()} />
+                    <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
+                        value={r.nivel} onChange={(e) => onUpdate?.(r.id, 'nivel', e.target.value)} onFocus={(e) => e.target.select()} />
+                </div>
+            </td>
+            <td className="px-1 py-1.5">
+                <div className="flex items-center gap-1.5 w-full">
+                    <input type="text" className="metrado-input w-12 bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded text-slate-500 text-[9px] font-black uppercase shrink-0 text-center"
+                        value={r.cuadrilla || ''} readOnly />
+                    {r.elemento && <span className="text-blue-400 font-black text-[12px] shrink-0">↳</span>}
+                    <input type="text" className="metrado-input w-20 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0"
+                        value={r.elemento || ''} onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())} onFocus={(e) => e.target.select()} />
+                    <input type="text" className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[11px] font-medium"
+                        value={r.detalle || ''} onChange={(e) => onUpdate?.(r.id, 'detalle', e.target.value)} onKeyDown={handleKeyDown} />
+                </div>
+            </td>
+            <td className="px-2 py-1.5 text-center text-slate-300">-</td>
+            {!showCostView ? (
+                <>
+                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                        {strategy.isFieldLocked('cantidad', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
+                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} />}
+                    </td>
+                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                        {strategy.isFieldLocked('longitud_area', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
+                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} />}
+                    </td>
+                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                        {strategy.isFieldLocked('ancho_empalme', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
+                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} />}
+                    </td>
+                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                        {strategy.isFieldLocked('altura_gancho', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
+                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
+                                value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} />}
+                    </td>
+                    <td className="px-2 py-1.5 text-right font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
+                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
+                        {strategy.isFieldLocked('nro_veces', meta) ? <span className="text-[9px] font-bold text-slate-300">1</span> :
+                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
+                                value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} />}
+                    </td>
+                    <td className="w-[10px] min-w-[10px] border-l border-slate-200/60"></td>
+                </>
+            ) : (
+                <td colSpan={7} className="px-1 py-1.5 text-center border-l border-slate-200/60 text-slate-300 italic text-[10px]">
+                    Modo valorización activado
+                </td>
+            )}
+            <td className="w-[60px] min-w-[60px] px-1 py-1 text-center border-l border-slate-100/50">
+                <span className="text-[9px] font-black text-slate-800 uppercase truncate w-full">{(r.autor_usuario || 'User').split(' ')[0]}</span>
+            </td>
+            <td className="w-[75px] min-w-[75px] px-1.5 py-1.5 text-right font-bold text-slate-800 relative text-[11px] border-l border-slate-200/60">
+                <div className="flex items-center justify-end gap-1.5">
+                    <span>{r.total.toFixed(2)}</span>
+                    <button onClick={() => onDelete?.(r.id)} className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 p-1 rounded-md transition-all">
+                        <Trash2 size={12} />
+                    </button>
+                </div>
+            </td>
+        </tr>
+    );
+});
 
 /**
  * Genera el array secuencial para el Data Grid con "Tree Pruning".
@@ -391,13 +575,30 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         return Array.from(workersMap.entries()).map(([nombre, categoria]) => ({ nombre, categoria }));
     }, [filteredMetrados]);
 
+    // Handlers memoizados para evitar re-renderizados innecesarios en componentes memoizados
+    const memoizedUpdate = React.useCallback((id: string, field: keyof Metrado, value: any) => {
+        onUpdate?.(id, field, value);
+    }, [onUpdate]);
 
-    const formatNumber = (num: number) => {
-        return new Intl.NumberFormat('es-PE', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }).format(num);
-    };
+    const memoizedGroupUpdate = React.useCallback((codigoPartida: string, oldElemento: string, newElemento: string) => {
+        onGroupUpdate?.(codigoPartida, oldElemento, newElemento);
+    }, [onGroupUpdate]);
+
+    const memoizedDelete = React.useCallback((id: string) => {
+        onDelete?.(id);
+    }, [onDelete]);
+
+    const memoizedKeyDown = React.useCallback((e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const inputs = Array.from(document.querySelectorAll('.metrado-input')) as HTMLInputElement[];
+            const currentIndex = inputs.indexOf(e.target as HTMLInputElement);
+            if (currentIndex > -1 && currentIndex < inputs.length - 1) {
+                inputs[currentIndex + 1].focus();
+                inputs[currentIndex + 1].select();
+            }
+        }
+    }, []);
 
     const cantPartidasRegistradas = new Set(filteredMetrados.map(m => m.codigo_partida)).size;
 
@@ -413,7 +614,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
         return sum;
     }, [partidaTotals, catalogoActivo]);
 
-    const exportToExcel = async () => {
+    const exportToExcel = async (mode: 'official' | 'master' = 'official') => {
         if (filteredMetrados.length === 0) {
             alert("No hay registros que exportar en la vista actual.");
             return;
@@ -432,7 +633,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 response = await fetch(`${apiUrl}/api/export/metrados`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ metrados: rows, proyecto })
+                    body: JSON.stringify({ metrados: rows, proyecto, mode })
                 });
             } catch (error) {
                 throw new Error(`No se pudo conectar con el servidor de exportación en: ${apiUrl}. Verifique su conexión o que el servicio en el puerto 3001 esté activo.`);
@@ -452,7 +653,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
             const fileNameEspecialidad = especialidadSeleccionada.replace(/\s+/g, '_');
             const fileNameAutor = getAuthorInitials(filterAuthor);
-            a.download = `reporte_metrados_${fileNameEspecialidad}_${fileNameAutor}.xlsx`.toLowerCase();
+            const prefix = mode === 'master' ? 'MAESTRO' : 'REPORTE';
+            a.download = `${prefix}_metrados_${fileNameEspecialidad}_${fileNameAutor}.xlsx`.toLowerCase();
 
             document.body.appendChild(a);
             a.click();
@@ -469,29 +671,66 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     return (
         <div className="glass-panel overflow-hidden rounded-2xl flex flex-col h-full border border-slate-200 shadow-sm bg-white">
             <div className="p-3 border-b border-slate-200 bg-slate-50/50 flex flex-col gap-3 sticky top-0 z-20 backdrop-blur-md">
-                {/* FILA 1: TÍTULO Y ACCIONES PRINCIPALES */}
+                {/* FILA 1: TÍTULO, VISTA, FECHAS Y EXPORTACIÓN */}
                 <div className="flex justify-between items-center w-full">
                     <div className="flex items-center gap-4">
                         <h3 className="font-bold text-slate-800 text-base tracking-tight shrink-0">Planilla de Metrados Dinámica</h3>
-                        {/* LEYENDA INTEGRADA DE MODIFICACIONES */}
-                        <div className="hidden md:flex items-center gap-3 border-l border-slate-200 pl-4">
-                            {[
-                                { label: 'PC', color: 'bg-[#FF69B4]', title: 'Partida Creada' },
-                                { label: 'MM', color: 'bg-blue-500', title: 'Mayor Metrado' },
-                                { label: 'PN', color: 'bg-green-500', title: 'Partida Nueva' },
-                                { label: 'DD', color: 'bg-red-500', title: 'Deductivo' },
-                                { label: 'ET', color: 'bg-sky-200', title: 'Contractual' }
-                            ].map(item => (
-                                <div key={item.label} className="flex items-center gap-1" title={item.title}>
-                                    <div className={`w-1.5 h-1.5 rounded-full ${item.color} shadow-sm border border-black/5`} />
-                                    <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">{item.label}</span>
-                                </div>
-                            ))}
+
+                        <div className="h-6 w-px bg-slate-200 mx-1" />
+
+                        {/* Selector de Vista (Jerarquía) - MOVIDO AQUÍ */}
+                        <div className="flex items-center gap-1 px-2 py-1 bg-blue-50/50 rounded-lg border border-blue-100 shadow-sm">
+                            <span className="text-[9px] text-blue-500 font-black uppercase tracking-widest">Vista</span>
+                            <select
+                                value={viewMode}
+                                onChange={(e) => setViewMode(e.target.value as any)}
+                                className="text-[10px] font-bold bg-transparent border-none outline-none text-blue-700 cursor-pointer focus:ring-0 px-1"
+                            >
+                                <optgroup label="Modos">
+                                    <option value="DETALLE">💎 Integral</option>
+                                    <option value="SUMMARY">📊 Resumen</option>
+                                </optgroup>
+                                <optgroup label="Niveles OE">
+                                    <option value="L1">📍 Nivel 1</option>
+                                    <option value="L2">📍 Nivel 2</option>
+                                    <option value="L3">📍 Nivel 3</option>
+                                    <option value="L4">📍 Nivel 4</option>
+                                    <option value="L5">📍 Nivel 5</option>
+                                    <option value="L6">📍 Nivel 6</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        {/* Filtro Fecha (Rango) - MOVIDO AQUÍ */}
+                        <div className="flex items-center gap-2 px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg shadow-sm">
+                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Rango:</span>
+                            <div className="flex items-center gap-1">
+                                <input
+                                    type="date"
+                                    value={filterDateFrom}
+                                    onChange={(e) => setFilterDateFrom(e.target.value)}
+                                    className="text-[10px] font-bold bg-transparent border-none outline-none text-slate-700 cursor-pointer"
+                                />
+                                <span className="text-[10px] text-slate-400">-</span>
+                                <input
+                                    type="date"
+                                    value={filterDateTo}
+                                    onChange={(e) => setFilterDateTo(e.target.value)}
+                                    className="text-[10px] font-bold bg-transparent border-none outline-none text-slate-700 cursor-pointer"
+                                />
+                            </div>
+                            {(filterDateFrom || filterDateTo) && (
+                                <button
+                                    onClick={() => { setFilterDateFrom(''); setFilterDateTo(''); }}
+                                    className="ml-1 w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-500 hover:text-white transition-colors text-[8px]"
+                                >✕</button>
+                            )}
                         </div>
                     </div>
+
                     <div className="flex items-center gap-2">
                         <button
-                            onClick={exportToExcel}
+                            onClick={() => exportToExcel('official')}
                             disabled={isExporting}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-sm cursor-pointer ${isExporting
                                 ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
@@ -499,7 +738,19 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                 }`}
                         >
                             {isExporting ? <Loader2 className="animate-spin" size={14} /> : <Download size={14} />}
-                            {isExporting ? 'Exportando Nube...' : 'Exportar Oficial'}
+                            {isExporting ? 'Exportando...' : 'Exportar Oficial'}
+                        </button>
+
+                        <button
+                            onClick={() => exportToExcel('master')}
+                            disabled={isExporting}
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-sm cursor-pointer ${isExporting
+                                ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                                }`}
+                        >
+                            {isExporting ? <Loader2 className="animate-spin" size={14} /> : <Download size={14} />}
+                            {isExporting ? 'Exportando...' : 'Exportar Maestro'}
                         </button>
                     </div>
                 </div>
@@ -545,36 +796,6 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         </select>
                     </div>
 
-                    {/* Filtro Fecha (Rango) */}
-                    <div className="flex items-center gap-1.5 pl-1.5 border-l border-slate-200">
-                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Fecha</span>
-                        <div className="relative flex items-center gap-1">
-                            <label className="text-[9px] text-slate-500 font-medium">Desde:</label>
-                            <input
-                                type="date"
-                                value={filterDateFrom}
-                                onChange={(e) => setFilterDateFrom(e.target.value)}
-                                className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
-                            />
-                            <label className="text-[9px] text-slate-500 font-medium">Hasta:</label>
-                            <input
-                                type="date"
-                                value={filterDateTo}
-                                onChange={(e) => setFilterDateTo(e.target.value)}
-                                className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
-                            />
-                            {(filterDateFrom || filterDateTo) && (
-                                <button
-                                    onClick={() => {
-                                        setFilterDateFrom('');
-                                        setFilterDateTo('');
-                                    }}
-                                    className="absolute -right-8 w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-500 hover:text-white transition-colors text-[8px] cursor-pointer"
-                                >✕</button>
-                            )}
-                        </div>
-                    </div>
-
                     {/* Filtros de Ubicación (Frente, Bloque, Nivel) */}
                     <div className="flex items-center gap-1 pl-1.5 border-l border-slate-200">
                         <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight mr-1">Locación</span>
@@ -613,31 +834,6 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         </select>
                     </div>
 
-                    <div className="h-4 w-px bg-slate-200 mx-1" />
-
-                    {/* Selector de Jerarquía - COMPACTO */}
-                    <div className="flex items-center gap-1 px-1.5 py-0.5 bg-slate-100 rounded-md border border-slate-200">
-                        <span className="text-[8px] text-slate-500 font-black uppercase">Vista</span>
-                        <select
-                            value={viewMode}
-                            onChange={(e) => setViewMode(e.target.value as any)}
-                            className="text-[9px] font-extrabold bg-transparent border-none outline-none text-blue-700 cursor-pointer focus:ring-0 px-1"
-                        >
-                            <optgroup label="Modos">
-                                <option value="DETALLE">💎 Integral</option>
-                                <option value="SUMMARY">📊 Resumen</option>
-                            </optgroup>
-                            <optgroup label="Niveles OE">
-                                <option value="L1">📍 Nivel 1</option>
-                                <option value="L2">📍 Nivel 2</option>
-                                <option value="L3">📍 Nivel 3</option>
-                                <option value="L4">📍 Nivel 4</option>
-                                <option value="L5">📍 Nivel 5</option>
-                                <option value="L6">📍 Nivel 6</option>
-                            </optgroup>
-                        </select>
-                    </div>
-
                     {/* Toggle Medidas/Soles */}
                     <button
                         onClick={() => setShowCostView(!showCostView)}
@@ -653,51 +849,73 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                 </div>
             </div>
 
-            {/* Clasificador por Meses (Nueva UI Premium) */}
-            <div className="flex items-center gap-2 mb-1 p-1 bg-slate-50/50 rounded-xl border border-slate-100/50 overflow-x-auto no-scrollbar">
-                <div className="flex items-center gap-1 shrink-0 px-2 border-r border-slate-200 mr-1">
-                    <Calendar size={12} className="text-slate-400" />
-                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Período:</span>
+            {/* Clasificador por Meses (Nueva UI Premium) + LEYENDA CORTA */}
+            <div className="flex items-center justify-between mb-1 p-1 bg-slate-50/50 rounded-xl border border-slate-100/50 whitespace-nowrap">
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                    <div className="flex items-center gap-1 shrink-0 px-2 border-r border-slate-200 mr-1">
+                        <Calendar size={12} className="text-slate-400" />
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Período:</span>
+                    </div>
+
+                    <button
+                        onClick={() => handleMonthChange('week')}
+                        className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'week'
+                            ? 'bg-blue-600 text-white border-blue-700 shadow-sm shadow-blue-200'
+                            : 'bg-white text-slate-500 border-slate-200 hover:border-blue-300'}`}
+                    >
+                        ESTA SEMANA
+                    </button>
+
+                    <button
+                        onClick={() => handleMonthChange('all')}
+                        className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'all'
+                            ? 'bg-indigo-600 text-white border-indigo-700 shadow-sm shadow-indigo-200'
+                            : 'bg-white text-slate-500 border-slate-200 hover:border-indigo-300'}`}
+                    >
+                        TODO EL TIEMPO
+                    </button>
+
+                    <div className="w-px h-4 bg-slate-200 mx-1 shrink-0" />
+
+                    {availableMonths.map(m => {
+                        const tabId = `${m.year}-${String(m.month).padStart(2, '0')}`;
+                        return (
+                            <button
+                                key={tabId}
+                                onClick={() => handleMonthChange(tabId)}
+                                className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === tabId
+                                    ? 'bg-slate-800 text-white border-slate-900 shadow-sm'
+                                    : 'bg-white text-slate-500 border-slate-200 hover:border-slate-400'}`}
+                            >
+                                {m.label.toUpperCase()}
+                            </button>
+                        );
+                    })}
+
+                    {availableMonths.length === 0 && (
+                        <span className="text-[9px] text-slate-400 italic px-2">No hay meses con registros aún</span>
+                    )}
                 </div>
 
-                <button
-                    onClick={() => handleMonthChange('week')}
-                    className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'week'
-                        ? 'bg-blue-600 text-white border-blue-700 shadow-sm shadow-blue-200'
-                        : 'bg-white text-slate-500 border-slate-200 hover:border-blue-300'}`}
-                >
-                    ESTA SEMANA
-                </button>
-
-                <button
-                    onClick={() => handleMonthChange('all')}
-                    className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'all'
-                        ? 'bg-indigo-600 text-white border-indigo-700 shadow-sm shadow-indigo-200'
-                        : 'bg-white text-slate-500 border-slate-200 hover:border-indigo-300'}`}
-                >
-                    TODO EL TIEMPO
-                </button>
-
-                <div className="w-px h-4 bg-slate-200 mx-1 shrink-0" />
-
-                {availableMonths.map(m => {
-                    const tabId = `${m.year}-${String(m.month).padStart(2, '0')}`;
-                    return (
-                        <button
-                            key={tabId}
-                            onClick={() => handleMonthChange(tabId)}
-                            className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === tabId
-                                ? 'bg-slate-800 text-white border-slate-900 shadow-sm'
-                                : 'bg-white text-slate-500 border-slate-200 hover:border-slate-400'}`}
-                        >
-                            {m.label.toUpperCase()}
-                        </button>
-                    );
-                })}
-
-                {availableMonths.length === 0 && (
-                    <span className="text-[9px] text-slate-400 italic px-2">No hay meses con registros aún</span>
-                )}
+                {/* Leyenda Corta Derecha */}
+                <div className="flex items-center gap-3 px-3 border-l border-slate-200 shrink-0">
+                    {['PC', 'MM', 'PN', 'DD', 'ET'].map(mod => (
+                        <div key={mod} className="flex items-center gap-1.5" title={
+                            mod === 'PC' ? 'Partida Creada' :
+                            mod === 'MM' ? 'Mayores Metrados' :
+                            mod === 'PN' ? 'Partida Nueva' :
+                            mod === 'DD' ? 'Deductivos' : 'Exp. Técnico'
+                        }>
+                            <div className={`w-2 h-2 rounded-full ${
+                                mod === 'PC' ? 'bg-pink-400' :
+                                mod === 'MM' ? 'bg-blue-400' :
+                                mod === 'PN' ? 'bg-green-400' :
+                                mod === 'DD' ? 'bg-red-400' : 'bg-slate-300'
+                            } shadow-sm border border-white`} />
+                            <span className="text-[9px] font-black text-slate-500">{mod}</span>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* Contenedor con Scroll (VIRTUALIZADO) */}
@@ -745,277 +963,53 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         )}
                         {virtualItems.map((virtualRow) => {
                             const r = rows[virtualRow.index];
+                            if (!r) return null;
 
-                            // CASO 1: Es un Título WBS (Nodo Padre)
+                            // Dispatch a componentes especializados memoizados usando ID único (CORRECCIÓN IMPORTANTE DE KEYS)
                             if (r.is_template && r.es_titulo) {
                                 return (
-                                    <tr key={`title-${r.codigo}`} className="bg-slate-100 border-b border-slate-200">
-                                        <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1 text-center font-mono text-[9px] text-slate-400 overflow-hidden"></td>
-                                        <td className="w-[85px] min-w-[85px] px-1 py-1 font-mono text-[10px] tracking-wider text-left text-slate-500">
-                                            {r.codigo}
-                                        </td>
-                                        <td colSpan={11} className="px-1 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600"
-                                            style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.15}rem` }}>
-                                            {r.descripcion}
-                                        </td>
-                                    </tr>
+                                    <TitleRow
+                                        key={r.id}
+                                        r={r}
+                                        getIndentLevel={getIndentLevel}
+                                    />
                                 );
                             }
 
-                            // CASO 2.5: Fila Virtual de Elemento (Agrupador) - EDITABLE
                             if (r.is_template && r.is_elemento_virtual) {
                                 return (
-                                    <tr key={r.id} className="bg-slate-50/50 border-b border-slate-100 group">
-                                        <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1.5 text-center overflow-hidden"></td>
-                                        <td className="w-[85px] min-w-[85px] px-1 py-1.5 text-left"></td>
-                                        <td className="px-1 py-1.5" colSpan={11} style={{ paddingLeft: `${getIndentLevel(r.codigo_partida) * 0.2 + 0.25}rem` }}>
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-blue-300 font-black text-[10px]">▼</span>
-                                                <input
-                                                    type="text"
-                                                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] font-bold uppercase tracking-wider placeholder:text-slate-300"
-                                                    value={r.descripcion}
-                                                    onChange={(e) => onGroupUpdate?.(r.codigo_partida, r.descripcion, e.target.value.toUpperCase())}
-                                                    onFocus={(e) => e.target.select()}
-                                                />
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <VirtualElementRow
+                                        key={r.id}
+                                        r={r}
+                                        getIndentLevel={getIndentLevel}
+                                        onGroupUpdate={memoizedGroupUpdate}
+                                    />
                                 );
                             }
 
-                            // CASO 2: Es una Cabecera de Partida (Nodo Hoja del Presupuesto)
                             if (r.is_template && !r.es_titulo) {
-                                const qtySistema = partidaTotals[r.codigo] || 0;
-                                const qtyAnterior = r.metrado_anterior_acumulado || r.acumulado_anterior_qty || 0;
-
-                                // TOTAL DEL PERIODO (Solo lo ingresado en el sistema)
-                                const totalPeriodo = qtySistema;
-
-                                // TOTAL ACUMULADO (Histórico + Sistema) para cálculos de presupuesto
-                                const totalAcumulado = qtySistema + qtyAnterior;
-                                const hasMetrados = totalAcumulado > 0;
-
-                                // Cálculos Vista Valorizada
-                                const precio = r.pu_actual || r.precio_unitario || 0;
-                                const presupuesto = r.metrado_programado || r.cantidad_presupuesto || 0;
-                                const saldoFisico = presupuesto - totalAcumulado;
-                                const costoEjecutado = totalAcumulado * precio;
-                                const saldoMonetario = saldoFisico * precio;
-
                                 return (
-                                    <tr key={`header-${r.codigo}`} className={`${hasMetrados ? 'bg-blue-50/50' : 'bg-white'} border-b border-slate-100 font-semibold group transition-colors`}>
-                                        <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1 text-center overflow-hidden"></td>
-                                        <td className="w-[85px] min-w-[85px] px-1 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.1}rem` }}>
-                                            <span className="font-mono text-[10px] text-blue-500 bg-blue-50 px-1 py-0.5 rounded border border-blue-100">
-                                                {r.codigo}
-                                            </span>
-                                        </td>
-                                        <td className="px-1 py-1"
-                                            style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.15}rem` }}>
-                                            <div className="flex items-center gap-2">
-                                                {RenderModificacionBadge(r.modificacion)}
-                                                <span className="text-slate-700 text-[11px] leading-snug">{r.descripcion}</span>
-                                                {r.cantidad_presupuesto === 0 && (
-                                                    <span className="bg-red-100 text-red-600 font-bold px-1 py-0.5 rounded text-[9px] border border-red-200" title="Partida Deductiva (Cantidad 0 original)">DD</span>
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="w-[30px] min-w-[30px] px-1 py-1 text-center text-slate-400 font-bold text-[10px]">{r.unidad}</td>
-
-                                        {!showCostView ? (
-                                            <td colSpan={8} className="px-1 py-1 border-l border-slate-100/50">
-                                                {!showCostView && r.precio_unitario > 0 && (
-                                                    <div className="w-full h-full flex justify-end items-center pr-3 gap-2">
-                                                        <span className="bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded text-[10px] border border-emerald-200 shadow-sm" title={`Precio Base: S/ ${r.precio_unitario}`}>S/ {r.precio_unitario.toFixed(2)}</span>
-                                                        <span className="bg-blue-600 text-white font-black px-2 py-0.5 rounded text-[11px] border border-blue-700 shadow-sm animate-pulse-subtle">
-                                                            S/ {formatNumber(totalPeriodo * precio)}
-                                                        </span>
-                                                    </div>
-                                                )}
-                                            </td>
-                                        ) : (
-                                            <>
-                                                <td className="w-[65px] min-w-[65px] px-1 py-1 text-right text-[11px] border-l border-slate-100 bg-financial-value font-mono">S/ {precio.toFixed(2)}</td>
-                                                <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-blue-100 bg-financial-progress font-mono font-bold">{formatNumber(totalAcumulado)}</td>
-                                                <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-blue-100 bg-financial-progress font-mono text-slate-500/70">{formatNumber(presupuesto)}</td>
-                                                <td className={`w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-amber-100 bg-financial-pending font-mono font-bold ${saldoFisico < 0 ? 'text-red-500' : 'text-amber-800'}`}>{formatNumber(saldoFisico)}</td>
-                                                <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-amber-100 bg-financial-pending font-mono italic text-amber-700/80">S/ {formatNumber(saldoMonetario)}</td>
-                                                <td className="w-[85px] min-w-[85px] px-1 py-1 text-right text-[11px] border-l border-emerald-200 bg-current-month font-mono font-black text-emerald-800 shadow-sm">S/ {formatNumber(totalPeriodo * precio)}</td>
-                                                <td className="w-[85px] min-w-[85px] px-1 py-1 text-right text-[12px] border-l border-emerald-200 bg-financial-value font-mono font-black text-emerald-700">S/ {formatNumber(costoEjecutado)}</td>
-                                                <td className="w-[70px] min-w-[70px] border-l border-slate-100/50"></td>
-                                            </>
-                                        )}
-
-                                        <td className={`w-[85px] min-w-[85px] px-2 py-1 text-right font-black text-[12px] border-l border-slate-100/50 ${showCostView ? 'text-emerald-700 bg-emerald-50/50' : 'text-blue-600'}`}>
-                                            {hasMetrados ? (showCostView ? `S/ ${formatNumber(totalPeriodo * precio)}` : formatNumber(totalPeriodo)) : '-'}
-                                        </td>
-                                    </tr>
+                                    <HeaderRow
+                                        key={r.id}
+                                        r={r}
+                                        partidaTotals={partidaTotals}
+                                        showCostView={showCostView}
+                                        getIndentLevel={getIndentLevel}
+                                        formatNumber={formatNumber}
+                                    />
                                 );
                             }
-
-                            // CASO 3: Es un Registro de Metrado (Ingresado por el usuario)
-                            const handleKeyDown = (e: React.KeyboardEvent) => {
-                                if (e.key === 'Enter') {
-                                    e.preventDefault();
-                                    const inputs = Array.from(document.querySelectorAll('.metrado-input')) as HTMLInputElement[];
-                                    const currentIndex = inputs.indexOf(e.target as HTMLInputElement);
-                                    if (currentIndex > -1 && currentIndex < inputs.length - 1) {
-                                        inputs[currentIndex + 1].focus();
-                                        inputs[currentIndex + 1].select();
-                                    }
-                                }
-                            };
 
                             return (
-                                <tr key={`rec-${r.id}`} className="hover:bg-blue-50/20 border-b border-slate-100 group transition-all duration-200">
-                                    <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1.5 text-center overflow-hidden">
-                                        <input type="date" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-400 font-bold text-[9px] uppercase tracking-tighter"
-                                            value={r.fecha} onChange={(e) => onUpdate?.(r.id, 'fecha', e.target.value)}
-                                            onFocus={(e) => e.target.select()}
-                                            title={r.fecha} />
-                                    </td>
-                                    <td className="w-[85px] min-w-[85px] px-0.5 py-1.5">
-                                        <div className="flex items-center justify-center gap-0.5">
-                                            <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
-                                            <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
-                                                title="Frente" value={r.frente} onChange={(e) => onUpdate?.(r.id, 'frente', e.target.value)}
-                                                onFocus={(e) => e.target.select()} />
-                                            <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
-                                                title="Bloque" value={r.bloque} onChange={(e) => onUpdate?.(r.id, 'bloque', e.target.value)}
-                                                onFocus={(e) => e.target.select()} />
-                                            <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
-                                                title="Nivel" value={r.nivel} onChange={(e) => onUpdate?.(r.id, 'nivel', e.target.value)}
-                                                onFocus={(e) => e.target.select()} />
-                                        </div>
-                                    </td>
-                                    <td className="px-1 py-1.5">
-                                        <div className="flex items-center gap-1.5 w-full">
-                                            <input
-                                                type="text"
-                                                className="metrado-input w-12 bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded text-slate-500 text-[9px] font-black uppercase shrink-0 text-center shadow-inner cursor-not-allowed opacity-80"
-                                                value={r.cuadrilla || ''}
-                                                placeholder="CDLLA"
-                                                title={`Personal asignado: ${r.obrero_nombre || "Ninguno"}. La edición se hace desde el panel de ingreso.`}
-                                                readOnly
-                                            />
-                                            {r.elemento && <span className="text-blue-400 font-black text-[12px] shrink-0">↳</span>}
-                                            <input
-                                                type="text"
-                                                className="metrado-input w-20 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0"
-                                                value={r.elemento || ''}
-                                                placeholder="Agrupador"
-                                                onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())}
-                                                onFocus={(e) => e.target.select()}
-                                            />
-                                            {r.diametro && <span className="text-orange-600 font-bold tracking-wider text-[10px] bg-orange-100/80 px-1.5 py-0.5 rounded shadow-sm border border-orange-200 shrink-0">Φ {r.diametro}</span>}
-                                            <input
-                                                type="text"
-                                                className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[11px] font-medium placeholder:text-slate-300 italic"
-                                                value={r.detalle || ''}
-                                                placeholder="Ej. Acero longitudinal 3/4''..."
-                                                onChange={(e) => onUpdate?.(r.id, 'detalle', e.target.value)}
-                                                onKeyDown={(e) => handleKeyDown(e)}
-                                            />
-                                        </div>
-                                    </td>
-                                    <td className="px-2 py-1.5 text-center text-slate-300">-</td>
-
-                                    {!showCostView ? (
-                                        (() => {
-                                            const strategy = formulaRegistry.get(r.tipo_metrado);
-                                            const meta = { hvacItemType: r.hvac_item_type };
-
-                                            return (
-                                                <>
-                                                    {/* Dimensiones Editables */}
-                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                                        {strategy.isFieldLocked('cantidad', meta) ? (
-                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
-                                                        ) : (
-                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                                                value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)}
-                                                                onFocus={(e) => e.target.select()}
-                                                                onKeyDown={(e) => handleKeyDown(e)} />
-                                                        )}
-                                                    </td>
-                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                                        {strategy.isFieldLocked('longitud_area', meta) ? (
-                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
-                                                        ) : (
-                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                                                value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)}
-                                                                onFocus={(e) => e.target.select()}
-                                                                onKeyDown={(e) => handleKeyDown(e)} />
-                                                        )}
-                                                    </td>
-                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                                        {strategy.isFieldLocked('ancho_empalme', meta) ? (
-                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
-                                                        ) : (
-                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                                                value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)}
-                                                                onFocus={(e) => e.target.select()}
-                                                                onKeyDown={(e) => handleKeyDown(e)} />
-                                                        )}
-                                                    </td>
-                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                                        {strategy.isFieldLocked('altura_gancho', meta) ? (
-                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none">N/A</span>
-                                                        ) : (
-                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                                                value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)}
-                                                                onFocus={(e) => e.target.select()}
-                                                                onKeyDown={(e) => handleKeyDown(e)} />
-                                                        )}
-                                                    </td>
-
-                                                    <td className="px-2 py-1.5 text-right font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
-
-                                                    <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
-                                                        {strategy.isFieldLocked('nro_veces', meta) ? (
-                                                            <span className="text-[9px] font-bold text-slate-300 pointer-events-none bg-slate-50/50 block w-full rounded">1</span>
-                                                        ) : (
-                                                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
-                                                                value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)}
-                                                                onFocus={(e) => e.target.select()}
-                                                                onKeyDown={(e) => handleKeyDown(e)} />
-                                                        )}
-                                                    </td>
-
-                                                    {/* Espaciador para la columna vacía del Header */}
-                                                    <td className="w-[10px] min-w-[10px] border-l border-slate-200/60"></td>
-                                                </>
-                                            );
-                                        })()
-                                    ) : (
-                                        <td colSpan={7} className="px-1 py-1.5 text-center border-l border-slate-200/60 text-slate-300 italic text-[10px]">
-                                            Modo valorización activado - Desactivar para editar medidas
-                                        </td>
-                                    )}
-
-                                    <td className="w-[60px] min-w-[60px] px-1 py-1 text-center border-l border-slate-100/50">
-                                        <div className="flex flex-col items-center leading-none">
-                                            <span className="text-[9px] font-black text-slate-800 uppercase truncate w-full" title={r.autor_usuario || 'User'}>
-                                                {(r.autor_usuario || 'User').split(' ')[0]}
-                                            </span>
-                                        </div>
-                                    </td>
-
-                                    {/* Total + Acciones */}
-                                    <td className="w-[75px] min-w-[75px] px-1.5 py-1.5 text-right font-bold text-slate-800 relative text-[11px] border-l border-slate-200/60">
-                                        <div className="flex items-center justify-end gap-1.5">
-                                            <span>{r.total.toFixed(2)}</span>
-                                            <button
-                                                onClick={() => onDelete?.(r.id)}
-                                                className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all p-1 hover:bg-red-50 rounded-md"
-                                                title="Eliminar Registro"
-                                            >
-                                                <Trash2 size={12} />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <RecordRow
+                                    key={r.id}
+                                    r={r}
+                                    onUpdate={memoizedUpdate}
+                                    onDelete={memoizedDelete}
+                                    showCostView={showCostView}
+                                    formatNumber={formatNumber}
+                                    handleKeyDown={memoizedKeyDown}
+                                />
                             );
                         })}
                         {paddingBottom > 0 && (
@@ -1045,6 +1039,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     Control de Planilla Web v3.1
                 </div>
             </div>
+
+
         </div>
     );
 };

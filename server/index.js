@@ -78,8 +78,10 @@ const esPartidaAcero = (m) =>
 
 app.post('/api/export/metrados', async (req, res) => {
     try {
-        const { metrados, proyecto } = req.body;
-        console.log(`Iniciando exportación de ${metrados.length} registros para proyecto: ${proyecto}`);
+        const { metrados, proyecto, mode = 'official' } = req.body;
+        const isMaster = mode === 'master';
+
+        console.log(`Iniciando exportación (${mode}) de ${metrados.length} registros para proyecto: ${proyecto}`);
         if (!Array.isArray(metrados) || metrados.length === 0)
             return res.status(400).json({ error: 'Payload vacío.' });
 
@@ -117,11 +119,18 @@ app.post('/api/export/metrados', async (req, res) => {
 
         metrados.forEach(m => {
             if (m.is_template) {
-                codigosMap.set(m.codigo, {
+                const info = {
                     descripcion: m.descripcion,
                     nivel_jerarquia: m.nivel_jerarquia,
-                    unidad: m.unidad
-                });
+                    unidad: m.unidad,
+                    precio_unitario: m.pu_actual || m.precio_unitario || 0,
+                    metrado_programado: m.metrado_programado || m.cantidad_presupuesto || 0,
+                    metrado_anterior_acumulado: m.metrado_anterior_acumulado || m.acumulado_anterior_qty || 0,
+                    se_valoriza: m.se_valoriza !== undefined ? m.se_valoriza : true
+                };
+                codigosMap.set(m.codigo, info);
+                // También registrar por UUID si existe
+                if (m.id) codigosMap.set(m.id, info);
             } else {
                 partidaTotals[m.codigo_partida] = (partidaTotals[m.codigo_partida] || 0) + (m.total || 0);
             }
@@ -162,9 +171,21 @@ app.post('/api/export/metrados', async (req, res) => {
 
             const colM = `${codigoActual}-${descActual}`;
             const total2 = partidaTotals[codigoActual] || 0;
-            const unidadActual = (m.unidad) || (codigosMap.get(codigoActual)?.unidad) || "";
+            
+            const infoPartida = codigosMap.get(codigoActual) || {};
+            const unidadActual = m.unidad || infoPartida.unidad || "";
+            const pu = infoPartida.precio_unitario || 0;
+            const meta = infoPartida.metrado_programado || 0;
+            const anterior = infoPartida.metrado_anterior_acumulado || 0;
+            const acumuladoTotal = total2 + anterior;
+            const saldoFisico = meta - acumuladoTotal;
+            const porcentajeAvance = meta > 0 ? (acumuladoTotal / meta) : 0;
+            const valoAnterior = anterior * pu;
+            const valoActual = total2 * pu;
+            const valoAcumulada = acumuladoTotal * pu;
+            const saldoMonetario = saldoFisico * pu;
 
-            rowData = new Array(27).fill("");
+            rowData = new Array(42).fill("");
 
             if (isSumatoria) {
                 const hasMetrados = codesWithMetrados.has(codigoActual);
@@ -240,6 +261,31 @@ app.post('/api/export/metrados', async (req, res) => {
                 rowData[26] = m.autor_usuario || "";
             }
 
+            // --- BLOQUE MAESTRO (AB - AM) ---
+            if (isMaster && rowData) {
+                rowData[27] = pu; // AB: PU
+                rowData[28] = meta; // AC: Meta
+                rowData[29] = anterior; // AD: Anterior
+                rowData[30] = total2; // AE: Actual (Partida)
+                rowData[31] = acumuladoTotal; // AF: Acumulado Total
+                rowData[32] = saldoFisico; // AG: Saldo Físico
+                rowData[33] = porcentajeAvance; // AH: % Avance
+                rowData[34] = valoAnterior; // AI: Valo Anterior S/
+                rowData[35] = valoActual; // AJ: Valo Actual S/
+                rowData[36] = valoAcumulada; // AK: Valo Acumulada S/
+                rowData[37] = saldoMonetario; // AL: Saldo Monetario S/
+                
+                // AM: Estado
+                let estado = "EN PROCESO";
+                if (saldoFisico < 0) estado = "EXCEDIDO";
+                else if (saldoFisico === 0 && meta > 0) estado = "FINALIZADO";
+                else if (meta === 0) estado = "DEDUCTIVO/EXTRA";
+                rowData[38] = estado;
+
+                // AN: Se Valoriza
+                rowData[39] = infoPartida.se_valoriza ? "SI" : "NO";
+            }
+
             if (rowData) {
                 const row = worksheet.getRow(currentExcelRow);
                 rowData.forEach((val, i) => {
@@ -275,13 +321,37 @@ app.post('/api/export/metrados', async (req, res) => {
         }
 
         const dateStr = new Date().toISOString().split('T')[0];
-        const filename = `Metrado_${especialidadNombre}_${dateStr}.xlsx`;
+        const filename = `${isMaster ? 'MAESTRO' : 'REPORTE'}_${especialidadNombre}_${dateStr}.xlsx`;
 
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        
+        // Estilización Maestro (Headers)
+        if (isMaster) {
+            const headerRow = worksheet.getRow(STARTING_ROW - 1); // Asumimos que hay headers en la fila 7
+            const masterColors = ['FFD9EAD3', 'FFCFE2F3', 'FFFFF2CC', 'FFF4CCCC']; // Verde, Azul, Amarillo, Rojo claros
+            
+            // Pintar nuevos encabezados si el template lo permite o simplemente escribir los nombres en la fila 7
+            const headersMaster = [
+                'PU', 'META', 'ANT. CANT', 'ACTUAL CANT', 'ACUM. CANT', 'SALDO CANT', '% AVANCE',
+                'VALO ANT S/', 'VALO ACT S/', 'VALO ACUM S/', 'SALDO S/', 'ESTADO', 'VALORIZA'
+            ];
+            
+            headersMaster.forEach((h, i) => {
+                const cell = headerRow.getCell(28 + i);
+                cell.value = h;
+                cell.font = { bold: true };
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'FFEFEFEF' }
+                };
+            });
+        }
+
         res.send(buffer);
 
-        console.log(`[INKAIA] ✅ Exportación local completada: ${filename}`);
+        console.log(`[INKAIA] ✅ Exportación ${mode} completada: ${filename}`);
 
     } catch (err) {
         console.error(`[INKAIA] ❌ ERROR:`, err);
