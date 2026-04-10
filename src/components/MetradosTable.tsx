@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import type { Metrado, Partida } from '../types';
-import { Download, Loader2, Eraser, Trash2, Calendar, Users } from 'lucide-react';
+import { Download, Trash2, Loader2, Calendar, Users } from 'lucide-react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { RenderModificacionBadge } from './MetradosForm';
 import { useMetradosStore } from '../store/useMetradosStore';
@@ -467,181 +467,170 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     };
 
     return (
-        <div className="glass-panel overflow-hidden rounded-2xl flex flex-col h-full border border-slate-200 shadow-sm bg-white">
-            {/* Header de la Tabla */}
-            <div className="p-3 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
-                <div className="flex flex-col">
+        <div className="glass-panel overflow-hidden rounded-2xl flex flex-col h-full border border-slate-200 shadow-sm bg-white">            <div className="p-3 border-b border-slate-200 bg-slate-50/50 flex flex-col gap-3 sticky top-0 z-20 backdrop-blur-md">
+                {/* FILA 1: TÍTULO Y ACCIONES PRINCIPALES */}
+                <div className="flex justify-between items-center w-full">
                     <h3 className="font-bold text-slate-800 text-base tracking-tight">Planilla de Metrados Dinámica</h3>
-                    <div className="flex flex-wrap items-center gap-3 mt-0.5">
-                        {/* Filtro Especialidad */}
-                        <div className="flex items-center gap-1.5">
-                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Especialidad</span>
-                            <select
-                                value={especialidadSeleccionada}
-                                onChange={(e) => {
-                                    onEspecialidadChange?.(e.target.value);
-                                    setFilterAuthor('TODOS');
-                                    setFilterFrente('TODOS');
-                                    setFilterBloque('TODOS');
-                                    setFilterNivel('TODOS');
-                                }}
-                                disabled={isSpecialtyLocked}
-                                className={`text-[11px] font-bold border border-slate-200 rounded-lg px-2 py-1 outline-none transition-all ${isSpecialtyLocked
-                                    ? 'bg-slate-50 text-slate-400 cursor-not-allowed'
-                                    : 'bg-white text-slate-700 hover:border-blue-400 cursor-pointer shadow-sm'
-                                    }`}
-                            >
-                                {SPECIALTY_RULES.map(rule => (
-                                    <option key={rule.id} value={rule.id}>{rule.label}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {/* Filtro Autor */}
-                        <div className="flex items-center gap-1.5 pl-1.5 border-l border-slate-200">
-                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Autor</span>
-                            <select
-                                value={filterAuthor}
-                                onChange={(e) => setFilterAuthor(e.target.value)}
-                                className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
-                            >
-                                <option value="TODOS">TODOS</option>
-                                {availableAuthors.map(author => (
-                                    <option key={author} value={author}>{author}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {/* Filtro Fecha (Rango) */}
-                        <div className="flex items-center gap-1.5 pl-1.5 border-l border-slate-200">
-                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Fecha</span>
-                            <div className="relative flex items-center gap-1">
-                                <label className="text-[9px] text-slate-500 font-medium">Desde:</label>
-                                <input
-                                    type="date"
-                                    value={filterDateFrom}
-                                    onChange={(e) => setFilterDateFrom(e.target.value)}
-                                    className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
-                                />
-                                <label className="text-[9px] text-slate-500 font-medium">Hasta:</label>
-                                <input
-                                    type="date"
-                                    value={filterDateTo}
-                                    onChange={(e) => setFilterDateTo(e.target.value)}
-                                    className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
-                                />
-                                {(filterDateFrom || filterDateTo) && (
-                                    <button
-                                        onClick={() => {
-                                            setFilterDateFrom('');
-                                            setFilterDateTo('');
-                                        }}
-                                        className="absolute -right-8 w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-500 hover:text-white transition-colors text-[8px] cursor-pointer"
-                                    >✕</button>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Filtros de Ubicación (Frente, Bloque, Nivel) */}
-                        <div className="flex items-center gap-1 pl-1.5 border-l border-slate-200">
-                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight mr-1">Locación</span>
-                            
-                            <select
-                                value={filterFrente}
-                                onChange={(e) => setFilterFrente(e.target.value)}
-                                className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
-                                title="Frente"
-                            >
-                                <option value="TODOS">F. TODOS</option>
-                                {availableFrentes.map(frente => (
-                                    <option key={frente} value={frente}>{frente.substring(0, 10)}{frente.length > 10 ? '...' : ''}</option>
-                                ))}
-                            </select>
-
-                            <select
-                                value={filterBloque}
-                                onChange={(e) => setFilterBloque(e.target.value)}
-                                className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
-                                title="Bloque"
-                            >
-                                <option value="TODOS">B. TODOS</option>
-                                {availableBloques.map(bloque => (
-                                    <option key={bloque} value={bloque}>{bloque.substring(0, 10)}{bloque.length > 10 ? '...' : ''}</option>
-                                ))}
-                            </select>
-
-                            <select
-                                value={filterNivel}
-                                onChange={(e) => setFilterNivel(e.target.value)}
-                                className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
-                                title="Nivel"
-                            >
-                                <option value="TODOS">N. TODOS</option>
-                                {availableNiveles.map(nivel => (
-                                    <option key={nivel} value={nivel}>{nivel.substring(0, 10)}{nivel.length > 10 ? '...' : ''}</option>
-                                ))}
-                            </select>
-                        </div>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={exportToExcel}
+                            disabled={isExporting}
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-sm cursor-pointer ${isExporting
+                                ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                                : 'bg-green-600 hover:bg-green-700 text-white'
+                                }`}
+                        >
+                            {isExporting ? <Loader2 className="animate-spin" size={14} /> : <Download size={14} />}
+                            {isExporting ? 'Exportando Nube...' : 'Exportar Oficial'}
+                        </button>
                     </div>
                 </div>
-                <div className="flex items-center gap-3">
-                    {/* Selector de Jerarquía y Vistas (V28) */}
-                    <div className="flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-blue-300 transition-all">
-                        <span className="text-[9px] text-slate-400 font-black uppercase tracking-widest border-r border-slate-100 pr-2">Vista</span>
+
+                {/* FILA 2: FILTROS Y CONTROLES DE VISTA */}
+                <div className="flex flex-wrap items-center gap-3">
+                    {/* Filtro Especialidad */}
+                    <div className="flex items-center gap-1.5">
+                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Especialidad</span>
+                        <select
+                            value={especialidadSeleccionada}
+                            onChange={(e) => {
+                                onEspecialidadChange?.(e.target.value);
+                                setFilterAuthor('TODOS');
+                                setFilterFrente('TODOS');
+                                setFilterBloque('TODOS');
+                                setFilterNivel('TODOS');
+                            }}
+                            disabled={isSpecialtyLocked}
+                            className={`text-[11px] font-bold border border-slate-200 rounded-lg px-2 py-1 outline-none transition-all ${isSpecialtyLocked
+                                ? 'bg-slate-50 text-slate-400 cursor-not-allowed'
+                                : 'bg-white text-slate-700 hover:border-blue-400 cursor-pointer shadow-sm'
+                                }`}
+                        >
+                            {SPECIALTY_RULES.map(rule => (
+                                <option key={rule.id} value={rule.id}>{rule.label}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Filtro Autor */}
+                    <div className="flex items-center gap-1.5 pl-1.5 border-l border-slate-200">
+                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Autor</span>
+                        <select
+                            value={filterAuthor}
+                            onChange={(e) => setFilterAuthor(e.target.value)}
+                            className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                        >
+                            <option value="TODOS">TODOS</option>
+                            {availableAuthors.map(author => (
+                                <option key={author} value={author}>{author}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Filtro Fecha (Rango) */}
+                    <div className="flex items-center gap-1.5 pl-1.5 border-l border-slate-200">
+                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Fecha</span>
+                        <div className="relative flex items-center gap-1">
+                            <label className="text-[9px] text-slate-500 font-medium">Desde:</label>
+                            <input
+                                type="date"
+                                value={filterDateFrom}
+                                onChange={(e) => setFilterDateFrom(e.target.value)}
+                                className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                            />
+                            <label className="text-[9px] text-slate-500 font-medium">Hasta:</label>
+                            <input
+                                type="date"
+                                value={filterDateTo}
+                                onChange={(e) => setFilterDateTo(e.target.value)}
+                                className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                            />
+                            {(filterDateFrom || filterDateTo) && (
+                                <button
+                                    onClick={() => {
+                                        setFilterDateFrom('');
+                                        setFilterDateTo('');
+                                    }}
+                                    className="absolute -right-8 w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-500 hover:text-white transition-colors text-[8px] cursor-pointer"
+                                >✕</button>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Filtros de Ubicación (Frente, Bloque, Nivel) */}
+                    <div className="flex items-center gap-1 pl-1.5 border-l border-slate-200">
+                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight mr-1">Locación</span>
+                        <select
+                            value={filterFrente}
+                            onChange={(e) => setFilterFrente(e.target.value)}
+                            className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                            title="Frente"
+                        >
+                            <option value="TODOS">F. TODOS</option>
+                            {availableFrentes.map(frente => (
+                                <option key={frente} value={frente}>{frente.substring(0, 10)}{frente.length > 10 ? '...' : ''}</option>
+                            ))}
+                        </select>
+                        <select
+                            value={filterBloque}
+                            onChange={(e) => setFilterBloque(e.target.value)}
+                            className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                            title="Bloque"
+                        >
+                            <option value="TODOS">B. TODOS</option>
+                            {availableBloques.map(bloque => (
+                                <option key={bloque} value={bloque}>{bloque.substring(0, 10)}{bloque.length > 10 ? '...' : ''}</option>
+                            ))}
+                        </select>
+                        <select
+                            value={filterNivel}
+                            onChange={(e) => setFilterNivel(e.target.value)}
+                            className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                            title="Nivel"
+                        >
+                            <option value="TODOS">N. TODOS</option>
+                            {availableNiveles.map(nivel => (
+                                <option key={nivel} value={nivel}>{nivel.substring(0, 10)}{nivel.length > 10 ? '...' : ''}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="h-4 w-px bg-slate-200 mx-1" />
+
+                    {/* Selector de Jerarquía - COMPACTO */}
+                    <div className="flex items-center gap-1 px-1.5 py-0.5 bg-slate-100 rounded-md border border-slate-200">
+                        <span className="text-[8px] text-slate-500 font-black uppercase">Vista</span>
                         <select
                             value={viewMode}
                             onChange={(e) => setViewMode(e.target.value as any)}
-                            className="text-[11px] font-black bg-transparent border-none outline-none text-blue-600 cursor-pointer focus:ring-0"
+                            className="text-[9px] font-extrabold bg-transparent border-none outline-none text-blue-700 cursor-pointer focus:ring-0 px-1"
                         >
-                            <optgroup label="Modos de Tabla">
-                                <option value="DETALLE">💎 Vista Integral (Detalle)</option>
-                                <option value="SUMMARY">📊 Resumen Ejecutivo (Partidas)</option>
+                            <optgroup label="Modos">
+                                <option value="DETALLE">💎 Integral</option>
+                                <option value="SUMMARY">📊 Resumen</option>
                             </optgroup>
-                            <optgroup label="Agrupar por Jerarquía (Especialidades)">
-                                <option value="L1">📍 Nivel 1: Títulos (OE.1)</option>
-                                <option value="L2">📍 Nivel 2: Sub-Títulos</option>
-                                <option value="L3">📍 Nivel 3: Partidas 1°</option>
-                                <option value="L4">📍 Nivel 4: Partidas 2°</option>
-                                <option value="L5">📍 Nivel 5: Detalle 3°</option>
-                                <option value="L6">📍 Nivel 6: Máximo</option>
+                            <optgroup label="Niveles OE">
+                                <option value="L1">📍 Nivel 1</option>
+                                <option value="L2">📍 Nivel 2</option>
+                                <option value="L3">📍 Nivel 3</option>
+                                <option value="L4">📍 Nivel 4</option>
+                                <option value="L5">📍 Nivel 5</option>
+                                <option value="L6">📍 Nivel 6</option>
                             </optgroup>
                         </select>
                     </div>
 
-                    {/* Botón Toggle Vista Valorizada (Ahora solo controla mostrar precios o metrados en la vista actual) */}
+                    {/* Toggle Medidas/Soles */}
                     <button
                         onClick={() => setShowCostView(!showCostView)}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm cursor-pointer border ${showCostView
-                            ? 'bg-blue-600 text-white border-blue-700 shadow-blue-200'
+                        className={`flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-black transition-all border shadow-sm cursor-pointer ${showCostView
+                            ? 'bg-blue-600 text-white border-blue-700 shadow-blue-100'
                             : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                             }`}
                         title={showCostView ? "Ver en modo Técnico (Medidas)" : "Ver en modo Económico (Soles)"}
                     >
-                        <span className="text-[14px]">{showCostView ? '👷' : '💰'}</span>
+                        <span>{showCostView ? '👷' : '💰'}</span>
                         {showCostView ? 'Soles' : 'Medidas'}
-                    </button>
-
-                    <button
-                        onClick={() => {
-                            if (window.confirm('¿Estás seguro de que deseas limpiar todos los datos registrados? Esta acción no se puede deshacer.')) {
-                                useMetradosStore.getState().clearAll();
-                            }
-                        }}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 text-slate-600 hover:bg-slate-300 transition-all shadow-sm cursor-pointer"
-                    >
-                        <Eraser size={14} />
-                        Limpiar datos
-                    </button>
-                    <button
-                        onClick={exportToExcel}
-                        disabled={isExporting}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-sm cursor-pointer ${isExporting
-                            ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
-                            : 'bg-green-600 hover:bg-green-700 text-white'
-                            }`}
-                    >
-                        {isExporting ? <Loader2 className="animate-spin" size={14} /> : <Download size={14} />}
-                        {isExporting ? 'Exportando Nube...' : 'Exportar Oficial'}
                     </button>
                 </div>
             </div>
