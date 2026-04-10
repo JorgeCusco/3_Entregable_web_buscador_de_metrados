@@ -154,7 +154,7 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 
         orphansByCode.forEach((metradosDeOrfano, code) => {
             const sample = metradosDeOrfano[0];
-            
+
             // FILTRO DE NIVEL EN HUÉRFANOS (V28)
             if (maxLevel !== null) {
                 const currentLevel = getIndentLevel(code);
@@ -214,12 +214,12 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     const [filterAuthor, setFilterAuthor] = React.useState('TODOS');
     const { user } = useAuthStore();
     const { systemUsers } = useSystemUsersStore();
-    
+
     // 1. ESTADOS DE FILTROS BÁSICOS
     const [filterFrente, setFilterFrente] = React.useState('TODOS');
     const [filterBloque, setFilterBloque] = React.useState('TODOS');
     const [filterNivel, setFilterNivel] = React.useState('TODOS');
-    
+
     // 2. ESTADOS DE FECHAS (Deben ir antes de las funciones que los usan)
     const initialDateRange = useMemo(() => getCurrentWeekRange(), []);
     const [filterDateFrom, setFilterDateFrom] = React.useState(initialDateRange.from);
@@ -230,20 +230,20 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     const availableMonths = useMemo(() => {
         const monthsMap = new Map<string, { year: number, month: number, label: string }>();
         const monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"];
-        
+
         metrados.forEach(m => {
             if (!m.fecha) return;
             const d = new Date(m.fecha + 'T00:00:00');
             const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, '0')}`;
             if (!monthsMap.has(key)) {
-                monthsMap.set(key, { 
-                    year: d.getFullYear(), 
-                    month: d.getMonth(), 
+                monthsMap.set(key, {
+                    year: d.getFullYear(),
+                    month: d.getMonth(),
                     label: `${monthNames[d.getMonth()]} ${String(d.getFullYear()).slice(-2)}`
                 });
             }
         });
-        
+
         return Array.from(monthsMap.values()).sort((a, b) => (b.year * 100 + b.month) - (a.year * 100 + a.month));
     }, [metrados]);
 
@@ -467,10 +467,28 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
     };
 
     return (
-        <div className="glass-panel overflow-hidden rounded-2xl flex flex-col h-full border border-slate-200 shadow-sm bg-white">            <div className="p-3 border-b border-slate-200 bg-slate-50/50 flex flex-col gap-3 sticky top-0 z-20 backdrop-blur-md">
+        <div className="glass-panel overflow-hidden rounded-2xl flex flex-col h-full border border-slate-200 shadow-sm bg-white">
+            <div className="p-3 border-b border-slate-200 bg-slate-50/50 flex flex-col gap-3 sticky top-0 z-20 backdrop-blur-md">
                 {/* FILA 1: TÍTULO Y ACCIONES PRINCIPALES */}
                 <div className="flex justify-between items-center w-full">
-                    <h3 className="font-bold text-slate-800 text-base tracking-tight">Planilla de Metrados Dinámica</h3>
+                    <div className="flex items-center gap-4">
+                        <h3 className="font-bold text-slate-800 text-base tracking-tight shrink-0">Planilla de Metrados Dinámica</h3>
+                        {/* LEYENDA INTEGRADA DE MODIFICACIONES */}
+                        <div className="hidden md:flex items-center gap-3 border-l border-slate-200 pl-4">
+                            {[
+                                { label: 'PC', color: 'bg-[#FF69B4]', title: 'Partida Creada' },
+                                { label: 'MM', color: 'bg-blue-500', title: 'Mayor Metrado' },
+                                { label: 'PN', color: 'bg-green-500', title: 'Partida Nueva' },
+                                { label: 'DD', color: 'bg-red-500', title: 'Deductivo' },
+                                { label: 'ET', color: 'bg-sky-200', title: 'Contractual' }
+                            ].map(item => (
+                                <div key={item.label} className="flex items-center gap-1" title={item.title}>
+                                    <div className={`w-1.5 h-1.5 rounded-full ${item.color} shadow-sm border border-black/5`} />
+                                    <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">{item.label}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                     <div className="flex items-center gap-2">
                         <button
                             onClick={exportToExcel}
@@ -641,20 +659,20 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                     <Calendar size={12} className="text-slate-400" />
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Período:</span>
                 </div>
-                
+
                 <button
                     onClick={() => handleMonthChange('week')}
-                    className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'week' 
-                        ? 'bg-blue-600 text-white border-blue-700 shadow-sm shadow-blue-200' 
+                    className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'week'
+                        ? 'bg-blue-600 text-white border-blue-700 shadow-sm shadow-blue-200'
                         : 'bg-white text-slate-500 border-slate-200 hover:border-blue-300'}`}
                 >
                     ESTA SEMANA
                 </button>
-                
+
                 <button
                     onClick={() => handleMonthChange('all')}
-                    className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'all' 
-                        ? 'bg-indigo-600 text-white border-indigo-700 shadow-sm shadow-indigo-200' 
+                    className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'all'
+                        ? 'bg-indigo-600 text-white border-indigo-700 shadow-sm shadow-indigo-200'
                         : 'bg-white text-slate-500 border-slate-200 hover:border-indigo-300'}`}
                 >
                     TODO EL TIEMPO
@@ -668,22 +686,22 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         <button
                             key={tabId}
                             onClick={() => handleMonthChange(tabId)}
-                            className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === tabId 
-                                ? 'bg-slate-800 text-white border-slate-900 shadow-sm' 
+                            className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === tabId
+                                ? 'bg-slate-800 text-white border-slate-900 shadow-sm'
                                 : 'bg-white text-slate-500 border-slate-200 hover:border-slate-400'}`}
                         >
                             {m.label.toUpperCase()}
                         </button>
                     );
                 })}
-                
+
                 {availableMonths.length === 0 && (
                     <span className="text-[9px] text-slate-400 italic px-2">No hay meses con registros aún</span>
                 )}
             </div>
 
             {/* Contenedor con Scroll (VIRTUALIZADO) */}
-            <div 
+            <div
                 ref={parentRef}
                 className="overflow-auto flex-grow max-h-[calc(100vh-270px)] scrollbar-thin scrollbar-thumb-slate-200"
             >
@@ -727,7 +745,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                         )}
                         {virtualItems.map((virtualRow) => {
                             const r = rows[virtualRow.index];
-                            
+
                             // CASO 1: Es un Título WBS (Nodo Padre)
                             if (r.is_template && r.es_titulo) {
                                 return (
