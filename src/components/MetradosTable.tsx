@@ -421,14 +421,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
         try {
             setIsExporting(true);
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-            let apiUrl = import.meta.env.VITE_API_URL || '';
-
-            if (!apiUrl) {
-                apiUrl = isLocal
-                    ? `http://${window.location.hostname}:3001`
-                    : 'https://inkaia-backend.onrender.com';
-            }
+            let apiUrl = import.meta.env.VITE_API_URL || 'https://inkaia-backend.onrender.com';
 
             if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1);
 
