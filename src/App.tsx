@@ -27,6 +27,15 @@ function App() {
   
   const [showExecutiveDashboard, setShowExecutiveDashboard] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(true);
+  const [toast, setToast] = useState<string | null>(null);
+
+  // Efecto para limpiar notificaciones
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
 
   // Verificar autenticación al montar
   useEffect(() => {
@@ -118,6 +127,7 @@ function App() {
     if (isReadOnly) {
       setIsFormVisible(false);
       actions.setEspecialidadSeleccionada('TODAS');
+      setToast("Modo Lector Activo - Vista Protegida");
     }
   }, [isReadOnly, actions]);
 
@@ -220,7 +230,11 @@ function App() {
 
           {!isReadOnly && (
             <button 
-              onClick={() => setIsFormVisible(!isFormVisible)}
+              onClick={() => {
+                const newVal = !isFormVisible;
+                setIsFormVisible(newVal);
+                setToast(newVal ? "Modo Registro Activado" : "Vista Completa Activada");
+              }}
               className={`px-5 py-2.5 flex items-center gap-2 rounded-md text-sm font-bold transition-all shadow-sm border ${
                 isFormVisible 
                 ? 'bg-blue-50 text-blue-700 border-blue-200' 
