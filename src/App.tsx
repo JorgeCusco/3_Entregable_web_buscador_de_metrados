@@ -206,6 +206,7 @@ function App() {
           )}
 
           {/* Botón Maestro (Solo para Administradores de Presupuesto) */}
+          {(useAuthStore.getState().isAdminPresupuesto()) && (
             <button 
               onClick={() => setShowAdminPresupuesto(true)}
               className="bg-white hover:bg-slate-50 text-[#005A9C] px-5 py-2.5 flex items-center gap-2 rounded-md text-sm font-bold shadow-sm border border-[#005A9C]/30 transition-all"
