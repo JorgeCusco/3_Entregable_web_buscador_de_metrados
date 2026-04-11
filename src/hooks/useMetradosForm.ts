@@ -167,7 +167,7 @@ export const useMetradosForm = () => {
         return nuevoMetrado;
     };
 
-    return {
+    return useMemo(() => ({
         state: {
             fecha, frente, bloque, nivel, cuadrilla, obreros_ids,
             partidaSeleccionada, elemento, detalle, diametro,
@@ -192,7 +192,6 @@ export const useMetradosForm = () => {
                         if (especialidadSeleccionada && especialidadSeleccionada !== 'TODAS') {
                             const pEsp = (p.especialidad || '').toUpperCase();
                             const sEsp = especialidadSeleccionada.toUpperCase();
-                            // Match flexible (ej: 'SANITARIAS' entra en 'INSTALACIONES SANITARIAS')
                             if (pEsp.includes(sEsp) || sEsp.includes(pEsp) || pEsp === 'OBRERO' || pEsp === 'GENERICO') {
                                 return true;
                             }
@@ -214,5 +213,12 @@ export const useMetradosForm = () => {
             addCustomPartida,
             setHvacItemType
         }
-    };
+    }), [
+        fecha, frente, bloque, nivel, cuadrilla, obreros_ids,
+        partidaSeleccionada, elemento, detalle, diametro,
+        cantidad, longitud, ancho, altura, nroVeces,
+        parcial, total, especialidadSeleccionada, isSpecialtyLocked,
+        customPartidas, hvacFactor, hvacConfig, hvacItemType,
+        formulaStrategy, setContext, addCustomPartida
+    ]);
 };
