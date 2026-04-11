@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import type { Metrado, Partida } from '../types';
 import { Download, Trash2, Loader2, Calendar, Users } from 'lucide-react';
 import { useVirtualizer } from '@tanstack/react-virtual';
@@ -622,27 +622,47 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
 
         try {
             setIsExporting(true);
-            let apiUrl = import.meta.env.VITE_API_URL || 'https://inkaia-backend.onrender.com';
+            
+            // CONFIGURACIÓN DE URLS DINÁMICAS (V34)
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.168.') || window.location.hostname.startsWith('127.0.');
+            const localUrl = `http://${window.location.hostname}:3001`;
+            let primaryUrl = import.meta.env.VITE_API_URL || 'https://inkaia-backend.onrender.com';
+            
+            if (primaryUrl.endsWith('/')) primaryUrl = primaryUrl.slice(0, -1);
 
-            if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1);
-
-            console.log(`[V31 Deploy] Using API URL: ${apiUrl} (Mode: ${import.meta.env.MODE})`);
+            let targetUrl = mode === 'master' ? localUrl : primaryUrl;
+            
+            console.log(`[V34 Export] Iniciando modo: ${mode} | URL objetivo: ${targetUrl}`);
 
             let response: Response;
             try {
-                response = await fetch(`${apiUrl}/api/export/metrados`, {
+                response = await fetch(`${targetUrl}/api/export/metrados`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ metrados: rows, proyecto, mode })
                 });
-            } catch (error) {
-                throw new Error(`No se pudo conectar con el servidor de exportación en: ${apiUrl}. Verifique su conexión o que el servicio en el puerto 3001 esté activo.`);
-            }
 
-            if (!response.ok) {
-                const errJson = await response.json().catch(() => ({}));
-                const detail = errJson.error || errJson.detail || response.statusText;
-                throw new Error(`Error del Servidor: ${detail} (Status: ${response.status})`);
+                if (!response.ok) {
+                    const errorMsg = await response.text();
+                    throw new Error(errorMsg || `Error del servidor (${response.status})`);
+                }
+            } catch (error: any) {
+                // FALLBACK INTELIGENTE: Si falla el oficial (Nube), intentamos Local (3001)
+                if (mode === 'official' && targetUrl !== localUrl) {
+                    console.warn(`[V34 Fallback] Falló conexión a nube. Reintentando con servidor local en ${localUrl}...`);
+                    try {
+                        response = await fetch(`${localUrl}/api/export/metrados`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ metrados: rows, proyecto, mode })
+                        });
+                        if (!response.ok) throw new Error("Fallback local también falló.");
+                    } catch (fallbackError) {
+                        throw new Error(`Error de conexión total: No se pudo conectar a la nube (${primaryUrl}) ni al servidor local (${localUrl}). Verifique que el servidor local en el puerto 3001 esté activo.`);
+                    }
+                } else {
+                    throw new Error(`No se pudo conectar con el servidor en ${targetUrl}. Verifique su conexión o reporte de sistema.`);
+                }
             }
 
             // Descender como Blob e incitar auto-descarga Browser-side
