@@ -151,51 +151,39 @@ app.post('/api/export/metrados', async (req, res) => {
                 return;
             }
 
-            // Calculamos Grados
             const isSumatoria = m.is_template && !m.es_titulo;
             const codigoActual = isSumatoria ? m.codigo : m.codigo_partida;
             const descActual = isSumatoria ? m.descripcion : (m.descripcion_partida || m.codigo_partida || "");
 
-            const grados = ["", "", "", ""];
-            let ancestors = [];
-            for (let [key, val] of codigosMap.entries()) {
-                if (codigoActual === key || codigoActual.startsWith(key + '.')) {
-                    ancestors.push({ codigo: key, descripcion: val.descripcion });
-                }
-            }
-            // Ordenar por nivel (longitud del código)
-            ancestors.sort((a, b) => a.codigo.length - b.codigo.length);
-            for (let i = 0; i < ancestors.length && i < 4; i++) {
-                grados[i] = `${ancestors[i].codigo}-${ancestors[i].descripcion}`;
-            }
-
-            const colM = `${codigoActual}-${descActual}`;
-            const total2 = partidaTotals[codigoActual] || 0;
-            
             const infoPartida = codigosMap.get(codigoActual) || {};
             const unidadActual = m.unidad || infoPartida.unidad || "";
-            const pu = infoPartida.precio_unitario || 0;
-            const meta = infoPartida.metrado_programado || 0;
-            const anterior = infoPartida.metrado_anterior_acumulado || 0;
-            const acumuladoTotal = total2 + anterior;
-            const saldoFisico = meta - acumuladoTotal;
-            const porcentajeAvance = meta > 0 ? (acumuladoTotal / meta) : 0;
-            const valoAnterior = anterior * pu;
-            const valoActual = total2 * pu;
-            const valoAcumulada = acumuladoTotal * pu;
-            const saldoMonetario = saldoFisico * pu;
 
-            rowData = new Array(42).fill("");
+            // --- LÓGICA DE DATOS (DIFERENCIADA V35) ---
+            rowData = new Array(isMaster ? 42 : 27).fill("");
 
             if (isSumatoria) {
                 const hasMetrados = codesWithMetrados.has(codigoActual);
+                
+                // Calculamos Grados
+                const grados = ["", "", "", ""];
+                let ancestors = [];
+                for (let [key, val] of codigosMap.entries()) {
+                    if (codigoActual === key || codigoActual.startsWith(key + '.')) {
+                        ancestors.push({ codigo: key, descripcion: val.descripcion });
+                    }
+                }
+                ancestors.sort((a, b) => a.codigo.length - b.codigo.length);
+                for (let i = 0; i < ancestors.length && i < 4; i++) {
+                    grados[i] = `${ancestors[i].codigo}-${ancestors[i].descripcion}`;
+                }
+
                 rowData[1] = m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : ""; // B
                 rowData[8] = grados[0]; // I: Grado 1
                 rowData[9] = grados[1]; // J: Grado 2
                 rowData[10] = grados[2]; // K: Grado 3
                 rowData[11] = grados[3]; // L: Grado 4
-                rowData[12] = colM;     // M
-                rowData[22] = hasMetrados ? total2 : ""; // W: Total 2
+                rowData[12] = `${codigoActual}-${descActual}`; // M
+                rowData[22] = hasMetrados ? (partidaTotals[codigoActual] || 0) : ""; // W: Total 2
                 rowData[23] = unidadActual; // X: Unidad
                 rowData[24] = m.modificacion || "SM"; // Y
                 rowData[25] = ""; // Z: Personal
@@ -263,6 +251,18 @@ app.post('/api/export/metrados', async (req, res) => {
 
             // --- BLOQUE MAESTRO (AB - AM) ---
             if (isMaster && rowData) {
+                const total2 = partidaTotals[codigoActual] || 0;
+                const pu = infoPartida.precio_unitario || 0;
+                const meta = infoPartida.metrado_programado || 0;
+                const anterior = infoPartida.metrado_anterior_acumulado || 0;
+                const acumuladoTotal = total2 + anterior;
+                const saldoFisico = meta - acumuladoTotal;
+                const porcentajeAvance = meta > 0 ? (acumuladoTotal / meta) : 0;
+                const valoAnterior = anterior * pu;
+                const valoActual = total2 * pu;
+                const valoAcumulada = acumuladoTotal * pu;
+                const saldoMonetario = saldoFisico * pu;
+
                 rowData[27] = pu; // AB: PU
                 rowData[28] = meta; // AC: Meta
                 rowData[29] = anterior; // AD: Anterior

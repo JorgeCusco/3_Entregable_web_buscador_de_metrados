@@ -98,6 +98,17 @@ export const useAuthStore = create<AuthState>()(
                 const user = get().user;
                 if (!user) return false;
                 return user.es_gerencia === true;
+            },
+
+            isReadOnlyMetrados: () => {
+                const user = get().user;
+                if (!user) return false;
+                // Es lector si tiene el rol explícito o si su cargo es Visita/Observador
+                const cargo = user.cargo?.toUpperCase() || "";
+                return user.roles_apps?.metrados === 'lector' || 
+                       cargo.includes("VISITA") || 
+                       cargo.includes("OBSERVADOR") ||
+                       cargo.includes("LECTOR");
             }
         }),
         {

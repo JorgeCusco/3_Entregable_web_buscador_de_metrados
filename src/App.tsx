@@ -25,11 +25,8 @@ function App() {
   const { isAuthenticated, user, logout, checkAuth } = useAuthStore();
   const { fetchSystemUsers } = useSystemUsersStore();
   
-  const [toast, setToast] = useState<string | null>(null);
-  const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
-  const [showGestionPC, setShowGestionPC] = useState(false);
-  const [showAdminPresupuesto, setShowAdminPresupuesto] = useState(false);
   const [showExecutiveDashboard, setShowExecutiveDashboard] = useState(false);
+  const [isFormVisible, setIsFormVisible] = useState(true);
 
   // Verificar autenticación al montar
   useEffect(() => {
@@ -112,6 +109,16 @@ function App() {
   const handleUpdateGroup = (codigoPartida: string, oldElemento: string, newElemento: string) => {
     updateGroup(codigoPartida, oldElemento, newElemento);
   };
+
+  const isReadOnly = useAuthStore.getState().isReadOnlyMetrados();
+
+  // Si es solo lectura, forzamos que el formulario esté oculto y el filtro sea "TODAS"
+  useEffect(() => {
+    if (isReadOnly) {
+      setIsFormVisible(false);
+      actions.setEspecialidadSeleccionada('TODAS');
+    }
+  }, [isReadOnly, actions]);
 
   // Si no está autenticado, mostramos pantalla de Login
   if (!isAuthenticated) {
@@ -199,7 +206,6 @@ function App() {
           )}
 
           {/* Botón Maestro (Solo para Administradores de Presupuesto) */}
-          {(useAuthStore.getState().isAdminPresupuesto()) && (
             <button 
               onClick={() => setShowAdminPresupuesto(true)}
               className="bg-white hover:bg-slate-50 text-[#005A9C] px-5 py-2.5 flex items-center gap-2 rounded-md text-sm font-bold shadow-sm border border-[#005A9C]/30 transition-all"
@@ -207,6 +213,21 @@ function App() {
             >
               <ShieldCheck className="w-4 h-4" />
               <span className="hidden sm:inline">Admin Maestro</span>
+            </button>
+          )}
+
+          {!isReadOnly && (
+            <button 
+              onClick={() => setIsFormVisible(!isFormVisible)}
+              className={`px-5 py-2.5 flex items-center gap-2 rounded-md text-sm font-bold transition-all shadow-sm border ${
+                isFormVisible 
+                ? 'bg-blue-50 text-blue-700 border-blue-200' 
+                : 'bg-indigo-600 text-white border-indigo-500 hover:bg-indigo-700'
+              }`}
+              title={isFormVisible ? "Ocultar Registro (Vista Completa)" : "Mostrar Registro"}
+            >
+              <ClipboardList className="w-4 h-4" />
+              <span>{isFormVisible ? "Vista Completa" : "Registrar"}</span>
             </button>
           )}
           
@@ -231,18 +252,20 @@ function App() {
       {/* Main Layout Grid */}
       <main className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[70vh]">
 
-        {/* Left Column: Form */}
-        <div className="lg:col-span-4 xl:col-span-3">
-          <MetradosForm
-            state={state}
-            actions={actions}
-            onGuardar={handleGuardar}
-            proyecto={context.proyecto}
-          />
-        </div>
+        {/* Left Column: Form (Solo si no está colapsado y no es solo lectura) */}
+        {isFormVisible && !isReadOnly && (
+          <div className="lg:col-span-4 xl:col-span-3 transition-all animate-in slide-in-from-left duration-300">
+            <MetradosForm
+              state={state}
+              actions={actions}
+              onGuardar={handleGuardar}
+              proyecto={context.proyecto}
+            />
+          </div>
+        )}
 
         {/* Right Column: Table History */}
-        <div className="lg:col-span-8 xl:col-span-9 flex flex-col">
+        <div className={`${isFormVisible && !isReadOnly ? 'lg:col-span-8 xl:col-span-9' : 'lg:col-span-12'} flex flex-col transition-all duration-300`}>
           <MetradosTable
             metrados={metradosFiltrados}
             onUpdate={handleUpdateMetrado}
@@ -252,6 +275,7 @@ function App() {
             especialidadSeleccionada={state.especialidadSeleccionada}
             onEspecialidadChange={actions.setEspecialidadSeleccionada}
             isSpecialtyLocked={state.isSpecialtyLocked}
+            isReadOnly={isReadOnly}
           />
         </div>
       </main>

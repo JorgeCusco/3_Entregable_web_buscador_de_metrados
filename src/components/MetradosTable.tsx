@@ -59,7 +59,7 @@ const TitleRow = React.memo(({ r, getIndentLevel }: any) => (
     </tr>
 ));
 
-const VirtualElementRow = React.memo(({ r, getIndentLevel, onGroupUpdate }: any) => (
+const VirtualElementRow = React.memo(({ r, getIndentLevel, onGroupUpdate, isReadOnly }: any) => (
     <tr className="bg-slate-50/50 border-b border-slate-100 group">
         <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1.5 text-center overflow-hidden"></td>
         <td className="w-[85px] min-w-[85px] px-1 py-1.5 text-left"></td>
@@ -72,6 +72,7 @@ const VirtualElementRow = React.memo(({ r, getIndentLevel, onGroupUpdate }: any)
                     value={r.descripcion}
                     onChange={(e) => onGroupUpdate?.(r.codigo_partida, r.descripcion, e.target.value.toUpperCase())}
                     onFocus={(e) => e.target.select()}
+                    readOnly={isReadOnly}
                 />
             </div>
         </td>
@@ -139,7 +140,7 @@ const HeaderRow = React.memo(({ r, partidaTotals, showCostView, getIndentLevel, 
     );
 });
 
-const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumber, handleKeyDown }: any) => {
+const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumber, handleKeyDown, isReadOnly }: any) => {
     const strategy = formulaRegistry.get(r.tipo_metrado);
     const meta = { hvacItemType: r.hvac_item_type };
 
@@ -148,17 +149,17 @@ const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumbe
             <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1.5 text-center overflow-hidden">
                 <input type="date" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-400 font-bold text-[9px] uppercase tracking-tighter"
                     value={r.fecha} onChange={(e) => onUpdate?.(r.id, 'fecha', e.target.value)}
-                    onFocus={(e) => e.target.select()} />
+                    onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
             </td>
             <td className="w-[85px] min-w-[85px] px-0.5 py-1.5">
                 <div className="flex items-center justify-center gap-0.5">
                     <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
                     <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
-                        value={r.frente} onChange={(e) => onUpdate?.(r.id, 'frente', e.target.value)} onFocus={(e) => e.target.select()} />
+                        value={r.frente} onChange={(e) => onUpdate?.(r.id, 'frente', e.target.value)} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
                     <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
-                        value={r.bloque} onChange={(e) => onUpdate?.(r.id, 'bloque', e.target.value)} onFocus={(e) => e.target.select()} />
+                        value={r.bloque} onChange={(e) => onUpdate?.(r.id, 'bloque', e.target.value)} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
                     <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
-                        value={r.nivel} onChange={(e) => onUpdate?.(r.id, 'nivel', e.target.value)} onFocus={(e) => e.target.select()} />
+                        value={r.nivel} onChange={(e) => onUpdate?.(r.id, 'nivel', e.target.value)} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
                 </div>
             </td>
             <td className="px-1 py-1.5">
@@ -167,9 +168,9 @@ const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumbe
                         value={r.cuadrilla || ''} readOnly />
                     {r.elemento && <span className="text-blue-400 font-black text-[12px] shrink-0">↳</span>}
                     <input type="text" className="metrado-input w-20 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0"
-                        value={r.elemento || ''} onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())} onFocus={(e) => e.target.select()} />
+                        value={r.elemento || ''} onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
                     <input type="text" className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[11px] font-medium"
-                        value={r.detalle || ''} onChange={(e) => onUpdate?.(r.id, 'detalle', e.target.value)} onKeyDown={handleKeyDown} />
+                        value={r.detalle || ''} onChange={(e) => onUpdate?.(r.id, 'detalle', e.target.value)} onKeyDown={handleKeyDown} readOnly={isReadOnly} />
                 </div>
             </td>
             <td className="px-2 py-1.5 text-center text-slate-300">-</td>
@@ -178,28 +179,28 @@ const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumbe
                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
                         {strategy.isFieldLocked('cantidad', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
                             <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} />}
+                                value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
                     </td>
                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
                         {strategy.isFieldLocked('longitud_area', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
                             <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} />}
+                                value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
                     </td>
                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
                         {strategy.isFieldLocked('ancho_empalme', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
                             <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} />}
+                                value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
                     </td>
                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
                         {strategy.isFieldLocked('altura_gancho', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
                             <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} />}
+                                value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
                     </td>
                     <td className="px-2 py-1.5 text-right font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
                         {strategy.isFieldLocked('nro_veces', meta) ? <span className="text-[9px] font-bold text-slate-300">1</span> :
                             <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
-                                value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} />}
+                                value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
                     </td>
                     <td className="w-[10px] min-w-[10px] border-l border-slate-200/60"></td>
                 </>
@@ -214,9 +215,11 @@ const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumbe
             <td className="w-[75px] min-w-[75px] px-1.5 py-1.5 text-right font-bold text-slate-800 relative text-[11px] border-l border-slate-200/60">
                 <div className="flex items-center justify-end gap-1.5">
                     <span>{r.total.toFixed(2)}</span>
-                    <button onClick={() => onDelete?.(r.id)} className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 p-1 rounded-md transition-all">
-                        <Trash2 size={12} />
-                    </button>
+                    {!isReadOnly && (
+                        <button onClick={() => onDelete?.(r.id)} className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 p-1 rounded-md transition-all">
+                            <Trash2 size={12} />
+                        </button>
+                    )}
                 </div>
             </td>
         </tr>
