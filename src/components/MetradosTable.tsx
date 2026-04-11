@@ -19,6 +19,7 @@ interface MetradosTableProps {
     especialidadSeleccionada?: string;
     onEspecialidadChange?: (val: string) => void;
     isSpecialtyLocked?: boolean;
+    isReadOnly?: boolean;
 }
 
 // HELPERS Y CONSTANTES
@@ -389,7 +390,11 @@ const getSpecificMonthRange = (year: number, month: number) => {
     return { from: format(firstDay), to: format(lastDay) };
 };
 
-export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital', especialidadSeleccionada = 'TODAS', onEspecialidadChange, isSpecialtyLocked }) => {
+export const MetradosTable: React.FC<MetradosTableProps> = ({ 
+    metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital', 
+    especialidadSeleccionada = 'TODAS', onEspecialidadChange, isSpecialtyLocked,
+    isReadOnly = false
+}) => {
     const { customPartidas, catalogoHospital, catalogoContingencia } = useMetradosStore();
 
     // Seleccionar el catálogo de partidas correcto según el proyecto y sumarle las personalizadas
@@ -1006,6 +1011,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                         r={r}
                                         getIndentLevel={getIndentLevel}
                                         onGroupUpdate={memoizedGroupUpdate}
+                                        isReadOnly={isReadOnly}
                                     />
                                 );
                             }
@@ -1032,6 +1038,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({ metrados, onUpdate
                                     showCostView={showCostView}
                                     formatNumber={formatNumber}
                                     handleKeyDown={memoizedKeyDown}
+                                    isReadOnly={isReadOnly}
                                 />
                             );
                         })}

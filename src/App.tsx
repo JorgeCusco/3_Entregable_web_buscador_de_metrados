@@ -110,7 +110,8 @@ function App() {
     updateGroup(codigoPartida, oldElemento, newElemento);
   };
 
-  const isReadOnly = useAuthStore.getState().isReadOnlyMetrados();
+  const { isReadOnlyMetrados } = useAuthStore();
+  const isReadOnly = isReadOnlyMetrados();
 
   // Si es solo lectura, forzamos que el formulario esté oculto y el filtro sea "TODAS"
   useEffect(() => {
