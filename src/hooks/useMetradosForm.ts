@@ -167,7 +167,47 @@ export const useMetradosForm = () => {
         return nuevoMetrado;
     };
 
-    return useMemo(() => ({
+    const actions = useMemo(() => ({
+        setFecha,
+        setFrente: (val: string) => setContext({ frente: val }),
+        setBloque: (val: string) => setContext({ bloque: val }),
+        setNivel: (val: string) => setContext({ nivel: val }),
+        setCuadrilla: (val: string) => {
+            setContext({ cuadrilla: val });
+            const cuadrillaUpper = val.trim().toUpperCase();
+            if (cuadrillaUpper && cuadrillaUpper !== 'VARIOS') {
+                const allPersonal = usePersonalStore.getState().personal;
+                const obrerosDeCuadrilla = allPersonal.filter(p => {
+                    if (p.cuadrilla?.toUpperCase() !== cuadrillaUpper) return false;
+                    
+                    // Aquí usamos el valor actual desde el store para evitar dependencia circular en el memo
+                    const currentEsp = useMetradosStore.getState().context.especialidad; 
+                    if (currentEsp && currentEsp !== 'TODAS') {
+                        const pEsp = (p.especialidad || '').toUpperCase();
+                        const sEsp = currentEsp.toUpperCase();
+                        if (pEsp.includes(sEsp) || sEsp.includes(pEsp) || pEsp === 'OBRERO' || pEsp === 'GENERICO') {
+                            return true;
+                        }
+                        return false;
+                    }
+                    
+                    return true;
+                });
+                if (obrerosDeCuadrilla.length > 0) {
+                    setContext({ obreros_ids: obrerosDeCuadrilla.map(p => p.id) });
+                }
+            }
+        },
+        setObrerosIds: (ids: string[]) => setContext({ obreros_ids: ids }),
+        setPartidaSeleccionada, setElemento, setDetalle, setDiametro,
+        setCantidad, setLongitud, setAncho, setAltura, setNroVeces,
+        setEspecialidadSeleccionada, setHvacFactor,
+        limpiarCampos, procesarRegistro,
+        addCustomPartida,
+        setHvacItemType
+    }), [setContext, addCustomPartida]);
+
+    return {
         state: {
             fecha, frente, bloque, nivel, cuadrilla, obreros_ids,
             partidaSeleccionada, elemento, detalle, diametro,
@@ -176,49 +216,6 @@ export const useMetradosForm = () => {
             customPartidas, hvacFactor, hvacConfig, hvacItemType,
             formulaStrategy
         },
-        actions: {
-            setFecha,
-            setFrente: (val: string) => setContext({ frente: val }),
-            setBloque: (val: string) => setContext({ bloque: val }),
-            setNivel: (val: string) => setContext({ nivel: val }),
-            setCuadrilla: (val: string) => {
-                setContext({ cuadrilla: val });
-                const cuadrillaUpper = val.trim().toUpperCase();
-                if (cuadrillaUpper && cuadrillaUpper !== 'VARIOS') {
-                    const allPersonal = usePersonalStore.getState().personal;
-                    const obrerosDeCuadrilla = allPersonal.filter(p => {
-                        if (p.cuadrilla?.toUpperCase() !== cuadrillaUpper) return false;
-                        
-                        if (especialidadSeleccionada && especialidadSeleccionada !== 'TODAS') {
-                            const pEsp = (p.especialidad || '').toUpperCase();
-                            const sEsp = especialidadSeleccionada.toUpperCase();
-                            if (pEsp.includes(sEsp) || sEsp.includes(pEsp) || pEsp === 'OBRERO' || pEsp === 'GENERICO') {
-                                return true;
-                            }
-                            return false;
-                        }
-                        
-                        return true;
-                    });
-                    if (obrerosDeCuadrilla.length > 0) {
-                        setContext({ obreros_ids: obrerosDeCuadrilla.map(p => p.id) });
-                    }
-                }
-            },
-            setObrerosIds: (ids: string[]) => setContext({ obreros_ids: ids }),
-            setPartidaSeleccionada, setElemento, setDetalle, setDiametro,
-            setCantidad, setLongitud, setAncho, setAltura, setNroVeces,
-            setEspecialidadSeleccionada, setHvacFactor,
-            limpiarCampos, procesarRegistro,
-            addCustomPartida,
-            setHvacItemType
-        }
-    }), [
-        fecha, frente, bloque, nivel, cuadrilla, obreros_ids,
-        partidaSeleccionada, elemento, detalle, diametro,
-        cantidad, longitud, ancho, altura, nroVeces,
-        parcial, total, especialidadSeleccionada, isSpecialtyLocked,
-        customPartidas, hvacFactor, hvacConfig, hvacItemType,
-        formulaStrategy, setContext, addCustomPartida
-    ]);
+        actions
+    };
 };
