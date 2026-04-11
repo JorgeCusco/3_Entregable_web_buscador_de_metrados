@@ -26,6 +26,9 @@ function App() {
   const { fetchSystemUsers } = useSystemUsersStore();
   
   const [showExecutiveDashboard, setShowExecutiveDashboard] = useState(false);
+  const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
+  const [showGestionPC, setShowGestionPC] = useState(false);
+  const [showAdminPresupuesto, setShowAdminPresupuesto] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(true);
   const [toast, setToast] = useState<string | null>(null);
 
