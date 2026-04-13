@@ -167,7 +167,7 @@ export const useMetradosForm = () => {
         return nuevoMetrado;
     };
 
-    const actions = useMemo(() => ({
+    const actions = {
         setFecha,
         setFrente: (val: string) => setContext({ frente: val }),
         setBloque: (val: string) => setContext({ bloque: val }),
@@ -205,7 +205,7 @@ export const useMetradosForm = () => {
         limpiarCampos, procesarRegistro,
         addCustomPartida,
         setHvacItemType
-    }), [setContext, addCustomPartida]);
+    };
 
     return {
         state: {

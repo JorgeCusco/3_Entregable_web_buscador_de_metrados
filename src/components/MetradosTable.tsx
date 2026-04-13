@@ -9,6 +9,7 @@ import { useSystemUsersStore } from '../store/useSystemUsersStore';
 import { formulaRegistry } from '../utils/formulas/registry';
 import { SPECIALTY_RULES } from '../data/specialtyConfig';
 import { applyAllFilters, getAvailableAuthorsImproved, getEspecialidadPorCodigo, getAvailableFrentes, getAvailableBloques, getAvailableNiveles } from '../utils/filteringLogic';
+import { clientSideExport } from '../utils/excelExport';
 
 interface MetradosTableProps {
     metrados: Metrado[];
@@ -390,11 +391,11 @@ const getSpecificMonthRange = (year: number, month: number) => {
     return { from: format(firstDay), to: format(lastDay) };
 };
 
-export const MetradosTable: React.FC<MetradosTableProps> = ({ 
-    metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital', 
+export const MetradosTable = React.memo(({
+    metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital',
     especialidadSeleccionada = 'TODAS', onEspecialidadChange, isSpecialtyLocked,
     isReadOnly = false
-}) => {
+}: MetradosTableProps) => {
     const { customPartidas, catalogoHospital, catalogoContingencia } = useMetradosStore();
 
     // Seleccionar el catálogo de partidas correcto según el proyecto y sumarle las personalizadas
@@ -630,67 +631,17 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({
 
         try {
             setIsExporting(true);
-            
-            // CONFIGURACIÓN DE URLS DINÁMICAS (V34)
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.168.') || window.location.hostname.startsWith('127.0.');
-            const localUrl = `http://${window.location.hostname}:3001`;
-            let primaryUrl = import.meta.env.VITE_API_URL || 'https://inkaia-backend.onrender.com';
-            
-            if (primaryUrl.endsWith('/')) primaryUrl = primaryUrl.slice(0, -1);
 
-            let targetUrl = mode === 'master' ? localUrl : primaryUrl;
-            
-            console.log(`[V34 Export] Iniciando modo: ${mode} | URL objetivo: ${targetUrl}`);
+            // Client-side execution logic extracted from backend (V35)
+            const especialidadExport = especialidadSeleccionada === 'TODAS' ? 'VARIAS' : especialidadSeleccionada;
+            const autorExport = getAuthorInitials(filterAuthor);
 
-            let response: Response;
-            try {
-                response = await fetch(`${targetUrl}/api/export/metrados`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ metrados: rows, proyecto, mode })
-                });
+            await clientSideExport(rows, proyecto, mode, especialidadExport, autorExport);
 
-                if (!response.ok) {
-                    const errorMsg = await response.text();
-                    throw new Error(errorMsg || `Error del servidor (${response.status})`);
-                }
-            } catch (error: any) {
-                // FALLBACK INTELIGENTE: Si falla el oficial (Nube), intentamos Local (3001)
-                if (mode === 'official' && targetUrl !== localUrl) {
-                    console.warn(`[V34 Fallback] Falló conexión a nube. Reintentando con servidor local en ${localUrl}...`);
-                    try {
-                        response = await fetch(`${localUrl}/api/export/metrados`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ metrados: rows, proyecto, mode })
-                        });
-                        if (!response.ok) throw new Error("Fallback local también falló.");
-                    } catch (fallbackError) {
-                        throw new Error(`Error de conexión total: No se pudo conectar a la nube (${primaryUrl}) ni al servidor local (${localUrl}). Verifique que el servidor local en el puerto 3001 esté activo.`);
-                    }
-                } else {
-                    throw new Error(`No se pudo conectar con el servidor en ${targetUrl}. Verifique su conexión o reporte de sistema.`);
-                }
-            }
-
-            // Descender como Blob e incitar auto-descarga Browser-side
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-
-            const fileNameEspecialidad = especialidadSeleccionada.replace(/\s+/g, '_');
-            const fileNameAutor = getAuthorInitials(filterAuthor);
-            const prefix = mode === 'master' ? 'MAESTRO' : 'REPORTE';
-            a.download = `${prefix}_metrados_${fileNameEspecialidad}_${fileNameAutor}.xlsx`.toLowerCase();
-
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
+            console.log(`[INKAIA] Exportación de ${mode} completada localmente.`);
         } catch (error) {
             console.error(error);
-            alert("Falló la exportación en nube: " + (error as Error).message);
+            alert("Falló la exportación directa: " + (error as Error).message);
         } finally {
             setIsExporting(false);
         }
@@ -715,8 +666,8 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({
                                 className="text-[10px] font-bold bg-transparent border-none outline-none text-blue-700 cursor-pointer focus:ring-0 px-1"
                             >
                                 <optgroup label="Modos">
-                                    <option value="DETALLE">💎 Integral</option>
-                                    <option value="SUMMARY">📊 Resumen</option>
+                                    <option value="DETALLE">💎 Detallada</option>
+                                    <option value="SUMMARY">📊 Resumida</option>
                                 </optgroup>
                                 <optgroup label="Niveles OE">
                                     <option value="L1">📍 Nivel 1</option>
@@ -833,7 +784,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({
                             className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                             title="Frente"
                         >
-                            <option value="TODOS">F. TODOS</option>
+                            <option value="TODOS">FRENTES</option>
                             {availableFrentes.map(frente => (
                                 <option key={frente} value={frente}>{frente.substring(0, 10)}{frente.length > 10 ? '...' : ''}</option>
                             ))}
@@ -844,7 +795,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({
                             className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                             title="Bloque"
                         >
-                            <option value="TODOS">B. TODOS</option>
+                            <option value="TODOS">BLOQUES</option>
                             {availableBloques.map(bloque => (
                                 <option key={bloque} value={bloque}>{bloque.substring(0, 10)}{bloque.length > 10 ? '...' : ''}</option>
                             ))}
@@ -855,7 +806,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({
                             className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                             title="Nivel"
                         >
-                            <option value="TODOS">N. TODOS</option>
+                            <option value="TODOS">NIVELES</option>
                             {availableNiveles.map(nivel => (
                                 <option key={nivel} value={nivel}>{nivel.substring(0, 10)}{nivel.length > 10 ? '...' : ''}</option>
                             ))}
@@ -872,7 +823,7 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({
                         title={showCostView ? "Ver en modo Técnico (Medidas)" : "Ver en modo Económico (Soles)"}
                     >
                         <span>{showCostView ? '👷' : '💰'}</span>
-                        {showCostView ? 'Soles' : 'Medidas'}
+                        {showCostView ? 'Soles' : 'V.Valor'}
                     </button>
                 </div>
             </div>
@@ -930,16 +881,15 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({
                     {['PC', 'MM', 'PN', 'DD', 'ET'].map(mod => (
                         <div key={mod} className="flex items-center gap-1.5" title={
                             mod === 'PC' ? 'Partida Creada' :
-                            mod === 'MM' ? 'Mayores Metrados' :
-                            mod === 'PN' ? 'Partida Nueva' :
-                            mod === 'DD' ? 'Deductivos' : 'Exp. Técnico'
+                                mod === 'MM' ? 'Mayores Metrados' :
+                                    mod === 'PN' ? 'Partida Nueva' :
+                                        mod === 'DD' ? 'Deductivos' : 'Exp. Técnico'
                         }>
-                            <div className={`w-2 h-2 rounded-full ${
-                                mod === 'PC' ? 'bg-pink-400' :
+                            <div className={`w-2 h-2 rounded-full ${mod === 'PC' ? 'bg-pink-400' :
                                 mod === 'MM' ? 'bg-blue-400' :
-                                mod === 'PN' ? 'bg-green-400' :
-                                mod === 'DD' ? 'bg-red-400' : 'bg-slate-300'
-                            } shadow-sm border border-white`} />
+                                    mod === 'PN' ? 'bg-green-400' :
+                                        mod === 'DD' ? 'bg-red-400' : 'bg-slate-300'
+                                } shadow-sm border border-white`} />
                             <span className="text-[9px] font-black text-slate-500">{mod}</span>
                         </div>
                     ))}
@@ -1073,4 +1023,4 @@ export const MetradosTable: React.FC<MetradosTableProps> = ({
 
         </div>
     );
-};
+});

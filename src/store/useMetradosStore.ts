@@ -16,6 +16,7 @@ interface MetradosContext {
     obreros_ids?: string[];
     obrero_nombre?: string;
     proyecto: 'hospital' | 'contingencia';
+    especialidad?: string;
 }
 
 interface MetradosState {

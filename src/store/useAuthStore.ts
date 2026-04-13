@@ -14,6 +14,7 @@ interface AuthState {
     hasLiquidacionesAccess: () => boolean;
     isAdminPresupuesto: () => boolean;
     isGerencia: () => boolean;
+    isReadOnlyMetrados: () => boolean;
 }
 
 const COOKIE_NAME = 'gore_cusco_session';

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { MetradosForm } from './components/MetradosForm';
 import { MetradosTable } from './components/MetradosTable';
 import { GestionPartidasPC } from './components/GestionPartidasPC';
@@ -80,13 +80,13 @@ function App() {
     }
   };
 
-  const handleDeleteMetrado = (id: string) => {
+  const handleDeleteMetrado = useCallback((id: string) => {
     deleteMetrado(id);
     setToast('Registro eliminado exitosamente');
     setTimeout(() => setToast(null), 3000);
-  };
+  }, [deleteMetrado]);
 
-  const handleUpdateMetrado = (id: string, field: keyof Metrado, value: any) => {
+  const handleUpdateMetrado = useCallback((id: string, field: keyof Metrado, value: any) => {
     const metradoOriginal = metrados.find(m => m.id === id);
     if (!metradoOriginal) return;
 
@@ -116,11 +116,11 @@ function App() {
     } else {
       updateMetrado(id, { [field]: value });
     }
-  };
+  }, [metrados, updateMetrado]);
 
-  const handleUpdateGroup = (codigoPartida: string, oldElemento: string, newElemento: string) => {
+  const handleUpdateGroup = useCallback((codigoPartida: string, oldElemento: string, newElemento: string) => {
     updateGroup(codigoPartida, oldElemento, newElemento);
-  };
+  }, [updateGroup]);
 
   const { isReadOnlyMetrados } = useAuthStore();
   const isReadOnly = isReadOnlyMetrados();
@@ -140,10 +140,12 @@ function App() {
   }
 
   // Filtra los metrados mostrados según el proyecto activo (Case-insensitive V30.1)
-  const metradosFiltrados = metrados.filter(m => {
-    if (!m.proyecto) return true;
-    return m.proyecto.trim().toLowerCase() === context.proyecto.toLowerCase();
-  });
+  const metradosFiltrados = useMemo(() => {
+    return metrados.filter(m => {
+      if (!m.proyecto) return true;
+      return m.proyecto.trim().toLowerCase() === context.proyecto.toLowerCase();
+    });
+  }, [metrados, context.proyecto]);
 
   return (
     <div className="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col gap-6 relative max-w-[1450px] mx-auto">
