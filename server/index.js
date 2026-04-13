@@ -161,21 +161,21 @@ app.post('/api/export/metrados', async (req, res) => {
             // --- LÓGICA DE DATOS (DIFERENCIADA V35) ---
             rowData = new Array(isMaster ? 42 : 27).fill("");
 
+            // Calculamos Grados SIEMPRE para que esté disponible en Sumatorias y Partidas
+            const grados = ["", "", "", ""];
+            let ancestors = [];
+            for (let [key, val] of codigosMap.entries()) {
+                if (codigoActual === key || codigoActual.startsWith(key + '.')) {
+                    ancestors.push({ codigo: key, descripcion: val.descripcion });
+                }
+            }
+            ancestors.sort((a, b) => a.codigo.length - b.codigo.length);
+            for (let i = 0; i < ancestors.length && i < 4; i++) {
+                grados[i] = `${ancestors[i].codigo}-${ancestors[i].descripcion}`;
+            }
+
             if (isSumatoria) {
                 const hasMetrados = codesWithMetrados.has(codigoActual);
-                
-                // Calculamos Grados
-                const grados = ["", "", "", ""];
-                let ancestors = [];
-                for (let [key, val] of codigosMap.entries()) {
-                    if (codigoActual === key || codigoActual.startsWith(key + '.')) {
-                        ancestors.push({ codigo: key, descripcion: val.descripcion });
-                    }
-                }
-                ancestors.sort((a, b) => a.codigo.length - b.codigo.length);
-                for (let i = 0; i < ancestors.length && i < 4; i++) {
-                    grados[i] = `${ancestors[i].codigo}-${ancestors[i].descripcion}`;
-                }
 
                 rowData[1] = m.nivel_jerarquia != null ? String(m.nivel_jerarquia) : ""; // B
                 rowData[8] = grados[0]; // I: Grado 1
