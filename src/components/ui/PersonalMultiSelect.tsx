@@ -93,7 +93,7 @@ export const PersonalMultiSelect: React.FC<PersonalMultiSelectProps> = ({ especi
                     }}
                     onFocus={() => setIsOpen(true)}
                     placeholder={`Buscar obrero por nombre... (${especialidad})`}
-                    className="w-full pl-8 pr-3 py-2 bg-white border border-blue-200 rounded-xl text-xs font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none transition-all placeholder:font-normal placeholder:text-slate-400 h-9"
+                    className="w-full pl-8 pr-3 py-2 bg-white border border-blue-200 rounded-xl text-[11px] font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none transition-all placeholder:font-normal placeholder:text-slate-400 h-9"
                 />
             </div>
 
@@ -113,13 +113,13 @@ export const PersonalMultiSelect: React.FC<PersonalMultiSelectProps> = ({ especi
                                     className="px-3 py-2 hover:bg-blue-50 cursor-pointer rounded-lg flex items-center justify-between group transition-colors"
                                 >
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] font-black text-slate-700 group-hover:text-blue-800 tracking-tight">
+                                        <span className="text-[11px] font-black text-slate-700 group-hover:text-blue-800 tracking-tight">
                                             {p.nombre_formateado}
                                         </span>
                                         <div className="flex items-center gap-2">
-                                            <span className="text-[9px] font-bold text-slate-400">{p.oficio || 'Sin Oficio'}</span>
+                                            <span className="text-[10px] font-bold text-slate-400">{p.oficio || 'Sin Oficio'}</span>
                                             {p.cuadrilla && p.cuadrilla !== 'nan' && (
-                                                <span className="text-[8px] px-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-500 font-bold">
+                                                <span className="text-[9px] px-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-500 font-bold">
                                                     {p.cuadrilla}
                                                 </span>
                                             )}
@@ -142,8 +142,8 @@ export const PersonalMultiSelect: React.FC<PersonalMultiSelectProps> = ({ especi
                             className="bg-white border border-blue-200 shadow-sm rounded-lg pl-2 pr-1 py-1 flex items-center gap-2 animate-in fade-in zoom-in"
                         >
                             <div className="flex flex-col leading-tight">
-                                <span className="text-[9px] font-black text-blue-900 tracking-tight">{p.nombre_formateado}</span>
-                                <span className="text-[8px] font-bold text-slate-400">{p.categoria || p.oficio || 'Obrero'}</span>
+                                <span className="text-[10px] font-black text-blue-900 tracking-tight">{p.nombre_formateado}</span>
+                                <span className="text-[9px] font-bold text-slate-400">{p.oficio || 'Obrero'}</span>
                             </div>
                             <button 
                                 onClick={() => handleRemove(p.id)}

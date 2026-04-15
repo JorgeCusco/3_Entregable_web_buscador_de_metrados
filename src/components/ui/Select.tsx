@@ -32,7 +32,7 @@ export const Select: React.FC<SelectProps> = ({ value, options, onSelect, placeh
                 type="button"
                 onClick={() => !disabled && setIsOpen(!isOpen)}
                 disabled={disabled}
-                className={`w-full px-3 py-2 border rounded-xl text-xs text-left flex justify-between items-center transition-all duration-300 outline-none
+                className={`w-full px-3 py-2 border rounded-xl text-[11px] text-left flex justify-between items-center transition-all duration-300 outline-none
                     ${disabled ? 'bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed opacity-75' : 
                       isOpen
                         ? 'border-blue-400 ring-4 ring-blue-50 bg-white shadow-sm'
@@ -52,7 +52,7 @@ export const Select: React.FC<SelectProps> = ({ value, options, onSelect, placeh
                         {options.map((option) => (
                             <li
                                 key={option}
-                                className={`px-4 py-2.5 text-xs cursor-pointer rounded-lg transition-all duration-200 flex items-center justify-between
+                                className={`px-4 py-2.5 text-[11px] cursor-pointer rounded-lg transition-all duration-200 flex items-center justify-between
                                     ${value === option
                                         ? 'bg-blue-600 text-white font-black shadow-lg shadow-blue-200'
                                         : 'text-slate-600 hover:bg-blue-50 hover:text-blue-700'

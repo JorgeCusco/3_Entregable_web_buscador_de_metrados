@@ -45,10 +45,10 @@ export function SimpleSearchInput<T>({
 
     return (
         <div ref={wrapperRef} className={`space-y-1 relative ${className}`}>
-            {label && <label className="text-[9px] font-bold text-slate-500 uppercase">{label}</label>}
+            {label && <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">{label}</label>}
             <div className="relative">
                 <input 
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold focus:border-blue-500 outline-none pr-10"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-[11px] font-bold focus:border-blue-500 outline-none pr-10"
                     value={value}
                     onChange={e => {
                         onChange(e.target.value);

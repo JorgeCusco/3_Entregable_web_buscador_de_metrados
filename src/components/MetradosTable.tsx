@@ -654,14 +654,12 @@ export const MetradosTable = React.memo(({
                 <div className="flex justify-between items-center w-full">
                     <div className="flex items-center gap-2">
                         <h3 className="font-bold text-slate-800 text-base tracking-tight shrink-0">Planilla de Metrados Dinámica</h3>
-                        <div className="h-6 w-px bg-slate-200 mx-1" />
-                        
                         {/* Clasificador de Meses / Período - MOVIDO AQUÍ SIN TÍTULO */}
                         <div className="flex items-center px-1.5 py-0.5 bg-indigo-50/50 rounded-lg border border-indigo-100 shadow-sm">
                             <select
                                 value={activeMonthTab}
                                 onChange={(e) => handleMonthChange(e.target.value)}
-                                className="text-[10px] font-black bg-transparent border-none outline-none text-indigo-700 cursor-pointer focus:ring-0 px-0.5 uppercase"
+                                className="text-[11px] font-black bg-transparent border-none outline-none text-indigo-700 cursor-pointer focus:ring-0 px-0.5 uppercase"
                             >
                                 <optgroup label="Rápidos">
                                     <option value="week">📅 ESTA SEMANA</option>
@@ -680,26 +678,26 @@ export const MetradosTable = React.memo(({
 
                         {/* Filtro Fecha (Rango) */}
                         <div className="flex items-center gap-2 px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg shadow-sm">
-                            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Rango:</span>
+                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Rango:</span>
                             <div className="flex items-center gap-1">
                                 <input
                                     type="date"
                                     value={filterDateFrom}
                                     onChange={(e) => setFilterDateFrom(e.target.value)}
-                                    className="text-[10px] font-bold bg-transparent border-none outline-none text-slate-700 cursor-pointer"
+                                    className="text-[11px] font-bold bg-transparent border-none outline-none text-slate-700 cursor-pointer"
                                 />
-                                <span className="text-[10px] text-slate-400">-</span>
+                                <span className="text-[11px] text-slate-400">-</span>
                                 <input
                                     type="date"
                                     value={filterDateTo}
                                     onChange={(e) => setFilterDateTo(e.target.value)}
-                                    className="text-[10px] font-bold bg-transparent border-none outline-none text-slate-700 cursor-pointer"
+                                    className="text-[11px] font-bold bg-transparent border-none outline-none text-slate-700 cursor-pointer"
                                 />
                             </div>
                             {(filterDateFrom || filterDateTo) && (
                                 <button
                                     onClick={() => { setFilterDateFrom(''); setFilterDateTo(''); }}
-                                    className="ml-1 w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-500 hover:text-white transition-colors text-[8px]"
+                                    className="ml-1 w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center hover:bg-slate-500 hover:text-white transition-colors text-[9px]"
                                 >✕</button>
                             )}
                         </div>
@@ -779,7 +777,7 @@ export const MetradosTable = React.memo(({
                             <select
                                 value={filterFrente}
                                 onChange={(e) => setFilterFrente(e.target.value)}
-                                className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                className="w-[75px] text-[11px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                                 title="Frente"
                             >
                                 <option value="TODOS">FRENTES</option>
@@ -790,7 +788,7 @@ export const MetradosTable = React.memo(({
                             <select
                                 value={filterBloque}
                                 onChange={(e) => setFilterBloque(e.target.value)}
-                                className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                className="w-[75px] text-[11px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                                 title="Bloque"
                             >
                                 <option value="TODOS">BLOQUES</option>
@@ -801,7 +799,7 @@ export const MetradosTable = React.memo(({
                             <select
                                 value={filterNivel}
                                 onChange={(e) => setFilterNivel(e.target.value)}
-                                className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                className="w-[75px] text-[11px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                                 title="Nivel"
                             >
                                 <option value="TODOS">NIVELES</option>
@@ -814,7 +812,7 @@ export const MetradosTable = React.memo(({
                         {/* Toggle Medidas/Soles */}
                         <button
                             onClick={() => setShowCostView(!showCostView)}
-                            className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-black transition-all border shadow-sm cursor-pointer ${showCostView
+                            className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-black transition-all border shadow-sm cursor-pointer ${showCostView
                                 ? 'bg-blue-600 text-white border-blue-700 shadow-blue-100'
                                 : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                                 }`}
@@ -827,11 +825,11 @@ export const MetradosTable = React.memo(({
                     <div className="flex items-center gap-2">
                         {/* Selector de Vista (Jerarquía) */}
                         <div className="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50/50 rounded-lg border border-blue-100 shadow-sm">
-                            <span className="text-[9px] text-blue-500 font-black uppercase tracking-widest">Vista</span>
+                            <span className="text-[10px] text-blue-500 font-black uppercase tracking-widest">Vista</span>
                             <select
                                 value={viewMode}
                                 onChange={(e) => setViewMode(e.target.value as any)}
-                                className="text-[10px] font-bold bg-transparent border-none outline-none text-blue-700 cursor-pointer focus:ring-0 px-0.5"
+                                className="text-[11px] font-bold bg-transparent border-none outline-none text-blue-700 cursor-pointer focus:ring-0 px-0.5"
                             >
                                 <optgroup label="Modos">
                                     <option value="DETALLE">💎 Detalle</option>
@@ -862,7 +860,7 @@ export const MetradosTable = React.memo(({
                                             mod === 'PN' ? 'bg-green-400' :
                                                 mod === 'DD' ? 'bg-red-400' : 'bg-slate-300'
                                         } shadow-sm border border-white`} />
-                                    <span className="text-[8px] font-black text-slate-500">{mod}</span>
+                                    <span className="text-[10px] font-black text-slate-500">{mod}</span>
                                 </div>
                             ))}
                         </div>
@@ -870,13 +868,13 @@ export const MetradosTable = React.memo(({
                 </div>
             </div>
 
-
             {/* Contenedor con Scroll (VIRTUALIZADO) */}
             <div
                 ref={parentRef}
                 className="overflow-auto flex-grow max-h-[calc(100vh-270px)] scrollbar-thin scrollbar-thumb-slate-200"
+                style={{ fontSize: '11px' }}
             >
-                <table className="w-full text-[13px] text-left align-middle border-collapse table-auto">
+                <table className="w-full text-[11px] text-left align-middle border-collapse table-auto">
                     <thead className="text-[11px] text-slate-400 bg-white uppercase whitespace-nowrap sticky top-0 shadow-[0_1px_0_0_rgba(0,0,0,0.05)] z-10 font-bold">
                         <tr className="border-b border-slate-100">
                             <th className="w-[60px] min-w-[60px] px-1 py-3 text-center overflow-hidden">Fecha</th>

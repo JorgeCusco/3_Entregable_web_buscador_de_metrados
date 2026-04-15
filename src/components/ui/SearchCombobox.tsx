@@ -47,7 +47,7 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
                 <input
                     type="text"
-                    className="w-full pl-10 pr-10 h-[34px] rounded-xl border border-slate-200 bg-white shadow-sm focus:border-blue-400 focus:ring-4 focus:ring-blue-50 transition-all text-xs outline-none font-bold text-slate-700"
+                    className="w-full pl-10 pr-10 h-[34px] rounded-xl border border-slate-200 bg-white shadow-sm focus:border-blue-400 focus:ring-4 focus:ring-blue-50 transition-all text-[11px] outline-none font-bold text-slate-700"
                     placeholder="Buscar por código o descripción..."
                     value={query || ""}
                     onFocus={(e) => {
@@ -67,7 +67,7 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
                 <div className="absolute z-[110] w-full mt-2 bg-white/95 backdrop-blur-md border border-slate-200 rounded-2xl shadow-2xl max-h-64 overflow-auto animate-in fade-in zoom-in-95 duration-200 origin-top">
                     {filteredPartidas.length === 0 ? (
                         <div className="p-4 flex flex-col items-center gap-3">
-                            <div className="text-xs text-slate-400 text-center font-medium italic">Ninguna partida encontrada.</div>
+                            <div className="text-[11px] text-slate-400 text-center font-medium italic">Ninguna partida encontrada.</div>
                             {onAddPartida && (
                                 <button
                                     onClick={onAddPartida}
@@ -91,7 +91,7 @@ export const SearchCombobox: React.FC<SearchComboboxProps> = ({ partidas, onSele
                                 >
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2">
-                                            <span className="text-xs font-bold leading-tight block">
+                                            <span className="text-[11px] font-bold leading-tight block">
                                                 {partida.descripcion || "Sin Descripción"}
                                             </span>
                                         </div>
