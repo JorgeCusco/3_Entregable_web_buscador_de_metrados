@@ -654,56 +654,9 @@ export const MetradosTable = React.memo(({
                 <div className="flex justify-between items-center w-full">
                     <div className="flex items-center gap-4">
                         <h3 className="font-bold text-slate-800 text-base tracking-tight shrink-0">Planilla de Metrados Dinámica</h3>
-
                         <div className="h-6 w-px bg-slate-200 mx-1" />
-
-                        {/* Selector de Vista (Jerarquía) - MOVIDO AQUÍ */}
-                        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50/50 rounded-lg border border-blue-100 shadow-sm">
-                            <span className="text-[9px] text-blue-500 font-black uppercase tracking-widest">Vista</span>
-                            <select
-                                value={viewMode}
-                                onChange={(e) => setViewMode(e.target.value as any)}
-                                className="text-[10px] font-bold bg-transparent border-none outline-none text-blue-700 cursor-pointer focus:ring-0 px-0.5"
-                            >
-                                <optgroup label="Modos">
-                                    <option value="DETALLE">💎 Detalle</option>
-                                    <option value="SUMMARY">📊 Resumen</option>
-                                </optgroup>
-                                <optgroup label="Niveles OE">
-                                    <option value="L1">📍 N1</option>
-                                    <option value="L2">📍 N2</option>
-                                    <option value="L3">📍 N3</option>
-                                    <option value="L4">📍 N4</option>
-                                    <option value="L5">📍 N5</option>
-                                    <option value="L6">📍 N6</option>
-                                </optgroup>
-                            </select>
-                        </div>
-
-                        {/* Clasificador de Meses / Período - NUEVO */}
-                        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-indigo-50/50 rounded-lg border border-indigo-100 shadow-sm">
-                            <span className="text-[9px] text-indigo-500 font-black uppercase tracking-widest">Periodo</span>
-                            <select
-                                value={activeMonthTab}
-                                onChange={(e) => handleMonthChange(e.target.value)}
-                                className="text-[10px] font-bold bg-transparent border-none outline-none text-indigo-700 cursor-pointer focus:ring-0 px-0.5"
-                            >
-                                <optgroup label="Rápidos">
-                                    <option value="week">📅 ESTA SEMANA</option>
-                                    <option value="all">🌍 TODO EL TIEMPO</option>
-                                </optgroup>
-                                <optgroup label="Historial">
-                                    {availableMonths.map(m => (
-                                        <option key={`${m.year}-${m.month}`} value={`${m.year}-${String(m.month).padStart(2, '0')}`}>
-                                            📅 {m.label.toUpperCase()}
-                                        </option>
-                                    ))}
-                                </optgroup>
-                                {activeMonthTab === 'custom' && <option value="custom">🛠️ RANGO PERSONALIZADO</option>}
-                            </select>
-                        </div>
-
-                        {/* Filtro Fecha (Rango) - MOVIDO AQUÍ */}
+                        
+                        {/* Filtro Fecha (Rango) */}
                         <div className="flex items-center gap-2 px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg shadow-sm">
                             <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Rango:</span>
                             <div className="flex items-center gap-1">
@@ -758,95 +711,144 @@ export const MetradosTable = React.memo(({
                 </div>
 
                 {/* FILA 2: FILTROS Y CONTROLES DE VISTA */}
-                <div className="flex flex-wrap items-center gap-3">
-                    {/* Filtro Especialidad */}
-                    <div className="flex items-center gap-1">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Esp.</span>
-                        <select
-                            value={especialidadSeleccionada}
-                            onChange={(e) => {
-                                onEspecialidadChange?.(e.target.value);
-                                setFilterAuthor('TODOS');
-                                setFilterFrente('TODOS');
-                                setFilterBloque('TODOS');
-                                setFilterNivel('TODOS');
-                            }}
-                            disabled={isSpecialtyLocked}
-                            className={`text-[10px] font-bold border border-slate-200 rounded-lg px-1.5 py-0.5 outline-none transition-all max-w-[120px] ${isSpecialtyLocked
-                                ? 'bg-slate-50 text-slate-400 cursor-not-allowed'
-                                : 'bg-white text-slate-700 hover:border-blue-400 cursor-pointer shadow-sm'
+                <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-2">
+                        {/* Filtro Especialidad */}
+                        <div className="flex items-center gap-1">
+                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Esp.</span>
+                            <select
+                                value={especialidadSeleccionada}
+                                onChange={(e) => {
+                                    onEspecialidadChange?.(e.target.value);
+                                    setFilterAuthor('TODOS');
+                                    setFilterFrente('TODOS');
+                                    setFilterBloque('TODOS');
+                                    setFilterNivel('TODOS');
+                                }}
+                                disabled={isSpecialtyLocked}
+                                className={`text-[10px] font-bold border border-slate-200 rounded-lg px-1.5 py-0.5 outline-none transition-all max-w-[120px] ${isSpecialtyLocked
+                                    ? 'bg-slate-50 text-slate-400 cursor-not-allowed'
+                                    : 'bg-white text-slate-700 hover:border-blue-400 cursor-pointer shadow-sm'
+                                    }`}
+                            >
+                                {SPECIALTY_RULES.map(rule => (
+                                    <option key={rule.id} value={rule.id}>{rule.label}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Filtro Autor */}
+                        <div className="flex items-center gap-1 pl-1 border-l border-slate-200">
+                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Aut.</span>
+                            <select
+                                value={filterAuthor}
+                                onChange={(e) => setFilterAuthor(e.target.value)}
+                                className="text-[10px] font-bold bg-white border border-slate-200 rounded-lg px-1.5 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all max-w-[100px]"
+                            >
+                                <option value="TODOS">TODOS</option>
+                                {availableAuthors.map(author => (
+                                    <option key={author} value={author}>{author}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Filtros de Ubicación (Frente, Bloque, Nivel) */}
+                        <div className="flex items-center gap-1 pl-1 border-l border-slate-200">
+                            <select
+                                value={filterFrente}
+                                onChange={(e) => setFilterFrente(e.target.value)}
+                                className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                title="Frente"
+                            >
+                                <option value="TODOS">FRENTES</option>
+                                {availableFrentes.map(frente => (
+                                    <option key={frente} value={frente}>{frente.substring(0, 8)}{frente.length > 8 ? '..' : ''}</option>
+                                ))}
+                            </select>
+                            <select
+                                value={filterBloque}
+                                onChange={(e) => setFilterBloque(e.target.value)}
+                                className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                title="Bloque"
+                            >
+                                <option value="TODOS">BLOQUES</option>
+                                {availableBloques.map(bloque => (
+                                    <option key={bloque} value={bloque}>{bloque.substring(0, 8)}{bloque.length > 8 ? '..' : ''}</option>
+                                ))}
+                            </select>
+                            <select
+                                value={filterNivel}
+                                onChange={(e) => setFilterNivel(e.target.value)}
+                                className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                                title="Nivel"
+                            >
+                                <option value="TODOS">NIVELES</option>
+                                {availableNiveles.map(nivel => (
+                                    <option key={nivel} value={nivel}>{nivel.substring(0, 8)}{nivel.length > 8 ? '..' : ''}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Toggle Medidas/Soles */}
+                        <button
+                            onClick={() => setShowCostView(!showCostView)}
+                            className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-black transition-all border shadow-sm cursor-pointer ${showCostView
+                                ? 'bg-blue-600 text-white border-blue-700 shadow-blue-100'
+                                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                                 }`}
+                            title={showCostView ? "Ver en modo Técnico (Medidas)" : "Ver en modo Económico (Soles)"}
                         >
-                            {SPECIALTY_RULES.map(rule => (
-                                <option key={rule.id} value={rule.id}>{rule.label}</option>
-                            ))}
-                        </select>
+                            <span>{showCostView ? '👷' : '💰'}</span>
+                        </button>
                     </div>
 
-                    {/* Filtro Autor */}
-                    <div className="flex items-center gap-1 pl-1 border-l border-slate-200">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Aut.</span>
-                        <select
-                            value={filterAuthor}
-                            onChange={(e) => setFilterAuthor(e.target.value)}
-                            className="text-[10px] font-bold bg-white border border-slate-200 rounded-lg px-1.5 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all max-w-[100px]"
-                        >
-                            <option value="TODOS">TODOS</option>
-                            {availableAuthors.map(author => (
-                                <option key={author} value={author}>{author}</option>
-                            ))}
-                        </select>
-                    </div>
+                    <div className="flex items-center gap-2">
+                        {/* Selector de Vista (Jerarquía) */}
+                        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50/50 rounded-lg border border-blue-100 shadow-sm">
+                            <span className="text-[9px] text-blue-500 font-black uppercase tracking-widest">Vista</span>
+                            <select
+                                value={viewMode}
+                                onChange={(e) => setViewMode(e.target.value as any)}
+                                className="text-[10px] font-bold bg-transparent border-none outline-none text-blue-700 cursor-pointer focus:ring-0 px-0.5"
+                            >
+                                <optgroup label="Modos">
+                                    <option value="DETALLE">💎 Detalle</option>
+                                    <option value="SUMMARY">📊 Resumen</option>
+                                </optgroup>
+                                <optgroup label="Niveles OE">
+                                    <option value="L1">📍 N1</option>
+                                    <option value="L2">📍 N2</option>
+                                    <option value="L3">📍 N3</option>
+                                    <option value="L4">📍 N4</option>
+                                    <option value="L5">📍 N5</option>
+                                    <option value="L6">📍 N6</option>
+                                </optgroup>
+                            </select>
+                        </div>
 
-                    {/* Filtros de Ubicación (Frente, Bloque, Nivel) */}
-                    <div className="flex items-center gap-1 pl-1 border-l border-slate-200">
-                        <select
-                            value={filterFrente}
-                            onChange={(e) => setFilterFrente(e.target.value)}
-                            className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
-                            title="Frente"
-                        >
-                            <option value="TODOS">FRENTES</option>
-                            {availableFrentes.map(frente => (
-                                <option key={frente} value={frente}>{frente.substring(0, 8)}{frente.length > 8 ? '..' : ''}</option>
-                            ))}
-                        </select>
-                        <select
-                            value={filterBloque}
-                            onChange={(e) => setFilterBloque(e.target.value)}
-                            className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
-                            title="Bloque"
-                        >
-                            <option value="TODOS">BLOQUES</option>
-                            {availableBloques.map(bloque => (
-                                <option key={bloque} value={bloque}>{bloque.substring(0, 8)}{bloque.length > 8 ? '..' : ''}</option>
-                            ))}
-                        </select>
-                        <select
-                            value={filterNivel}
-                            onChange={(e) => setFilterNivel(e.target.value)}
-                            className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
-                            title="Nivel"
-                        >
-                            <option value="TODOS">NIVELES</option>
-                            {availableNiveles.map(nivel => (
-                                <option key={nivel} value={nivel}>{nivel.substring(0, 8)}{nivel.length > 8 ? '..' : ''}</option>
-                            ))}
-                        </select>
+                        {/* Clasificador de Meses / Período */}
+                        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-indigo-50/50 rounded-lg border border-indigo-100 shadow-sm">
+                            <span className="text-[9px] text-indigo-500 font-black uppercase tracking-widest">Periodo</span>
+                            <select
+                                value={activeMonthTab}
+                                onChange={(e) => handleMonthChange(e.target.value)}
+                                className="text-[10px] font-bold bg-transparent border-none outline-none text-indigo-700 cursor-pointer focus:ring-0 px-0.5"
+                            >
+                                <optgroup label="Rápidos">
+                                    <option value="week">📅 ESTA SEMANA</option>
+                                    <option value="all">🌍 TODO EL TIEMPO</option>
+                                </optgroup>
+                                <optgroup label="Historial">
+                                    {availableMonths.map(m => (
+                                        <option key={`${m.year}-${m.month}`} value={`${m.year}-${String(m.month).padStart(2, '0')}`}>
+                                            📅 {m.label.toUpperCase()}
+                                        </option>
+                                    ))}
+                                </optgroup>
+                                {activeMonthTab === 'custom' && <option value="custom">🛠️ RANGO</option>}
+                            </select>
+                        </div>
                     </div>
-
-                    {/* Toggle Medidas/Soles */}
-                    <button
-                        onClick={() => setShowCostView(!showCostView)}
-                        className={`flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-black transition-all border shadow-sm cursor-pointer ${showCostView
-                            ? 'bg-blue-600 text-white border-blue-700 shadow-blue-100'
-                            : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-                            }`}
-                        title={showCostView ? "Ver en modo Técnico (Medidas)" : "Ver en modo Económico (Soles)"}
-                    >
-                        <span>{showCostView ? '👷' : '💰'}</span>
-                        {showCostView ? 'Soles' : 'V.Valor'}
-                    </button>
                 </div>
             </div>
 
