@@ -652,10 +652,32 @@ export const MetradosTable = React.memo(({
             <div className="p-3 border-b border-slate-200 bg-slate-50/50 flex flex-col gap-3 sticky top-0 z-20 backdrop-blur-md">
                 {/* FILA 1: TÍTULO, VISTA, FECHAS Y EXPORTACIÓN */}
                 <div className="flex justify-between items-center w-full">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
                         <h3 className="font-bold text-slate-800 text-base tracking-tight shrink-0">Planilla de Metrados Dinámica</h3>
                         <div className="h-6 w-px bg-slate-200 mx-1" />
                         
+                        {/* Clasificador de Meses / Período - MOVIDO AQUÍ SIN TÍTULO */}
+                        <div className="flex items-center px-1.5 py-0.5 bg-indigo-50/50 rounded-lg border border-indigo-100 shadow-sm">
+                            <select
+                                value={activeMonthTab}
+                                onChange={(e) => handleMonthChange(e.target.value)}
+                                className="text-[10px] font-black bg-transparent border-none outline-none text-indigo-700 cursor-pointer focus:ring-0 px-0.5 uppercase"
+                            >
+                                <optgroup label="Rápidos">
+                                    <option value="week">📅 ESTA SEMANA</option>
+                                    <option value="all">🌍 TODO EL TIEMPO</option>
+                                </optgroup>
+                                <optgroup label="Historial">
+                                    {availableMonths.map(m => (
+                                        <option key={`${m.year}-${m.month}`} value={`${m.year}-${String(m.month).padStart(2, '0')}`}>
+                                            📅 {m.label.toUpperCase()}
+                                        </option>
+                                    ))}
+                                </optgroup>
+                                {activeMonthTab === 'custom' && <option value="custom">🛠️ RANGO</option>}
+                            </select>
+                        </div>
+
                         {/* Filtro Fecha (Rango) */}
                         <div className="flex items-center gap-2 px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg shadow-sm">
                             <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Rango:</span>
@@ -823,29 +845,6 @@ export const MetradosTable = React.memo(({
                                     <option value="L5">📍 N5</option>
                                     <option value="L6">📍 N6</option>
                                 </optgroup>
-                            </select>
-                        </div>
-
-                        {/* Clasificador de Meses / Período */}
-                        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-indigo-50/50 rounded-lg border border-indigo-100 shadow-sm">
-                            <span className="text-[9px] text-indigo-500 font-black uppercase tracking-widest">Periodo</span>
-                            <select
-                                value={activeMonthTab}
-                                onChange={(e) => handleMonthChange(e.target.value)}
-                                className="text-[10px] font-bold bg-transparent border-none outline-none text-indigo-700 cursor-pointer focus:ring-0 px-0.5"
-                            >
-                                <optgroup label="Rápidos">
-                                    <option value="week">📅 ESTA SEMANA</option>
-                                    <option value="all">🌍 TODO EL TIEMPO</option>
-                                </optgroup>
-                                <optgroup label="Historial">
-                                    {availableMonths.map(m => (
-                                        <option key={`${m.year}-${m.month}`} value={`${m.year}-${String(m.month).padStart(2, '0')}`}>
-                                            📅 {m.label.toUpperCase()}
-                                        </option>
-                                    ))}
-                                </optgroup>
-                                {activeMonthTab === 'custom' && <option value="custom">🛠️ RANGO</option>}
                             </select>
                         </div>
                     </div>
