@@ -847,30 +847,29 @@ export const MetradosTable = React.memo(({
                                 </optgroup>
                             </select>
                         </div>
+
+                        {/* LEYENDA INTEGRADA */}
+                        <div className="flex items-center gap-1.5 px-2 py-1 bg-slate-100/50 rounded-lg border border-slate-200 shadow-sm ml-1">
+                            {['PC', 'MM', 'PN', 'DD', 'ET'].map(mod => (
+                                <div key={mod} className="flex items-center gap-1" title={
+                                    mod === 'PC' ? 'Partida Creada' :
+                                        mod === 'MM' ? 'Mayores Metrados' :
+                                            mod === 'PN' ? 'Partida Nueva' :
+                                                mod === 'DD' ? 'Deductivos' : 'Exp. Técnico'
+                                }>
+                                    <div className={`w-1.5 h-1.5 rounded-full ${mod === 'PC' ? 'bg-pink-400' :
+                                        mod === 'MM' ? 'bg-blue-400' :
+                                            mod === 'PN' ? 'bg-green-400' :
+                                                mod === 'DD' ? 'bg-red-400' : 'bg-slate-300'
+                                        } shadow-sm border border-white`} />
+                                    <span className="text-[8px] font-black text-slate-500">{mod}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* LEYENDA CORTA - Mantenida pero simplificada */}
-            <div className="flex items-center justify-end mb-1 p-1 bg-slate-50/50 rounded-xl border border-slate-100/50 whitespace-nowrap">
-                <div className="flex items-center gap-3 px-3 shrink-0">
-                    {['PC', 'MM', 'PN', 'DD', 'ET'].map(mod => (
-                        <div key={mod} className="flex items-center gap-1.5" title={
-                            mod === 'PC' ? 'Partida Creada' :
-                                mod === 'MM' ? 'Mayores Metrados' :
-                                    mod === 'PN' ? 'Partida Nueva' :
-                                        mod === 'DD' ? 'Deductivos' : 'Exp. Técnico'
-                        }>
-                            <div className={`w-2 h-2 rounded-full ${mod === 'PC' ? 'bg-pink-400' :
-                                mod === 'MM' ? 'bg-blue-400' :
-                                    mod === 'PN' ? 'bg-green-400' :
-                                        mod === 'DD' ? 'bg-red-400' : 'bg-slate-300'
-                                } shadow-sm border border-white`} />
-                            <span className="text-[9px] font-black text-slate-500">{mod}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
 
             {/* Contenedor con Scroll (VIRTUALIZADO) */}
             <div
