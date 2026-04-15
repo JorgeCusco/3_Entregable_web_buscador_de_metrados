@@ -658,35 +658,35 @@ export const MetradosTable = React.memo(({
                         <div className="h-6 w-px bg-slate-200 mx-1" />
 
                         {/* Selector de Vista (Jerarquía) - MOVIDO AQUÍ */}
-                        <div className="flex items-center gap-1 px-2 py-1 bg-blue-50/50 rounded-lg border border-blue-100 shadow-sm">
+                        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50/50 rounded-lg border border-blue-100 shadow-sm">
                             <span className="text-[9px] text-blue-500 font-black uppercase tracking-widest">Vista</span>
                             <select
                                 value={viewMode}
                                 onChange={(e) => setViewMode(e.target.value as any)}
-                                className="text-[10px] font-bold bg-transparent border-none outline-none text-blue-700 cursor-pointer focus:ring-0 px-1"
+                                className="text-[10px] font-bold bg-transparent border-none outline-none text-blue-700 cursor-pointer focus:ring-0 px-0.5"
                             >
                                 <optgroup label="Modos">
-                                    <option value="DETALLE">💎 Detallada</option>
-                                    <option value="SUMMARY">📊 Resumida</option>
+                                    <option value="DETALLE">💎 Detalle</option>
+                                    <option value="SUMMARY">📊 Resumen</option>
                                 </optgroup>
                                 <optgroup label="Niveles OE">
-                                    <option value="L1">📍 Nivel 1</option>
-                                    <option value="L2">📍 Nivel 2</option>
-                                    <option value="L3">📍 Nivel 3</option>
-                                    <option value="L4">📍 Nivel 4</option>
-                                    <option value="L5">📍 Nivel 5</option>
-                                    <option value="L6">📍 Nivel 6</option>
+                                    <option value="L1">📍 N1</option>
+                                    <option value="L2">📍 N2</option>
+                                    <option value="L3">📍 N3</option>
+                                    <option value="L4">📍 N4</option>
+                                    <option value="L5">📍 N5</option>
+                                    <option value="L6">📍 N6</option>
                                 </optgroup>
                             </select>
                         </div>
 
                         {/* Clasificador de Meses / Período - NUEVO */}
-                        <div className="flex items-center gap-1 px-2 py-1 bg-indigo-50/50 rounded-lg border border-indigo-100 shadow-sm">
-                            <span className="text-[9px] text-indigo-500 font-black uppercase tracking-widest">Mes / Período</span>
+                        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-indigo-50/50 rounded-lg border border-indigo-100 shadow-sm">
+                            <span className="text-[9px] text-indigo-500 font-black uppercase tracking-widest">Periodo</span>
                             <select
                                 value={activeMonthTab}
                                 onChange={(e) => handleMonthChange(e.target.value)}
-                                className="text-[10px] font-bold bg-transparent border-none outline-none text-indigo-700 cursor-pointer focus:ring-0 px-1"
+                                className="text-[10px] font-bold bg-transparent border-none outline-none text-indigo-700 cursor-pointer focus:ring-0 px-0.5"
                             >
                                 <optgroup label="Rápidos">
                                     <option value="week">📅 ESTA SEMANA</option>
@@ -760,8 +760,8 @@ export const MetradosTable = React.memo(({
                 {/* FILA 2: FILTROS Y CONTROLES DE VISTA */}
                 <div className="flex flex-wrap items-center gap-3">
                     {/* Filtro Especialidad */}
-                    <div className="flex items-center gap-1.5">
-                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Especialidad</span>
+                    <div className="flex items-center gap-1">
+                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Esp.</span>
                         <select
                             value={especialidadSeleccionada}
                             onChange={(e) => {
@@ -772,7 +772,7 @@ export const MetradosTable = React.memo(({
                                 setFilterNivel('TODOS');
                             }}
                             disabled={isSpecialtyLocked}
-                            className={`text-[11px] font-bold border border-slate-200 rounded-lg px-2 py-1 outline-none transition-all ${isSpecialtyLocked
+                            className={`text-[10px] font-bold border border-slate-200 rounded-lg px-1.5 py-0.5 outline-none transition-all max-w-[120px] ${isSpecialtyLocked
                                 ? 'bg-slate-50 text-slate-400 cursor-not-allowed'
                                 : 'bg-white text-slate-700 hover:border-blue-400 cursor-pointer shadow-sm'
                                 }`}
@@ -784,12 +784,12 @@ export const MetradosTable = React.memo(({
                     </div>
 
                     {/* Filtro Autor */}
-                    <div className="flex items-center gap-1.5 pl-1.5 border-l border-slate-200">
-                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Autor</span>
+                    <div className="flex items-center gap-1 pl-1 border-l border-slate-200">
+                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Aut.</span>
                         <select
                             value={filterAuthor}
                             onChange={(e) => setFilterAuthor(e.target.value)}
-                            className="text-[11px] font-bold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                            className="text-[10px] font-bold bg-white border border-slate-200 rounded-lg px-1.5 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all max-w-[100px]"
                         >
                             <option value="TODOS">TODOS</option>
                             {availableAuthors.map(author => (
@@ -799,39 +799,38 @@ export const MetradosTable = React.memo(({
                     </div>
 
                     {/* Filtros de Ubicación (Frente, Bloque, Nivel) */}
-                    <div className="flex items-center gap-1 pl-1.5 border-l border-slate-200">
-                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight mr-1">Locación</span>
+                    <div className="flex items-center gap-1 pl-1 border-l border-slate-200">
                         <select
                             value={filterFrente}
                             onChange={(e) => setFilterFrente(e.target.value)}
-                            className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                            className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                             title="Frente"
                         >
                             <option value="TODOS">FRENTES</option>
                             {availableFrentes.map(frente => (
-                                <option key={frente} value={frente}>{frente.substring(0, 10)}{frente.length > 10 ? '...' : ''}</option>
+                                <option key={frente} value={frente}>{frente.substring(0, 8)}{frente.length > 8 ? '..' : ''}</option>
                             ))}
                         </select>
                         <select
                             value={filterBloque}
                             onChange={(e) => setFilterBloque(e.target.value)}
-                            className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                            className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                             title="Bloque"
                         >
                             <option value="TODOS">BLOQUES</option>
                             {availableBloques.map(bloque => (
-                                <option key={bloque} value={bloque}>{bloque.substring(0, 10)}{bloque.length > 10 ? '...' : ''}</option>
+                                <option key={bloque} value={bloque}>{bloque.substring(0, 8)}{bloque.length > 8 ? '..' : ''}</option>
                             ))}
                         </select>
                         <select
                             value={filterNivel}
                             onChange={(e) => setFilterNivel(e.target.value)}
-                            className="w-[80px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-1 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
+                            className="w-[75px] text-[10px] font-bold bg-white border border-slate-200 rounded-md px-1 py-0.5 text-slate-700 outline-none cursor-pointer hover:border-blue-400 shadow-sm transition-all"
                             title="Nivel"
                         >
                             <option value="TODOS">NIVELES</option>
                             {availableNiveles.map(nivel => (
-                                <option key={nivel} value={nivel}>{nivel.substring(0, 10)}{nivel.length > 10 ? '...' : ''}</option>
+                                <option key={nivel} value={nivel}>{nivel.substring(0, 8)}{nivel.length > 8 ? '..' : ''}</option>
                             ))}
                         </select>
                     </div>
