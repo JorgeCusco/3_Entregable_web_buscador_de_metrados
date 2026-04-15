@@ -391,6 +391,16 @@ const getSpecificMonthRange = (year: number, month: number) => {
     return { from: format(firstDay), to: format(lastDay) };
 };
 
+const getSpecificWeekOfMonth = (weekNumber: number) => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const startDay = (weekNumber - 1) * 7 + 1;
+    const endDay = Math.min(weekNumber * 7, new Date(year, month + 1, 0).getDate());
+    const format = (d: Date) => d.toISOString().split('T')[0];
+    return { from: format(new Date(year, month, startDay)), to: format(new Date(year, month, endDay)) };
+};
+
 export const MetradosTable = React.memo(({
     metrados, onUpdate, onGroupUpdate, onDelete, proyecto = 'hospital',
     especialidadSeleccionada = 'TODAS', onEspecialidadChange, isSpecialtyLocked,
@@ -449,6 +459,11 @@ export const MetradosTable = React.memo(({
         } else if (tabId === 'all') {
             setFilterDateFrom('');
             setFilterDateTo('');
+        } else if (tabId.startsWith('W')) {
+            const weekNum = parseInt(tabId.charAt(1), 10);
+            const range = getSpecificWeekOfMonth(weekNum);
+            setFilterDateFrom(range.from);
+            setFilterDateTo(range.to);
         } else if (tabId.includes('-')) {
             const [year, month] = tabId.split('-').map(Number);
             const range = getSpecificMonthRange(year, month);
@@ -465,14 +480,26 @@ export const MetradosTable = React.memo(({
         } else if (filterDateFrom === '' && filterDateTo === '') {
             setActiveMonthTab('all');
         } else {
-            const matchedMonth = availableMonths.find(m => {
-                const range = getSpecificMonthRange(m.year, m.month);
-                return range.from === filterDateFrom && range.to === filterDateTo;
-            });
-            if (matchedMonth) {
-                setActiveMonthTab(`${matchedMonth.year}-${String(matchedMonth.month).padStart(2, '0')}`);
-            } else {
-                setActiveMonthTab('custom');
+            // Check for week matches
+            let matchedWeek = false;
+            for (let i = 1; i <= 5; i++) {
+                const wr = getSpecificWeekOfMonth(i);
+                if (wr.from === filterDateFrom && wr.to === filterDateTo) {
+                    setActiveMonthTab(`W${i}`);
+                    matchedWeek = true;
+                    break;
+                }
+            }
+            if (!matchedWeek) {
+                const matchedMonth = availableMonths.find(m => {
+                    const range = getSpecificMonthRange(m.year, m.month);
+                    return range.from === filterDateFrom && range.to === filterDateTo;
+                });
+                if (matchedMonth) {
+                    setActiveMonthTab(`${matchedMonth.year}-${String(matchedMonth.month).padStart(2, '0')}`);
+                } else {
+                    setActiveMonthTab('custom');
+                }
             }
         }
     }, [filterDateFrom, filterDateTo, availableMonths]);
@@ -680,6 +707,36 @@ export const MetradosTable = React.memo(({
                             </select>
                         </div>
 
+                        {/* Clasificador de Período (Temporada) - NUEVO */}
+                        <div className="flex items-center gap-1 px-2 py-1 bg-indigo-50/50 rounded-lg border border-indigo-100 shadow-sm">
+                            <span className="text-[9px] text-indigo-500 font-black uppercase tracking-widest">Período</span>
+                            <select
+                                value={activeMonthTab}
+                                onChange={(e) => handleMonthChange(e.target.value)}
+                                className="text-[10px] font-bold bg-transparent border-none outline-none text-indigo-700 cursor-pointer focus:ring-0 px-1"
+                            >
+                                <optgroup label="Accesos Rápidos">
+                                    <option value="week">📅 Esta Semana</option>
+                                    <option value="all">🌍 Todo el Tiempo</option>
+                                </optgroup>
+                                <optgroup label="Semanas del Mes">
+                                    <option value="W1">📌 Semana 1 (Día 1-7)</option>
+                                    <option value="W2">📌 Semana 2 (Día 8-14)</option>
+                                    <option value="W3">📌 Semana 3 (Día 15-21)</option>
+                                    <option value="W4">📌 Semana 4 (Día 22-28)</option>
+                                    <option value="W5">📌 Semana 5 (Día 29+)</option>
+                                </optgroup>
+                                <optgroup label="Historial de Meses">
+                                    {availableMonths.map(m => (
+                                        <option key={`${m.year}-${m.month}`} value={`${m.year}-${String(m.month).padStart(2, '0')}`}>
+                                            📅 {m.label.toUpperCase()}
+                                        </option>
+                                    ))}
+                                </optgroup>
+                                {activeMonthTab === 'custom' && <option value="custom">🛠️ Rango Personalizado</option>}
+                            </select>
+                        </div>
+
                         {/* Filtro Fecha (Rango) - MOVIDO AQUÍ */}
                         <div className="flex items-center gap-2 px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg shadow-sm">
                             <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Rango:</span>
@@ -828,56 +885,9 @@ export const MetradosTable = React.memo(({
                 </div>
             </div>
 
-            {/* Clasificador por Meses (Nueva UI Premium) + LEYENDA CORTA */}
-            <div className="flex items-center justify-between mb-1 p-1 bg-slate-50/50 rounded-xl border border-slate-100/50 whitespace-nowrap">
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                    <div className="flex items-center gap-1 shrink-0 px-2 border-r border-slate-200 mr-1">
-                        <Calendar size={12} className="text-slate-400" />
-                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Período:</span>
-                    </div>
-
-                    <button
-                        onClick={() => handleMonthChange('week')}
-                        className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'week'
-                            ? 'bg-blue-600 text-white border-blue-700 shadow-sm shadow-blue-200'
-                            : 'bg-white text-slate-500 border-slate-200 hover:border-blue-300'}`}
-                    >
-                        ESTA SEMANA
-                    </button>
-
-                    <button
-                        onClick={() => handleMonthChange('all')}
-                        className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === 'all'
-                            ? 'bg-indigo-600 text-white border-indigo-700 shadow-sm shadow-indigo-200'
-                            : 'bg-white text-slate-500 border-slate-200 hover:border-indigo-300'}`}
-                    >
-                        TODO EL TIEMPO
-                    </button>
-
-                    <div className="w-px h-4 bg-slate-200 mx-1 shrink-0" />
-
-                    {availableMonths.map(m => {
-                        const tabId = `${m.year}-${String(m.month).padStart(2, '0')}`;
-                        return (
-                            <button
-                                key={tabId}
-                                onClick={() => handleMonthChange(tabId)}
-                                className={`shrink-0 px-3 py-1 rounded-lg text-[10px] font-black transition-all border ${activeMonthTab === tabId
-                                    ? 'bg-slate-800 text-white border-slate-900 shadow-sm'
-                                    : 'bg-white text-slate-500 border-slate-200 hover:border-slate-400'}`}
-                            >
-                                {m.label.toUpperCase()}
-                            </button>
-                        );
-                    })}
-
-                    {availableMonths.length === 0 && (
-                        <span className="text-[9px] text-slate-400 italic px-2">No hay meses con registros aún</span>
-                    )}
-                </div>
-
-                {/* Leyenda Corta Derecha */}
-                <div className="flex items-center gap-3 px-3 border-l border-slate-200 shrink-0">
+            {/* LEYENDA CORTA */}
+            <div className="flex items-center justify-end mb-1 p-1 bg-slate-50/50 rounded-xl border border-slate-100/50 whitespace-nowrap">
+                <div className="flex items-center gap-3 px-3 shrink-0">
                     {['PC', 'MM', 'PN', 'DD', 'ET'].map(mod => (
                         <div key={mod} className="flex items-center gap-1.5" title={
                             mod === 'PC' ? 'Partida Creada' :
