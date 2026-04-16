@@ -177,7 +177,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 <div className="absolute inset-0 z-[200] bg-white/90 backdrop-blur-sm p-4 flex flex-col justify-center animate-in fade-in zoom-in-95 duration-200">
                     <div className="glass-panel p-5 rounded-2xl shadow-xl border border-blue-100 flex flex-col gap-4">
                         <div className="flex items-center justify-between">
-                            <h3 className="text-[11px] font-black text-blue-900 uppercase tracking-widest">Crear Nueva Partida o actividad</h3>
+                            <h3 className="text-sm font-black text-blue-900 uppercase tracking-widest">Crear Nueva Partida o actividad</h3>
                             <button onClick={() => setShowNuevaPartidaModal(false)} className="text-slate-400 hover:text-red-500 font-bold text-[11px] px-2 cursor-pointer">X</button>
                         </div>
                         
@@ -234,7 +234,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
                             <div className="grid grid-cols-2 gap-2">
                                 <div className="space-y-1">
-                                    <label className="text-[9px] font-bold text-slate-500 uppercase">Unidad</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase">Unidad</label>
                                     <Select 
                                         value={nuevaPartidaData.unidad}
                                         options={['m', 'm2', 'm3', 'kg', 'und', 'glb', 'pto', 'est']}
@@ -242,7 +242,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[9px] font-bold text-slate-500 uppercase" title="Lógica matemática que aplicará la app para esta partida">Tipo de Lógica</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase" title="Lógica matemática que aplicará la app para esta partida">Tipo de Lógica</label>
                                     <Select 
                                         value={nuevaPartidaData.tipo_metrado}
                                         options={['ESTANDAR', 'ACERO', 'HVAC_DUCTO', 'HVAC_ACCESORIO']}
@@ -333,7 +333,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                 <div className="flex items-center gap-2">
                                     <button 
                                         onClick={() => setShowCostDetail(!showCostDetail)}
-                                        className="text-[9px] font-bold text-blue-600 hover:text-blue-800 bg-blue-100 px-1.5 py-0.5 rounded flex items-center gap-1 transition-colors"
+                                        className="text-[10px] font-bold text-blue-600 hover:text-blue-800 bg-blue-100 px-1.5 py-0.5 rounded flex items-center gap-1 transition-colors"
                                     >
                                         {showCostDetail ? <ChevronUp size={10} /> : <ChevronDown size={10} />}
                                         {showCostDetail ? 'Ocultar Saldo' : 'Ver Saldo'}
@@ -387,14 +387,14 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                                 <div className="space-y-1">
                                                     <div className="flex justify-between items-end text-[10px] font-bold uppercase tracking-tight">
                                                         <div className="flex flex-col">
-                                                            <span className="text-slate-400 text-[9px] uppercase tracking-wider">Avance del Proyecto</span>
+                                                            <span className="text-slate-400 text-[8px] uppercase tracking-wider">Avance del Proyecto</span>
                                                             <span className="text-slate-700 font-black">META TOTAL: {format(mProgramado)} {p.unidad}</span>
                                                         </div>
                                                         <div className="flex flex-col items-end">
                                                             <span className={`text-base font-black ${isExceeded ? 'text-red-600' : 'text-blue-600'}`}>
                                                                 {porcentajeTotal.toFixed(1)}%
                                                             </span>
-                                                            <span className="text-[9px] text-slate-400 font-bold uppercase underline">Porcentaje de Avance</span>
+                                                            <span className="text-[7px] text-slate-400 font-bold uppercase underline">Porcentaje de Avance</span>
                                                         </div>
                                                     </div>
                                                     <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner relative">
@@ -404,7 +404,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                                         />
                                                         {isExceeded && (
                                                             <div className="absolute inset-0 flex items-center justify-center">
-                                                                <span className="text-[9px] font-black text-white drop-shadow-sm uppercase">¡Límite Superado!</span>
+                                                                <span className="text-[7px] font-black text-white drop-shadow-sm uppercase">¡Límite Superado!</span>
                                                             </div>
                                                         )}
                                                     </div>
@@ -413,24 +413,24 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                                 <div className="space-y-1.5">
                                                     <div className="flex items-center gap-2 pl-1">
                                                         <span className="w-1.5 h-1.5 rounded-full bg-slate-300 animate-pulse" />
-                                                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Control Físico ({p.unidad})</span>
+                                                        <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Control Físico ({p.unidad})</span>
                                                     </div>
                                                     <div className="grid grid-cols-4 gap-1.5">
                                                         <div className="bg-slate-50 p-2 rounded-xl border border-slate-100 text-center transition-all hover:bg-white hover:shadow-sm">
-                                                            <span className="text-[9px] font-bold text-slate-400 block uppercase mb-0.5">Anterior</span>
+                                                            <span className="text-[7px] font-bold text-slate-400 block uppercase mb-0.5">Anterior</span>
                                                             <span className="text-[10px] font-black text-slate-600">{format(mAnterior)}</span>
                                                         </div>
                                                         <div className="bg-blue-50/50 p-2 rounded-xl border border-blue-100 text-center transition-all hover:bg-white hover:shadow-sm">
-                                                            <span className="text-[9px] font-bold text-blue-400 block uppercase mb-0.5">Actual</span>
+                                                            <span className="text-[7px] font-bold text-blue-400 block uppercase mb-0.5">Actual</span>
                                                             <span className="text-[10px] font-black text-blue-700">{format(mActual)}</span>
                                                         </div>
                                                         <div className="bg-slate-900 p-2 rounded-xl text-center shadow-lg transform scale-105 z-10 ring-2 ring-slate-800">
-                                                            <span className="text-[9px] font-bold text-slate-400 block uppercase mb-0.5">Acumulado</span>
+                                                            <span className="text-[7px] font-bold text-slate-400 block uppercase mb-0.5">Acumulado</span>
                                                             <span className="text-[10px] font-black text-white">{format(mAcumulado)}</span>
                                                         </div>
                                                         <div className={`p-2 rounded-xl border text-center transition-all hover:bg-white hover:shadow-sm ${isExceeded ? 'bg-red-50 border-red-100' : 'bg-slate-50 border-slate-200'}`}>
-                                                            <span className={`text-[9px] font-bold block uppercase mb-0.5 ${isExceeded ? 'text-red-500' : 'text-slate-500'}`}>Saldo (Falta)</span>
-                                                            <span className={`text-[10px] font-black ${isExceeded ? 'text-red-600' : 'text-slate-700'}`}>{format(Math.max(0, mSaldo))}</span>
+                                                            <span className={`text-[8px] font-bold block uppercase mb-0.5 ${isExceeded ? 'text-red-500' : 'text-slate-500'}`}>Saldo (Falta)</span>
+                                                            <span className={`text-[11px] font-black ${isExceeded ? 'text-red-600' : 'text-slate-700'}`}>{format(Math.max(0, mSaldo))}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -438,8 +438,8 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                                 {/* Indicador de Avance del Periodo (Opcional pero útil para claridad) */}
                                                 {mMetaPendiente > 0 && mActual > 0 && (
                                                     <div className="flex items-center justify-between px-2 py-1 bg-blue-50/30 rounded-lg border border-blue-100/50">
-                                                        <span className="text-[9px] font-bold text-blue-400 uppercase">Avance sobre lo pendiente:</span>
-                                                        <span className="text-[10px] font-black text-blue-600">{porcentajeRelativo.toFixed(1)}%</span>
+                                                        <span className="text-[7px] font-bold text-blue-400 uppercase">Avance sobre lo pendiente:</span>
+                                                        <span className="text-[9px] font-black text-blue-600">{porcentajeRelativo.toFixed(1)}%</span>
                                                     </div>
                                                 )}
 
@@ -447,23 +447,23 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                                     <div className="flex items-center justify-between pl-1">
                                                         <div className="flex items-center gap-2">
                                                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-300" />
-                                                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Control Financiero (Soles)</span>
+                                                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Control Financiero (Soles)</span>
                                                         </div>
-                                                        <span className="text-[9px] font-mono font-bold text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded-md border border-blue-100">APU: S/ {format(puActual)}</span>
+                                                        <span className="text-[8px] font-mono font-bold text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded-md border border-blue-100">APU: S/ {format(puActual)}</span>
                                                     </div>
                                                     <div className="grid grid-cols-2 gap-2">
                                                         <div className="bg-slate-50 p-2 rounded-lg border border-slate-100 flex justify-between items-center">
-                                                            <span className="text-[9px] font-bold text-slate-400 uppercase">Val. Presup.</span>
+                                                            <span className="text-[8px] font-bold text-slate-400 uppercase">Val. Presup.</span>
                                                             <span className="text-[11px] font-black text-slate-700">S/ {format(valProgramada)}</span>
                                                         </div>
                                                         <div className="bg-blue-50 p-2 rounded-lg border border-blue-100 flex justify-between items-center">
-                                                            <span className="text-[9px] font-bold text-blue-400 uppercase">Val. Ejec.</span>
+                                                            <span className="text-[8px] font-bold text-blue-400 uppercase">Val. Ejec.</span>
                                                             <span className="text-[11px] font-black text-blue-700">S/ {format(valEjecTotal)}</span>
                                                         </div>
                                                     </div>
                                                     
                                                     <div className={`p-2 rounded-lg border text-center ${valSaldo < 0 ? 'bg-red-50 border-red-100' : 'bg-emerald-50 border-emerald-100'}`}>
-                                                        <span className={`text-[10px] font-bold uppercase block -mb-0.5 ${valSaldo < 0 ? 'text-red-700' : 'text-emerald-700'}`}>
+                                                        <span className={`text-[8px] font-bold uppercase block -mb-0.5 ${valSaldo < 0 ? 'text-red-700' : 'text-emerald-700'}`}>
                                                             {valSaldo < 0 ? 'PÉRDIDA / MAYOR COSTO' : 'SALDO DISPONIBLE EN SOLES'}
                                                         </span>
                                                         <span className={`text-sm font-black ${valSaldo < 0 ? 'text-red-700' : 'text-emerald-700'}`}>
@@ -512,11 +512,11 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         
                         <div className="flex flex-col gap-2 bg-white/60 p-2 rounded-xl border border-blue-50">
                             <div className="flex items-center gap-2">
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider w-14 shrink-0 text-right">Código:</label>
+                                <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wider w-14 shrink-0 text-right">Código:</label>
                                 <input
                                     type="text"
                                     list="cdlla-form-list"
-                                    className="flex-1 bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-[11px] font-bold text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase"
+                                    className="flex-1 bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all uppercase"
                                     value={state.cuadrilla === 'VARIOS' ? '' : state.cuadrilla}
                                     onChange={(e) => actions.setCuadrilla(e.target.value.toUpperCase())}
                                     placeholder="Nombre de cuadrilla (Ej: C1)"
@@ -527,7 +527,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                             </div>
                             
                             <div className="flex items-start gap-2">
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider w-14 shrink-0 text-right pt-2.5">Obreros:</label>
+                                <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wider w-14 shrink-0 text-right pt-2.5">Obreros:</label>
                                 <div className="flex-1">
                                     <PersonalMultiSelect 
                                         especialidad={state.especialidadSeleccionada}
@@ -546,13 +546,13 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                 type="text"
                                 value={state.elemento}
                                 onChange={e => actions.setElemento(e.target.value)}
-                                className="w-full px-4 py-2 border border-slate-200 rounded-xl shadow-sm text-[11px] font-bold text-slate-700 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition-all h-9"
+                                className="w-full px-4 py-2 border border-slate-200 rounded-xl shadow-sm text-xs font-bold text-slate-700 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition-all h-9"
                                 placeholder="Ej. Viga BV-206 Ejes 1-4..."
                             />
                         </div>
 
                         <div className="space-y-1">
-                            <label className="text-[10px] font-bold text-blue-600 flex items-center gap-1 uppercase tracking-wider pl-1">
+                            <label className="text-[9px] font-bold text-blue-600 flex items-center gap-1 uppercase tracking-wider pl-1">
                                 <span className="text-blue-400 font-black">↳</span> Detalle {state.hvacConfig ? `Especifico (${state.hvacConfig.category})` : 'Específico'}
                             </label>
                             {state.hvacConfig ? (
@@ -567,14 +567,14 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                     }}
                                     suggestions={hvacCatalog}
                                     searchField="label"
-                                    className="h-8 shadow-none"
+                                    className="h-8 shadow-none text-[11px]"
                                 />
                             ) : (
                                 <input
                                     type="text"
                                     value={state.detalle}
                                     onChange={e => actions.setDetalle(e.target.value)}
-                                    className="w-full px-4 py-1.5 border border-blue-100 rounded-xl shadow-sm text-[11px] border-l-4 border-l-blue-500 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none h-8"
+                                    className="w-full px-4 py-1.5 border border-blue-100 rounded-xl shadow-sm text-[11px] font-bold border-l-4 border-l-blue-500 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none h-8"
                                     placeholder="Mat. / Esp. / Actividad..."
                                 />
                             )}
@@ -605,7 +605,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
 
                             return (
                                 <div key={key} className="space-y-1">
-                                    <label className={`text-[10px] font-black uppercase tracking-tighter text-center block leading-[1.1] h-[18px] flex items-end justify-center pb-0.5 ${isLocked ? 'text-slate-300' : 'text-slate-400'}`}>
+                                    <label className={`text-[9px] font-black uppercase tracking-tighter text-center block leading-[1.1] h-[18px] flex items-end justify-center pb-0.5 ${isLocked ? 'text-slate-300' : 'text-slate-400'}`}>
                                         {label}
                                     </label>
                                     <input
@@ -640,13 +640,13 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                             
                             extraFields.push(
                                 <div key="diametro" className="space-y-1">
-                                    <label className={`text-[10px] font-black uppercase tracking-tighter text-center block ${flagAcero ? 'text-orange-400' : 'text-blue-400'}`}>DIÁM</label>
+                                    <label className={`text-[9px] font-black uppercase tracking-tighter text-center block ${flagAcero ? 'text-orange-400' : 'text-blue-400'}`}>DIÁM</label>
                                     <select
                                         id="input-diametro"
                                         value={state.diametro}
                                         onChange={e => actions.setDiametro(e.target.value)}
                                         onKeyDown={e => handleKeyDown(e as any, 'input-cantidad')}
-                                        className={`w-full border rounded text-[11px] font-black h-[26px] text-center outline-none ${
+                                        className={`w-full border rounded text-[10px] font-black h-[26px] text-center outline-none ${
                                             flagAcero 
                                             ? 'border-orange-100 bg-orange-50 text-orange-700 font-bold' 
                                             : 'border-blue-100 bg-blue-50 text-blue-700 font-bold'
@@ -662,7 +662,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         const isVecesLocked = strategy.isFieldLocked('nro_veces', meta);
                         extraFields.push(
                             <div key="veces" className="space-y-1">
-                                <label className={`text-[10px] font-black uppercase tracking-tighter text-center block ${isVecesLocked ? 'text-slate-300' : 'text-slate-400'}`}>
+                                <label className={`text-[9px] font-black uppercase tracking-tighter text-center block ${isVecesLocked ? 'text-slate-300' : 'text-slate-400'}`}>
                                     VECES
                                 </label>
                                 <input
@@ -691,11 +691,11 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 <div className="flex items-center justify-between px-2 -mb-1">
                     <div className="flex gap-4">
                         <div className="flex flex-col">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Parcial</span>
+                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Parcial</span>
                             <span className="text-sm font-bold text-slate-700 font-mono">{state.parcial.toFixed(2)}</span>
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total</span>
+                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Total</span>
                             <span className="text-xl font-black text-blue-900 font-mono -mt-1">
                                 {state.total.toFixed(2)}
                                 {state.hvacFactor !== null && (

@@ -48,7 +48,7 @@ export function SimpleSearchInput<T>({
             {label && <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">{label}</label>}
             <div className="relative">
                 <input 
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-[11px] font-bold focus:border-blue-500 outline-none pr-10"
+                    className="w-full px-3 py-1.5 border border-slate-200 rounded-xl text-[11px] font-bold focus:border-blue-500 outline-none pr-10"
                     value={value}
                     onChange={e => {
                         onChange(e.target.value);
@@ -57,7 +57,7 @@ export function SimpleSearchInput<T>({
                     onFocus={() => setIsOpen(true)}
                     placeholder={placeholder}
                 />
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-300" />
+                <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-300" />
             </div>
 
             {isOpen && filtered.length > 0 && (
@@ -73,7 +73,7 @@ export function SimpleSearchInput<T>({
                                 }}
                             >
                                 {renderItem ? renderItem(item) : (
-                                    <span className="text-[10px] font-bold text-slate-800 line-clamp-1">
+                                    <span className="text-[11px] font-bold text-slate-800 line-clamp-1">
                                         {String(item[searchField])}
                                     </span>
                                 )}

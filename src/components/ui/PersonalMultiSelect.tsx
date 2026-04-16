@@ -101,7 +101,7 @@ export const PersonalMultiSelect: React.FC<PersonalMultiSelectProps> = ({ especi
             {isOpen && (
                 <div className="absolute top-10 left-0 w-full z-50 bg-white border border-slate-200 rounded-xl shadow-2xl max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-1">
                     {filteredPersonal.length === 0 ? (
-                        <div className="p-4 text-center text-xs font-bold text-slate-400">
+                        <div className="p-4 text-center text-[11px] font-bold text-slate-400">
                             No se encontraron obreros disponibles para esta especialidad.
                         </div>
                     ) : (
@@ -143,7 +143,7 @@ export const PersonalMultiSelect: React.FC<PersonalMultiSelectProps> = ({ especi
                         >
                             <div className="flex flex-col leading-tight">
                                 <span className="text-[10px] font-black text-blue-900 tracking-tight">{p.nombre_formateado}</span>
-                                <span className="text-[9px] font-bold text-slate-400">{p.oficio || 'Obrero'}</span>
+                                <span className="text-[9px] font-bold text-slate-400">{p.categoria || p.oficio || 'Obrero'}</span>
                             </div>
                             <button 
                                 onClick={() => handleRemove(p.id)}
