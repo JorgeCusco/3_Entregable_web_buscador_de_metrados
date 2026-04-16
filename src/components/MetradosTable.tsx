@@ -113,7 +113,7 @@ const HeaderRow = React.memo(({ r, partidaTotals, showCostView, getIndentLevel, 
             </td>
             <td className="w-[30px] min-w-[30px] px-1 py-1 text-center text-slate-400 font-bold text-[10px]">{r.unidad}</td>
             {!showCostView ? (
-                <td colSpan={8} className="px-1 py-1 border-l border-slate-100/50">
+                <td colSpan={7} className="px-1 py-1 border-l border-slate-100/50">
                     {r.precio_unitario > 0 && (
                         <div className="w-full h-full flex justify-end items-center pr-3 gap-2">
                             <span className="bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded text-[10px] border border-emerald-200 shadow-sm">S/ {r.precio_unitario.toFixed(2)}</span>
@@ -204,7 +204,6 @@ const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumbe
                             <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
                                 value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
                     </td>
-                    <td className="w-[10px] min-w-[10px] border-l border-slate-200/60"></td>
                 </>
             ) : (
                 <td colSpan={7} className="px-1 py-1.5 text-center border-l border-slate-200/60 text-slate-300 italic text-[10px]">
@@ -655,7 +654,7 @@ export const MetradosTable = React.memo(({
                     <div className="flex items-center gap-2">
                         <h3 className="font-bold text-slate-800 text-sm tracking-tight shrink-0">Planilla de Metrados Dinámica</h3>
                         <div className="h-6 w-px bg-slate-200 mx-1" />
-                        
+
                         {/* Clasificador de Meses / Período - MOVIDO AQUÍ SIN TÍTULO */}
                         <div className="flex items-center px-1.5 py-0.5 bg-indigo-50/50 rounded-lg border border-indigo-100 shadow-sm">
                             <select
@@ -892,7 +891,6 @@ export const MetradosTable = React.memo(({
                                     <th className="w-[60px] min-w-[60px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">ALT./GAN.</th>
                                     <th className="w-[75px] min-w-[75px] px-1 py-3 text-right text-[10px] border-l border-slate-200">Parcial</th>
                                     <th className="w-[45px] min-w-[45px] px-0.5 py-3 text-center text-[10px] border-l border-slate-200">Veces</th>
-                                    <th className="w-[10px] min-w-[10px] px-1 py-3 text-center text-[10px] border-l border-slate-200"></th>
                                 </>
                             ) : (
                                 <>
