@@ -879,8 +879,8 @@ export const MetradosTable = React.memo(({
                     <thead className="text-[11px] text-slate-400 bg-white uppercase whitespace-nowrap sticky top-0 shadow-[0_1px_0_0_rgba(0,0,0,0.05)] z-10 font-bold">
                         <tr className="border-b border-slate-100">
                             <th className="w-[60px] min-w-[60px] px-1 py-3 text-center overflow-hidden">Fecha</th>
-                            <th className="w-[85px] min-w-[85px] px-1 py-3 text-center">Item / Código</th>
-                            <th className="px-1 py-3 min-w-[200px] text-center">Descripción / Partida / Metrado</th>
+                            <th className="w-[85px] min-w-[85px] px-1 py-3 text-center">Item</th>
+                            <th className="px-1 py-3 min-w-[200px] text-center">Descripción</th>
                             <th className="w-[30px] min-w-[30px] px-0.5 py-3 text-center">Und</th>
 
                             {!showCostView ? (
