@@ -51,10 +51,10 @@ const formatNumber = (num: number) => {
 const TitleRow = React.memo(({ r, getIndentLevel }: any) => (
     <tr className="bg-slate-100 border-b border-slate-200">
         <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1 text-center font-mono text-[9px] text-slate-400 overflow-hidden"></td>
-        <td className="w-[85px] min-w-[85px] px-1 py-1 font-mono text-[10px] tracking-wider text-left text-slate-500">
+        <td className="w-[85px] min-w-[85px] px-1 py-1 font-mono text-[10px] tracking-wider text-center text-slate-500">
             {r.codigo}
         </td>
-        <td colSpan={11} className="px-1 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600"
+        <td colSpan={11} className="px-1 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600 text-center"
             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.15}rem` }}>
             {r.descripcion}
         </td>
@@ -70,7 +70,7 @@ const VirtualElementRow = React.memo(({ r, getIndentLevel, onGroupUpdate, isRead
                 <span className="text-blue-300 font-black text-[10px]">▼</span>
                 <input
                     type="text"
-                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] font-bold uppercase tracking-wider placeholder:text-slate-300"
+                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] font-bold uppercase tracking-wider placeholder:text-slate-300 text-center"
                     value={r.descripcion}
                     onChange={(e) => onGroupUpdate?.(r.codigo_partida, r.descripcion, e.target.value.toUpperCase())}
                     onFocus={(e) => e.target.select()}
@@ -97,13 +97,13 @@ const HeaderRow = React.memo(({ r, partidaTotals, showCostView, getIndentLevel, 
     return (
         <tr className={`${hasMetrados ? 'bg-blue-50/50' : 'bg-white'} border-b border-slate-100 font-semibold group`}>
             <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1 text-center overflow-hidden"></td>
-            <td className="w-[85px] min-w-[85px] px-1 py-1 text-left" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.1}rem` }}>
+            <td className="w-[85px] min-w-[85px] px-1 py-1 text-center" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.1}rem` }}>
                 <span className="font-mono text-[10px] text-blue-500 bg-blue-50 px-1 py-0.5 rounded border border-blue-100">
                     {r.codigo}
                 </span>
             </td>
-            <td className="px-1 py-1" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.15}rem` }}>
-                <div className="flex items-center gap-2">
+            <td className="px-1 py-1 text-center" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.15}rem` }}>
+                <div className="flex items-center justify-center gap-2">
                     {RenderModificacionBadge(r.modificacion)}
                     <span className="text-slate-700 text-[11px] leading-snug">{r.descripcion}</span>
                     {r.cantidad_presupuesto === 0 && (
@@ -125,13 +125,13 @@ const HeaderRow = React.memo(({ r, partidaTotals, showCostView, getIndentLevel, 
                 </td>
             ) : (
                 <>
-                    <td className="w-[65px] min-w-[65px] px-1 py-1 text-right text-[11px] border-l border-slate-100 bg-financial-value font-mono">S/ {precio.toFixed(2)}</td>
-                    <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-blue-100 bg-financial-progress font-mono font-bold">{formatNumber(totalAcumulado)}</td>
-                    <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-blue-100 bg-financial-progress font-mono text-slate-500/70">{formatNumber(presupuesto)}</td>
-                    <td className={`w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-amber-100 bg-financial-pending font-mono font-bold ${saldoFisico < 0 ? 'text-red-500' : 'text-amber-800'}`}>{formatNumber(saldoFisico)}</td>
-                    <td className="w-[80px] min-w-[80px] px-1 py-1 text-right text-[11px] border-l border-amber-100 bg-financial-pending font-mono italic text-amber-700/80">S/ {formatNumber(saldoMonetario)}</td>
-                    <td className="w-[85px] min-w-[85px] px-1 py-1 text-right text-[11px] border-l border-emerald-200 bg-current-month font-mono font-black text-emerald-800 shadow-sm">S/ {formatNumber(totalPeriodo * precio)}</td>
-                    <td className="w-[85px] min-w-[85px] px-1 py-1 text-right text-[12px] border-l border-emerald-200 bg-financial-value font-mono font-black text-emerald-700">S/ {formatNumber(costoEjecutado)}</td>
+                    <td className="w-[65px] min-w-[65px] px-1 py-1 text-center text-[11px] border-l border-slate-100 bg-financial-value font-mono">S/ {precio.toFixed(2)}</td>
+                    <td className="w-[80px] min-w-[80px] px-1 py-1 text-center text-[11px] border-l border-blue-100 bg-financial-progress font-mono font-bold">{formatNumber(totalAcumulado)}</td>
+                    <td className="w-[80px] min-w-[80px] px-1 py-1 text-center text-[11px] border-l border-blue-100 bg-financial-progress font-mono text-slate-500/70">{formatNumber(presupuesto)}</td>
+                    <td className={`w-[80px] min-w-[80px] px-1 py-1 text-center text-[11px] border-l border-amber-100 bg-financial-pending font-mono font-bold ${saldoFisico < 0 ? 'text-red-500' : 'text-amber-800'}`}>{formatNumber(saldoFisico)}</td>
+                    <td className="w-[80px] min-w-[80px] px-1 py-1 text-center text-[11px] border-l border-amber-100 bg-financial-pending font-mono italic text-amber-700/80">S/ {formatNumber(saldoMonetario)}</td>
+                    <td className="w-[85px] min-w-[85px] px-1 py-1 text-center text-[11px] border-l border-emerald-200 bg-current-month font-mono font-black text-emerald-800 shadow-sm">S/ {formatNumber(totalPeriodo * precio)}</td>
+                    <td className="w-[85px] min-w-[85px] px-1 py-1 text-center text-[12px] border-l border-emerald-200 bg-financial-value font-mono font-black text-emerald-700">S/ {formatNumber(costoEjecutado)}</td>
                     <td className="w-[70px] min-w-[70px] border-l border-slate-100/50"></td>
                 </>
             )}
@@ -164,14 +164,14 @@ const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumbe
                         value={r.nivel} onChange={(e) => onUpdate?.(r.id, 'nivel', e.target.value)} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
                 </div>
             </td>
-            <td className="px-1 py-1.5">
-                <div className="flex items-center gap-1.5 w-full">
+            <td className="px-1 py-1.5 text-center">
+                <div className="flex items-center justify-center gap-1.5 w-full">
                     <input type="text" className="metrado-input w-12 bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded text-slate-500 text-[9px] font-black uppercase shrink-0 text-center"
                         value={r.cuadrilla || ''} readOnly />
                     {r.elemento && <span className="text-blue-400 font-black text-[12px] shrink-0">↳</span>}
-                    <input type="text" className="metrado-input w-20 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0"
+                    <input type="text" className="metrado-input w-20 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0 text-center"
                         value={r.elemento || ''} onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
-                    <input type="text" className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[11px] font-medium"
+                    <input type="text" className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[11px] font-medium text-center"
                         value={r.detalle || ''} onChange={(e) => onUpdate?.(r.id, 'detalle', e.target.value)} onKeyDown={handleKeyDown} readOnly={isReadOnly} />
                 </div>
             </td>
@@ -198,7 +198,7 @@ const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumbe
                             <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
                                 value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
                     </td>
-                    <td className="px-2 py-1.5 text-right font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
+                    <td className="px-2 py-1.5 text-center font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
                         {strategy.isFieldLocked('nro_veces', meta) ? <span className="text-[9px] font-bold text-slate-300">1</span> :
                             <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
@@ -879,28 +879,28 @@ export const MetradosTable = React.memo(({
                     <thead className="text-[11px] text-slate-400 bg-white uppercase whitespace-nowrap sticky top-0 shadow-[0_1px_0_0_rgba(0,0,0,0.05)] z-10 font-bold">
                         <tr className="border-b border-slate-100">
                             <th className="w-[60px] min-w-[60px] px-1 py-3 text-center overflow-hidden">Fecha</th>
-                            <th className="w-[85px] min-w-[85px] px-1 py-3 text-left">Item / Código</th>
-                            <th className="px-1 py-3 min-w-[200px]">Descripción / Partida / Metrado</th>
+                            <th className="w-[85px] min-w-[85px] px-1 py-3 text-center">Item / Código</th>
+                            <th className="px-1 py-3 min-w-[200px] text-center">Descripción / Partida / Metrado</th>
                             <th className="w-[30px] min-w-[30px] px-0.5 py-3 text-center">Und</th>
 
                             {!showCostView ? (
                                 <>
-                                    <th className="w-[50px] min-w-[50px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">CANT.</th>
-                                    <th className="w-[70px] min-w-[70px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">LONG./AREA</th>
-                                    <th className="w-[60px] min-w-[60px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">ANCHO</th>
-                                    <th className="w-[60px] min-w-[60px] px-0.5 py-3 text-right text-[10px] border-l border-slate-200">ALT./GAN.</th>
-                                    <th className="w-[75px] min-w-[75px] px-1 py-3 text-right text-[10px] border-l border-slate-200">Parcial</th>
+                                    <th className="w-[50px] min-w-[50px] px-0.5 py-3 text-center text-[10px] border-l border-slate-200">CANT.</th>
+                                    <th className="w-[70px] min-w-[70px] px-0.5 py-3 text-center text-[10px] border-l border-slate-200">LONG./AREA</th>
+                                    <th className="w-[60px] min-w-[60px] px-0.5 py-3 text-center text-[10px] border-l border-slate-200">ANCHO</th>
+                                    <th className="w-[60px] min-w-[60px] px-0.5 py-3 text-center text-[10px] border-l border-slate-200">ALT./GAN.</th>
+                                    <th className="w-[75px] min-w-[75px] px-1 py-3 text-center text-[10px] border-l border-slate-200">Parcial</th>
                                     <th className="w-[45px] min-w-[45px] px-0.5 py-3 text-center text-[10px] border-l border-slate-200">Veces</th>
                                 </>
                             ) : (
                                 <>
-                                    <th className="w-[65px] min-w-[65px] px-1 py-3 text-right text-[10px] border-l bg-emerald-100 bg-financial-value transition-all">Precio S/</th>
-                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px] border-l bg-blue-100 bg-financial-progress font-black">Metrado Acum.</th>
-                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px] border-l bg-blue-100 bg-financial-progress">Presupuesto</th>
-                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px] border-l bg-amber-100 bg-financial-pending font-black">Saldo Fis.</th>
-                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-right text-[10px] border-l bg-amber-100 bg-financial-pending">Sald. Mon S/</th>
-                                    <th className="w-[85px] min-w-[85px] px-1 py-3 text-right text-[10px] border-l bg-emerald-200 bg-current-month font-black shadow-inner">Val. Mes S/</th>
-                                    <th className="w-[85px] min-w-[85px] px-1 py-3 text-right text-[10px] border-l bg-emerald-200 bg-financial-value font-black text-emerald-800">Costo Ejec.</th>
+                                    <th className="w-[65px] min-w-[65px] px-1 py-3 text-center text-[10px] border-l bg-emerald-100 bg-financial-value transition-all">Precio S/</th>
+                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-center text-[10px] border-l bg-blue-100 bg-financial-progress font-black">Metrado Acum.</th>
+                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-center text-[10px] border-l bg-blue-100 bg-financial-progress">Presupuesto</th>
+                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-center text-[10px] border-l bg-amber-100 bg-financial-pending font-black">Saldo Fis.</th>
+                                    <th className="w-[80px] min-w-[80px] px-1 py-3 text-center text-[10px] border-l bg-amber-100 bg-financial-pending">Sald. Mon S/</th>
+                                    <th className="w-[85px] min-w-[85px] px-1 py-3 text-center text-[10px] border-l bg-emerald-200 bg-current-month font-black shadow-inner">Val. Mes S/</th>
+                                    <th className="w-[85px] min-w-[85px] px-1 py-3 text-center text-[10px] border-l bg-emerald-200 bg-financial-value font-black text-emerald-800">Costo Ejec.</th>
                                 </>
                             )}
 
