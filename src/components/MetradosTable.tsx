@@ -54,7 +54,7 @@ const TitleRow = React.memo(({ r, getIndentLevel }: any) => (
         <td className="w-[85px] min-w-[85px] px-1 py-1 font-mono text-[10px] tracking-wider text-center text-slate-500">
             {r.codigo}
         </td>
-        <td colSpan={11} className="px-1 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600 text-center"
+        <td colSpan={11} className="px-1 py-1 uppercase text-[10px] font-black tracking-[0.15em] text-slate-600"
             style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.15}rem` }}>
             {r.descripcion}
         </td>
@@ -70,7 +70,7 @@ const VirtualElementRow = React.memo(({ r, getIndentLevel, onGroupUpdate, isRead
                 <span className="text-blue-300 font-black text-[10px]">▼</span>
                 <input
                     type="text"
-                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] font-bold uppercase tracking-wider placeholder:text-slate-300 text-center"
+                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] font-bold uppercase tracking-wider placeholder:text-slate-300"
                     value={r.descripcion}
                     onChange={(e) => onGroupUpdate?.(r.codigo_partida, r.descripcion, e.target.value.toUpperCase())}
                     onFocus={(e) => e.target.select()}
@@ -102,8 +102,8 @@ const HeaderRow = React.memo(({ r, partidaTotals, showCostView, getIndentLevel, 
                     {r.codigo}
                 </span>
             </td>
-            <td className="px-1 py-1 text-center" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.15}rem` }}>
-                <div className="flex items-center justify-center gap-2">
+            <td className="px-1 py-1" style={{ paddingLeft: `${getIndentLevel(r.codigo) * 0.2 + 0.15}rem` }}>
+                <div className="flex items-center gap-2">
                     {RenderModificacionBadge(r.modificacion)}
                     <span className="text-slate-700 text-[11px] leading-snug">{r.descripcion}</span>
                     {r.cantidad_presupuesto === 0 && (
@@ -164,14 +164,14 @@ const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumbe
                         value={r.nivel} onChange={(e) => onUpdate?.(r.id, 'nivel', e.target.value)} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
                 </div>
             </td>
-            <td className="px-1 py-1.5 text-center">
-                <div className="flex items-center justify-center gap-1.5 w-full">
+            <td className="px-1 py-1.5">
+                <div className="flex items-center gap-1.5 w-full">
                     <input type="text" className="metrado-input w-12 bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded text-slate-500 text-[9px] font-black uppercase shrink-0 text-center"
                         value={r.cuadrilla || ''} readOnly />
                     {r.elemento && <span className="text-blue-400 font-black text-[12px] shrink-0">↳</span>}
                     <input type="text" className="metrado-input w-20 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0 text-center"
                         value={r.elemento || ''} onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
-                    <input type="text" className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[11px] font-medium text-center"
+                    <input type="text" className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[11px] font-medium"
                         value={r.detalle || ''} onChange={(e) => onUpdate?.(r.id, 'detalle', e.target.value)} onKeyDown={handleKeyDown} readOnly={isReadOnly} />
                 </div>
             </td>
@@ -880,7 +880,7 @@ export const MetradosTable = React.memo(({
                         <tr className="border-b border-slate-100">
                             <th className="w-[60px] min-w-[60px] px-1 py-3 text-center overflow-hidden">Fecha</th>
                             <th className="w-[85px] min-w-[85px] px-1 py-3 text-center">Item</th>
-                            <th className="px-1 py-3 min-w-[200px] text-center">Descripción</th>
+                            <th className="px-1 py-3 min-w-[200px] text-left">Descripción</th>
                             <th className="w-[30px] min-w-[30px] px-0.5 py-3 text-center">Und</th>
 
                             {!showCostView ? (
