@@ -191,6 +191,30 @@ function App() {
           </button>
         </div>
 
+        {/* ─── Selector de Base de Datos (Oficial vs Custom) ─── */}
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner">
+          <button
+            onClick={() => { setContext({ isModoPC: false }); actions.setPartidaSeleccionada(null); setTimeout(fetchMetrados, 50); }}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${!context.isModoPC
+              ? 'bg-white text-slate-800 shadow-md border border-slate-200'
+              : 'text-slate-500 hover:text-slate-700'
+              }`}
+            title="Catálogo Oficial"
+          >
+            Bd. Oficial
+          </button>
+          <button
+            onClick={() => { setContext({ isModoPC: true }); actions.setPartidaSeleccionada(null); setTimeout(fetchMetrados, 50); }}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${context.isModoPC
+              ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md border border-pink-400'
+              : 'text-slate-500 hover:text-slate-700'
+              }`}
+            title="Base de Datos Aislada de Partidas Creadas"
+          >
+            Partidas Creadas
+          </button>
+        </div>
+
         <div className="flex items-center gap-2">
           <button 
             onClick={() => setShowPersonalDashboard(true)}

@@ -50,7 +50,7 @@ window.RenderModificacionBadge = RenderModificacionBadge;
 
 export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGuardar, proyecto }) => {
     const { personal } = usePersonalStore();
-    const { catalogoHospital, catalogoContingencia, metrados, hvacCatalog, fetchHvacCatalog } = useMetradosStore();
+    const { catalogoHospital, catalogoContingencia, metrados, hvacCatalog, fetchHvacCatalog, context } = useMetradosStore();
     const { user } = useAuthStore();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showCostDetail, setShowCostDetail] = useState(false);
@@ -89,18 +89,53 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
     const [nuevaPartidaData, setNuevaPartidaData] = useState({ codigo: '', descripcion: '', unidad: 'm', tipo_metrado: 'ESTANDAR' });
     const [modalEspecialidad, setModalEspecialidad] = useState<string>('TODAS');
 
+    // Generador Automático de Nomenclatura para Partidas Creadas
+    const generarCodigoPartida = (especialidad: string) => {
+        const prefijos: Record<string, string> = {
+            'ESTRUCTURAS': 'EST',
+            'ARQUITECTURA': 'ARQ',
+            'INSTALACIONES SANITARIAS': 'INS',
+            'ELÉCTRICAS': 'IE',
+            'ELECTROMECÁNICAS': 'EM',
+            'SEGURIDAD': 'SEG',
+            'PLAN DE MANEJO AMBIENTAL': 'PMA',
+            'OBRAS PROVISIONALES': 'OP',
+            'COMUNICACIONES': 'COM',
+            'EQUIPAMIENTO BIOMÉDICO': 'EB',
+            'TODAS': 'GEN'
+        };
+        const prefix = prefijos[especialidad] || 'GEN';
+        const rnd = Math.floor(1000 + Math.random() * 9000); // 4 dígitos aleatorios
+        return `PC-${prefix}-${rnd}`;
+    };
+
     React.useEffect(() => {
         if (showNuevaPartidaModal) {
-            setModalEspecialidad(state.especialidadSeleccionada || 'TODAS');
+            const espInicial = (user?.especialidad && user.especialidad !== 'TODAS') 
+                ? user.especialidad 
+                : (state.especialidadSeleccionada || 'TODAS');
+            
+            setModalEspecialidad(espInicial);
+            setNuevaPartidaData(prev => ({ ...prev, codigo: generarCodigoPartida(espInicial) }));
         }
-    }, [showNuevaPartidaModal, state.especialidadSeleccionada]);
+    }, [showNuevaPartidaModal, state.especialidadSeleccionada, user]);
+
+    // Actualizar código auto-generado si el usuario con "TODAS" cambia la especialidad en el modal
+    React.useEffect(() => {
+        if (showNuevaPartidaModal) {
+            setNuevaPartidaData(prev => ({ ...prev, codigo: generarCodigoPartida(modalEspecialidad) }));
+        }
+    }, [modalEspecialidad, showNuevaPartidaModal]);
 
     const catalogoSugerencias = useMemo(() => {
+        if (context.isModoPC) {
+            return state.customPartidas;
+        }
         return [
             ...(proyecto === 'hospital' ? catalogoHospital : catalogoContingencia),
             ...state.customPartidas
         ];
-    }, [proyecto, catalogoHospital, catalogoContingencia, state.customPartidas]);
+    }, [proyecto, catalogoHospital, catalogoContingencia, state.customPartidas, context.isModoPC]);
 
     const modalCatalogoSugerencias = useMemo(() => {
         return catalogoSugerencias.filter(p => {
@@ -155,6 +190,9 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
             actions.setPartidaSeleccionada(successPartida);
             setShowNuevaPartidaModal(false);
             setNuevaPartidaData({ codigo: '', descripcion: '', unidad: 'm', tipo_metrado: 'ESTANDAR' });
+            
+            // Si el user acababa de crearla, aseguramos que el store lo inserte en metrados_personalizados
+            // pero esto ya lo maneja addMetrado al detectar modificacion === 'PC'
         } else {
             alert('Error al guardar en Supabase.');
         }
@@ -183,34 +221,27 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         
                         <div className="space-y-3">
                             <div className="space-y-1">
-                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Filtrar por Especialidad</label>
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Especialidad de la Partida</label>
                                 <Select
                                     value={modalEspecialidad}
                                     onSelect={val => setModalEspecialidad(val)}
                                     options={ESPECIALIDADES_PARTIDA.map(esp => esp.nombre)}
-                                    className="bg-white"
+                                    className={`bg-white ${user?.especialidad && user.especialidad !== 'TODAS' ? 'opacity-70 pointer-events-none' : ''}`}
                                 />
+                                {user?.especialidad && user.especialidad !== 'TODAS' && (
+                                    <p className="text-[9px] text-blue-500 italic pl-1">Especialidad bloqueada a tu perfil de usuario.</p>
+                                )}
                             </div>
 
-                            <SimpleSearchInput 
-                                label="Código (OE.x.x.x)"
-                                placeholder="OE.1.1.2.3.99"
-                                value={nuevaPartidaData.codigo}
-                                onChange={val => setNuevaPartidaData({...nuevaPartidaData, codigo: val.toUpperCase()})}
-                                onSelect={p => setNuevaPartidaData({ ...nuevaPartidaData, codigo: p.codigo, descripcion: p.descripcion })}
-                                suggestions={modalCatalogoSugerencias}
-                                searchField="codigo"
-                                renderItem={(p) => (
-                                    <>
-                                        <span className="text-[10px] font-bold text-slate-800 line-clamp-1">{p.descripcion}</span>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-[8px] font-mono text-blue-500 font-bold">{p.codigo}</span>
-                                            {/* @ts-ignore */}
-                                            {window.RenderModificacionBadge && window.RenderModificacionBadge(p.modificacion)}
-                                        </div>
-                                    </>
-                                )}
-                            />
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Código Autogenerado</label>
+                                <input 
+                                    type="text" 
+                                    readOnly
+                                    value={nuevaPartidaData.codigo} 
+                                    className="w-full bg-slate-50 border border-slate-200 text-slate-600 font-mono text-sm px-3 py-2 rounded-lg"
+                                />
+                            </div>
                             
                             <SimpleSearchInput 
                                 label="Descripción"

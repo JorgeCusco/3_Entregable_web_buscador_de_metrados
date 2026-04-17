@@ -17,6 +17,7 @@ interface MetradosContext {
     obrero_nombre?: string;
     proyecto: 'hospital' | 'contingencia';
     especialidad?: string;
+    isModoPC?: boolean;
 }
 
 interface MetradosState {
@@ -60,7 +61,8 @@ export const useMetradosStore = create<MetradosState>()(
                 cuadrilla: '',
                 obreros_ids: [],
                 obrero_nombre: '',
-                proyecto: 'hospital'
+                proyecto: 'hospital',
+                isModoPC: false
             },
             metrados: [],
             customPartidas: [],
@@ -148,7 +150,12 @@ export const useMetradosStore = create<MetradosState>()(
 
                     // 1. Insertamos el Metrado (V8.1.3: Nombres únicos para evitar redéclarations)
                     const isLiq = useAuthStore.getState().isLiquidaciones();
-                    const tableName = isLiq ? 'metrados_liquidaciones' : 'metrados';
+                    
+                    // Lógica de Enrutamiento Absoluto para Partidas Creadas (PC)
+                    let tableName = isLiq ? 'metrados_liquidaciones' : 'metrados';
+                    if (metrado.modificacion === 'PC') {
+                        tableName = 'metrados_personalizados';
+                    }
                     
                     const { data: insertData, error: insertError } = await (supabase.from(tableName) as any).insert([payloadToInsert]).select().single();
 
@@ -181,7 +188,7 @@ export const useMetradosStore = create<MetradosState>()(
 
                     // 2. Vinculación Many-to-Many de Cuadrilla (Personal)
                     // V7.2.3: Filtrar solo IDs que sean UUIDs válidos para evitar errores de integridad con personal local (mock)
-                    // (Solo aplica para metrados normales, liquidaciones no usa vinculación de personal)
+                    // (Solo aplica para metrados normales y personalizados, liquidaciones no usa vinculación de personal)
                     if (!isLiq) {
                         const validObrerosIds = (metrado.obreros_ids || []).filter(id => isUUID(id));
 
@@ -190,7 +197,9 @@ export const useMetradosStore = create<MetradosState>()(
                                 metrado_id: (insertData as any).id,
                                 personal_id: id
                             }));
-                            const { error: errorLinks } = await (supabase.from('metrados_personal') as any).insert(personalLinks as any);
+                            
+                            const linkTableName = metrado.modificacion === 'PC' ? 'metrados_personalizados_personal' : 'metrados_personal';
+                            const { error: errorLinks } = await (supabase.from(linkTableName) as any).insert(personalLinks as any);
                             if (errorLinks) console.error('Error bindeando personal a metrado (FK Error):', errorLinks);
                         }
                     }
@@ -219,8 +228,15 @@ export const useMetradosStore = create<MetradosState>()(
 
                     while (hasMore) {
                         const isLiq = useAuthStore.getState().isLiquidaciones();
-                        const tableName = isLiq ? 'metrados_liquidaciones' : 'metrados';
-                        const selectQuery = isLiq ? '*' : '*, metrados_personal(personal(*))';
+                        const { isModoPC } = get().context;
+                        
+                        let tableName = isLiq ? 'metrados_liquidaciones' : 'metrados';
+                        let selectQuery = isLiq ? '*' : '*, metrados_personal(personal(*))';
+
+                        if (isModoPC) {
+                            tableName = 'metrados_personalizados';
+                            selectQuery = '*, metrados_personalizados_personal(personal(*))';
+                        }
 
                         const { data, error } = await supabase
                             .from(tableName)
@@ -240,13 +256,15 @@ export const useMetradosStore = create<MetradosState>()(
                     }
 
                     const isLiq = useAuthStore.getState().isLiquidaciones();
+                    const { isModoPC } = get().context;
 
                     const fetchedMetrados: Metrado[] = allMetrados.map((dbRow: any) => {
                         let formattedCuadrilla = undefined;
                         let obrerosIds: string[] = [];
 
                         if (!isLiq) {
-                            let personalList = (dbRow.metrados_personal || [])
+                            const relationName = isModoPC ? 'metrados_personalizados_personal' : 'metrados_personal';
+                            let personalList = (dbRow[relationName] || [])
                                 .map((rel: any) => rel.personal)
                                 .filter(Boolean);
                             
@@ -318,7 +336,10 @@ export const useMetradosStore = create<MetradosState>()(
                 if ((dbPayload as any).partida_id && !isUUID((dbPayload as any).partida_id)) delete (dbPayload as any).partida_id;
                 if ((dbPayload as any).custom_partida_id && !isUUID((dbPayload as any).custom_partida_id)) delete (dbPayload as any).custom_partida_id;
 
-                const tableName = useAuthStore.getState().isLiquidaciones() ? 'metrados_liquidaciones' : 'metrados';
+                const { isModoPC } = get().context;
+                let tableName = useAuthStore.getState().isLiquidaciones() ? 'metrados_liquidaciones' : 'metrados';
+                if (isModoPC) tableName = 'metrados_personalizados';
+
                 const { error } = await (supabase.from(tableName) as any).update(dbPayload as any).eq('id', id);
                 if (error) console.error('Error Supabase Update Metrado:', error);
             },
@@ -327,7 +348,9 @@ export const useMetradosStore = create<MetradosState>()(
                 set((state) => ({
                     metrados: state.metrados.filter((m) => m.id !== id),
                 }));
-                const tableName = useAuthStore.getState().isLiquidaciones() ? 'metrados_liquidaciones' : 'metrados';
+                const { isModoPC } = get().context;
+                let tableName = useAuthStore.getState().isLiquidaciones() ? 'metrados_liquidaciones' : 'metrados';
+                if (isModoPC) tableName = 'metrados_personalizados';
                 const { error } = await (supabase.from(tableName) as any).delete().eq('id', id);
                 if (error) console.error('Error Supabase Delete Metrado:', error);
             },
@@ -340,7 +363,10 @@ export const useMetradosStore = create<MetradosState>()(
                             : m
                     ),
                 }));
-                const tableName = useAuthStore.getState().isLiquidaciones() ? 'metrados_liquidaciones' : 'metrados';
+                const { isModoPC } = get().context;
+                let tableName = useAuthStore.getState().isLiquidaciones() ? 'metrados_liquidaciones' : 'metrados';
+                if (isModoPC) tableName = 'metrados_personalizados';
+
                 const { error } = await (supabase.from(tableName) as any)
                     .update({ elemento: new_elemento } as any)
                     .eq('codigo_partida', codigo_partida)

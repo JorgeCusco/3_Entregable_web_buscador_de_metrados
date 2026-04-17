@@ -11,8 +11,10 @@ Visualización de cómo se conectan los datos entre el presupuesto, la ejecució
 ```mermaid
 erDiagram
     CATALOGO_PARTIDAS ||--o{ METRADOS : "es referenciado por"
-    PARTIDAS_PERSONALIZADAS ||--o{ METRADOS : "es referenciado por"
-    PERSONAL ||--o{ METRADOS_PERSONAL : "participa en"
+    PARTIDAS_PERSONALIZADAS ||--o{ METRADOS : "es referenciado por (modo legado)"
+    PARTIDAS_PERSONALIZADAS ||--o{ METRADOS_PERSONALIZADOS : "es referenciado por"
+    PERSONAL ||--o{ METRADOS_PERSONAL : "participa en (oficial)"
+    PERSONAL ||--o{ METRADOS_PERSONALIZADOS_PERSONAL : "participa en (creadas)"
     HVAC_CATALOGO_ACCESORIOS ||--o{ METRADOS : "aplica factor a"
     CATALOGO_PARTIDAS ||--o{ METRADOS_LIQUIDACIONES : "es referenciado por"
     PARTIDAS_PERSONALIZADAS ||--o{ METRADOS_LIQUIDACIONES : "es referenciado por"
@@ -109,6 +111,20 @@ erDiagram
         numeric total
         numeric hvac_factor
         text hvac_item_type
+        text autor_usuario
+        timestamp created_at
+    }
+
+    METRADOS_PERSONALIZADOS {
+        uuid id PK
+        date fecha
+        uuid partida_id FK
+        uuid custom_partida_id FK
+        text codigo_partida
+        text descripcion_partida
+        text unidad
+        text proyecto
+        numeric total
         text autor_usuario
         timestamp created_at
     }
@@ -394,6 +410,20 @@ El store principal (`useMetradosStore`) determina de forma transparente hacia qu
 
 Al igual que en la tabla `metrados`, la seguridad se gestiona primariamente desde la capa de la aplicación (UI) a través del archivo `useAuthStore.ts` de forma que los usuarios con permisos de edición de Liquidación puedan realizar un CRUD completo sobre la tabla `metrados_liquidaciones` usando los clientes de tipo *anon* en el Frontend. 
 - Para evitar que supabase bloquee las inserciones a causa de activaciones RLS por defecto, se define el estado de `metrados_liquidaciones` con `ALTER TABLE ... DISABLE ROW LEVEL SECURITY` u otorgando accesos explícitos GRANT a roles como public/anon. 
+
+---
+
+## Parte 13: Ecosistema Aislado para Partidas Creadas/Adicionales
+
+Para mantener integridad impecable del presupuesto oficial y permitir dinamismo de campo, los registros manuales están segregados estructuralmente:
+
+### 13.1 Segregación a `metrados_personalizados`
+Todas las partidas de etiqueta `modificacion = 'PC'` envían sus producciones diarias (metrados) y sus bindings de obreros directamente a las tablas `metrados_personalizados` y `metrados_personalizados_personal`.
+- **Razón Principal**: Prevenir que las exportaciones, valorizaciones y cruces de metadatos mezclen las partidas no-oficiales con el scope de la base principal.
+- **Transparencia UI**: El store de Zustand (`useMetradosStore`) aplica un toggle (`isModoPC`). Cuando está activo, todas las operaciones de frontend (fetching, updating, deletion) viajan a la tabla aislada.
+
+### 13.2 Nomenclatura Automática Inteligente
+En lugar de depender de ingresos manuales tipo "OE.9.9.9", el sistema genera un correlativo base de este ecosistema con su Especialidad: `PREFIX-[ESP]-[TIMESTAMP]` u otra codificación. (Ej. `EXT-EST-8547`). Se auto-clasifica usando el atributo `especialidad` del usuario en sesión extraído de `ecosistema_usuarios`. Si es "TODAS", el sistema obliga al usuario elegir una en el combo box.
 
 ---
 
