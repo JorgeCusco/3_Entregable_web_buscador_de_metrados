@@ -1,4 +1,5 @@
 import { IFormulaHandler, FormulaFieldName } from '../types';
+import { parseNumericValue } from '../utils';
 
 export class HvacStrategy implements IFormulaHandler {
     id = "HVAC";
@@ -29,14 +30,14 @@ export class HvacStrategy implements IFormulaHandler {
         const { cantidad, longitud, ancho, altura, hvacFactor, hvacItemType } = data;
         
         const f = hvacFactor !== undefined && hvacFactor !== null ? Number(hvacFactor) : 1;
-        const c = typeof cantidad === 'number' ? cantidad : 1;
+        const c = parseNumericValue(cantidad, 1);
         
         // La longitud solo cuenta si es Ducto o Codo
         const usesLong = (hvacItemType === 'CODO' || hvacItemType === 'DUCTO');
-        const l = usesLong && typeof longitud === 'number' ? longitud : 1;
+        const l = usesLong ? parseNumericValue(longitud, 1) : 1;
         
-        const a = typeof ancho === 'number' ? ancho : 1;
-        const h = typeof altura === 'number' ? altura : 1;
+        const a = parseNumericValue(ancho, 1);
+        const h = parseNumericValue(altura, 1);
         
         return c * l * a * h * f;
     }

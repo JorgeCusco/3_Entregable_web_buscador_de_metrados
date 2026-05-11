@@ -11,10 +11,8 @@ Visualización de cómo se conectan los datos entre el presupuesto, la ejecució
 ```mermaid
 erDiagram
     CATALOGO_PARTIDAS ||--o{ METRADOS : "es referenciado por"
-    PARTIDAS_PERSONALIZADAS ||--o{ METRADOS : "es referenciado por (modo legado)"
-    PARTIDAS_PERSONALIZADAS ||--o{ METRADOS_PERSONALIZADOS : "es referenciado por"
-    PERSONAL ||--o{ METRADOS_PERSONAL : "participa en (oficial)"
-    PERSONAL ||--o{ METRADOS_PERSONALIZADOS_PERSONAL : "participa en (creadas)"
+    PARTIDAS_PERSONALIZADAS ||--o{ METRADOS : "es referenciado por (nodos custom)"
+    PERSONAL ||--o{ METRADOS_PERSONAL : "participa en"
     HVAC_CATALOGO_ACCESORIOS ||--o{ METRADOS : "aplica factor a"
     CATALOGO_PARTIDAS ||--o{ METRADOS_LIQUIDACIONES : "es referenciado por"
     PARTIDAS_PERSONALIZADAS ||--o{ METRADOS_LIQUIDACIONES : "es referenciado por"
@@ -111,20 +109,6 @@ erDiagram
         numeric total
         numeric hvac_factor
         text hvac_item_type
-        text autor_usuario
-        timestamp created_at
-    }
-
-    METRADOS_PERSONALIZADOS {
-        uuid id PK
-        date fecha
-        uuid partida_id FK
-        uuid custom_partida_id FK
-        text codigo_partida
-        text descripcion_partida
-        text unidad
-        text proyecto
-        numeric total
         text autor_usuario
         timestamp created_at
     }
@@ -413,17 +397,21 @@ Al igual que en la tabla `metrados`, la seguridad se gestiona primariamente desd
 
 ---
 
-## Parte 13: Ecosistema Aislado para Partidas Creadas/Adicionales
+## Parte 13: Ecosistema de Aislamiento Lógico (Partidas Creadas PC)
 
-Para mantener integridad impecable del presupuesto oficial y permitir dinamismo de campo, los registros manuales están segregados estructuralmente:
+Para garantizar flexibilidad operativa en campo sin corromper el Presupuesto Meta Oficial, se optó por un paradigma de "Aislamiento Centralizado":
 
-### 13.1 Segregación a `metrados_personalizados`
-Todas las partidas de etiqueta `modificacion = 'PC'` envían sus producciones diarias (metrados) y sus bindings de obreros directamente a las tablas `metrados_personalizados` y `metrados_personalizados_personal`.
-- **Razón Principal**: Prevenir que las exportaciones, valorizaciones y cruces de metadatos mezclen las partidas no-oficiales con el scope de la base principal.
-- **Transparencia UI**: El store de Zustand (`useMetradosStore`) aplica un toggle (`isModoPC`). Cuando está activo, todas las operaciones de frontend (fetching, updating, deletion) viajan a la tabla aislada.
+### 13.1 Centralización de Datos Unificados
+Todas las partidas PC (*Partidas Creadas*) registran su producción física directamente a la tabla unificada universal `metrados`. No existen tablas fragmentadas para PC. Esto protege la compatibilidad con el Procedimiento Almacenado `oficializar_partida_pc`, el cual asimila partidas en un solo clic migrándolas al Catálogo Maestro sin mover miles de registros de metrados.
 
-### 13.2 Nomenclatura Automática Inteligente
-En lugar de depender de ingresos manuales tipo "OE.9.9.9", el sistema genera un correlativo base de este ecosistema con su Especialidad: `PREFIX-[ESP]-[TIMESTAMP]` u otra codificación. (Ej. `EXT-EST-8547`). Se auto-clasifica usando el atributo `especialidad` del usuario en sesión extraído de `ecosistema_usuarios`. Si es "TODAS", el sistema obliga al usuario elegir una en el combo box.
+### 13.2 Filtro Bifurcador (Router Visual de Zustand)
+La separación entre "Presupuesto Inmaculado" y "Trabajos Adicionales / Actividades" ocurre netamente en la Capa Reactiva de la interfaz (Frontend).
+- **Catálogo Oficial**: Filtra y ocluye estrictamente cualquier registro donde `custom_partida_id !== null`.
+- **Vista Aislada de PC**: Invierte el filtro de arrays de React, demostrando en pantalla de manera segregada únicamente los registros con `custom_partida_id != null`.
+- El pase de un entorno a otro es asincrónico instantáneo, sin recargar la red, gracias a que el origen de la verdad (`metrados` Zustand State) es único.
+
+### 13.3 Nomenclatura Automática Inteligente
+En lugar de depender de registros desordenados tipo "OE.9.9.9", el modal genera un correlativo hermético de sistema validando a la Especialidad del profesional: `PC-[ESP]-[NUM]` (Ej. `PC-EST-8547`). Se auto-clasifica leyendo atributos matriciales de `ecosistema_usuarios`.
 
 ---
 

@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import type { Metrado, Partida } from '../types';
-import { Download, Trash2, Loader2, Calendar, Users } from 'lucide-react';
+import { Download, Trash2, Loader2, Users } from 'lucide-react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { RenderModificacionBadge } from './MetradosForm';
 import { useMetradosStore } from '../store/useMetradosStore';
+import { usePersonalStore } from '../store/usePersonalStore';
 import { useAuthStore } from '../store/useAuthStore';
 import { useSystemUsersStore } from '../store/useSystemUsersStore';
 import { formulaRegistry } from '../utils/formulas/registry';
@@ -70,11 +71,11 @@ const VirtualElementRow = React.memo(({ r, getIndentLevel, onGroupUpdate, isRead
                 <span className="text-blue-300 font-black text-[10px]">▼</span>
                 <input
                     type="text"
-                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] font-bold uppercase tracking-wider placeholder:text-slate-300"
                     value={r.descripcion}
                     onChange={(e) => onGroupUpdate?.(r.codigo_partida, r.descripcion, e.target.value.toUpperCase())}
                     onFocus={(e) => e.target.select()}
                     readOnly={isReadOnly}
+                    className={`w-full bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] font-bold uppercase tracking-wider placeholder:text-slate-300 ${isReadOnly ? 'cursor-default opacity-70' : ''}`}
                 />
             </div>
         </td>
@@ -142,26 +143,56 @@ const HeaderRow = React.memo(({ r, partidaTotals, showCostView, getIndentLevel, 
     );
 });
 
+const getCuadrillaLabel = (ids?: string[]) => {
+    if (!ids || ids.length === 0) return null;
+    const personal = usePersonalStore.getState().personal;
+    
+    let opCounter = 0;
+    let ofCounter = 0;
+    let peonCounter = 0;
+    let mstCounter = 0;
+    
+    ids.forEach(id => {
+       const p = personal.find(x => x.id === id);
+       if (!p) return;
+       const cat = (p.categoria || '').toUpperCase();
+       if (cat.includes('OPERARIO')) opCounter++;
+       else if (cat.includes('OFICIAL')) ofCounter++;
+       else if (cat.includes('PEON') || cat.includes('PEÓN')) peonCounter++;
+       else if (cat.includes('MAESTRO')) mstCounter++;
+    });
+    
+    const parts = [];
+    if (mstCounter > 0) parts.push(`${mstCounter}MST`);
+    if (opCounter > 0) parts.push(`${opCounter}OP`);
+    if (ofCounter > 0) parts.push(`${ofCounter}OF`);
+    if (peonCounter > 0) parts.push(`${peonCounter}P`);
+    
+    if (parts.length === 0) return null;
+    return parts.join('+');
+};
+
 const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumber, handleKeyDown, isReadOnly }: any) => {
     const strategy = formulaRegistry.get(r.tipo_metrado);
     const meta = { hvacItemType: r.hvac_item_type };
+    const cuadrillaResumen = getCuadrillaLabel(r.obreros_ids);
 
     return (
         <tr className="hover:bg-blue-50/20 border-b border-slate-100 group">
             <td className="w-[60px] min-w-[60px] max-w-[60px] px-1 py-1.5 text-center overflow-hidden">
-                <input type="date" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-400 font-bold text-[9px] uppercase tracking-tighter"
+                <input type="date" className={`metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-400 font-bold text-[9px] uppercase tracking-tighter ${isReadOnly ? 'cursor-not-allowed opacity-60' : ''}`}
                     value={r.fecha} onChange={(e) => onUpdate?.(r.id, 'fecha', e.target.value)}
-                    onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
+                    onFocus={(e) => e.target.select()} readOnly={isReadOnly} disabled={isReadOnly} />
             </td>
             <td className="w-[85px] min-w-[85px] px-0.5 py-1.5">
                 <div className="flex items-center justify-center gap-0.5">
                     <div className="w-1 min-w-[4px] h-1 rounded-full bg-slate-300 shrink-0"></div>
-                    <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
-                        value={r.frente} onChange={(e) => onUpdate?.(r.id, 'frente', e.target.value)} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
-                    <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
-                        value={r.bloque} onChange={(e) => onUpdate?.(r.id, 'bloque', e.target.value)} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
-                    <input type="text" className="metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center"
-                        value={r.nivel} onChange={(e) => onUpdate?.(r.id, 'nivel', e.target.value)} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
+                    <input type="text" className={`metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center ${isReadOnly ? 'cursor-not-allowed opacity-60' : ''}`}
+                        value={r.frente} onChange={(e) => onUpdate?.(r.id, 'frente', e.target.value)} onFocus={(e) => e.target.select()} readOnly={isReadOnly} disabled={isReadOnly} />
+                    <input type="text" className={`metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center ${isReadOnly ? 'cursor-not-allowed opacity-60' : ''}`}
+                        value={r.bloque} onChange={(e) => onUpdate?.(r.id, 'bloque', e.target.value)} onFocus={(e) => e.target.select()} readOnly={isReadOnly} disabled={isReadOnly} />
+                    <input type="text" className={`metrado-input text-[8px] text-slate-600 font-medium uppercase bg-slate-100 border border-slate-200 px-0.5 py-0.5 rounded shrink-0 w-[18px] text-center ${isReadOnly ? 'cursor-not-allowed opacity-60' : ''}`}
+                        value={r.nivel} onChange={(e) => onUpdate?.(r.id, 'nivel', e.target.value)} onFocus={(e) => e.target.select()} readOnly={isReadOnly} disabled={isReadOnly} />
                 </div>
             </td>
             <td className="px-1 py-1.5">
@@ -169,10 +200,17 @@ const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumbe
                     <input type="text" className="metrado-input w-12 bg-slate-200/90 border border-slate-300 px-1 py-0.5 rounded text-slate-500 text-[9px] font-black uppercase shrink-0 text-center"
                         value={r.cuadrilla || ''} readOnly />
                     {r.elemento && <span className="text-blue-400 font-black text-[12px] shrink-0">↳</span>}
-                    <input type="text" className="metrado-input w-20 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0 text-center"
-                        value={r.elemento || ''} onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())} onFocus={(e) => e.target.select()} readOnly={isReadOnly} />
-                    <input type="text" className="metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[11px] font-medium"
-                        value={r.detalle || ''} onChange={(e) => onUpdate?.(r.id, 'detalle', e.target.value)} onKeyDown={handleKeyDown} readOnly={isReadOnly} />
+                    <input type="text" className={`metrado-input w-20 bg-blue-50/50 border border-blue-100 px-1.5 py-0.5 rounded focus:ring-1 focus:ring-blue-500/30 text-blue-800 text-[10px] font-bold uppercase shrink-0 text-center ${isReadOnly ? 'cursor-not-allowed opacity-60' : ''}`}
+                        value={r.elemento || ''} onChange={(e) => onUpdate?.(r.id, 'elemento', e.target.value.toUpperCase())} onFocus={(e) => e.target.select()} readOnly={isReadOnly} disabled={isReadOnly} />
+                    <div className="relative flex-1 flex flex-row items-center w-full min-w-0">
+                        <input type="text" className={`metrado-input w-full bg-transparent border-none p-0 focus:ring-0 text-slate-700 text-[11px] font-medium ${isReadOnly ? 'cursor-default opacity-70' : ''} ${cuadrillaResumen ? 'pr-[65px]' : ''}`}
+                            value={r.detalle || ''} onChange={(e) => onUpdate?.(r.id, 'detalle', e.target.value)} onKeyDown={handleKeyDown} readOnly={isReadOnly} disabled={isReadOnly} />
+                        {cuadrillaResumen && (
+                            <span className="absolute right-0 top-1/2 -translate-y-1/2 text-[9px] font-bold text-blue-600 font-mono tracking-tighter bg-blue-50/90 border border-blue-100 px-1 py-0.5 rounded shadow-sm opacity-90 pointer-events-none whitespace-nowrap">
+                                {cuadrillaResumen}
+                            </span>
+                        )}
+                    </div>
                 </div>
             </td>
             <td className="px-2 py-1.5 text-center text-slate-300">-</td>
@@ -180,29 +218,29 @@ const RecordRow = React.memo(({ r, onUpdate, onDelete, showCostView, formatNumbe
                 <>
                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
                         {strategy.isFieldLocked('cantidad', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
-                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
+                            <input type="text" className={`metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] ${isReadOnly ? 'cursor-not-allowed opacity-60' : ''}`}
+                                value={r.cantidad} onChange={(e) => onUpdate?.(r.id, 'cantidad', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} disabled={isReadOnly} />}
                     </td>
                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
                         {strategy.isFieldLocked('longitud_area', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
-                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
+                            <input type="text" className={`metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] ${isReadOnly ? 'cursor-not-allowed opacity-60' : ''}`}
+                                value={r.longitud_area} onChange={(e) => onUpdate?.(r.id, 'longitud_area', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} disabled={isReadOnly} />}
                     </td>
                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
                         {strategy.isFieldLocked('ancho_empalme', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
-                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
+                            <input type="text" className={`metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] ${isReadOnly ? 'cursor-not-allowed opacity-60' : ''}`}
+                                value={r.ancho_empalme} onChange={(e) => onUpdate?.(r.id, 'ancho_empalme', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} disabled={isReadOnly} />}
                     </td>
                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
                         {strategy.isFieldLocked('altura_gancho', meta) ? <span className="text-[9px] font-bold text-slate-300">N/A</span> :
-                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px]"
-                                value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
+                            <input type="text" className={`metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-600 text-[11px] ${isReadOnly ? 'cursor-not-allowed opacity-60' : ''}`}
+                                value={r.altura_gancho} onChange={(e) => onUpdate?.(r.id, 'altura_gancho', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} disabled={isReadOnly} />}
                     </td>
                     <td className="px-2 py-1.5 text-center font-semibold text-slate-500 text-[11px] border-l border-slate-200/60">{formatNumber(r.parcial)}</td>
                     <td className="px-1 py-1.5 text-center border-l border-slate-200/60">
                         {strategy.isFieldLocked('nro_veces', meta) ? <span className="text-[9px] font-bold text-slate-300">1</span> :
-                            <input type="text" className="metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px]"
-                                value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} />}
+                            <input type="text" className={`metrado-input w-full text-center bg-transparent border-none p-0 focus:ring-0 text-slate-500 font-bold text-[11px] ${isReadOnly ? 'cursor-not-allowed opacity-60' : ''}`}
+                                value={r.nro_veces} onChange={(e) => onUpdate?.(r.id, 'nro_veces', e.target.value)} onFocus={(e) => e.target.select()} onKeyDown={handleKeyDown} readOnly={isReadOnly} disabled={isReadOnly} />}
                     </td>
                 </>
             ) : (
@@ -301,29 +339,32 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
         // Fila de plantilla (Cabecera)
         finalRows.push({ ...node, is_template: true });
 
-        if (!isSummaryMode && relatedMetrados.length > 0) {
+        if (relatedMetrados.length > 0) {
             let lastElemento: string | null | undefined = null;
 
             relatedMetrados.forEach(m => {
-                // Lógica de Agrupador (Elemento Virtual)
-                if (m.elemento && m.elemento !== lastElemento) {
-                    finalRows.push({
-                        is_template: true,
-                        es_titulo: false,
-                        is_elemento_virtual: true,
-                        codigo: '',
-                        descripcion: (m.elemento || '').toString().replace(/NaN/g, ''),
-                        codigo_partida: node.codigo,
-                        id: `virtual-${m.id}-${m.elemento}`,
-                        parcial: 0,
-                        total: 0
-                    });
-                    lastElemento = m.elemento;
-                } else if (!m.elemento && lastElemento !== null) {
-                    lastElemento = null;
-                }
+                if (!isSummaryMode) {
+                    // Lógica de Agrupador (Elemento Virtual)
+                    if (m.elemento && m.elemento !== lastElemento) {
+                        finalRows.push({
+                            is_template: true,
+                            es_titulo: false,
+                            is_elemento_virtual: true,
+                            codigo: '',
+                            descripcion: (m.elemento || '').toString().replace(/NaN/g, ''),
+                            codigo_partida: node.codigo,
+                            id: `virtual-${m.id}-${m.elemento}`,
+                            parcial: 0,
+                            total: 0
+                        });
+                        lastElemento = m.elemento;
+                    } else if (!m.elemento && lastElemento !== null) {
+                        lastElemento = null;
+                    }
 
-                finalRows.push({ ...m, is_template: false, tipo_metrado: node.tipo_metrado });
+                    finalRows.push({ ...m, is_template: false, tipo_metrado: node.tipo_metrado });
+                }
+                // FIX: Siempre registrar como procesado para que el paso 4 no los trate como huérfanos
                 metradosRendered.add(m.id);
             });
         }
@@ -371,23 +412,43 @@ const getHierarchicalRows = (activeMetrados: Metrado[], partidasCatalogo: Partid
 };
 
 
+// Formatea una fecha local sin conversión UTC (evita desfase de timezone)
+const formatLocalDate = (d: Date): string => {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+};
+
 const getCurrentWeekRange = () => {
     const now = new Date();
-    const dayOfWeek = now.getDay();
+    const dayOfWeek = now.getDay(); // 0=Dom, 1=Lun, ..., 6=Sáb
     const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
     const monday = new Date(now);
     monday.setDate(now.getDate() + diffToMonday);
-    const saturday = new Date(monday);
-    saturday.setDate(monday.getDate() + 5);
-    const format = (d: Date) => d.toISOString().split('T')[0];
-    return { from: format(monday), to: format(saturday) };
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6); // Lun + 6 = Dom (semana completa)
+    return { from: formatLocalDate(monday), to: formatLocalDate(sunday) };
+};
+
+const getPreviousWeekRange = () => {
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const thisMonday = new Date(now);
+    thisMonday.setDate(now.getDate() + diffToMonday);
+    const lastSunday = new Date(thisMonday);
+    lastSunday.setDate(thisMonday.getDate() - 1);
+    const lastMonday = new Date(lastSunday);
+    lastMonday.setDate(lastSunday.getDate() - 6);
+    return { from: formatLocalDate(lastMonday), to: formatLocalDate(lastSunday) };
 };
 
 const getSpecificMonthRange = (year: number, month: number) => {
+    // Usamos formatLocalDate para evitar el bug de toISOString() con timezone UTC-5
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
-    const format = (d: Date) => d.toISOString().split('T')[0];
-    return { from: format(firstDay), to: format(lastDay) };
+    return { from: formatLocalDate(firstDay), to: formatLocalDate(lastDay) };
 };
 
 export const MetradosTable = React.memo(({
@@ -404,7 +465,7 @@ export const MetradosTable = React.memo(({
     }, [proyecto, customPartidas, catalogoHospital, catalogoContingencia]);
 
     const [filterAuthor, setFilterAuthor] = React.useState('TODOS');
-    const { user } = useAuthStore();
+    const { user, canEditMetrado } = useAuthStore();
     const { systemUsers } = useSystemUsersStore();
 
     // 1. ESTADOS DE FILTROS BÁSICOS
@@ -425,7 +486,12 @@ export const MetradosTable = React.memo(({
 
         metrados.forEach(m => {
             if (!m.fecha) return;
-            const d = new Date(m.fecha + 'T00:00:00');
+            // FIX: Normalizar a YYYY-MM-DD antes de parsear para evitar
+            // que fechas con timestamp ('2026-04-10T00:00:00') generen
+            // '2026-04-10T00:00:00T00:00:00' al concatenar
+            const fechaNorm = m.fecha.substring(0, 10);
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(fechaNorm)) return;
+            const d = new Date(fechaNorm + 'T00:00:00');
             const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, '0')}`;
             if (!monthsMap.has(key)) {
                 monthsMap.set(key, {
@@ -445,6 +511,10 @@ export const MetradosTable = React.memo(({
             const range = getCurrentWeekRange();
             setFilterDateFrom(range.from);
             setFilterDateTo(range.to);
+        } else if (tabId === 'prev-week') {
+            const range = getPreviousWeekRange();
+            setFilterDateFrom(range.from);
+            setFilterDateTo(range.to);
         } else if (tabId === 'all') {
             setFilterDateFrom('');
             setFilterDateTo('');
@@ -459,8 +529,11 @@ export const MetradosTable = React.memo(({
     // 5. EFECTO DE SINCRONIZACIÓN BIDIRECCIONAL (Tabs <-> Inputs)
     React.useEffect(() => {
         const rangeWeek = getCurrentWeekRange();
+        const rangePrevWeek = getPreviousWeekRange();
         if (filterDateFrom === rangeWeek.from && filterDateTo === rangeWeek.to) {
             setActiveMonthTab('week');
+        } else if (filterDateFrom === rangePrevWeek.from && filterDateTo === rangePrevWeek.to) {
+            setActiveMonthTab('prev-week');
         } else if (filterDateFrom === '' && filterDateTo === '') {
             setActiveMonthTab('all');
         } else {
@@ -597,6 +670,7 @@ export const MetradosTable = React.memo(({
     }, [onDelete]);
 
     const memoizedKeyDown = React.useCallback((e: React.KeyboardEvent) => {
+        if (isReadOnly) return;
         if (e.key === 'Enter') {
             e.preventDefault();
             const inputs = Array.from(document.querySelectorAll('.metrado-input')) as HTMLInputElement[];
@@ -664,6 +738,7 @@ export const MetradosTable = React.memo(({
                             >
                                 <optgroup label="Rápidos">
                                     <option value="week">📅 ESTA SEMANA</option>
+                                    <option value="prev-week">⏪ SEMANA ANTERIOR</option>
                                     <option value="all">🌍 TODO EL TIEMPO</option>
                                 </optgroup>
                                 <optgroup label="Historial">
@@ -952,6 +1027,7 @@ export const MetradosTable = React.memo(({
                                 );
                             }
 
+                            const isRowReadOnly = isReadOnly || !canEditMetrado(r.autor_usuario, r.fecha);
                             return (
                                 <RecordRow
                                     key={r.id}
@@ -961,7 +1037,7 @@ export const MetradosTable = React.memo(({
                                     showCostView={showCostView}
                                     formatNumber={formatNumber}
                                     handleKeyDown={memoizedKeyDown}
-                                    isReadOnly={isReadOnly}
+                                    isReadOnly={isRowReadOnly}
                                 />
                             );
                         })}

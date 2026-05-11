@@ -1,4 +1,5 @@
 import { IFormulaHandler, FormulaFieldName } from '../types';
+import { parseNumericValue } from '../utils';
 
 export const PESOS_ACERO: Record<string, number> = {
     "1/4": 0.254,
@@ -35,10 +36,10 @@ export class AceroStrategy implements IFormulaHandler {
     calcularParcial(data: any): number {
         const { cantidad, longitud, ancho, altura, diametro } = data;
         
-        const c = typeof cantidad === 'number' ? cantidad : 0;
-        const longitudRecta = typeof longitud === 'number' ? longitud : 0;
-        const longitudEmpalme = typeof ancho === 'number' ? ancho : 0; // Empalme (solo LIQUIDACIONES)
-        const longitudGancho = typeof altura === 'number' ? altura : 0;
+        const c = parseNumericValue(cantidad, 0);
+        const longitudRecta = parseNumericValue(longitud, 0);
+        const longitudEmpalme = parseNumericValue(ancho, 0); // Empalme (solo LIQUIDACIONES)
+        const longitudGancho = parseNumericValue(altura, 0);
         
         // Limpiar diámetro para buscar en tabla
         const d = (diametro || '1/2"').replace('"', '').trim();

@@ -5,7 +5,7 @@ import type { Partida } from '../types';
 import type { TipoProyecto } from '../App';
 import { isAcero, isInstalacion } from '../hooks/useMetradosForm';
 import { ESPECIALIDADES_PARTIDA, getEspecialidadPorCodigo } from '../constants/especialidades';
-import { Save, Eraser, ChevronDown, ChevronUp } from 'lucide-react';
+import { Save, Eraser, ChevronDown, ChevronUp, AlertTriangle } from 'lucide-react';
 import { usePersonalStore } from '../store/usePersonalStore';
 import { useMetradosStore } from '../store/useMetradosStore';
 import { useAuthStore } from '../store/useAuthStore';
@@ -61,6 +61,28 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
     useEffect(() => {
         fetchHvacCatalog();
     }, [fetchHvacCatalog]);
+
+    const bloquesPorFrente: Record<string, string[]> = {
+        'F1': ['B1', 'B2', 'B3'],
+        'F2': ['B4', 'B11', 'B12', 'B16'],
+        'F3': ['B5', 'B7', 'B10'],
+        'F4': ['B6', 'B8', 'B9', 'B13', 'B14', 'B15', 'EXT1', 'EXT2', 'EXT3', 'EXT4', 'EXT5', 'EXT6', 'EXT7', 'EXT8', 'EXT9']
+    };
+
+    const opcionesBloque = useMemo(() => {
+        if (!state.frente) return [''];
+        return bloquesPorFrente[state.frente] ? ['', ...bloquesPorFrente[state.frente]] : [''];
+    }, [state.frente]);
+
+    // Resetear bloque si ya no es válido para el nuevo frente
+    useEffect(() => {
+        if (state.bloque && state.frente) {
+            const disponibles = bloquesPorFrente[state.frente] || [];
+            if (!disponibles.includes(state.bloque)) {
+                actions.setBloque('');
+            }
+        }
+    }, [state.frente, state.bloque, actions]);
     
     const uniqueCuadrillas = useMemo(() => {
         const cuadrillas = personal.map(p => p.cuadrilla).filter(c => c && c.trim() !== '' && c !== 'nan');
@@ -109,6 +131,8 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
         return `PC-${prefix}-${rnd}`;
     };
 
+    const isDateLocked = !useAuthStore.getState().canEditMetrado(user?.nombre_completo || '', state.fecha);
+
     React.useEffect(() => {
         if (showNuevaPartidaModal) {
             const espInicial = (user?.especialidad && user.especialidad !== 'TODAS') 
@@ -138,7 +162,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
     }, [proyecto, catalogoHospital, catalogoContingencia, state.customPartidas, context.isModoPC]);
 
     const modalCatalogoSugerencias = useMemo(() => {
-        return catalogoSugerencias.filter(p => {
+        return catalogoSugerencias.filter((p: Partida) => {
             if (p.es_titulo) return false;
             if (modalEspecialidad === 'TODAS') return true;
             
@@ -151,7 +175,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
     }, [catalogoSugerencias, modalEspecialidad]);
 
     const partidasSugeridasCombo = useMemo(() => {
-        return catalogoSugerencias.filter(p => {
+        return catalogoSugerencias.filter((p: Partida) => {
             if (p.es_titulo) return false;
             if (state.especialidadSeleccionada === 'TODAS') return true;
 
@@ -243,15 +267,15 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                                 />
                             </div>
                             
-                            <SimpleSearchInput 
+                            <SimpleSearchInput<Partida> 
                                 label="Descripción"
                                 placeholder="Ej. Suministro de materiales no catalogados..."
                                 value={nuevaPartidaData.descripcion}
                                 onChange={val => setNuevaPartidaData({...nuevaPartidaData, descripcion: val})}
-                                onSelect={p => setNuevaPartidaData({ ...nuevaPartidaData, codigo: p.codigo, descripcion: p.descripcion })}
+                                onSelect={(p: Partida) => setNuevaPartidaData({ ...nuevaPartidaData, codigo: p.codigo, descripcion: p.descripcion })}
                                 suggestions={modalCatalogoSugerencias}
                                 searchField="descripcion"
-                                renderItem={(p) => (
+                                renderItem={(p: Partida) => (
                                     <>
                                         <span className="text-[10px] font-bold text-slate-800 line-clamp-1">{p.descripcion}</span>
                                         <div className="flex items-center gap-2">
@@ -519,19 +543,22 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                         <Select
                             label="Frente"
                             value={state.frente}
-                            options={['F1', 'F2', 'F3', 'F4', 'F5']}
+                            options={['', 'F1', 'F2', 'F3', 'F4', 'F5']}
+                            placeholder="Ninguno"
                             onSelect={(val) => actions.setFrente(val)}
                         />
                         <Select
                             label="Bloque"
                             value={state.bloque}
-                            options={['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'EXT']}
+                            options={opcionesBloque}
+                            placeholder="Ninguno"
                             onSelect={(val) => actions.setBloque(val)}
                         />
                         <Select
                             label="Nivel"
                             value={state.nivel}
-                            options={['ZZ', 'N1', 'N2', 'N3', 'N4', 'AZ']}
+                            options={['', 'ZZ', 'N1', 'N2', 'N3', 'N4', 'AZ']}
+                            placeholder="Ninguno"
                             onSelect={(val) => actions.setNivel(val)}
                         />
                     </div>
@@ -740,17 +767,24 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                 </div>
             </div>
 
+            {isDateLocked && (
+                <div className="bg-red-50 border border-red-200 p-2 rounded-lg flex items-center gap-2 animate-pulse">
+                    <AlertTriangle className="w-4 h-4 text-red-500" />
+                    <span className="text-[10px] font-bold text-red-700 uppercase tracking-tight">Periodo de metrados bloqueado / fuera de fecha</span>
+                </div>
+            )}
+
             <button
                 id="submit"
                 onClick={handleOnGuardar}
-                disabled={isSubmitting || !state.partidaSeleccionada || (state.total === 0 && !(state.formulaStrategy?.id === 'ACERO' && state.cantidad !== "" && state.cantidad > 0))}
-                className={`w-full py-3 rounded-xl font-black text-[11px] tracking-[0.2em] uppercase flex items-center justify-center gap-2 transition-all shadow-md ${(isSubmitting || !state.partidaSeleccionada || (state.total === 0 && !(state.formulaStrategy?.id === 'ACERO' && state.cantidad !== "" && state.cantidad > 0)))
+                disabled={isSubmitting || isDateLocked || !state.partidaSeleccionada || (state.total === 0 && !(state.formulaStrategy?.id === 'ACERO' && state.cantidad !== "" && state.cantidad > 0))}
+                className={`w-full py-3 rounded-xl font-black text-[11px] tracking-[0.2em] uppercase flex items-center justify-center gap-2 transition-all shadow-md ${(isSubmitting || isDateLocked || !state.partidaSeleccionada || (state.total === 0 && !(state.formulaStrategy?.id === 'ACERO' && state.cantidad !== "" && state.cantidad > 0)))
                     ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
                     : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-lg active:scale-[0.98]'
                     }`}
             >
                 <Save className="w-4 h-4" />
-                {isSubmitting ? 'GUARDANDO...' : 'REGISTRAR METRADO'}
+                {isSubmitting ? 'GUARDANDO...' : (isDateLocked ? 'FECHA BLOQUEADA' : 'REGISTRAR METRADO')}
             </button>
         </div>
     );

@@ -9,6 +9,7 @@ import Login from './components/Login';
 import { DashboardPersonal } from './components/DashboardPersonal';
 import { AdminPresupuesto } from './admin/AdminPresupuesto';
 import { ExecutiveDashboard } from './admin/ExecutiveDashboard';
+import { StatusGerencial } from './admin/StatusGerencial';
 import { calcularParcial, calcularTotal } from './utils/metradosCalculations';
 import { useMetradosStore } from './store/useMetradosStore';
 import { usePersonalStore } from './store/usePersonalStore';
@@ -22,15 +23,21 @@ function App() {
   const { state, actions } = useMetradosForm();
   const { metrados, context, setContext, addMetrado, updateMetrado, deleteMetrado, updateGroup, fetchCustomPartidas, fetchMetrados, fetchCatalogoMaestro } = useMetradosStore();
   const { fetchPersonal } = usePersonalStore();
-  const { isAuthenticated, user, logout, checkAuth } = useAuthStore();
+  const { isAuthenticated, user, logout, checkAuth, isAdminPresupuesto } = useAuthStore();
   const { fetchSystemUsers } = useSystemUsersStore();
   
+
   const [showExecutiveDashboard, setShowExecutiveDashboard] = useState(false);
+  const [showStatusGerencial, setShowStatusGerencial] = useState(false);
   const [showPersonalDashboard, setShowPersonalDashboard] = useState(false);
   const [showGestionPC, setShowGestionPC] = useState(false);
   const [showAdminPresupuesto, setShowAdminPresupuesto] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(true);
   const [toast, setToast] = useState<string | null>(null);
+  const [hasShownReadOnlyNotice, setHasShownReadOnlyNotice] = useState(false);
+
+  const { isReadOnlyMetrados } = useAuthStore();
+  const isReadOnly = isReadOnlyMetrados();
 
   // Efecto para limpiar notificaciones
   useEffect(() => {
@@ -43,6 +50,7 @@ function App() {
   // Verificar autenticación al montar
   useEffect(() => {
     checkAuth();
+    useAuthStore.getState().fetchSystemConfig();
   }, [checkAuth]);
 
   // Cargar datos iniciales solo si está autenticado
@@ -56,7 +64,10 @@ function App() {
     }
   }, [isAuthenticated, fetchCustomPartidas, fetchMetrados, fetchPersonal, fetchCatalogoMaestro, fetchSystemUsers]);
 
+  const { canEditMetrado } = useAuthStore();
+
   const handleGuardar = async () => {
+    if (isReadOnly) return;
     try {
       const nuevo = actions.procesarRegistro();
       if (nuevo) {
@@ -81,14 +92,28 @@ function App() {
   };
 
   const handleDeleteMetrado = useCallback((id: string) => {
+    if (isReadOnly) return;
+    const metradoToDelete = metrados.find(m => m.id === id);
+    if (!metradoToDelete || !canEditMetrado(metradoToDelete.autor_usuario, metradoToDelete.fecha)) {
+        setToast('No tienes permiso para eliminar este registro (o periodo cerrado).');
+        setTimeout(() => setToast(null), 3000);
+        return;
+    }
     deleteMetrado(id);
     setToast('Registro eliminado exitosamente');
     setTimeout(() => setToast(null), 3000);
-  }, [deleteMetrado]);
+  }, [deleteMetrado, metrados, isReadOnly, canEditMetrado]);
 
   const handleUpdateMetrado = useCallback((id: string, field: keyof Metrado, value: any) => {
+    if (isReadOnly) return;
     const metradoOriginal = metrados.find(m => m.id === id);
     if (!metradoOriginal) return;
+
+    if (!canEditMetrado(metradoOriginal.autor_usuario, metradoOriginal.fecha)) {
+        setToast('No tienes permiso para modificar este registro (o periodo cerrado).');
+        setTimeout(() => setToast(null), 3000);
+        return;
+    }
 
     const final = { ...metradoOriginal, [field]: value };
     const calculusFields = ['cantidad', 'longitud_area', 'ancho_empalme', 'altura_gancho', 'nro_veces', 'diametro', 'hvac_factor'];
@@ -119,33 +144,55 @@ function App() {
   }, [metrados, updateMetrado]);
 
   const handleUpdateGroup = useCallback((codigoPartida: string, oldElemento: string, newElemento: string) => {
+    if (isReadOnly) return;
     updateGroup(codigoPartida, oldElemento, newElemento);
   }, [updateGroup]);
 
-  const { isReadOnlyMetrados } = useAuthStore();
-  const isReadOnly = isReadOnlyMetrados();
 
-  // Si es solo lectura, forzamos que el formulario esté oculto y el filtro sea "TODAS"
+
+  // Forzar vista y especialidad inicial si es lectura
   useEffect(() => {
     if (isReadOnly) {
       setIsFormVisible(false);
-      actions.setEspecialidadSeleccionada('TODAS');
-      setToast("Modo Lector Activo - Vista Protegida");
+      
+      if (!hasShownReadOnlyNotice) {
+        actions.setEspecialidadSeleccionada('TODAS');
+        setToast("Modo Lector Activo - Vista Protegida");
+        setHasShownReadOnlyNotice(true);
+      }
+    } else {
+      setHasShownReadOnlyNotice(false);
     }
-  }, [isReadOnly, actions]);
+  }, [isReadOnly, actions, hasShownReadOnlyNotice]);
 
   // Si no está autenticado, mostramos pantalla de Login
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user) {
     return <Login />;
   }
 
-  // Filtra los metrados mostrados según el proyecto activo (Case-insensitive V30.1)
+  // Filtra los metrados mostrados según el proyecto activo y el Aislamiento Lógico
   const metradosFiltrados = useMemo(() => {
     return metrados.filter(m => {
-      if (!m.proyecto) return true;
-      return m.proyecto.trim().toLowerCase() === context.proyecto.toLowerCase();
+      // 1. Filtro de Proyecto
+      if (m.proyecto && m.proyecto.trim().toLowerCase() !== context.proyecto.toLowerCase()) return false;
+      
+      // 2. Aislamiento Lógico (Separador de Vistas)
+      // Atrapamos tanto el nuevo esquema (custom_partida_id) como las PC antiguas o "Actividades"
+      // que se hayan metrado a mano y posean la nomenclatura o etiqueta antigua.
+      const isCustomRecord = !!m.custom_partida_id || 
+                             m.modificacion === 'PC' || 
+                             m.codigo_partida?.startsWith('PC') || 
+                             m.codigo_partida?.startsWith('ACT');
+
+      if (context.isModoPC) {
+        // Vista Rosa: Partidas Adicionales Creadas
+        return isCustomRecord;
+      } else {
+        // Vista Gris: Catálogo 100% Oficial Dedicado
+        return !isCustomRecord;
+      }
     });
-  }, [metrados, context.proyecto]);
+  }, [metrados, context.proyecto, context.isModoPC]);
 
   return (
     <div className="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col gap-6 relative max-w-[1450px] mx-auto">
@@ -194,7 +241,7 @@ function App() {
         {/* ─── Selector de Base de Datos (Oficial vs Custom) ─── */}
         <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner">
           <button
-            onClick={() => { setContext({ isModoPC: false }); actions.setPartidaSeleccionada(null); setTimeout(fetchMetrados, 50); }}
+            onClick={() => { setContext({ isModoPC: false }); actions.setPartidaSeleccionada(null); }}
             className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${!context.isModoPC
               ? 'bg-white text-slate-800 shadow-md border border-slate-200'
               : 'text-slate-500 hover:text-slate-700'
@@ -204,12 +251,12 @@ function App() {
             Bd. Oficial
           </button>
           <button
-            onClick={() => { setContext({ isModoPC: true }); actions.setPartidaSeleccionada(null); setTimeout(fetchMetrados, 50); }}
+            onClick={() => { setContext({ isModoPC: true }); actions.setPartidaSeleccionada(null); }}
             className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${context.isModoPC
               ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md border border-pink-400'
               : 'text-slate-500 hover:text-slate-700'
               }`}
-            title="Base de Datos Aislada de Partidas Creadas"
+            title="Aislamiento Visual de Partidas Creadas"
           >
             Partidas Creadas
           </button>
@@ -233,20 +280,32 @@ function App() {
             <span className="hidden sm:inline">Partidas PC</span>
           </button>
 
-          {/* Dashboard Gerencial */}
+          {/* Status Gerencial – Informe de Avance Mensual */}
           {user && (useAuthStore.getState().isGerencia()) && (
             <button 
-              onClick={() => setShowExecutiveDashboard(true)}
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#005A9C] hover:bg-[#004A81] text-white rounded-md text-sm font-bold transition-all shadow-sm"
-              title="Panel de Control Gerencial"
+              onClick={() => setShowStatusGerencial(true)}
+              className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#1f6feb] to-[#388bfd] hover:from-[#1a5fd4] hover:to-[#2d7ae8] text-white rounded-md text-sm font-bold transition-all shadow-md shadow-blue-500/20"
+              title="Status Gerencial – Cuadro Comparativo por Especialidad"
             >
               <FileBarChart className="w-4 h-4" />
               <span className="hidden sm:inline">Status Gerencial</span>
             </button>
           )}
 
+          {/* Dashboard Ejecutivo PowerBI */}
+          {user && (useAuthStore.getState().isGerencia()) && (
+            <button 
+              onClick={() => setShowExecutiveDashboard(true)}
+              className="flex items-center gap-2 px-4 py-2.5 bg-[#005A9C] hover:bg-[#004A81] text-white rounded-md text-sm font-bold transition-all shadow-sm"
+              title="Panel de Control Gerencial (Power BI)"
+            >
+              <FileBarChart className="w-4 h-4 opacity-70" />
+              <span className="hidden sm:inline text-xs opacity-80">Dashboard</span>
+            </button>
+          )}
+
           {/* Botón Maestro (Solo para Administradores de Presupuesto) */}
-          {(useAuthStore.getState().isAdminPresupuesto()) && (
+          {isAdminPresupuesto() && (
             <button 
               onClick={() => setShowAdminPresupuesto(true)}
               className="bg-white hover:bg-slate-50 text-[#005A9C] px-5 py-2.5 flex items-center gap-2 rounded-md text-sm font-bold shadow-sm border border-[#005A9C]/30 transition-all"
@@ -262,7 +321,6 @@ function App() {
               onClick={() => {
                 const newVal = !isFormVisible;
                 setIsFormVisible(newVal);
-                setToast(newVal ? "Modo Registro Activado" : "Vista Completa Activada");
               }}
               className={`px-5 py-2.5 flex items-center gap-2 rounded-md text-sm font-bold transition-all shadow-sm border ${
                 isFormVisible 
@@ -326,15 +384,25 @@ function App() {
       </main>
 
       {showPersonalDashboard && (
-        <DashboardPersonal onClose={() => setShowPersonalDashboard(false)} />
+        <DashboardPersonal 
+          onClose={() => setShowPersonalDashboard(false)} 
+          isReadOnly={isReadOnly}
+        />
       )}
 
       {showGestionPC && (
-        <GestionPartidasPC onClose={() => setShowGestionPC(false)} />
+        <GestionPartidasPC 
+          onClose={() => setShowGestionPC(false)} 
+          isReadOnly={isReadOnly}
+        />
       )}
 
       {showAdminPresupuesto && (
         <AdminPresupuesto onClose={() => setShowAdminPresupuesto(false)} />
+      )}
+
+      {showStatusGerencial && (
+        <StatusGerencial onClose={() => setShowStatusGerencial(false)} />
       )}
 
       {showExecutiveDashboard && (

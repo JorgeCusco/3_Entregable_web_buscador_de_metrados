@@ -5,9 +5,10 @@ import { Users, X, Plus, Edit2, Save, Trash2, Search } from 'lucide-react';
 
 interface DashboardPersonalProps {
     onClose: () => void;
+    isReadOnly?: boolean;
 }
 
-export function DashboardPersonal({ onClose }: DashboardPersonalProps) {
+export function DashboardPersonal({ onClose, isReadOnly }: DashboardPersonalProps) {
     const { personal, updateWorker, deleteWorker, addWorker } = usePersonalStore();
     const [searchTerm, setSearchTerm] = useState('');
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -43,6 +44,7 @@ export function DashboardPersonal({ onClose }: DashboardPersonalProps) {
     };
 
     const handleSaveEdit = (id: string) => {
+        if (isReadOnly) return;
         if (editForm.especialidad !== undefined) updateWorker(id, 'especialidad', editForm.especialidad);
         if (editForm.cuadrilla !== undefined) updateWorker(id, 'cuadrilla', editForm.cuadrilla);
         if (editForm.categoria !== undefined) updateWorker(id, 'categoria', editForm.categoria);
@@ -50,6 +52,7 @@ export function DashboardPersonal({ onClose }: DashboardPersonalProps) {
     };
 
     const handleAddNew = () => {
+        if (isReadOnly) return;
         if (!newWorker.nombre_original || !newWorker.dni) return alert('DNI y Nombre son obligatorios');
         addWorker(newWorker);
         setIsAdding(false);
@@ -91,12 +94,14 @@ export function DashboardPersonal({ onClose }: DashboardPersonalProps) {
                             className="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none transition-shadow"
                         />
                     </div>
-                    <button 
-                        onClick={() => setIsAdding(!isAdding)}
-                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm font-semibold shadow-md transition-colors"
-                    >
-                        <Plus size={18} /> Nuevo Obrero
-                    </button>
+                    {!isReadOnly && (
+                        <button 
+                            onClick={() => setIsAdding(!isAdding)}
+                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm font-semibold shadow-md transition-colors"
+                        >
+                            <Plus size={18} /> Nuevo Obrero
+                        </button>
+                    )}
                 </div>
 
                 {/* New Worker Form (Expandable) */}
@@ -180,20 +185,22 @@ export function DashboardPersonal({ onClose }: DashboardPersonalProps) {
                                             )}
                                         </td>
                                         <td className="p-3 text-right">
-                                            <div className="flex justify-end gap-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
-                                                {isEditing ? (
-                                                    <button onClick={() => handleSaveEdit(worker.id)} className="p-1.5 text-green-600 bg-green-50 hover:bg-green-100 rounded-md" title="Guardar">
-                                                        <Save size={16} />
+                                            {!isReadOnly && (
+                                                <div className="flex justify-end gap-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    {isEditing ? (
+                                                        <button onClick={() => handleSaveEdit(worker.id)} className="p-1.5 text-green-600 bg-green-50 hover:bg-green-100 rounded-md" title="Guardar">
+                                                            <Save size={16} />
+                                                        </button>
+                                                    ) : (
+                                                        <button onClick={() => handleEditClick(worker)} className="p-1.5 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md" title="Editar">
+                                                            <Edit2 size={16} />
+                                                        </button>
+                                                    )}
+                                                    <button onClick={() => { if(confirm('¿Eliminar obrero?')) deleteWorker(worker.id) }} className="p-1.5 text-red-600 bg-red-50 hover:bg-red-100 rounded-md" title="Eliminar">
+                                                        <Trash2 size={16} />
                                                     </button>
-                                                ) : (
-                                                    <button onClick={() => handleEditClick(worker)} className="p-1.5 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md" title="Editar">
-                                                        <Edit2 size={16} />
-                                                    </button>
-                                                )}
-                                                <button onClick={() => { if(confirm('¿Eliminar obrero?')) deleteWorker(worker.id) }} className="p-1.5 text-red-600 bg-red-50 hover:bg-red-100 rounded-md" title="Eliminar">
-                                                    <Trash2 size={16} />
-                                                </button>
-                                            </div>
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
                                 );

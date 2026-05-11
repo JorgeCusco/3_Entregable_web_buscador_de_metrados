@@ -49,3 +49,10 @@ _archivo/
 # Logs de errores de build
 build_errors.txt
 build_errors_utf8.txt
+
+# Temp backups, packages and tables
+*.zip
+*.xlsx
+*.sql
+*.html
+skills/

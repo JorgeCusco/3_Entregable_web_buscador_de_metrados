@@ -63,7 +63,7 @@ export const Select: React.FC<SelectProps> = ({ value, options, onSelect, placeh
                                     setIsOpen(false);
                                 }}
                             >
-                                {option}
+                                {option || placeholder}
                                 {value === option && <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />}
                             </li>
                         ))}

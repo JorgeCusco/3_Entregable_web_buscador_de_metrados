@@ -22,7 +22,7 @@ export const getHvacCategory = (partida: Partida | null): string | null => {
 
 export const useMetradosForm = () => {
     const { context, setContext, customPartidas, addCustomPartida } = useMetradosStore();
-    const { user } = useAuthStore();
+    const { user, isReadOnlyMetrados } = useAuthStore();
 
     const getLocalDateString = () => {
         const d = new Date();
@@ -53,14 +53,18 @@ export const useMetradosForm = () => {
     const [altura, setAltura] = useState<number | "">("");
     const [nroVeces, setNroVeces] = useState<number | "">("");
 
+    const isReadOnly = isReadOnlyMetrados();
+
     const isSpecialtyLocked = useMemo(() => {
+        if (isReadOnly) return false; // El lector no está atascado en una especialidad
+
         const role = user?.roles_apps?.metrados;
         if (!role) return false;
         const r = role.trim().toUpperCase();
         // Roles que NO bloquean (dan libertad total)
-        const rolesLibres = ['TODAS', 'TODOS', 'ADMIN', 'SUPERVISOR', 'MASTER'];
+        const rolesLibres = ['TODAS', 'TODOS', 'ADMIN', 'SUPERVISOR', 'MASTER', 'LECTOR'];
         return !rolesLibres.includes(r);
-    }, [user?.roles_apps?.metrados]);
+    }, [user?.roles_apps?.metrados, isReadOnly]);
 
     const initialSpecialty = isSpecialtyLocked ? user!.roles_apps!.metrados!.trim().toUpperCase() : 'TODAS';
     const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState<string>(initialSpecialty);
@@ -167,7 +171,7 @@ export const useMetradosForm = () => {
         return nuevoMetrado;
     };
 
-    const actions = {
+    const actions = useMemo(() => ({
         setFecha,
         setFrente: (val: string) => setContext({ frente: val }),
         setBloque: (val: string) => setContext({ bloque: val }),
@@ -205,7 +209,7 @@ export const useMetradosForm = () => {
         limpiarCampos, procesarRegistro,
         addCustomPartida,
         setHvacItemType
-    };
+    }), [setFecha, setContext, setPartidaSeleccionada, setElemento, setDetalle, setDiametro, setCantidad, setLongitud, setAncho, setAltura, setNroVeces, setEspecialidadSeleccionada, setHvacFactor, limpiarCampos, procesarRegistro, addCustomPartida, setHvacItemType]);
 
     return {
         state: {

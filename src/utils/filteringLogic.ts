@@ -312,9 +312,13 @@ export const filterMetradosByDateRange = (
     }
 
     return metrados.filter(m => {
-        const recordDate = m.fecha || '';
-        
-        // Validar formato de fecha
+        // FIX: Extraer solo los primeros 10 chars (YYYY-MM-DD) para soportar
+        // registros con timestamps completos ('2026-04-10T00:00:00+00:00')
+        // que antes fallaban el regex y eran excluidos silenciosamente.
+        const rawDate = m.fecha || '';
+        const recordDate = rawDate.substring(0, 10);
+
+        // Validar que sea una fecha válida después de extraer
         if (!/^\d{4}-\d{2}-\d{2}$/.test(recordDate)) {
             return false;
         }
@@ -341,8 +345,8 @@ export const filterMetradosByDate = (
     if (!date) {
         return metrados;
     }
-
-    return metrados.filter(m => m.fecha === date);
+    // FIX: Normalizar a YYYY-MM-DD para soportar timestamps completos
+    return metrados.filter(m => (m.fecha || '').substring(0, 10) === date);
 };
 
 // ============================================================================

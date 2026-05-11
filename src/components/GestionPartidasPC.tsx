@@ -26,11 +26,12 @@ interface PartidaPC {
 
 interface GestionPartidasPCProps {
     onClose: () => void;
+    isReadOnly?: boolean;
 }
 
 const MODIFICACIONES = ['PC-OF', 'MM5', 'MM6', 'PN4', 'PN5', 'PN6', 'ET', 'AD'];
 
-export const GestionPartidasPC: React.FC<GestionPartidasPCProps> = ({ onClose }) => {
+export const GestionPartidasPC: React.FC<GestionPartidasPCProps> = ({ onClose, isReadOnly }) => {
     const { catalogoHospital, catalogoContingencia, fetchCatalogoMaestro, fetchCustomPartidas } = useMetradosStore();
     
     const [partidas, setPartidas] = useState<PartidaPC[]>([]);
@@ -145,7 +146,7 @@ export const GestionPartidasPC: React.FC<GestionPartidasPCProps> = ({ onClose })
     };
 
     const handleConfirmarOficializacion = async () => {
-        if (!modalOfic) return;
+        if (!modalOfic || isReadOnly) return;
         setOficLoading(true);
         setOficResult(null);
         try {
@@ -200,7 +201,7 @@ export const GestionPartidasPC: React.FC<GestionPartidasPCProps> = ({ onClose })
 
     // ─── Editar PU ───────────────────────────────────────────────────────────
     const handleGuardarPU = async () => {
-        if (!modalPU) return;
+        if (!modalPU || isReadOnly) return;
         setPuLoading(true);
         try {
             const { error } = await (supabase.from('partidas_personalizadas') as any)
@@ -218,6 +219,7 @@ export const GestionPartidasPC: React.FC<GestionPartidasPCProps> = ({ onClose })
 
     // ─── Eliminar PC (sin metrados) ──────────────────────────────────────────
     const handleEliminarPC = async (pc: PartidaPC) => {
+        if (isReadOnly) return;
         if (pc.total_registros > 0) {
             alert(`No se puede eliminar: tiene ${pc.total_registros} metrados registrados. Oficialízala primero.`);
             return;
@@ -238,7 +240,7 @@ export const GestionPartidasPC: React.FC<GestionPartidasPCProps> = ({ onClose })
     };
 
     const handleConfirmarRenombre = async () => {
-        if (!modalRenombrar) return;
+        if (!modalRenombrar || isReadOnly) return;
         const codigoNuevo = renombreCodigo.trim().toUpperCase();
         const descNueva = renombreDescripcion.trim().toUpperCase();
         if (!codigoNuevo) return;
@@ -391,35 +393,39 @@ export const GestionPartidasPC: React.FC<GestionPartidasPCProps> = ({ onClose })
 
                                             {/* Acciones */}
                                             <div className="flex items-center gap-1.5 shrink-0">
-                                                <button
-                                                    onClick={() => handleAbrirRenombrar(pc)}
-                                                    className="p-1.5 rounded-lg hover:bg-violet-50 text-violet-500 transition-colors"
-                                                    title="Renombrar código (sincroniza sus metrados)"
-                                                >
-                                                    <Pencil size={14} />
-                                                </button>
-                                                <button
-                                                    onClick={() => { setModalPU(pc); setNuevoPU(pc.precio_unitario || 0); }}
-                                                    className="p-1.5 rounded-lg hover:bg-emerald-50 text-emerald-600 transition-colors"
-                                                    title="Asignar Precio Unitario"
-                                                >
-                                                    <DollarSign size={14} />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleAbrirOficializacion(pc)}
-                                                    className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-600 transition-colors"
-                                                    title="Oficializar al catálogo"
-                                                >
-                                                    <ArrowRightCircle size={14} />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleEliminarPC(pc)}
-                                                    className="p-1.5 rounded-lg hover:bg-red-50 text-red-400 transition-colors"
-                                                    title={pc.total_registros > 0 ? 'No se puede eliminar (tiene metrados)' : 'Eliminar partida'}
-                                                    disabled={pc.total_registros > 0}
-                                                >
-                                                    <Trash2 size={14} className={pc.total_registros > 0 ? 'opacity-30' : ''} />
-                                                </button>
+                                                {!isReadOnly && (
+                                                    <>
+                                                        <button
+                                                            onClick={() => handleAbrirRenombrar(pc)}
+                                                            className="p-1.5 rounded-lg hover:bg-violet-50 text-violet-500 transition-colors"
+                                                            title="Renombrar código (sincroniza sus metrados)"
+                                                        >
+                                                            <Pencil size={14} />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => { setModalPU(pc); setNuevoPU(pc.precio_unitario || 0); }}
+                                                            className="p-1.5 rounded-lg hover:bg-emerald-50 text-emerald-600 transition-colors"
+                                                            title="Asignar Precio Unitario"
+                                                        >
+                                                            <DollarSign size={14} />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleAbrirOficializacion(pc)}
+                                                            className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-600 transition-colors"
+                                                            title="Oficializar al catálogo"
+                                                        >
+                                                            <ArrowRightCircle size={14} />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleEliminarPC(pc)}
+                                                            className="p-1.5 rounded-lg hover:bg-red-50 text-red-400 transition-colors"
+                                                            title={pc.total_registros > 0 ? 'No se puede eliminar (tiene metrados)' : 'Eliminar partida'}
+                                                            disabled={pc.total_registros > 0}
+                                                        >
+                                                            <Trash2 size={14} className={pc.total_registros > 0 ? 'opacity-30' : ''} />
+                                                        </button>
+                                                    </>
+                                                )}
                                                 <button
                                                     onClick={() => setExpandedId(isExpanded ? null : pc.id)}
                                                     className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 transition-colors"
