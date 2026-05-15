@@ -232,6 +232,58 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
         }
     };
 
+
+    /* //----------------------------------- Antes del return */
+    const [sistValue, setSistValue] = useState('');
+    const [numValue, setNumValue] = useState('');
+    const [showSistSuggestions, setShowSistSuggestions] = useState(false);
+
+    const SISTEMAS = [
+        { abr: 'DW',  nombre: 'DRYWALL' },
+        { abr: 'ACB', nombre: 'ACABADOS' },
+        { abr: 'CI',  nombre: 'CIMENTACION' },
+        { abr: 'ISA', nombre: 'INSTALACIONES SANITARIAS' },
+        { abr: 'ACO', nombre: 'ACERO' },
+        { abr: 'CE',  nombre: 'CABLEADO ESTRUCTURADO' },
+        { abr: 'EQB', nombre: 'BIOMEDICO' },
+        { abr: 'VER', nombre: 'ESCALERA METALICA' },
+    ];
+
+    const sistemasFiltrados = SISTEMAS.filter(s =>
+        sistValue.length > 0 &&
+        (s.abr.startsWith(sistValue.toUpperCase()) || 
+        s.nombre.includes(sistValue.toUpperCase()))
+    );
+
+    const espMap: Record<string, string> = {
+        'ARQUITECTURA':             'ARQ',
+        'ESTRUCTURAS':              'EST',
+        'INSTALACIONES SANITARIAS': 'ISS',
+        'ELÉCTRICAS':               'IEE',
+        'ELECTROMECÁNICAS':         'IMM',
+        'COMUNICACIONES':           'ICS',
+        'EQUIPAMIENTO BIOMÉDICO':   'EQB',
+        'OBRAS PROVISIONALES':      'OPR',
+        'SEGURIDAD':                'SEG',
+        'PLAN DE MANEJO AMBIENTAL': 'PMA',
+        'TODAS':                    'GEN',
+    };
+
+    const codigoPlano = [
+        '2361679',
+        'GRC',
+        state.bloque || '?',
+        state.nivel  || '?',
+        espMap[state.especialidadSeleccionada] || '?',
+        sistValue    || '?',
+        'PLN',
+        numValue     || '?',
+    ].join('-');
+
+
+ /* //----------------------------------- Antes del return */
+
+
     return (
         <div className="glass-panel rounded-2xl p-4 h-full flex flex-col gap-3 relative">
             {/* Modal para Nueva Partida */}
@@ -321,7 +373,7 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
             {/* Cabecera Compacta */}
             <div className="flex items-center justify-between border-b border-gray-100 pb-2">
                 <h2 className="text-sm font-bold text-gray-800 tracking-tight uppercase flex items-center gap-2">
-                    <div className="w-1.5 h-4 bg-blue-600 rounded-full" /> Registro de Metrados
+                    <div className="w-1.5 h-4 bg-blue-600 rounded-full" />
                 </h2>
                 <div className="flex items-center gap-3">
                     <input
@@ -766,6 +818,131 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
                     </div>
                 </div>
             </div>
+{/* //-----------------------------------------CODIGO DE PLANO */}
+            {/* ─── CÓDIGO DE PLANO ─── */}
+            {/* ─── 13/04/2023 ─── */}
+            {/* ─── CÓDIGO DE PLANO ─── */}
+            <div className="space-y-2 p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
+                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">
+                    Código de Plano
+                </label>
+                <div className="grid grid-cols-4 gap-1.5">
+
+                    {/* CUI — static */}
+                    <div className="space-y-1">
+                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">CUI</label>
+                        <input type="text" value="2361679" readOnly
+                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
+                        />
+                    </div>
+
+                    {/* ENTIDAD — static */}
+                    <div className="space-y-1">
+                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">ENTIDAD</label>
+                        <input type="text" value="GRC" readOnly
+                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
+                        />
+                    </div>
+
+                    {/* BLOQUE — vinculado */}
+                    <div className="space-y-1">
+                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">BLOQUE</label>
+                        <input type="text" value={state.bloque || '—'} readOnly
+                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
+                        />
+                    </div>
+
+                    {/* NIVEL — vinculado */}
+                    <div className="space-y-1">
+                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">NIVEL</label>
+                        <input type="text" value={state.nivel || '—'} readOnly
+                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
+                        />
+                    </div>
+
+                    {/* ESP. — vinculado */}
+                    <div className="space-y-1">
+                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">ESP.</label>
+                        <input type="text" value={espMap[state.especialidadSeleccionada] || '—'} readOnly
+                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
+                        />
+                    </div>
+
+                    {/* SIST. — autocomplete */}
+                    <div className="space-y-1 relative">
+                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">SIST.</label>
+                        <input
+                            type="text"
+                            value={sistValue}
+                            placeholder="ACB"
+                            autoComplete="off"
+                            onChange={e => { setSistValue(e.target.value.toUpperCase()); setShowSistSuggestions(true); }}
+                            onBlur={() => setTimeout(() => setShowSistSuggestions(false), 150)}
+                            onFocus={() => setShowSistSuggestions(true)}
+                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-700 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-50 outline-none transition-all uppercase"
+                        />
+                        {/* Dropdown sugerencias */}
+                        {showSistSuggestions && sistemasFiltrados.length > 0 && (
+                            <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white border border-blue-200 rounded-xl shadow-xl overflow-hidden">
+                                {sistemasFiltrados.map(s => (
+                                    <button
+                                        key={s.abr}
+                                        type="button"
+                                        onMouseDown={() => { setSistValue(s.abr); setShowSistSuggestions(false); }}
+                                        className="w-full px-2 py-1.5 text-left hover:bg-blue-50 transition-colors flex items-center gap-2"
+                                    >
+                                        <span className="text-[11px] font-black text-blue-700 font-mono w-10 shrink-0">{s.abr}</span>
+                                        <span className="text-[9px] text-slate-500 font-bold uppercase">{s.nombre}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* TIPO DOC. — static */}
+                    <div className="space-y-1">
+                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">TIPO DOC.</label>
+                        <input type="text" value="PLN" readOnly
+                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
+                        />
+                    </div>
+
+                    {/* NUM — editable */}
+                    <div className="space-y-1">
+                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">NUM</label>
+                        <input
+                            type="text"
+                            value={numValue}
+                            placeholder="276"
+                            onChange={e => setNumValue(e.target.value.toUpperCase())}
+                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-700 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-50 outline-none transition-all uppercase"
+                        />
+                    </div>
+
+                </div>
+
+                {/* ── PREVIEW código completo ── */}
+                <div className="mt-2 px-2 py-1.5 bg-slate-100 rounded-xl flex items-center gap-2 overflow-x-auto">
+                    <span className="text-[9px] font-black text-slate-800 uppercase shrink-0">Código:</span>
+                    <span className="text-[11px] font-black font-mono tracking-wider whitespace-nowrap">
+                        {codigoPlano.split('-').map((parte, i) => {
+                            const isPlaceholder = parte === '?';
+                            return (
+                                <span key={i}>
+                                    {i > 0 && <span className="text-slate-600 mx-0.5">-</span>}
+                                    <span className={isPlaceholder ? 'text-slate-600' : 'text-slate-800'}>
+                                        {parte}
+                                    </span>
+                                </span>
+                            );
+                        })}
+                    </span>
+                </div>
+            </div>
+            
+
+{/* //------------------------------------ HASTA AQUI ---------------------------------- */}
+
 
             {isDateLocked && (
                 <div className="bg-red-50 border border-red-200 p-2 rounded-lg flex items-center gap-2 animate-pulse">
