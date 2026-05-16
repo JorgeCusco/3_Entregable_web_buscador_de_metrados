@@ -236,7 +236,11 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
     /* //----------------------------------- Antes del return */
     const [sistValue, setSistValue] = useState('');
     const [numValue, setNumValue] = useState('');
+    /* const [showSistSuggestions, setShowSistSuggestions] = useState(false); */
     const [showSistSuggestions, setShowSistSuggestions] = useState(false);
+    const [showObservaciones, setShowObservaciones] = useState(false);
+    const [obsOpcion, setObsOpcion] = useState('');
+    const [obsTexto, setObsTexto] = useState('');
 
     const SISTEMAS = [
         { abr: 'DW',  nombre: 'DRYWALL' },
@@ -820,124 +824,140 @@ export const MetradosForm: React.FC<MetradosFormProps> = ({ state, actions, onGu
             </div>
 {/* //-----------------------------------------CODIGO DE PLANO */}
             {/* ─── CÓDIGO DE PLANO ─── */}
-            {/* ─── 13/04/2023 ─── */}
+            {/* ─── 13/04/2023 y 14/04/2023 ─── */}
             {/* ─── CÓDIGO DE PLANO ─── */}
-            <div className="space-y-2 p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
+            {/* ─── OBS / CÓDIGO DE PLANO toggle ─── */}
+            <div className="space-y-2">
+
+            {/* Botón toggle OBS */}
+            <button
+                type="button"
+                onClick={() => { setShowObservaciones(!showObservaciones); setObsOpcion(''); setObsTexto(''); }}
+                className={`w-full flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl border text-[11px] font-bold transition-all ${showObservaciones ? 'bg-amber-500 text-white border-amber-600' : 'bg-amber-50 hover:bg-amber-100 text-amber-700 border-amber-200'}`}
+            >
+                <span>📋</span>
+                {showObservaciones ? 'Ver Código de Plano' : 'Observaciones / Sin Plano'}
+            </button>
+
+            {/* PANEL OBSERVACIONES */}
+            {showObservaciones ? (
+                <div className="space-y-2 p-3 bg-amber-50/50 rounded-2xl border border-amber-100 animate-in slide-in-from-top-2 duration-200">
+                <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold text-amber-700 uppercase tracking-widest">Observación</label>
+                    <button type="button" onClick={() => { setShowObservaciones(false); setObsOpcion(''); setObsTexto(''); }}
+                    className="w-5 h-5 rounded-full bg-amber-200 hover:bg-amber-300 text-amber-700 flex items-center justify-center text-[10px] font-black transition-all"
+                    >✕</button>
+                </div>
+
+                {/* Opciones predeterminadas */}
+                <select
+                    value={obsOpcion}
+                    onChange={e => setObsOpcion(e.target.value)}
+                    className="w-full px-2 py-1.5 border border-amber-200 rounded-lg text-[11px] font-bold text-slate-700 bg-white outline-none cursor-pointer focus:border-amber-400 focus:ring-2 focus:ring-amber-50 transition-all"
+                >
+                    <option value="">— Seleccionar motivo —</option>
+                    <option value="SIN_PLANO">📄 Sin plano disponible</option>
+                    <option value="EN_REVISION">🔄 Plano en revisión / pendiente de aprobación</option>
+                    <option value="OTRO">✏️ Otro (especificar)</option>
+                </select>
+
+                {/* Textbox detalle */}
+                <textarea
+                    value={obsTexto}
+                    onChange={e => setObsTexto(e.target.value)}
+                    placeholder="Detalle adicional de la observación..."
+                    rows={3}
+                    className="w-full px-2 py-1.5 border border-amber-200 rounded-lg text-[11px] text-slate-700 bg-white outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-50 transition-all resize-none placeholder:text-slate-300"
+                />
+
+                {obsOpcion && (
+                    <div className="flex items-center gap-1.5 px-2 py-1 bg-amber-100 rounded-lg">
+                    <span className="text-[9px] font-black text-amber-700 uppercase">Motivo:</span>
+                    <span className="text-[10px] font-bold text-amber-800">{obsOpcion.replace('_', ' ')}</span>
+                    </div>
+                )}
+                </div>
+
+            ) : (
+
+                /* CÓDIGO DE PLANO */
+                <div className="space-y-2 p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
                 <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">
                     Código de Plano
                 </label>
                 <div className="grid grid-cols-4 gap-1.5">
-
-                    {/* CUI — static */}
                     <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">CUI</label>
-                        <input type="text" value="2361679" readOnly
-                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
-                        />
+                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">CUI</label>
+                    <input type="text" value="2361679" readOnly className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"/>
                     </div>
-
-                    {/* ENTIDAD — static */}
                     <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">ENTIDAD</label>
-                        <input type="text" value="GRC" readOnly
-                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
-                        />
+                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">ENTIDAD</label>
+                    <input type="text" value="GRC" readOnly className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"/>
                     </div>
-
-                    {/* BLOQUE — vinculado */}
                     <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">BLOQUE</label>
-                        <input type="text" value={state.bloque || '—'} readOnly
-                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
-                        />
+                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">BLOQUE</label>
+                    <input type="text" value={state.bloque || '—'} readOnly className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"/>
                     </div>
-
-                    {/* NIVEL — vinculado */}
                     <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">NIVEL</label>
-                        <input type="text" value={state.nivel || '—'} readOnly
-                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
-                        />
+                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">NIVEL</label>
+                    <input type="text" value={state.nivel || '—'} readOnly className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"/>
                     </div>
-
-                    {/* ESP. — vinculado */}
                     <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">ESP.</label>
-                        <input type="text" value={espMap[state.especialidadSeleccionada] || '—'} readOnly
-                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
-                        />
+                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">ESP.</label>
+                    <input type="text" value={espMap[state.especialidadSeleccionada] || '—'} readOnly className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"/>
                     </div>
-
-                    {/* SIST. — autocomplete */}
                     <div className="space-y-1 relative">
-                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">SIST.</label>
-                        <input
-                            type="text"
-                            value={sistValue}
-                            placeholder="ACB"
-                            autoComplete="off"
-                            onChange={e => { setSistValue(e.target.value.toUpperCase()); setShowSistSuggestions(true); }}
-                            onBlur={() => setTimeout(() => setShowSistSuggestions(false), 150)}
-                            onFocus={() => setShowSistSuggestions(true)}
-                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-700 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-50 outline-none transition-all uppercase"
-                        />
-                        {/* Dropdown sugerencias */}
-                        {showSistSuggestions && sistemasFiltrados.length > 0 && (
-                            <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white border border-blue-200 rounded-xl shadow-xl overflow-hidden">
-                                {sistemasFiltrados.map(s => (
-                                    <button
-                                        key={s.abr}
-                                        type="button"
-                                        onMouseDown={() => { setSistValue(s.abr); setShowSistSuggestions(false); }}
-                                        className="w-full px-2 py-1.5 text-left hover:bg-blue-50 transition-colors flex items-center gap-2"
-                                    >
-                                        <span className="text-[11px] font-black text-blue-700 font-mono w-10 shrink-0">{s.abr}</span>
-                                        <span className="text-[9px] text-slate-500 font-bold uppercase">{s.nombre}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">SIST.</label>
+                    <input type="text" value={sistValue} placeholder="ACB" autoComplete="off"
+                        onChange={e => { setSistValue(e.target.value.toUpperCase()); setShowSistSuggestions(true); }}
+                        onBlur={() => setTimeout(() => setShowSistSuggestions(false), 150)}
+                        onFocus={() => setShowSistSuggestions(true)}
+                        className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-700 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-50 outline-none transition-all uppercase"
+                    />
+                    {showSistSuggestions && sistemasFiltrados.length > 0 && (
+                        <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white border border-blue-200 rounded-xl shadow-xl overflow-hidden">
+                        {sistemasFiltrados.map(s => (
+                            <button key={s.abr} type="button"
+                            onMouseDown={() => { setSistValue(s.abr); setShowSistSuggestions(false); }}
+                            className="w-full px-2 py-1.5 text-left hover:bg-blue-50 transition-colors flex items-center gap-2"
+                            >
+                            <span className="text-[11px] font-black text-blue-700 font-mono w-10 shrink-0">{s.abr}</span>
+                            <span className="text-[9px] text-slate-500 font-bold uppercase">{s.nombre}</span>
+                            </button>
+                        ))}
+                        </div>
+                    )}
                     </div>
-
-                    {/* TIPO DOC. — static */}
                     <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">TIPO DOC.</label>
-                        <input type="text" value="PLN" readOnly
-                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"
-                        />
+                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">TIPO DOC.</label>
+                    <input type="text" value="PLN" readOnly className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-400 bg-slate-100 outline-none uppercase cursor-not-allowed"/>
                     </div>
-
-                    {/* NUM — editable */}
                     <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">NUM</label>
-                        <input
-                            type="text"
-                            value={numValue}
-                            placeholder="276"
-                            onChange={e => setNumValue(e.target.value.toUpperCase())}
-                            className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-700 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-50 outline-none transition-all uppercase"
-                        />
+                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center block">NUM</label>
+                    <input type="text" value={numValue} placeholder="276"
+                        onChange={e => setNumValue(e.target.value.toUpperCase())}
+                        className="w-full px-1 py-1 border border-slate-200 rounded-lg text-[11px] text-center font-mono font-bold text-slate-700 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-50 outline-none transition-all uppercase"
+                    />
                     </div>
-
                 </div>
 
-                {/* ── PREVIEW código completo ── */}
+                {/* Preview código completo */}
                 <div className="mt-2 px-2 py-1.5 bg-slate-100 rounded-xl flex items-center gap-2 overflow-x-auto">
                     <span className="text-[9px] font-black text-slate-800 uppercase shrink-0">Código:</span>
                     <span className="text-[11px] font-black font-mono tracking-wider whitespace-nowrap">
-                        {codigoPlano.split('-').map((parte, i) => {
-                            const isPlaceholder = parte === '?';
-                            return (
-                                <span key={i}>
-                                    {i > 0 && <span className="text-slate-600 mx-0.5">-</span>}
-                                    <span className={isPlaceholder ? 'text-slate-600' : 'text-slate-800'}>
-                                        {parte}
-                                    </span>
-                                </span>
-                            );
-                        })}
+                    {codigoPlano.split('-').map((parte, i) => {
+                        const isPlaceholder = parte === '?';
+                        return (
+                        <span key={i}>
+                            {i > 0 && <span className="text-slate-600 mx-0.5">-</span>}
+                            <span className={isPlaceholder ? 'text-slate-600' : 'text-slate-800'}>{parte}</span>
+                        </span>
+                        );
+                    })}
                     </span>
                 </div>
+                </div>
+            )}
             </div>
             
 
